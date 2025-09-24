@@ -1,49 +1,62 @@
-"use client"
+'use client';
 
-import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Video, Users, BookOpen, BarChart3, MessageSquare, Calendar, ArrowRight, CheckCircle } from "lucide-react"
+import { motion } from 'framer-motion';
+import {
+  Video,
+  Users,
+  BookOpen,
+  BarChart3,
+  MessageSquare,
+  Calendar,
+  ArrowRight,
+  CheckCircle,
+} from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 export function FeaturesSection() {
   const features = [
     {
       icon: Video,
-      title: "Clases Virtuales HD",
-      description: "Experiencia de aprendizaje inmersiva con video de alta calidad y audio cristalino.",
-      benefits: ["Grabaciones disponibles 24/7", "Pizarra interactiva", "Compartir pantalla"],
+      title: 'Clases Virtuales HD',
+      description:
+        'Experiencia de aprendizaje inmersiva con video de alta calidad y audio cristalino.',
+      benefits: ['Grabaciones disponibles 24/7', 'Pizarra interactiva', 'Compartir pantalla'],
     },
     {
       icon: Users,
-      title: "Grupos Reducidos",
-      description: "Máximo 15 estudiantes por clase para atención personalizada y mejor aprendizaje.",
-      benefits: ["Atención individualizada", "Participación activa", "Networking estudiantil"],
+      title: 'Grupos Reducidos',
+      description:
+        'Máximo 15 estudiantes por clase para atención personalizada y mejor aprendizaje.',
+      benefits: ['Atención individualizada', 'Participación activa', 'Networking estudiantil'],
     },
     {
       icon: BarChart3,
-      title: "Seguimiento Académico",
-      description: "Dashboard completo para monitorear tu progreso y identificar áreas de mejora.",
-      benefits: ["Reportes detallados", "Métricas de rendimiento", "Alertas tempranas"],
+      title: 'Seguimiento Académico',
+      description: 'Dashboard completo para monitorear tu progreso y identificar áreas de mejora.',
+      benefits: ['Reportes detallados', 'Métricas de rendimiento', 'Alertas tempranas'],
     },
     {
       icon: MessageSquare,
-      title: "Tutoría Personalizada",
-      description: "Sesiones uno a uno con profesores expertos para resolver dudas específicas.",
-      benefits: ["Horarios flexibles", "Profesores especializados", "Material exclusivo"],
+      title: 'Tutoría Personalizada',
+      description: 'Sesiones uno a uno con profesores expertos para resolver dudas específicas.',
+      benefits: ['Horarios flexibles', 'Profesores especializados', 'Material exclusivo'],
     },
     {
       icon: BookOpen,
-      title: "Biblioteca Digital",
-      description: "Acceso ilimitado a recursos educativos, libros digitales y material de estudio.",
-      benefits: ["Miles de recursos", "Búsqueda avanzada", "Descarga offline"],
+      title: 'Biblioteca Digital',
+      description:
+        'Acceso ilimitado a recursos educativos, libros digitales y material de estudio.',
+      benefits: ['Miles de recursos', 'Búsqueda avanzada', 'Descarga offline'],
     },
     {
       icon: Calendar,
-      title: "Planificación Inteligente",
-      description: "Sistema de calendario que se adapta a tu horario y objetivos académicos.",
-      benefits: ["Recordatorios automáticos", "Sincronización móvil", "Metas personalizadas"],
+      title: 'Planificación Inteligente',
+      description: 'Sistema de calendario que se adapta a tu horario y objetivos académicos.',
+      benefits: ['Recordatorios automáticos', 'Sincronización móvil', 'Metas personalizadas'],
     },
-  ]
+  ];
 
   return (
     <section id="features" className="py-24 bg-white/30">
@@ -61,8 +74,8 @@ export function FeaturesSection() {
             <span className="text-accent">tu educación</span>
           </h2>
           <p className="text-xl text-sage max-w-3xl mx-auto">
-            Descubre cómo nuestra plataforma revoluciona la experiencia de aprendizaje con herramientas diseñadas para
-            maximizar tu potencial académico.
+            Descubre cómo nuestra plataforma revoluciona la experiencia de aprendizaje con
+            herramientas diseñadas para maximizar tu potencial académico.
           </p>
         </motion.div>
 
@@ -80,7 +93,9 @@ export function FeaturesSection() {
                   <feature.icon className="w-8 h-8 text-accent" />
                 </div>
 
-                <h3 className="font-serif text-2xl font-bold text-deep-blue mb-4">{feature.title}</h3>
+                <h3 className="font-serif text-2xl font-bold text-deep-blue mb-4">
+                  {feature.title}
+                </h3>
 
                 <p className="text-sage mb-6 leading-relaxed">{feature.description}</p>
 
@@ -106,5 +121,5 @@ export function FeaturesSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,11 +1,12 @@
-"use client"
-import { cn } from "@/lib/utils"
-import type React from "react"
-import type { ReactNode } from "react"
+'use client';
+import type React from 'react';
+import type { ReactNode } from 'react';
+
+import { cn } from '@/lib/utils';
 
 interface AuroraBackgroundProps extends React.HTMLProps<HTMLDivElement> {
-  children: ReactNode
-  showRadialGradient?: boolean
+  children: ReactNode;
+  showRadialGradient?: boolean;
 }
 
 export const AuroraBackground = ({
@@ -18,8 +19,8 @@ export const AuroraBackground = ({
     <main>
       <div
         className={cn(
-          "relative flex flex-col h-[100vh] items-center justify-center bg-cream text-deep-blue transition-bg",
-          className,
+          'relative flex flex-col h-[100vh] items-center justify-center bg-cream text-deep-blue transition-bg',
+          className
         )}
         {...props}
       >
@@ -42,12 +43,13 @@ export const AuroraBackground = ({
             pointer-events-none
             absolute -inset-[10px] opacity-30 will-change-transform`,
 
-              showRadialGradient && `[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,var(--transparent)_70%)]`,
+              showRadialGradient &&
+                `[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,var(--transparent)_70%)]`
             )}
           ></div>
         </div>
         {children}
       </div>
     </main>
-  )
-}
+  );
+};

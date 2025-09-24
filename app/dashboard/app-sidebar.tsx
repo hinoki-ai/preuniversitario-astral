@@ -1,31 +1,30 @@
-"use client"
+'use client';
 
-import * as React from "react"
+import { useUser } from '@clerk/nextjs';
 import {
   IconCamera,
   IconChartBar,
   IconDashboard,
   IconDatabase,
-  IconMessageCircle,
-  IconFileAi,
-  IconFileDescription,
   IconFileWord,
   IconFolder,
   IconHelp,
-  IconInnerShadowTop,
   IconListDetails,
   IconReport,
   IconSearch,
   IconSettings,
-  IconUsers,
   IconSparkles,
   IconBrandOpenai,
-} from "@tabler/icons-react"
+} from '@tabler/icons-react';
+import Link from 'next/link';
+import * as React from 'react';
 
-import { NavDocuments } from "@/app/dashboard/nav-documents"
-import { NavMain } from "@/app/dashboard/nav-main"
-import { NavSecondary } from "@/app/dashboard/nav-secondary"
-import { NavUser } from "@/app/dashboard/nav-user"
+import { NavDocuments } from '@/app/dashboard/nav-documents';
+import { NavMain } from '@/app/dashboard/nav-main';
+import { NavSecondary } from '@/app/dashboard/nav-secondary';
+import { NavUser } from '@/app/dashboard/nav-user';
+import { ChatMaxingIconColored } from '@/components/logo';
+import { Badge } from '@/components/ui/badge';
 import {
   Sidebar,
   SidebarContent,
@@ -34,143 +33,196 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { ChatMaxingIconColoured } from "@/components/logo"
-import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
-import { useUser } from "@clerk/nextjs"
+} from '@/components/ui/sidebar';
 
 // Estudiante Turista (Free user) navigation data
 const freeUserData = {
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
+      title: 'Dashboard',
+      url: '/dashboard',
       icon: IconDashboard,
     },
     {
-      title: "Convertirse en Iluminado",
-      url: "/dashboard/payment-gated",
+      title: 'Convertirse en Iluminado',
+      url: '/dashboard/payment-gated',
       icon: IconSparkles,
     },
     {
-      title: "Clases en Vivo (Zoom)",
-      url: "/dashboard/payment-gated/zoom",
+      title: 'Clases en Vivo (Zoom)',
+      url: '/dashboard/payment-gated/zoom',
       icon: IconCamera,
+    },
+    {
+      title: 'Plan de Estudio',
+      url: '/dashboard/plan',
+      icon: IconListDetails,
+    },
+    {
+      title: 'Simulacros PAES',
+      url: '/dashboard/paes',
+      icon: IconReport,
+    },
+    {
+      title: 'Biblioteca',
+      url: '/dashboard/biblioteca',
+      icon: IconFolder,
+    },
+    {
+      title: 'Progreso',
+      url: '/dashboard/progreso',
+      icon: IconChartBar,
     },
   ],
   navSecondary: [
     {
-      title: "Configuración",
-      url: "#",
+      title: 'Configuración',
+      url: '#',
       icon: IconSettings,
     },
     {
-      title: "Ayuda",
-      url: "#",
+      title: 'Ayuda',
+      url: '#',
       icon: IconHelp,
     },
     {
-      title: "Buscar",
-      url: "#",
+      title: 'Buscar',
+      url: '#',
       icon: IconSearch,
     },
   ],
   documents: [
     {
-      name: "Biblioteca Básica",
-      url: "#",
+      name: 'Biblioteca Básica',
+      url: '#',
       icon: IconDatabase,
     },
   ],
-}
+};
 
 // Estudiante Iluminado (Paid user) navigation data
 const paidUserData = {
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
+      title: 'Dashboard',
+      url: '/dashboard',
       icon: IconDashboard,
     },
     {
-      title: "Características Avanzadas",
-      url: "/dashboard/payment-gated",
+      title: 'Características Avanzadas',
+      url: '/dashboard/payment-gated',
       icon: IconSparkles,
     },
     {
-      title: "Clases en Vivo (Zoom)",
-      url: "/dashboard/payment-gated/zoom",
+      title: 'Clases en Vivo (Zoom)',
+      url: '/dashboard/payment-gated/zoom',
       icon: IconCamera,
+    },
+    {
+      title: 'Plan de Estudio',
+      url: '/dashboard/plan',
+      icon: IconListDetails,
+    },
+    {
+      title: 'Simulacros PAES',
+      url: '/dashboard/paes',
+      icon: IconReport,
+    },
+    {
+      title: 'Biblioteca',
+      url: '/dashboard/biblioteca',
+      icon: IconFolder,
+    },
+    {
+      title: 'Progreso',
+      url: '/dashboard/progreso',
+      icon: IconChartBar,
     },
   ],
   navSecondary: [
     {
-      title: "Configuración",
-      url: "#",
+      title: 'Configuración',
+      url: '#',
       icon: IconSettings,
     },
     {
-      title: "Ayuda",
-      url: "#",
+      title: 'Ayuda',
+      url: '#',
       icon: IconHelp,
     },
     {
-      title: "Buscar",
-      url: "#",
+      title: 'Buscar',
+      url: '#',
       icon: IconSearch,
     },
   ],
   documents: [
     {
-      name: "Biblioteca de Datos",
-      url: "#",
+      name: 'Biblioteca de Datos',
+      url: '#',
       icon: IconDatabase,
     },
     {
-      name: "Reportes",
-      url: "#",
+      name: 'Reportes',
+      url: '#',
       icon: IconReport,
     },
     {
-      name: "Asistente de Word",
-      url: "#",
+      name: 'Asistente de Word',
+      url: '#',
       icon: IconFileWord,
     },
     {
-      name: "Asistente IA",
-      url: "#",
+      name: 'Asistente IA',
+      url: '#',
       icon: IconBrandOpenai,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user } = useUser()
+  const { user } = useUser();
 
-  // Check if user has free_user plan
-  const isFreeUser = user?.publicMetadata?.plan === 'free_user' ||
-                    user?.organizationMemberships?.some(membership =>
-                      membership.organization.publicMetadata?.plan === 'free_user'
-                    )
+  // Determine access label: consider active trial as paid-equivalent
+  const isFreeUser = (() => {
+    const plan = (user?.publicMetadata as any)?.plan as string | undefined;
+    const trialRaw = (user?.publicMetadata as any)?.trialEndsAt as any;
+    let trialEndsAt: number | undefined;
+    if (typeof trialRaw === 'number') trialEndsAt = trialRaw;
+    else if (typeof trialRaw === 'string') {
+      const n = Number(trialRaw);
+      if (!Number.isNaN(n) && n > 1000000000) trialEndsAt = n;
+      else {
+        const d = new Date(trialRaw);
+        if (!isNaN(d.getTime())) trialEndsAt = Math.floor(d.getTime() / 1000);
+      }
+    }
+    const now = Math.floor(Date.now() / 1000);
+    const trialActive =
+      plan === 'trial_user' && typeof trialEndsAt === 'number' && trialEndsAt > now;
+    if (trialActive) return false;
+    if (plan === 'free_user') return true;
+    // If any org explicitly marks free_user, treat as free; otherwise assume paid
+    const orgIsFree = (user?.organizationMemberships || []).some(
+      (m: any) => (m.organization.publicMetadata as any)?.plan === 'free_user'
+    );
+    return orgIsFree;
+  })();
 
   // Use appropriate data based on user plan
-  const data = isFreeUser ? freeUserData : paidUserData
+  const data = isFreeUser ? freeUserData : paidUserData;
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
+            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-1.5">
               <Link href="/">
-                <ChatMaxingIconColoured className="!size-6" />
+                <ChatMaxingIconColored className="!size-6" />
                 <span className="text-base font-semibold">Preuniversitario Astral</span>
                 <Badge variant="outline" className="text-muted-foreground text-xs">
-                  {isFreeUser ? "Estudiante Turista" : "Estudiante Iluminado"}
+                  {isFreeUser ? 'Estudiante Turista' : 'Estudiante Iluminado'}
                 </Badge>
               </Link>
             </SidebarMenuButton>
@@ -186,5 +238,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

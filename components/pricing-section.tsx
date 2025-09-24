@@ -1,60 +1,61 @@
-"use client"
+'use client';
 
-import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { CheckCircle, Star } from "lucide-react"
+import { motion } from 'framer-motion';
+import { CheckCircle, Star } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 export function PricingSection() {
   const plans = [
     {
-      name: "Básico",
-      price: "$49",
-      period: "/mes",
-      description: "Perfecto para comenzar tu preparación",
+      name: 'Básico',
+      price: '$49',
+      period: '/mes',
+      description: 'Perfecto para comenzar tu preparación',
       features: [
-        "Acceso a 20 cursos básicos",
-        "Clases grupales (máx. 15 estudiantes)",
-        "Material de estudio digital",
-        "Soporte por email",
-        "Grabaciones por 30 días",
+        'Acceso a 20 cursos básicos',
+        'Clases grupales (máx. 15 estudiantes)',
+        'Material de estudio digital',
+        'Soporte por email',
+        'Grabaciones por 30 días',
       ],
       popular: false,
     },
     {
-      name: "Premium",
-      price: "$89",
-      period: "/mes",
-      description: "La opción más popular entre estudiantes",
+      name: 'Premium',
+      price: '$89',
+      period: '/mes',
+      description: 'La opción más popular entre estudiantes',
       features: [
-        "Acceso completo a todos los cursos",
-        "Clases grupales + 2 tutorías mensuales",
-        "Biblioteca digital completa",
-        "Seguimiento académico personalizado",
-        "Grabaciones ilimitadas",
-        "Simulacros de examen",
-        "Soporte prioritario 24/7",
+        'Acceso completo a todos los cursos',
+        'Clases grupales + 2 tutorías mensuales',
+        'Biblioteca digital completa',
+        'Seguimiento académico personalizado',
+        'Grabaciones ilimitadas',
+        'Simulacros de examen',
+        'Soporte prioritario 24/7',
       ],
       popular: true,
     },
     {
-      name: "Elite",
-      price: "$149",
-      period: "/mes",
-      description: "Máximo nivel de preparación y atención",
+      name: 'Elite',
+      price: '$149',
+      period: '/mes',
+      description: 'Máximo nivel de preparación y atención',
       features: [
-        "Todo lo incluido en Premium",
-        "Tutorías ilimitadas 1:1",
-        "Plan de estudio personalizado",
-        "Mentor académico asignado",
-        "Acceso a cursos avanzados",
-        "Preparación para becas",
-        "Garantía de admisión*",
+        'Todo lo incluido en Premium',
+        'Tutorías ilimitadas 1:1',
+        'Plan de estudio personalizado',
+        'Mentor académico asignado',
+        'Acceso a cursos avanzados',
+        'Preparación para becas',
+        'Garantía de admisión*',
       ],
       popular: false,
     },
-  ]
+  ];
 
   return (
     <section id="pricing" className="py-24 bg-white/30">
@@ -70,8 +71,8 @@ export function PricingSection() {
             Invierte en tu <span className="text-accent">futuro</span>
           </h2>
           <p className="text-xl text-sage max-w-3xl mx-auto">
-            Elige el plan que mejor se adapte a tus necesidades y objetivos académicos. Todos incluyen garantía de
-            satisfacción de 30 días.
+            Elige el plan que mejor se adapte a tus necesidades y objetivos académicos. Todos
+            incluyen garantía de satisfacción de 30 días.
           </p>
         </motion.div>
 
@@ -95,15 +96,17 @@ export function PricingSection() {
               <Card
                 className={`p-8 h-full relative ${
                   plan.popular
-                    ? "bg-white border-accent border-2 shadow-xl scale-105"
-                    : "bg-white/70 backdrop-blur-sm border-sage/20"
+                    ? 'bg-white border-accent border-2 shadow-xl scale-105'
+                    : 'bg-white/70 backdrop-blur-sm border-sage/20'
                 } hover:shadow-xl transition-all duration-300`}
               >
                 <div className="text-center mb-8">
                   <h3 className="font-serif text-2xl font-bold text-deep-blue mb-2">{plan.name}</h3>
                   <p className="text-sage mb-4">{plan.description}</p>
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="font-serif text-5xl font-bold text-deep-blue">{plan.price}</span>
+                    <span className="font-serif text-5xl font-bold text-deep-blue">
+                      {plan.price}
+                    </span>
                     <span className="text-sage">{plan.period}</span>
                   </div>
                 </div>
@@ -120,8 +123,8 @@ export function PricingSection() {
                 <Button
                   className={`w-full ${
                     plan.popular
-                      ? "bg-accent hover:bg-accent/90 text-cream"
-                      : "bg-deep-blue hover:bg-deep-blue/90 text-cream"
+                      ? 'bg-accent hover:bg-accent/90 text-cream'
+                      : 'bg-deep-blue hover:bg-deep-blue/90 text-cream'
                   }`}
                   size="lg"
                 >
@@ -147,5 +150,5 @@ export function PricingSection() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

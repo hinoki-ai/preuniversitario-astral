@@ -1,37 +1,66 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
-import { Playfair_Display } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
-import { Suspense } from "react"
-import { ThemeProvider } from "@/components/theme-provider"
-import dynamic from "next/dynamic"
-import ConvexClientProvider from "@/components/ConvexClientProvider"
-import "./globals.css"
+import { ClerkProvider } from '@clerk/nextjs';
+import { GeistMono } from 'geist/font/mono';
+import { GeistSans } from 'geist/font/sans';
+import type { Metadata } from 'next';
+import { Playfair_Display } from 'next/font/google';
+import type React from 'react';
+import { Suspense } from 'react';
 
-const ClerkProvider = dynamic(() => import("@clerk/nextjs").then((mod) => mod.ClerkProvider), {
-  ssr: false,
-  loading: () => null,
-})
+import '@vercel/analytics/next';
+
+import ConvexClientProvider from '@/components/ConvexClientProvider';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import { ThemeProvider } from '@/components/theme-provider';
+
+import './globals.css';
 
 const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
-})
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: "Preuniversitario Astral - Excelencia Académica Virtual",
+  title: 'Preuniversitario Astral - Excelencia Académica Virtual',
   description:
-    "Plataforma educativa premium para preparación preuniversitaria con clases virtuales interactivas, profesores expertos y tecnología avanzada.",
-  generator: "v0.app",
-}
+    'Plataforma educativa premium para preparación preuniversitaria con clases virtuales interactivas, profesores expertos y tecnología avanzada.',
+  generator: 'v0.app',
+  metadataBase: new URL('https://preuastral.cl'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Preuniversitario Astral - Excelencia Académica Virtual',
+    description:
+      'Plataforma educativa premium para preparación preuniversitaria con clases virtuales interactivas, profesores expertos y tecnología avanzada.',
+    url: 'https://preuastral.cl',
+    siteName: 'Preuniversitario Astral',
+    locale: 'es_CL',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Preuniversitario Astral - Excelencia Académica Virtual',
+    description:
+      'Plataforma educativa premium para preparación preuniversitaria con clases virtuales interactivas, profesores expertos y tecnología avanzada.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html
@@ -40,15 +69,21 @@ export default function RootLayout({
       className={`${GeistSans.variable} ${GeistMono.variable} ${playfair.variable}`}
     >
       <body className="font-sans antialiased overscroll-none">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <ClerkProvider>
-            <ConvexClientProvider>
-              <Suspense fallback={null}>{children}</Suspense>
-              <Analytics />
-            </ConvexClientProvider>
-          </ClerkProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ErrorBoundary>
+            <ClerkProvider>
+              <ConvexClientProvider>
+                <Suspense fallback={null}>{children}</Suspense>
+              </ConvexClientProvider>
+            </ClerkProvider>
+          </ErrorBoundary>
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

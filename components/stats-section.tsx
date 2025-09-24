@@ -1,40 +1,41 @@
-"use client"
+'use client';
 
-import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
-import { TrendingUp, Clock, Target, Award } from "lucide-react"
+import { motion } from 'framer-motion';
+import { TrendingUp, Clock, Target, Award } from 'lucide-react';
+
+import { Card } from '@/components/ui/card';
 
 export function StatsSection() {
   const stats = [
     {
       icon: TrendingUp,
-      value: "95%",
-      label: "Tasa de aprobación",
-      description: "de estudiantes en exámenes de admisión",
-      color: "text-accent",
+      value: '95%',
+      label: 'Tasa de aprobación',
+      description: 'de estudiantes en exámenes de admisión',
+      color: 'text-accent',
     },
     {
       icon: Clock,
-      value: "24/7",
-      label: "Acceso a plataforma",
-      description: "Estudia cuando y donde quieras",
-      color: "text-deep-blue",
+      value: '24/7',
+      label: 'Acceso a plataforma',
+      description: 'Estudia cuando y donde quieras',
+      color: 'text-deep-blue',
     },
     {
       icon: Target,
-      value: "85%",
-      label: "Mejora promedio",
-      description: "en calificaciones de estudiantes",
-      color: "text-accent",
+      value: '85%',
+      label: 'Mejora promedio',
+      description: 'en calificaciones de estudiantes',
+      color: 'text-accent',
     },
     {
       icon: Award,
-      value: "15+",
-      label: "Años de experiencia",
-      description: "formando futuros profesionales",
-      color: "text-deep-blue",
+      value: '15+',
+      label: 'Años de experiencia',
+      description: 'formando futuros profesionales',
+      color: 'text-deep-blue',
     },
-  ]
+  ];
 
   return (
     <section className="py-24 bg-cream">
@@ -50,7 +51,8 @@ export function StatsSection() {
             Resultados que hablan por sí solos
           </h2>
           <p className="text-xl text-sage max-w-3xl mx-auto">
-            Nuestros números reflejan el compromiso con la excelencia educativa y el éxito de nuestros estudiantes.
+            Nuestros números reflejan el compromiso con la excelencia educativa y el éxito de
+            nuestros estudiantes.
           </p>
         </motion.div>
 
@@ -78,5 +80,5 @@ export function StatsSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

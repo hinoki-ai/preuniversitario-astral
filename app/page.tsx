@@ -1,12 +1,12 @@
-"use client"
-import { HeroSection } from "@/components/hero-section"
-import { StatsSection } from "@/components/stats-section"
-import { FeaturesSection } from "@/components/features-section"
-import { TestimonialsSection } from "@/components/testimonials-section"
-import { PricingSection } from "@/components/pricing-section"
-import { ContactSection } from "@/components/contact-section"
-import { Header } from "@/components/header"
-import Footer from "@/components/footer"
+'use client';
+import { ContactSection } from '@/components/contact-section';
+import { FeaturesSection } from '@/components/features-section';
+import Footer from '@/components/footer';
+import { Header } from '@/components/header';
+import { HeroSection } from '@/components/hero-section';
+import { PricingSection } from '@/components/pricing-section';
+import { StatsSection } from '@/components/stats-section';
+import { TestimonialsSection } from '@/components/testimonials-section';
 
 export default function HomePage() {
   return (
@@ -20,5 +20,5 @@ export default function HomePage() {
       <ContactSection />
       <Footer />
     </div>
-  )
+  );
 }

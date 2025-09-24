@@ -1,36 +1,37 @@
-"use client"
+'use client';
 
-import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
-import { Star, Quote } from "lucide-react"
+import { motion } from 'framer-motion';
+import { Star, Quote } from 'lucide-react';
+
+import { Card } from '@/components/ui/card';
 
 export function TestimonialsSection() {
   const testimonials = [
     {
-      name: "María González",
-      role: "Estudiante de Medicina - Universidad Nacional",
+      name: 'María González',
+      role: 'Estudiante de Medicina - Universidad Nacional',
       content:
-        "Gracias a Preuniversitario Astral logré ingresar a la carrera de mis sueños. Las clases virtuales son increíbles y los profesores realmente se preocupan por cada estudiante.",
+        'Gracias a Preuniversitario Astral logré ingresar a la carrera de mis sueños. Las clases virtuales son increíbles y los profesores realmente se preocupan por cada estudiante.',
       rating: 5,
-      image: "/placeholder-l9kgf.png",
+      image: '/placeholder-l9kgf.png',
     },
     {
-      name: "Carlos Rodríguez",
-      role: "Estudiante de Ingeniería - Universidad Católica",
+      name: 'Carlos Rodríguez',
+      role: 'Estudiante de Ingeniería - Universidad Católica',
       content:
-        "La plataforma es súper intuitiva y el seguimiento académico me ayudó a identificar mis debilidades. Mejoré mis notas en un 40% en solo 3 meses.",
+        'La plataforma es súper intuitiva y el seguimiento académico me ayudó a identificar mis debilidades. Mejoré mis notas en un 40% en solo 3 meses.',
       rating: 5,
-      image: "/placeholder-rvwee.png",
+      image: '/placeholder-rvwee.png',
     },
     {
-      name: "Ana Martínez",
-      role: "Estudiante de Derecho - Universidad de Chile",
+      name: 'Ana Martínez',
+      role: 'Estudiante de Derecho - Universidad de Chile',
       content:
-        "Lo que más me gustó fueron las tutorías personalizadas. Poder resolver mis dudas específicas con profesores expertos marcó la diferencia en mi preparación.",
+        'Lo que más me gustó fueron las tutorías personalizadas. Poder resolver mis dudas específicas con profesores expertos marcó la diferencia en mi preparación.',
       rating: 5,
-      image: "/student-ana.jpg",
+      image: '/student-ana.jpg',
     },
-  ]
+  ];
 
   return (
     <section id="testimonials" className="py-24 bg-cream">
@@ -46,7 +47,8 @@ export function TestimonialsSection() {
             Historias de <span className="text-accent">éxito</span>
           </h2>
           <p className="text-xl text-sage max-w-3xl mx-auto">
-            Conoce las experiencias de estudiantes que lograron sus metas académicas con nuestra plataforma educativa.
+            Conoce las experiencias de estudiantes que lograron sus metas académicas con nuestra
+            plataforma educativa.
           </p>
         </motion.div>
 
@@ -72,7 +74,7 @@ export function TestimonialsSection() {
 
                 <div className="flex items-center gap-4">
                   <img
-                    src={testimonial.image || "/placeholder.svg"}
+                    src={testimonial.image || '/placeholder.svg'}
                     alt={testimonial.name}
                     className="w-12 h-12 rounded-full object-cover"
                   />
@@ -87,5 +89,5 @@ export function TestimonialsSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

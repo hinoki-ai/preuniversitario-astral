@@ -1,59 +1,146 @@
-Preuniversitario Astral — Plan (Solo Features Reales)
-====================================================
+# Preuniversitario Astral — Deep Feature Power Plan
 
-Alcance
-- Dashboard de estudiantes pagados (y trial como pagados). Interactivo, directo, listo para construir.
+## Core Educational Engine (Real Learning Features)
 
-Estudiante (MVP)
-- Clases en Vivo (Zoom): embed existente + RSVP, recordatorios e ICS; join desde agenda.
-- Plan de Estudio por Track: plan base (Medicina/Ingeniería/Humanista), drag‑and‑drop semanal, módulos con cápsula + PDF + mini test.
-- Cápsulas: video 10–15m con transcripción, descarga de guía, quiz inline (3–5 preguntas).
-- Simulacros PAES: secciones cronometradas, scoring inmediato, revisión con respuestas correctas y explicación breve.
-- Progreso: % completado por asignatura y actividad últimos 7 días.
+### Dynamic Study Plans
+- **Smart Plan Builder**: AI-suggested weekly plans based on PAES dates, student performance, weak subjects
+- **Adaptive Scheduling**: Plans that adjust based on quiz scores, attendance, and time spent
+- **Multi-track Flexibility**: Medicine/Engineering/Humanities with custom subject combinations
+- **Progress-aware Tasks**: Tasks unlock based on completion, not just time
 
-Docente/Admin (MVP)
-- Planificador de Clases: crear/editar/publicar sesiones de Zoom, adjuntar materiales, ver RSVPs.
-- Contenidos: crear cápsulas, subir PDFs, autor quizzes; tag por asignatura/tema.
-- Cohortes (básico): asistencia %, promedio simulacros, temas débiles principales.
+### Interactive Learning Capsules
+- **Smart Video Player**: Custom player with speed control, note-taking, timestamp bookmarks
+- **Inline Quiz Integration**: Seamless quiz interruptions during video with instant feedback
+- **Downloadable Resources**: Auto-generated study guides, flashcards, formula sheets
+- **Multi-format Content**: Video + text transcript + interactive diagrams + practice problems
 
-Monetización y Acceso
-- Gating: acceso si (plan de usuario ∈ `NEXT_PUBLIC_CLERK_PAID_PLANS`) OR (alguna org del usuario ∈ paidPlans) OR (plan `trial_user` activo por fecha).
-- Webhooks: actualizar `users.plan` en eventos de suscripción de Clerk; mantener `paymentAttempts` (ya implementado).
+### Advanced Quiz System
+- **Question Bank Engine**: Thousands of questions with difficulty levels, tags, and prerequisites
+- **Adaptive Testing**: Questions adjust difficulty based on performance
+- **Instant Detailed Feedback**: Explanations with related video timestamps and additional resources
+- **Practice Mode vs Test Mode**: Different UI/feedback for learning vs assessment
 
-Datos (Convex — mínimo)
-- users { externalId, plan, role, trialEndsAt? }
-- meetings { title, startTime, meetingNumber, passcode, published, createdBy }
-- rsvps { meetingId, userId, status }
-- courses, modules, lessons
-- quizzes, questions, attempts
-- attachments (en lessons y meetings)
+### Live Class Superpowers
+- **Real-time Polling**: Teacher polls during Zoom with instant results
+- **Breakout Room Management**: Automated group assignments based on performance
+- **Recording Integration**: Auto-process recordings into searchable clips
+- **Attendance Analytics**: Track engagement, speaking time, participation patterns
 
-Páginas
-- `/dashboard/payment-gated/zoom` (existente) — agregar RSVP/materiales.
-- `/dashboard/plan` — plan de estudio (drag‑and‑drop).
-- `/dashboard/paes` — simulacros y práctica.
-- `/dashboard/biblioteca` — cápsulas/guías por filtro.
-- `/dashboard/progreso` — resumen de avance.
+## Student Experience Features
 
-Tareas (orden de ejecución)
-1) Unificar gating (UI + API) e incluir `trial_user` con expiración.
-2) RSVP + ICS + adjuntos en `meetings` y UI de agenda.
-3) Esquema `courses/modules/lessons` + página `/dashboard/plan` (reusar `data-table.tsx`).
-4) Reproductor de cápsulas con quiz inline.
-5) Simulacros PAES (attempts + scoring + revisión).
-6) Dashboard de progreso básico.
+### Personalized Dashboard
+- **Weekly Overview**: Visual progress calendar with streaks, goals, achievements
+- **Performance Insights**: Weak subjects, improvement trends, peer comparisons
+- **Smart Recommendations**: "Next best lesson" based on learning patterns
+- **Goal Setting**: Custom targets with progress tracking and celebrations
 
-Touchpoints de código
-- `app/api/zoom/signature/route.ts` — lógica de acceso (paid/org/trial).
-- `app/dashboard/payment-gated/page.tsx` — `Protect` (planes + trial).
-- `app/dashboard/payment-gated/zoom/page.tsx` — `Protect` + agenda con RSVP/materiales.
-- `app/dashboard/app-sidebar.tsx` — agregar Plan/PAES/Biblioteca/Progreso.
-- `convex/schema.ts` — tablas nuevas mínimas.
-- `convex/users.ts` — `trialEndsAt` + sync de plan.
-- `convex/http.ts` — webhooks `subscription.*` de Clerk.
-- `components/` — `StudyPlanTable`, `CapsulePlayer`, `Simulator`, `ProgressOverview`.
+### Social Learning
+- **Study Groups**: Student-created groups with shared notes and discussions
+- **Peer Teaching**: Top performers can create supplemental content
+- **Progress Sharing**: Optional sharing of achievements with classmates
+- **Mentor Matching**: Connect with high-performing students in same track
 
-Entregables (esta semana)
-- PR1: Gating unificado + trial + precedencia org; añadir `trialEndsAt`.
-- PR2: RSVP/ICS + adjuntos + UI de agenda.
-- PR3: Esqueleto de estudio (`courses/modules/lessons`) + `/dashboard/plan`.
+### Mobile-First Learning
+- **Offline Content**: Download videos and materials for offline study
+- **Mobile Quiz Taking**: Optimized interface for phones/tablets
+- **Push Notifications**: Smart reminders for classes, deadlines, streak maintenance
+- **Camera Integration**: Photo math problems, document scanning for homework
+
+## Teacher Power Tools
+
+### Content Creation Studio
+- **Rich Text Editor**: Create lessons with embedded videos, diagrams, math equations
+- **Bulk Upload**: Upload multiple videos/PDFs with auto-tagging
+- **Template System**: Reusable lesson structures for different subjects
+- **Version Control**: Track changes and rollbacks for educational content
+
+### Class Management
+- **Student Insights**: Individual performance dashboards, attendance patterns
+- **Automated Grading**: AI-assisted quiz grading with teacher override
+- **Custom Assignments**: Create targeted homework based on class performance
+- **Communication Hub**: Direct messaging, announcements, Q&A forums
+
+### Analytics & Reporting
+- **Cohort Analysis**: Compare class performance across subjects/tracks
+- **Individual Progress**: Detailed student learning paths and bottlenecks
+- **Content Effectiveness**: Which lessons work best, engagement metrics
+- **Predictive Insights**: Early warning for students falling behind
+
+## Advanced Learning Features
+
+### Spaced Repetition System
+- **Smart Review**: Algorithm suggests optimal review times for each concept
+- **Flashcard Integration**: Auto-generated flashcards from lesson content
+- **Progress Decay**: Visual representation of knowledge retention over time
+- **Custom Review Sessions**: Student-controlled review intensity
+
+### Gamification Engine
+- **Achievement System**: Badges, levels, streaks for consistent study
+- **Leaderboards**: Weekly/monthly rankings (opt-in privacy controls)
+- **Challenges**: Subject-specific challenges with time limits and rewards
+- **Progress Celebrations**: Visual celebrations for milestones reached
+
+### Multi-modal Learning
+- **Audio Lessons**: Podcast versions of video content for commuting
+- **Interactive Diagrams**: Zoomable, clickable diagrams with explanations
+- **Math Equation Editor**: Built-in equation editor for problem solving
+- **Code Playground**: Interactive coding environment for engineering track
+
+## Technical Excellence (Real Power, No Bloat)
+
+### Performance First
+- **Instant Loading**: Preload critical content, smart caching strategies
+- **Smooth Interactions**: 60fps animations, instant feedback on all actions
+- **Offline Resilience**: Graceful degradation when connection is poor
+- **Mobile Optimization**: Native-feeling performance on all devices
+
+### Data-Driven Learning
+- **Learning Analytics**: Track every interaction to improve recommendations
+- **A/B Testing**: Continuously test different approaches to maximize learning
+- **Personalization Engine**: Machine learning to adapt content delivery
+- **Feedback Loops**: Student input directly influences content updates
+
+## Deep Implementation Roadmap
+
+### Phase 1: Learning Core (2 weeks)
+- [ ] Upgrade video player with custom controls and quiz integration
+- [ ] Implement spaced repetition algorithm for review suggestions
+- [ ] Add achievement system with progress tracking
+- [ ] Create teacher content creation studio
+
+### Phase 2: Intelligence Layer (2 weeks)
+- [ ] Build recommendation engine for personalized learning paths
+- [ ] Implement adaptive quiz difficulty based on performance
+- [ ] Add automated content tagging and organization
+- [ ] Create student progress prediction models
+
+### Phase 3: Social Learning (2 weeks)
+- [ ] Build study groups with shared content and discussions
+- [ ] Implement peer teaching capabilities
+- [ ] Add mentor matching system
+- [ ] Create collaborative note-taking features
+
+### Phase 4: Mobile Mastery (1 week)
+- [ ] Optimize all interfaces for mobile-first experience
+- [ ] Add offline content download and sync
+- [ ] Implement camera integration for math problems
+- [ ] Build push notification system for engagement
+
+### Phase 5: Advanced Analytics (2 weeks)
+- [ ] Build comprehensive teacher dashboards
+- [ ] Implement cohort analysis and insights
+- [ ] Add predictive student success indicators
+- [ ] Create automated intervention suggestions
+
+### Phase 6: Gamification & Polish (1 week)
+- [ ] Complete achievement and badge system
+- [ ] Add leaderboards and challenges
+- [ ] Implement streak tracking and celebrations
+- [ ] Polish all interactions for maximum engagement
+
+## Success Metrics (Real Impact)
+- **Learning Outcomes**: 40% improvement in PAES scores vs traditional prep
+- **Engagement**: 85% daily active users, 25+ minutes average session
+- **Retention**: 75% student retention through prep period
+- **Satisfaction**: 4.8/5 rating with 90% recommending to friends
+- **Completion**: 95% of enrolled students complete full prep program

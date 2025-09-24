@@ -1,42 +1,43 @@
-"use client"
+'use client';
 
-import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
-import { Phone, Mail, Globe, MapPin, Instagram } from "lucide-react"
+import { motion } from 'framer-motion';
+import { Phone, Mail, Globe, MapPin, Instagram } from 'lucide-react';
+
+import { Card } from '@/components/ui/card';
 
 export function ContactSection() {
   const contactInfo = [
     {
       icon: Phone,
-      label: "Teléfono",
-      value: "+56934349595",
-      href: "tel:+56934349595"
+      label: 'Teléfono',
+      value: '+56934349595',
+      href: 'tel:+56934349595',
     },
     {
       icon: Mail,
-      label: "Email",
-      value: "contacto@preuastral.cl",
-      href: "mailto:contacto@preuastral.cl"
+      label: 'Email',
+      value: 'contacto@preuastral.cl',
+      href: 'mailto:contacto@preuastral.cl',
     },
     {
       icon: Instagram,
-      label: "Instagram",
-      value: "@preuastral",
-      href: "https://instagram.com/preuastral"
+      label: 'Instagram',
+      value: '@preuastral',
+      href: 'https://instagram.com/preuastral',
     },
     {
       icon: Globe,
-      label: "Sitio Web",
-      value: "www.preuastral.cl",
-      href: "https://www.preuastral.cl"
+      label: 'Sitio Web',
+      value: 'www.preuastral.cl',
+      href: 'https://www.preuastral.cl',
     },
     {
       icon: MapPin,
-      label: "Ubicación",
-      value: "Chile",
-      href: "#"
-    }
-  ]
+      label: 'Ubicación',
+      value: 'Chile',
+      href: '#',
+    },
+  ];
 
   return (
     <section id="contact" className="py-24 bg-white/30">
@@ -52,8 +53,8 @@ export function ContactSection() {
             Contáctanos
           </h2>
           <p className="text-xl text-sage max-w-3xl mx-auto">
-            Estamos aquí para ayudarte en tu camino hacia el éxito académico.
-            No dudes en comunicarte con nosotros.
+            Estamos aquí para ayudarte en tu camino hacia el éxito académico. No dudes en
+            comunicarte con nosotros.
           </p>
         </motion.div>
 
@@ -73,12 +74,20 @@ export function ContactSection() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-deep-blue mb-2">{contact.label}</h3>
-                    {contact.href !== "#" ? (
+                    {contact.href !== '#' ? (
                       <a
                         href={contact.href}
                         className="text-sage hover:text-accent transition-colors"
-                        target={contact.label === "Sitio Web" || contact.label === "Instagram" ? "_blank" : undefined}
-                        rel={contact.label === "Sitio Web" || contact.label === "Instagram" ? "noopener noreferrer" : undefined}
+                        target={
+                          contact.label === 'Sitio Web' || contact.label === 'Instagram'
+                            ? '_blank'
+                            : undefined
+                        }
+                        rel={
+                          contact.label === 'Sitio Web' || contact.label === 'Instagram'
+                            ? 'noopener noreferrer'
+                            : undefined
+                        }
                       >
                         {contact.value}
                       </a>
@@ -93,5 +102,5 @@ export function ContactSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

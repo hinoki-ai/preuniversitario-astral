@@ -1,12 +1,15 @@
-"use client"
+'use client';
 
-import { Button } from "@/components/ui/button"
-import { GraduationCap, Menu } from "lucide-react"
-import { useState } from "react"
-import { SignInButton, SignUpButton } from "@clerk/nextjs"
+import { SignInButton, SignUpButton, useUser } from '@clerk/nextjs';
+import { GraduationCap, Menu } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
 
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isSignedIn } = useUser();
 
   return (
     <header className="fixed top-0 w-full z-50 bg-cream/80 backdrop-blur-md border-b border-sage/20">
@@ -17,7 +20,9 @@ export function Header() {
               <GraduationCap className="w-6 h-6 text-cream" />
             </div>
             <div>
-              <h1 className="font-serif text-xl font-bold text-deep-blue">Preuniversitario Astral</h1>
+              <h1 className="font-serif text-xl font-bold text-deep-blue">
+                Preuniversitario Astral
+              </h1>
               <p className="text-xs text-sage">Excellence in Education</p>
             </div>
           </div>
@@ -35,24 +40,39 @@ export function Header() {
             <a href="#contact" className="text-deep-blue hover:text-accent transition-colors">
               Contacto
             </a>
-            <SignInButton mode="modal">
-              <Button
-                variant="outline"
-                className="border-deep-blue text-deep-blue hover:bg-deep-blue hover:text-cream bg-transparent"
-              >
-                Iniciar Sesión
-              </Button>
-            </SignInButton>
-            <SignUpButton mode="modal">
-              <Button className="bg-accent hover:bg-accent/90 text-cream">Comenzar Ahora</Button>
-            </SignUpButton>
+            {!isSignedIn ? (
+              <>
+                <SignInButton mode="modal">
+                  <Button
+                    variant="outline"
+                    className="border-deep-blue text-deep-blue hover:bg-deep-blue hover:text-cream bg-transparent"
+                  >
+                    Iniciar Sesión
+                  </Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button className="bg-accent hover:bg-accent/90 text-cream">
+                    Comenzar Ahora
+                  </Button>
+                </SignUpButton>
+              </>
+            ) : (
+              <Link href="/dashboard">
+                <Button className="bg-deep-blue hover:bg-deep-blue/90 text-cream">Dashboard</Button>
+              </Link>
+            )}
           </nav>
 
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
             <Menu className="w-6 h-6" />
           </Button>
         </div>
       </div>
     </header>
-  )
+  );
 }

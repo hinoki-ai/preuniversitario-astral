@@ -1,10 +1,11 @@
-"use client"
+'use client';
 
-import { motion } from "framer-motion"
-import { AuroraBackground } from "@/components/ui/aurora-background"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Play, Star, Users, BookOpen } from "lucide-react"
+import { motion } from 'framer-motion';
+import { Play, Star, Users, BookOpen } from 'lucide-react';
+
+import { AuroraBackground } from '@/components/ui/aurora-background';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 export function HeroSection() {
   return (
@@ -13,7 +14,7 @@ export function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           className="text-center max-w-5xl mx-auto"
         >
           <Badge className="mb-6 bg-accent/10 text-accent border-accent/20 hover:bg-accent/20">
@@ -29,8 +30,8 @@ export function HeroSection() {
           </h1>
 
           <p className="text-xl md:text-2xl text-sage max-w-3xl mx-auto mb-12 leading-relaxed">
-            Transforma tu preparación preuniversitaria con clases virtuales interactivas, profesores expertos y una
-            plataforma diseñada para tu éxito académico.
+            Transforma tu preparación preuniversitaria con clases virtuales interactivas, profesores
+            expertos y una plataforma diseñada para tu éxito académico.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
@@ -94,5 +95,5 @@ export function HeroSection() {
         </motion.div>
       </div>
     </AuroraBackground>
-  )
+  );
 }
