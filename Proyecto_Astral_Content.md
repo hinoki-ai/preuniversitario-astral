@@ -16,37 +16,55 @@
 
 ## Misión
 
-BRINDAR UNA EDUCACIÓN INTEGRAL DE CALIDAD QUE INSPIRE Y PREPARE A NUESTROS ESTUDIANTES PARA ENFRENTAR LOS DESAFÍOS ACADÉMICOS Y PERSONALES QUE ENCONTRARÁN EN SU FUTURO UNIVERSITARIO Y PROFESIONAL. BUSCAMOS FOMENTAR EL PENSAMIENTO CRÍTICO, LA CREATIVIDAD Y LOS VALORES ÉTICOS, IMPULSANDO ASÍ EL DESARROLLO INTEGRAL DE CADA ESTUDIANTE.
+BRINDAR UNA EDUCACIÓN INTEGRAL DE CALIDAD QUE INSPIRE Y PREPARE A NUESTROS ESTUDIANTES
+PARA ENFRENTAR LOS DESAFÍOS ACADÉMICOS Y PERSONALES
+QUE ENCONTRARÁN EN SU FUTURO UNIVERSITARIO Y PROFESIONAL.
+BUSCAMOS FOMENTAR EL PENSAMIENTO CRÍTICO, LA CREATIVIDAD Y LOS VALORES ÉTICOS,
+IMPULSANDO ASÍ EL DESARROLLO INTEGRAL DE CADA ESTUDIANTE.
 
 ## Visión
 
-NOS VISUALIZAMOS COMO UNA INSTITUCIÓN RECONOCIDA POR SU EXCELENCIA ACADÉMICA Y SU COMPROMISO CON LA FORMACIÓN INTEGRAL DE LOS ESTUDIANTES. BUSCAMOS SER LÍDERES EN LA PREPARACIÓN PREUNIVERSITARIA, MEDIANTE PROGRAMAS INNOVADORES, UN CUERPO DOCENTE ALTAMENTE CALIFICADO Y UN ENTORNO DE APRENDIZAJE INCLUSIVO QUE FOMENTE EL CRECIMIENTO PERSONAL Y ACADÉMICO DE NUESTROS ESTUDIANTES, PREPARÁNDOLOS PARA SER AGENTES DE CAMBIO EN LA SOCIEDAD.
+NOS VISUALIZAMOS COMO UNA INSTITUCIÓN RECONOCIDA POR SU EXCELENCIA ACADÉMICA
+Y SU COMPROMISO CON LA FORMACIÓN INTEGRAL DE LOS ESTUDIANTES.
+BUSCAMOS SER LÍDERES EN LA PREPARACIÓN PREUNIVERSITARIA, MEDIANTE PROGRAMAS INNOVADORES, UN CUERPO DOCENTE ALTAMENTE CALIFICADO
+Y UN ENTORNO DE APRENDIZAJE INCLUSIVO QUE FOMENTE EL CRECIMIENTO PERSONAL Y ACADÉMICO DE NUESTROS ESTUDIANTES,
+PREPARÁNDOLOS PARA SER AGENTES DE CAMBIO EN LA SOCIEDAD.
 
 ## Servicios Principales
 
 ### 1. Programa Académico Completo
 
-Ofrecemos una amplia gama de materias y asignaturas, cubriendo áreas como Matemáticas, Ciencias, Humanidades y más. Nuestro plan de estudios está diseñado para garantizar una preparación integral y adaptada a tus necesidades individuales.
+Ofrecemos una amplia gama de materias y asignaturas, cubriendo áreas como Matemáticas, Ciencias, Humanidades y más.
+Nuestro plan de estudios está diseñado para garantizar una preparación integral y adaptada a tus necesidades individuales.
 
 ### 2. Profesores Altamente Cualificados
 
-Nuestro equipo de docentes está formado por profesionales con amplia experiencia en la enseñanza y un profundo conocimiento en sus respectivas áreas. Te brindarán orientación académica, resolverán tus dudas y te acompañarán en cada paso de tu preparación.
+Nuestro equipo de docentes está formado por profesionales con amplia experiencia en la enseñanza
+y un profundo conocimiento en sus respectivas áreas.
+Te brindarán orientación académica, resolverán tus dudas y te acompañarán en cada paso de tu preparación.
 
 ### 3. Flexibilidad Horaria
 
-Entendemos que cada estudiante tiene sus propios compromisos y responsabilidades. Por ello, nuestro programa te ofrece la flexibilidad para estudiar en tus propios horarios y avanzar a tu propio ritmo, sin sacrificar la calidad de tu preparación.
+Entendemos que cada estudiante tiene sus propios compromisos y responsabilidades.
+Por ello, nuestro programa te ofrece la flexibilidad para estudiar en tus propios horarios y avanzar a tu propio ritmo,
+sin sacrificar la calidad de tu preparación.
 
 ### 4. Acompañamiento Psicológico y Seguimiento Personalizado
 
-Nuestro equipo estará contigo en cada etapa de tu preparación, proporcionándote retroalimentación constructiva, apoyo motivacional y orientación académica personalizada para ayudarte a alcanzar tus metas educativas.
+Nuestro equipo estará contigo en cada etapa de tu preparación, proporcionándote retroalimentación constructiva,
+apoyo motivacional y orientación académica personalizada
+para ayudarte a alcanzar tus metas educativas.
 
 ### 5. Estrategias de Estudio
 
-Las estrategias de estudio son esenciales porque ayudan a los estudiantes a aprender de manera más efectiva, mejorar su rendimiento académico, desarrollar habilidades importantes y reducir el estrés asociado con el estudio.
+Las estrategias de estudio son esenciales porque ayudan a los estudiantes a aprender de manera más efectiva,
+desarrollar habilidades importantes y reducir el estrés asociado con el estudio.
 
 ### 6. Yoga
 
-El último año de secundaria, el cuarto medio, es crucial y lleno de desafíos académicos, estrés por exámenes, decisiones sobre el futuro y la transición a la vida adulta. En este contexto, las clases de yoga ofrecen beneficios relevantes y transformadores para los estudiantes de cuarto medio.
+El último año de secundaria, el cuarto medio, es crucial y lleno de desafíos académicos, estrés por exámenes,
+decisiones sobre el futuro y la transición a la vida adulta.
+En este contexto, las clases de yoga ofrecen beneficios relevantes y transformadores para los estudiantes de cuarto medio.
 
 ## Planes de Estudio
 
@@ -159,4 +177,5 @@ Basado en el análisis del PDF, la identidad visual incluye:
 /acerca (misión y visión)
 ```
 
-Este documento contiene toda la información extraída del PDF "Proyecto educativo Astral.pdf" y puede ser utilizado como base para desarrollar el sitio web del preuniversitario.
+Este documento contiene toda la información extraída del PDF "Proyecto educativo Astral.pdf" y puede ser utilizado como base
+para desarrollar el sitio web del preuniversitario.
