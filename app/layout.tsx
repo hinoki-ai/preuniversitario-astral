@@ -10,7 +10,7 @@ import '@vercel/analytics/next';
 
 import ConvexClientProvider from '@/components/ConvexClientProvider';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 import './globals.css';
 

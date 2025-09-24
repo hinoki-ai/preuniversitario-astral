@@ -19,11 +19,11 @@ import {
 import Link from 'next/link';
 import * as React from 'react';
 
-import { NavDocuments } from '@/app/dashboard/nav-documents';
-import { NavMain } from '@/app/dashboard/nav-main';
-import { NavSecondary } from '@/app/dashboard/nav-secondary';
-import { NavUser } from '@/app/dashboard/nav-user';
-import { ChatMaxingIconColored } from '@/components/logo';
+import { NavDocuments } from '@/app/dashboard/NavDocuments';
+import { NavMain } from '@/app/dashboard/NavMain';
+import { NavSecondary } from '@/app/dashboard/NavSecondary';
+import { NavUser } from '@/app/dashboard/NavUser';
+import { ChatMaxingIconColored } from '@/components/Logo';
 import { Badge } from '@/components/ui/badge';
 import {
   Sidebar,

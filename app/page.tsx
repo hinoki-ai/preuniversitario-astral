@@ -1,12 +1,12 @@
 'use client';
-import { ContactSection } from '@/components/contact-section';
-import { FeaturesSection } from '@/components/features-section';
-import Footer from '@/components/footer';
-import { Header } from '@/components/header';
-import { HeroSection } from '@/components/hero-section';
-import { PricingSection } from '@/components/pricing-section';
-import { StatsSection } from '@/components/stats-section';
-import { TestimonialsSection } from '@/components/testimonials-section';
+import { ContactSection } from '@/components/ContactSection';
+import { FeaturesSection } from '@/components/FeaturesSection';
+import Footer from '@/components/Footer';
+import { Header } from '@/components/Header';
+import { HeroSection } from '@/components/HeroSection';
+import { PricingSection } from '@/components/PricingSection';
+import { StatsSection } from '@/components/StatsSection';
+import { TestimonialsSection } from '@/components/TestimonialsSection';
 
 export default function HomePage() {
   return (

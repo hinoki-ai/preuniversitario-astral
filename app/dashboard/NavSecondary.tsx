@@ -3,7 +3,7 @@
 import { IconBrightness, type Icon } from '@tabler/icons-react';
 import * as React from 'react';
 
-import { ModeToggle } from '@/components/mode-toggle';
+import { ModeToggle } from '@/components/ModeToggle';
 import {
   SidebarGroup,
   SidebarGroupContent,

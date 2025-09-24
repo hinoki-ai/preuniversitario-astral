@@ -2,7 +2,7 @@
 import { useUser } from '@clerk/nextjs';
 import { useMemo } from 'react';
 
-import CustomClerkPricing from '@/components/custom-clerk-pricing';
+import CustomClerkPricing from '@/components/CustomClerkPricing';
 
 function UpgradeCard() {
   return (

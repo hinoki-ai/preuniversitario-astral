@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useIsV0 } from '@/lib/context';
 import { cn } from '@/lib/utils';
 
-import { FormNewsletter } from './form-newsletter';
+import { FormNewsletter } from './FormNewsletter';
 import { Button, buttonVariants } from './ui/button';
 import { inputVariants } from './ui/input';
 

@@ -4,7 +4,7 @@ import { useMutation, useQuery } from 'convex/react';
 import { useMemo, useState } from 'react';
 import { z } from 'zod';
 
-import { DataTable, schema as dataTableSchema } from '@/app/dashboard/data-table';
+import { DataTable, schema as dataTableSchema } from '@/app/dashboard/DataTable';
 import {
   Select,
   SelectContent,
