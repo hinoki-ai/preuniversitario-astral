@@ -4,7 +4,9 @@ import { StatsSection } from "@/components/stats-section"
 import { FeaturesSection } from "@/components/features-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { PricingSection } from "@/components/pricing-section"
+import { ContactSection } from "@/components/contact-section"
 import { Header } from "@/components/header"
+import Footer from "@/components/footer"
 
 export default function HomePage() {
   return (
@@ -15,6 +17,8 @@ export default function HomePage() {
       <FeaturesSection />
       <TestimonialsSection />
       <PricingSection />
+      <ContactSection />
+      <Footer />
     </div>
   )
 }

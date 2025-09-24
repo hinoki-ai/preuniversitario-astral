@@ -25,28 +25,36 @@ NOS VISUALIZAMOS COMO UNA INSTITUCIÓN RECONOCIDA POR SU EXCELENCIA ACADÉMICA Y
 ## Servicios Principales
 
 ### 1. Programa Académico Completo
+
 Ofrecemos una amplia gama de materias y asignaturas, cubriendo áreas como Matemáticas, Ciencias, Humanidades y más. Nuestro plan de estudios está diseñado para garantizar una preparación integral y adaptada a tus necesidades individuales.
 
 ### 2. Profesores Altamente Cualificados
+
 Nuestro equipo de docentes está formado por profesionales con amplia experiencia en la enseñanza y un profundo conocimiento en sus respectivas áreas. Te brindarán orientación académica, resolverán tus dudas y te acompañarán en cada paso de tu preparación.
 
 ### 3. Flexibilidad Horaria
+
 Entendemos que cada estudiante tiene sus propios compromisos y responsabilidades. Por ello, nuestro programa te ofrece la flexibilidad para estudiar en tus propios horarios y avanzar a tu propio ritmo, sin sacrificar la calidad de tu preparación.
 
 ### 4. Acompañamiento Psicológico y Seguimiento Personalizado
+
 Nuestro equipo estará contigo en cada etapa de tu preparación, proporcionándote retroalimentación constructiva, apoyo motivacional y orientación académica personalizada para ayudarte a alcanzar tus metas educativas.
 
 ### 5. Estrategias de Estudio
+
 Las estrategias de estudio son esenciales porque ayudan a los estudiantes a aprender de manera más efectiva, mejorar su rendimiento académico, desarrollar habilidades importantes y reducir el estrés asociado con el estudio.
 
 ### 6. Yoga
+
 El último año de secundaria, el cuarto medio, es crucial y lleno de desafíos académicos, estrés por exámenes, decisiones sobre el futuro y la transición a la vida adulta. En este contexto, las clases de yoga ofrecen beneficios relevantes y transformadores para los estudiantes de cuarto medio.
 
 ## Planes de Estudio
 
 ### Plan Medicina
+
 **Horario:** Lunes a Viernes (ver calendario)  
 **Materias:**
+
 - Matemáticas M1 Y M2
 - Competencia Lectora
 - Física
@@ -54,15 +62,19 @@ El último año de secundaria, el cuarto medio, es crucial y lleno de desafíos 
 - Biología
 
 ### Plan Humanista
+
 **Horario:** Lunes a Viernes (ver calendario)  
 **Materias:**
+
 - Matemáticas M1
 - Competencia Lectora
 - Historia
 
 ### Plan Ingeniería
+
 **Horario:** Lunes a Viernes (ver calendario)  
 **Materias:**
+
 - Matemáticas M1 Y M2
 - Competencia Lectora
 - Física
@@ -73,13 +85,14 @@ El último año de secundaria, el cuarto medio, es crucial y lleno de desafíos 
 ## Información de Contacto
 
 - **Instagram:** @preuastral
-- **Sitio Web:** www.preuastral.cl
+- **Sitio Web:** [www.preuastral.cl](https://www.preuastral.cl)
 - **Teléfono:** +56934349595
 - **Ubicación:** Chile
 
 ## Recursos Visuales Extraídos
 
 ### Imágenes Disponibles
+
 - `assets/images/pdf-extracted/image-016.ppm` - Imagen principal del programa (3.3MB)
 - `assets/images/pdf-extracted/image-033.ppm` - Imagen de servicios (6.2MB)
 - `assets/images/pdf-extracted/image-034.ppm` - Imagen de acompañamiento (8.4MB)
@@ -97,12 +110,14 @@ El último año de secundaria, el cuarto medio, es crucial y lleno de desafíos 
 - `assets/images/pdf-extracted/image-098.ppm` - Elemento decorativo final
 
 ### Logos Convertidos
+
 - `assets/images/pdf-extracted/logo-01.png` - Logo principal (convertido de image-004.ppm)
 - `assets/images/pdf-extracted/logo-02.png` - Logo secundario (convertido de image-009.ppm)
 
 ## Paleta de Colores y Diseño
 
 Basado en el análisis del PDF, la identidad visual incluye:
+
 - Fondos con gradientes suaves
 - Tipografía clara y legible
 - Elementos visuales que transmiten confianza y profesionalismo
@@ -110,21 +125,24 @@ Basado en el análisis del PDF, la identidad visual incluye:
 
 ## Notas para Desarrollo Web
 
-### Contenido Prioritario para el Sitio Web:
+### Contenido Prioritario para el Sitio Web
+
 1. **Hero Section:** Presentación de la marca Astral con valor único
 2. **Servicios:** 6 pilares principales con descripciones detalladas
 3. **Planes de Estudio:** Tres opciones claramente diferenciadas
 4. **Contacto:** Información accesible y clara
 5. **Acerca de:** Misión y visión prominentemente destacadas
 
-### Recomendaciones de UX:
+### Recomendaciones de UX
+
 - Lenguaje simple y accesible (considerando público rural chileno)
 - Navegación intuitiva
 - Llamados a acción claros
 - Diseño responsivo para móviles
 - Integración de elementos visuales del PDF
 
-### Tecnologías Recomendadas:
+### Tecnologías Recomendadas
+
 - Next.js para SSR y rendimiento
 - Tailwind CSS para estilos consistentes
 - Componentes reutilizables
@@ -133,7 +151,7 @@ Basado en el análisis del PDF, la identidad visual incluye:
 
 ## Estructura del Sitio Web Sugerida
 
-```
+```text
 / (página principal)
 /servicios (detalle de los 6 servicios)
 /planes (los 3 planes de estudio)

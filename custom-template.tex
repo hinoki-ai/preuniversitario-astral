@@ -1,0 +1,97 @@
+\documentclass[12pt,a4paper]{article}
+
+% Packages for better appearance
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{booktabs}
+
+% Page geometry - proper margins
+\geometry{
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm,
+    headheight=1.5cm,
+    footskip=1cm
+}
+
+% Color scheme - professional yet cute pastel colors
+\definecolor{astralblue}{RGB}{100,149,237}
+\definecolor{astralgreen}{RGB}{144,238,144}
+\definecolor{astralpurple}{RGB}{221,160,221}
+\definecolor{textgray}{RGB}{64,64,64}
+\definecolor{accentcolor}{RGB}{255,182,193}
+
+% Fonts - clean and readable
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Line spacing
+\onehalfspacing
+
+% Header and footer
+\fancyhf{}
+\fancyhead[L]{\textcolor{astralblue}{\textbf{Preuniversitario Astral}}}
+\fancyhead[R]{\textcolor{textgray}{\today}}
+\fancyfoot[C]{\textcolor{textgray}{\thepage}}
+\pagestyle{fancy}
+
+% Title formatting
+\titleformat{\section}
+{\normalfont\Large\bfseries\color{astralblue}}
+{\thesection}{1em}{}
+\titlespacing{\section}{0pt}{12pt}{6pt}
+
+% Subsection formatting
+\titleformat{\subsection}
+{\normalfont\large\bfseries\color{astralpurple}}
+{\thesubsection}{0.5em}{}
+\titlespacing{\subsection}{0pt}{8pt}{4pt}
+
+% List formatting
+\setlist[itemize]{leftmargin=*,label=\textcolor{astralblue}{\textbullet}}
+\setlist[enumerate]{leftmargin=*}
+
+% Hyperlink colors
+\hypersetup{
+    colorlinks=true,
+    linkcolor=astralblue,
+    citecolor=astralgreen,
+    urlcolor=astralpurple
+}
+
+% Custom title page
+\makeatletter
+\def\@maketitle{
+    \newpage
+    \null
+    \vskip 2em
+    \begin{center}
+        \textcolor{astralblue}{\Huge \bfseries \@title} \\
+        \vskip 1em
+        {\large \@author} \\
+        \vskip 1em
+        {\large \@date}
+        \vskip 2em
+        \textcolor{accentcolor}{\rule{0.8\textwidth}{2pt}}
+    \end{center}
+    \vskip 3em
+}
+\makeatother
+
+\begin{document}
+
+$body$
+
+\end{document}

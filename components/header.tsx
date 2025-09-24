@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { GraduationCap, Menu } from "lucide-react"
 import { useState } from "react"
+import { SignInButton, SignUpButton } from "@clerk/nextjs"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -31,13 +32,20 @@ export function Header() {
             <a href="#pricing" className="text-deep-blue hover:text-accent transition-colors">
               Precios
             </a>
-            <Button
-              variant="outline"
-              className="border-deep-blue text-deep-blue hover:bg-deep-blue hover:text-cream bg-transparent"
-            >
-              Iniciar Sesión
-            </Button>
-            <Button className="bg-accent hover:bg-accent/90 text-cream">Comenzar Ahora</Button>
+            <a href="#contact" className="text-deep-blue hover:text-accent transition-colors">
+              Contacto
+            </a>
+            <SignInButton mode="modal">
+              <Button
+                variant="outline"
+                className="border-deep-blue text-deep-blue hover:bg-deep-blue hover:text-cream bg-transparent"
+              >
+                Iniciar Sesión
+              </Button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <Button className="bg-accent hover:bg-accent/90 text-cream">Comenzar Ahora</Button>
+            </SignUpButton>
           </nav>
 
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>

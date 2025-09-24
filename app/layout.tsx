@@ -6,7 +6,14 @@ import { Playfair_Display } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
+import dynamic from "next/dynamic"
+import ConvexClientProvider from "@/components/ConvexClientProvider"
 import "./globals.css"
+
+const ClerkProvider = dynamic(() => import("@clerk/nextjs").then((mod) => mod.ClerkProvider), {
+  ssr: false,
+  loading: () => null,
+})
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -34,8 +41,12 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased overscroll-none">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Suspense fallback={null}>{children}</Suspense>
-          <Analytics />
+          <ClerkProvider>
+            <ConvexClientProvider>
+              <Suspense fallback={null}>{children}</Suspense>
+              <Analytics />
+            </ConvexClientProvider>
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>
