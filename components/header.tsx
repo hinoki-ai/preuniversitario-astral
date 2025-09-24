@@ -1,0 +1,50 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { GraduationCap, Menu } from "lucide-react"
+import { useState } from "react"
+
+export function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  return (
+    <header className="fixed top-0 w-full z-50 bg-cream/80 backdrop-blur-md border-b border-sage/20">
+      <div className="container mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-deep-blue rounded-lg flex items-center justify-center">
+              <GraduationCap className="w-6 h-6 text-cream" />
+            </div>
+            <div>
+              <h1 className="font-serif text-xl font-bold text-deep-blue">Preuniversitario Astral</h1>
+              <p className="text-xs text-sage">Excellence in Education</p>
+            </div>
+          </div>
+
+          <nav className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-deep-blue hover:text-accent transition-colors">
+              Programas
+            </a>
+            <a href="#testimonials" className="text-deep-blue hover:text-accent transition-colors">
+              Testimonios
+            </a>
+            <a href="#pricing" className="text-deep-blue hover:text-accent transition-colors">
+              Precios
+            </a>
+            <Button
+              variant="outline"
+              className="border-deep-blue text-deep-blue hover:bg-deep-blue hover:text-cream bg-transparent"
+            >
+              Iniciar Sesión
+            </Button>
+            <Button className="bg-accent hover:bg-accent/90 text-cream">Comenzar Ahora</Button>
+          </nav>
+
+          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <Menu className="w-6 h-6" />
+          </Button>
+        </div>
+      </div>
+    </header>
+  )
+}
