@@ -289,7 +289,7 @@ export default function BibliotecaPage() {
                 </SelectContent>
               </Select>
 
-              <Select value={subject ?? 'all'} onValueChange={(v) => setSubject(v === 'all' ? undefined : v)}>
+              <Select value={subject ?? 'all'} onValueChange={(v: string) => setSubject(v === 'all' ? undefined : v)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Asignatura" />
                 </SelectTrigger>
