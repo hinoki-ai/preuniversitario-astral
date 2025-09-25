@@ -1,62 +1,58 @@
-# Vercel Deployment Configuration
+# Vercel Deployment Guide
 
-This guide outlines all the steps needed to deploy the Preuniversitario Astral app to Vercel.
+Preuniversitario Astral deployment configuration for Vercel platform.
 
-## Environment Variables Required
+## Environment Variables
 
-Configure these environment variables in your Vercel dashboard:
+*Legend: ✅ Required, ❌ Optional*
 
-### Clerk Authentication
-
-- `NEXT_PUBLIC_CLERK_FRONTEND_API_URL` - Your Clerk frontend API URL
-- `CLERK_WEBHOOK_SECRET` - Clerk webhook secret for handling auth events
-- `NEXT_PUBLIC_CLERK_PAID_PLANS` - JSON string of paid plan configurations
-
-### Zoom Integration
-
-- `NEXT_PUBLIC_ZOOM_MEETING_SDK_KEY` - Zoom Meeting SDK Key
-- `ZOOM_MEETING_SDK_SECRET` - Zoom Meeting SDK Secret
-- `NEXT_PUBLIC_ZOOM_DEMO_MODE` - Set to 'false' for production
-
-### Storage (Vercel KV)
-
-- `KV_REST_API_URL` - Vercel KV REST API URL
-- `KV_REST_API_TOKEN` - Vercel KV REST API Token
-
-### Convex Database
-
-- `NEXT_PUBLIC_CONVEX_URL` - Your Convex deployment URL
-
-### Environment
-
-- `NODE_ENV` - Set to 'production'
+| Category | Variable | Description | Required |
+|----------|----------|-------------|----------|
+| **Clerk Auth** | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk publishable key for frontend | ✅ |
+| | `CLERK_SECRET_KEY` | Clerk secret key for server-side operations | ✅ |
+| | `CLERK_WEBHOOK_SECRET` | Webhook secret for auth events | ✅ |
+| | `NEXT_PUBLIC_CLERK_PAID_PLANS` | JSON string of paid plan configs | ✅ |
+| **Zoom** | `NEXT_PUBLIC_ZOOM_MEETING_SDK_KEY` | Zoom Meeting SDK Key | ❌ |
+| | `ZOOM_MEETING_SDK_SECRET` | Zoom Meeting SDK Secret | ❌ |
+| | `NEXT_PUBLIC_ZOOM_DEMO_MODE` | Set to 'false' for production | ❌ |
+| **Storage** | `KV_REST_API_URL` | Vercel KV REST API URL | ✅ |
+| | `KV_REST_API_TOKEN` | Vercel KV REST API Token | ✅ |
+| **Database** | `NEXT_PUBLIC_CONVEX_URL` | Convex deployment URL | ✅ |
+| **App Config** | `NEXT_PUBLIC_APP_URL` | Application base URL | ✅ |
+| **Feature Flags** | `NEXT_PUBLIC_ENABLE_ZOOM` | Enable Zoom features ('true'/'false') | ❌ |
+| | `NEXT_PUBLIC_ENABLE_MOCK_EXAMS` | Enable mock exams ('true'/'false') | ❌ |
+| **Analytics** | `NEXT_PUBLIC_VERCEL_ANALYTICS_ID` | Vercel Analytics ID | ❌ |
+| **Runtime** | `NODE_ENV` | Set to 'production' | ✅ |
 
 ## Deployment Steps
 
-1. **Connect Repository**: Connect your GitHub repository to Vercel
-2. **Configure Environment Variables**: Add all the environment variables listed above
-3. **Set Build Settings**:
-   - Framework Preset: Next.js
+1. **Repository**: Connect GitHub repository to Vercel
+2. **Environment**: Add all required (✅) variables from table above. Optional (❌) variables can be omitted if features are not needed.
+3. **Build Settings**:
+   - Framework: Next.js
+   - Node.js Version: 20.x
    - Build Command: `pnpm build`
-   - Output Directory: `.next`
    - Install Command: `pnpm install`
-4. **Deploy**: Vercel will automatically deploy on push to main branch
+   - Output Directory: `.next`
+4. **Deploy**: Automatic on push to main branch
 
-## Convex Deployment
+## Database Deployment
 
-Make sure to deploy your Convex functions separately:
+Deploy Convex functions separately:
 
 ```bash
 npx convex deploy
 ```
 
-## Additional Notes
+## Configuration Notes
 
-- The app uses pnpm as package manager
-- Node.js runtime is set to 20.x
-- CORS headers are configured for API routes
-- Console logs are automatically removed in production builds
+- **Package Manager**: pnpm
+- **Node Version**: 20.x
+- **CORS**: Configured for API routes
+- **Logs**: Console logs removed in production
 
-## Incident Log
+## Incident History
 
-- **2025-09-25 – Casing Regression Recovery**: A bulk refactor toggled variable and type casing across dashboard modules, breaking TypeScript builds and runtime navigation. The affected files (`app/dashboard/*`, `hooks/use-toast.ts`, `lib/subscription.ts`, `convex/userStats.ts`, etc.) were restored to their intended casing, and supporting imports were re-aligned. The Zoom signature route and subscription helpers regained their type safety, and the dashboard once again renders charts, tables, diagnostics, and media content without runtime errors. Stray `energy-orb-*` demo HTML files were removed from the deploy target to avoid shipping prototype assets.
+- **2025-09-25**: Casing regression recovery - Restored variable/type casing in dashboard modules
+  (`app/dashboard/*`, `hooks/use-toast.ts`, `lib/subscription.ts`, `convex/userStats.ts`).
+  Removed prototype HTML files from deploy target.

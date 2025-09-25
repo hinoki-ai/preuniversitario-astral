@@ -1,12 +1,8 @@
 "use client"
 
-import react, { useRef, useEffect }
-
- from "react"
-import * as three from "three"
-import { cn }
-
- from "@/lib/utils"
+import React, { useRef, useEffect } from "react"
+import * as THREE from "three"
+import { cn } from "@/lib/utils"
 
 interface energyorbprops {
   // Size options
@@ -66,13 +62,13 @@ export function EnergyOrb({
   intensity,
   showContainer = true,
   containerClassName,
-}: EnergyOrbProps) {
-  const mountref = useref<htmldivelement>(null)
-  const sceneref = useref<{
-    scene: three.scene;
-    camera: three.perspectivecamera;
-    renderer: three.webglrenderer;
-    particles: three.points;
+}: energyorbprops) {
+  const mountref = useRef<HTMLDivElement>(null)
+  const sceneref = useRef<{
+    scene: THREE.Scene;
+    camera: THREE.PerspectiveCamera;
+    renderer: THREE.WebGLRenderer;
+    particles: THREE.Points;
     animationId: number
   } | null>(null)
 
@@ -110,7 +106,9 @@ export function EnergyOrb({
   }
 
   useEffect(() => {
-    if (!mountRef.current) return
+    if (!mountref.current) return
+
+    const mountElement = mountref.current
 
     // Scene setup
     const scene = new THREE.Scene()
@@ -119,7 +117,7 @@ export function EnergyOrb({
 
     renderer.setSize(actualSize, actualSize)
     renderer.setClearColor(0x000000, 0)
-    mountRef.current.appendChild(renderer.domElement)
+    mountElement.appendChild(renderer.domElement)
 
     const particleCount = actualVariant === "intense" ? 120 : actualVariant === "subtle" ? 40 : 80
     const positions = new Float32Array(particleCount * 3)
@@ -391,16 +389,16 @@ export function EnergyOrb({
 
       renderer.render(scene, camera)
       const animationId = requestAnimationFrame(animate)
-      sceneRef.current = { scene, camera, renderer, particles, animationId }
+      sceneref.current = { scene, camera, renderer, particles, animationId }
     }
 
     animate()
 
     return () => {
-      if (sceneRef.current) {
-        cancelAnimationFrame(sceneRef.current.animationId)
-        if (mountRef.current && renderer.domElement) {
-          mountRef.current.removeChild(renderer.domElement)
+      if (sceneref.current) {
+        cancelAnimationFrame(sceneref.current.animationId)
+        if (mountElement && renderer.domElement) {
+          mountElement.removeChild(renderer.domElement)
         }
         renderer.dispose()
         geometry.dispose()
@@ -412,7 +410,7 @@ export function EnergyOrb({
 
   const orbContent = (
     <div 
-      ref={mountRef} 
+      ref={mountref} 
       className={cn(
         "w-full h-full",
         typeof size === "number" ? `orb-size-${actualSize}` : ""
@@ -421,7 +419,7 @@ export function EnergyOrb({
   )
 
   if (!showContainer) {
-    return <div classname={className}>{orbContent}</div>
+    return <div className={className}>{orbContent}</div>
   }
 
   return (

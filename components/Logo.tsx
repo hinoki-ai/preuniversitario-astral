@@ -1,4 +1,4 @@
-import { SVGProps } from 'react';
+import React, { SVGProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -84,7 +84,7 @@ export const LogoStroke = ({ className }: { className?: string }) => {
   );
 };
 
-export function chatmaxingicon(props: react.svgprops<svgsvgelement>) {
+export function chatmaxingicon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"

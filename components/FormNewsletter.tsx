@@ -12,7 +12,7 @@ import { subscribe } from '@/lib/subscribe';
 import { ActionResult, cn } from '@/lib/utils';
 
 import { AlertTitle, alertVariants } from './ui/alert';
-import { Form, FormControl, FormField, FormItem, FormMessage, FormStateMessage } from './ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage } from './ui/form';
 
 const SPRING = {
   type: 'spring' as const,
@@ -37,12 +37,12 @@ const SubmissionStateMessage = ({
   }, [form.formState.errors, reset]);
 
   return (
-    <FormStateMessage>
+    <FormMessage>
       {value?.success === true && (
         <motion.div
           key={value.id}
           className={cn(
-            alertVariants({ variant: 'success' }),
+            alertVariants({ variant: 'default' }),
             'absolute top-0 left-0 right-0 mx-auto w-max'
           )}
           exit={{ opacity: 0, y: 10, scale: 0.8 }}
@@ -54,7 +54,7 @@ const SubmissionStateMessage = ({
           <AlertTitle>{value.data}</AlertTitle>
         </motion.div>
       )}
-    </FormStateMessage>
+    </FormMessage>
   );
 };
 
@@ -101,7 +101,7 @@ export const FormNewsletter = ({
     }
 
     if (state.success === false) {
-      form.setError('email', { message: state.message });
+      form.setError('email', { message: state.error });
     }
   }
 
@@ -115,24 +115,7 @@ export const FormNewsletter = ({
           name="email"
           render={({ field }) => (
             <FormItem className="space-y-0">
-              <FormMessage>
-                {error => (
-                  <motion.div
-                    key={error}
-                    className={cn(
-                      alertVariants({ variant: 'destructive' }),
-                      'absolute top-0 left-0 right-0 mx-auto w-max'
-                    )}
-                    initial={{ opacity: 0, y: 10, scale: 0.8 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.8 }}
-                    transition={SPRING}
-                  >
-                    <CrossCircledIcon />
-                    <AlertTitle>{error}</AlertTitle>
-                  </motion.div>
-                )}
-              </FormMessage>
+              <FormMessage />
               <FormControl>
                 <div className="relative">
                   {input({ ...field })}

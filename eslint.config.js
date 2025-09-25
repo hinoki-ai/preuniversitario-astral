@@ -30,6 +30,7 @@ const eslintConfig = [
       ".vercel/**",
       "dist/**",
       "build/**",
+      "energy-orb*.html",
     ],
   },
 ];

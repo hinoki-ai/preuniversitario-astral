@@ -1,5 +1,33 @@
 # Clerk Webhook Events Catalog
 
+Clerk authentication and subscription webhook event schemas processed by Convex functions.
+
+## Event Summary
+
+| Event Type | Category | Description | Trigger |
+|------------|----------|-------------|---------|
+| **user.created** | User | New user account created | User signs up |
+| **user.updated** | User | User profile modified | Profile changes |
+| **user.deleted** | User | User account removed | Account deletion |
+| **paymentAttempt.created** | Payment | Payment attempt initiated | Subscription purchase |
+| **paymentAttempt.updated** | Payment | Payment status changed | Payment processing |
+| **subscription.created** | Subscription | New subscription started | Successful payment |
+| **subscription.updated** | Subscription | Subscription modified | Plan changes |
+| **subscription.active** | Subscription | Subscription activated | Payment confirmed |
+| **subscription.past_due** | Subscription | Payment overdue | Failed renewal |
+| **subscription.ended** | Subscription | Subscription terminated | Cancellation |
+| **subscriptionItem.created** | Subscription | Subscription item added | Plan upgrade |
+| **subscriptionItem.updated** | Subscription | Item modified | Changes applied |
+| **subscriptionItem.active** | Subscription | Item activated | Payment success |
+| **subscriptionItem.past_due** | Subscription | Item payment overdue | Renewal failure |
+| **subscriptionItem.ended** | Subscription | Item terminated | Cancellation |
+| **subscriptionItem.abandoned** | Subscription | Item abandoned | User action |
+| **subscriptionItem.incomplete** | Subscription | Item incomplete | Setup failure |
+| **subscriptionItem.upcoming** | Subscription | Item renewal upcoming | Billing cycle |
+| **subscriptionItem.canceled** | Subscription | Item canceled | User cancellation |
+
+## Event Schemas
+
 ## paymentAttempt.created
 
 {

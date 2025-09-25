@@ -111,7 +111,7 @@ export function DailyMissions() {
   const { toast } = useToast();
   const missionsData = useQuery(api.dailyMissions.getTodaysMissions) as MissionsData | undefined;
   const missionStats = useQuery(api.dailyMissions.getMissionStats) as MissionStats | undefined;
-  const completeMission = useMutation(api.dailyMissions.completeMission);
+  const updateMissionProgress = useMutation(api.dailyMissions.updateMissionProgress);
 
   if (!missionsData) {
     return (
@@ -134,8 +134,18 @@ export function DailyMissions() {
     : 0;
 
   const handleCompleteMission = async (missionId: string) => {
+    if (!missionsData) return;
+
+    const mission = missionsData.missions.find(m => m.id === missionId);
+    if (!mission || mission.completed) return;
+
+    const remainingProgress = mission.target - mission.progress;
+
     try {
-      await completeMission({ missionId });
+      await updateMissionProgress({
+        missionId,
+        progressIncrement: remainingProgress
+      });
       toast({
         title: '¡Misión completada! 🎯',
         description: 'Sigue así para mantener tu racha diaria.',

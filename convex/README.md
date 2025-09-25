@@ -1,88 +1,95 @@
-# Welcome to your Convex functions directory
+# Convex Functions
 
-Write your Convex functions here.
-See <https://docs.convex.dev/functions> for more.
+Database functions and real-time subscriptions for Preuniversitario Astral.
 
-A query function that takes two arguments looks like:
+## Function Categories
+
+| Category | Purpose | Key Functions |
+|----------|---------|----------------|
+| **Authentication** | User management & Clerk webhooks | `auth.config.ts`, webhook handlers |
+| **Payments** | Subscription & billing processing | `paymentAttempts.ts`, `paymentAttemptTypes.ts` |
+| **Content** | Educational materials & quizzes | `content.ts`, `quizzes.ts`, `mockExams.ts` |
+| **Progress** | Study tracking & spaced repetition | `progress.ts`, `spacedRepetition.ts` |
+| **Gamification** | Missions, rewards, achievements | `dailyMissions.ts`, `rewardsSystem.ts` |
+| **Social** | Leaderboards & user interactions | `socialFeatures.ts`, `users.ts` |
+| **Dashboard** | Analytics & study plans | `dashboard.ts`, `studyPlan.ts` |
+| **Meetings** | Zoom integration & scheduling | `meetings.ts` |
+
+## Core Patterns
+
+### Query Functions
 
 ```ts
-// convex/myFunctions.ts
+// convex/progress.ts
 import { query } from './_generated/server';
 import { v } from 'convex/values';
 
-export const myQueryFunction = query({
-  // Validators for arguments.
-  args: {
-    first: v.number(),
-    second: v.string(),
-  },
-
-  // Function implementation.
+export const getUserProgress = query({
+  args: { userId: v.id('users') },
   handler: async (ctx, args) => {
-    // Read the database as many times as you need here.
-    // See https://docs.convex.dev/database/reading-data.
-    const documents = await ctx.db.query('tablename').collect();
-
-    // Arguments passed from the client are properties of the args object.
-    console.log(args.first, args.second);
-
-    // Write arbitrary JavaScript here: filter, aggregate, build derived data,
-    // remove non-public properties, or create new objects.
-    return documents;
+    const progress = await ctx.db
+      .query('progress')
+      .withIndex('by_user', (q) => q.eq('userId', args.userId))
+      .collect();
+    return progress;
   },
 });
 ```
 
-Using this query function in a React component looks like:
+### Mutation Functions
 
 ```ts
-const data = useQuery(api.myFunctions.myQueryFunction, {
-  first: 10,
-  second: 'hello',
-});
-```
-
-A mutation function looks like:
-
-```ts
-// convex/myFunctions.ts
+// convex/progress.ts
 import { mutation } from './_generated/server';
 import { v } from 'convex/values';
 
-export const myMutationFunction = mutation({
-  // Validators for arguments.
+export const updateProgress = mutation({
   args: {
-    first: v.string(),
-    second: v.string(),
+    userId: v.id('users'),
+    lessonId: v.string(),
+    completed: v.boolean()
   },
-
-  // Function implementation.
   handler: async (ctx, args) => {
-    // Insert or modify documents in the database here.
-    // Mutations can also read from the database like queries.
-    // See https://docs.convex.dev/database/writing-data.
-    const message = { body: args.first, author: args.second };
-    const id = await ctx.db.insert('messages', message);
+    const existing = await ctx.db
+      .query('progress')
+      .withIndex('by_user_lesson', (q) =>
+        q.eq('userId', args.userId).eq('lessonId', args.lessonId)
+      )
+      .first();
 
-    // Optionally, return a value from your mutation.
-    return await ctx.db.get(id);
+    if (existing) {
+      await ctx.db.patch(existing._id, { completed: args.completed });
+    } else {
+      await ctx.db.insert('progress', args);
+    }
   },
 });
 ```
 
-Using this mutation function in a React component looks like:
+### Real-time Subscriptions
 
-```ts
-const mutation = useMutation(api.myFunctions.myMutationFunction);
-function handleButtonPress() {
-  // fire and forget, the most common way to use mutations
-  mutation({ first: 'Hello!', second: 'me' });
-  // OR
-  // use the result once the mutation has completed
-  mutation({ first: 'Hello!', second: 'me' }).then(result => console.log(result));
-}
+```tsx
+// In React components
+const progress = useQuery(api.progress.getUserProgress, { userId });
+const missions = useQuery(api.dailyMissions.getActiveMissions);
 ```
 
-Use the Convex CLI to push your functions to a deployment. See everything
-the Convex CLI can do by running `npx convex -h` in your project root
-directory. To learn more, launch the docs with `npx convex docs`.
+## Deployment
+
+```bash
+# Deploy functions to Convex
+npx convex deploy
+
+# View deployment status
+npx convex dashboard
+```
+
+## Webhook Integration
+
+Handles Clerk authentication events:
+
+- User creation/deletion/updates
+- Subscription lifecycle events
+- Payment processing webhooks
+
+See `clerk-webhook-events-catalog.md` for event schemas.

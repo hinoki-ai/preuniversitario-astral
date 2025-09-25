@@ -9,7 +9,7 @@ import { Sparkles, Lock, Star, Crown } from 'lucide-react';
 import { resolveAccessState } from '@/lib/subscription';
 
 interface paymentgateprops {
-  children: reactnode;
+  children: ReactNode;
   feature: string;
   description?: string;
   premiumFeatures?: string[];
@@ -22,7 +22,7 @@ export function PaymentGate({
   description,
   premiumFeatures,
   showPreview = false
-}: PaymentGateProps) {
+}: paymentgateprops) {
   const { user, isSignedIn } = useUser();
   const [mounted, setMounted] = useState(false);
 
