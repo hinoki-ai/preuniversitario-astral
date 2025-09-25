@@ -101,7 +101,7 @@ export const Background = ({ src, placeholder }: { src: string; placeholder?: st
     'absolute bg-background left-0 top-0 w-full h-full object-cover rounded-[42px] md:rounded-[72px]';
 
   if (isVideoFile) {
-    return <videowithplaceholder src={src} classname={classNames} placeholder={placeholder} />;
+    return <VideoWithPlaceholder src={src} className={classNames} placeholder={placeholder} />;
   }
 
   return (
