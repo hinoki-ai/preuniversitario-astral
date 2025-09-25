@@ -4,7 +4,7 @@ Preuniversitario Astral deployment configuration for Vercel platform.
 
 ## Environment Variables
 
-*Legend: ✅ Required, ❌ Optional*
+**Legend:** ✅ Required, ❌ Optional
 
 | Category | Variable | Description | Required |
 |----------|----------|-------------|----------|
@@ -27,7 +27,8 @@ Preuniversitario Astral deployment configuration for Vercel platform.
 ## Deployment Steps
 
 1. **Repository**: Connect GitHub repository to Vercel
-2. **Environment**: Add all required (✅) variables from table above. Optional (❌) variables can be omitted if features are not needed.
+2. **Environment**: Add all required (✅) variables from table above. Optional (❌)
+   variables can be omitted if features are not needed.
 3. **Build Settings**:
    - Framework: Next.js
    - Node.js Version: 20.x

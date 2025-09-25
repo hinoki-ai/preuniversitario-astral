@@ -31,13 +31,11 @@ for pre-university students preparing for university entrance exams (PAES).
 
 ## 🔧 Development Setup
 
-
 ### Prerequisites
 
 - Node.js 20.x
 - pnpm package manager
 - Git
-
 
 ### Installation
 
@@ -52,6 +50,7 @@ pnpm install
 # Start development server
 pnpm dev
 ```
+
 
 ### Environment Configuration
 
@@ -114,3 +113,4 @@ Required environment variables (see `VERCEL_DEPLOYMENT_README.md` for details):
 2. Implement error boundaries for new components
 3. Test payment flows thoroughly
 4. Update documentation for architectural changes
+

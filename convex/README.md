@@ -6,14 +6,15 @@ Database functions and real-time subscriptions for Preuniversitario Astral.
 
 | Category | Purpose | Key Functions |
 |----------|---------|----------------|
-| **Authentication** | User management & Clerk webhooks | `auth.config.ts`, webhook handlers |
+| **Authentication** | User management & Clerk webhooks | `auth.config.ts`, `users.ts`, `http.ts` |
 | **Payments** | Subscription & billing processing | `paymentAttempts.ts`, `paymentAttemptTypes.ts` |
-| **Content** | Educational materials & quizzes | `content.ts`, `quizzes.ts`, `mockExams.ts` |
-| **Progress** | Study tracking & spaced repetition | `progress.ts`, `spacedRepetition.ts` |
+| **Content** | Educational materials & quizzes | `content.ts`, `quizzes.ts`, `mockExams.ts`, `lessonAnnotations.ts` |
+| **Progress** | Study tracking & spaced repetition | `progress.ts`, `spacedRepetition.ts`, `userStats.ts` |
 | **Gamification** | Missions, rewards, achievements | `dailyMissions.ts`, `rewardsSystem.ts` |
-| **Social** | Leaderboards & user interactions | `socialFeatures.ts`, `users.ts` |
+| **Social** | Study groups & competitions | `socialFeatures.ts` |
 | **Dashboard** | Analytics & study plans | `dashboard.ts`, `studyPlan.ts` |
 | **Meetings** | Zoom integration & scheduling | `meetings.ts` |
+| **Database** | Schema definitions & seeding | `schema.ts`, `seed.ts` |
 
 ## Core Patterns
 
