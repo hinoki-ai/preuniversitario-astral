@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { VisitorCounter } from '@/components/VisitorCounter';
 
 const navigationSections = [
   {
@@ -59,8 +60,7 @@ const MINEDUC_COLORS = {
 export default function Footer() {
   return (
     <footer
-      className="text-white"
-      style={{ backgroundColor: MINEDUC_COLORS.blue }}
+      className="text-white bg-[#003366]"
     >
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* MINEDUC Navigation Menu */}
@@ -73,8 +73,7 @@ export default function Footer() {
                   <li key={i}>
                     <Link
                       href={item.href}
-                      className="transition-colors duration-200 text-sm hover:text-white"
-                      style={{ color: MINEDUC_COLORS.muted }}
+                      className="transition-colors duration-200 text-sm hover:text-white text-[#C5D0E6]"
                     >
                       {item.title}
                     </Link>
@@ -87,41 +86,37 @@ export default function Footer() {
 
         {/* MINEDUC Branding Bar */}
         <div
-          className="flex items-center justify-between py-6 mb-6"
-          style={{ borderTop: `1px solid ${MINEDUC_COLORS.muted}` }}
+          className="flex items-center justify-between py-6 mb-6 border-t border-[#C5D0E6]"
         >
           <div className="flex items-center gap-4">
             {/* MINEDUC Bars */}
             <div className="flex h-4 w-32">
               <div
-                className="h-full w-1/2"
-                style={{ backgroundColor: MINEDUC_COLORS.white }}
+                className="h-full w-1/2 bg-white"
               ></div>
               <div
-                className="h-full w-1/2"
-                style={{ backgroundColor: MINEDUC_COLORS.red }}
+                className="h-full w-1/2 bg-[#D52B1E]"
               ></div>
             </div>
             <a
               href="https://www.mineduc.cl/"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors duration-200 hover:text-[#F5F7FF]"
-              style={{ color: MINEDUC_COLORS.white }}
+              className="transition-colors duration-200 hover:text-[#F5F7FF] text-white"
             >
               <span className="font-bold text-lg">Ministerio de Educación</span>
             </a>
           </div>
 
-          {/* Social Media Links */}
+          {/* Social Media Links & Visitor Counter */}
           <div className="flex items-center gap-4">
+            <VisitorCounter />
             <a
               href="https://www.facebook.com/mineduc"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              className="transition-colors duration-200 hover:text-white"
-              style={{ color: MINEDUC_COLORS.muted }}
+              className="transition-colors duration-200 hover:text-white text-[#C5D0E6]"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.326 24H12.82v-9.294H9.692v-3.622h3.127V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0" />
@@ -132,8 +127,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="X/Twitter"
-              className="transition-colors duration-200 hover:text-white"
-              style={{ color: MINEDUC_COLORS.muted }}
+              className="transition-colors duration-200 hover:text-white text-[#C5D0E6]"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.53 6.47a.75.75 0 0 0-1.06 0L12 10.94 7.53 6.47a.75.75 0 0 0-1.06 1.06L10.94 12l-4.47 4.47a.75.75 0 0 0 1.06 1.06L12 13.06l4.47 4.47a.75.75 0 0 0 1.06-1.06L13.06 12l4.47-4.47a.75.75 0 0 0 0-1.06z" />

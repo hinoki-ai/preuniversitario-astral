@@ -48,6 +48,26 @@ function updatePackageJson(newVersion) {
   }
 }
 
+function updateVisitorCounter(newVersion) {
+  const counterFile = 'components/VisitorCounter.tsx';
+  try {
+    if (fs.existsSync(counterFile)) {
+      let counterContent = fs.readFileSync(counterFile, 'utf8');
+
+      // Update the version constant
+      counterContent = counterContent.replace(
+        /const VERSION = '[^']*'; \/\/ Auto-updated by version-processor\.js/,
+        `const VERSION = '${newVersion}'; // Auto-updated by version-processor.js`
+      );
+
+      fs.writeFileSync(counterFile, counterContent);
+      console.log(`✅ Updated ${counterFile} with version ${newVersion}`);
+    }
+  } catch (error) {
+    console.error(`❌ Failed to update VisitorCounter:`, error.message);
+  }
+}
+
 function updateVersionLog(newVersion, signalData) {
   try {
     let versionContent = '';
@@ -113,6 +133,7 @@ function processVersionSignal() {
     // Update files
     updatePackageJson(newVersion);
     updateVersionLog(newVersion, signalData);
+    updateVisitorCounter(newVersion);
 
     // Remove the signal file
     fs.unlinkSync(SIGNAL_FILE);
