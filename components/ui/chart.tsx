@@ -18,6 +18,8 @@ export type chartconfig = {
   )
 }
 
+export type ChartConfig = chartconfig
+
 type chartcontextprops = {
   config: chartconfig
 }
