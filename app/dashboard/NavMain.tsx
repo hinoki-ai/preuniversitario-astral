@@ -28,7 +28,8 @@ export function NavMain({
   const router = useRouter();
   const [optimisticPath, setOptimisticPath] = useOptimistic(pathname);
   const [isPending, startTransition] = useTransition();
-  const handlenavigation = (url: string) => {
+
+  const handleNavigation = (url: string) => {
     startTransition(() => {
       setOptimisticPath(url);
       router.push(url);
@@ -41,7 +42,7 @@ export function NavMain({
     icon: item.icon ? <item.icon className="w-5 h-5" /> : <IconCirclePlusFilled className="w-5 h-5" />,
     label: item.title,
     onClick: () => handleNavigation(item.url),
-  }));ConvertitemstoNavItemformatforLimelightNavconstnavItems
+  }));
 
   // Find the active index based on current path
   const activeIndex = items.findIndex(item => 
@@ -77,13 +78,13 @@ export function NavMain({
 
         {/* LimelightNav for main navigation */}
         <div className="px-2">
-          <LimelightNav 
+          <LimelightNav
             items={navItems}
             activeIndex={activeIndex >= 0 ? activeIndex : 0}
             className="w-full bg-card/50 dark:bg-card/30 border-border/50 backdrop-blur-sm"
             limelightClassName="bg-primary shadow-[0_0_20px_var(--primary)] dark:shadow-[0_0_25px_var(--primary)]"
             iconContainerClassName="p-3"
-            onTabChange={(index) => {
+            onTabChange={index => {
               if (items[index]) {
                 handleNavigation(items[index].url);
               }

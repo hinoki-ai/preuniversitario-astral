@@ -9,7 +9,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
 import {
   Select,
   SelectContent,
@@ -24,16 +23,15 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { EnergyOrb } from '@/components/EnergyOrb';
 import { api } from '@/convex/_generated/api';
 import { useErrorHandler } from '@/lib/core/error-system';
-import { PaymentGate } from '@/components/PaymentGate';
-// Demo data imports removed - using real data only
+import { getDemoSubjects, getDemoLessons } from '@/lib/demo-data';
 import { cn } from '@/lib/utils';
 
 type LessonSummary = any; // Using any for now - proper typing needed
 
 type FilterType = 'all' | 'completed' | 'in-progress' | 'not-started' | 'recommended';
 
-interface lessoncardprops {
-  lesson: lessonsummary;
+interface LessonCardProps {
+  lesson: LessonSummary;
   isSelected: boolean;
   onClick: () => void;
   progress?: {
@@ -41,12 +39,11 @@ interface lessoncardprops {
     watchedMinutes: number;
     totalMinutes: number;
   };
-
   isRecommended?: boolean;
 }
 
 function LessonCard({ lesson, isSelected, onClick, progress, isRecommended }: LessonCardProps) {
-  const progressPercentage = progress ? (progress.watchedMinutes / progress.totalMinutes) * 100 : 0;progressPercentageprogressprogress.watchedMinutesprogress.totalMinutes100
+  const progressPercentage = progress ? (progress.watchedMinutes / progress.totalMinutes) * 100 : 0;
 
   return (
     <Card
@@ -158,36 +155,8 @@ export default function BibliotecaPage() {
     );
   }
 
-  // Basic free content - limited lessons
-  const freeBasicLessons = [
-    {
-      _id: 'basic-math-intro',
-      title: 'Introducción a Matemáticas PAES',
-      subject: 'Matemáticas',
-      duration: 15,
-      difficulty: 'Básico',
-      description: 'Conceptos fundamentales para comenzar tu preparación PAES'
-    },
-    {
-      _id: 'basic-spanish-intro', 
-      title: 'Comprensión Lectora Básica',
-      subject: 'Lenguaje',
-      duration: 20,
-      difficulty: 'Básico',
-      description: 'Estrategias básicas de comprensión lectora'
-    },
-    {
-      _id: 'basic-sciences-intro',
-      title: 'Introducción a Ciencias',
-      subject: 'Ciencias',
-      duration: 18,
-      difficulty: 'Básico', 
-      description: 'Conceptos científicos fundamentales para la PAES'
-    }
-  ];
-
-  const subjects = convexSubjects || ['Matemáticas', 'Lenguaje', 'Ciencias'];
-  const allLessons = convexLessons || freeBasicLessons;
+  const subjects = convexSubjects || getDemoSubjects();
+  const allLessons = convexLessons || getDemoLessons();
   const lessons = useMemo<LessonSummary[]>(() => allLessons || [], [allLessons]);
 
   // Mock progress data for demo - in real app this would come from backend
@@ -247,7 +216,7 @@ export default function BibliotecaPage() {
     [lessons]
   );
 
-  const recentActivity: any[] = [];recentActivity // Recent lessons functionality disabled
+  const recentActivity: any[] = []; // TODO: Implement recent lessons functionality
 
   return (
     <div className="px-4 lg:px-6 space-y-6">

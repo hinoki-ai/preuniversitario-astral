@@ -3,21 +3,19 @@
 // Inspired by react-hot-toast library
 import * as React from 'react'
 
-import type { ToastActionElement, ToastProps }
+import type { ToastActionElement, ToastProps } from '@/components/ui/toast'
 
- from '@/components/ui/toast'
+const TOAST_LIMIT = 1
+const TOAST_REMOVE_DELAY = 1000000
 
-const toast_limit = 1
-const toast_remove_delay = 1000000
-
-type toastertoast = toastprops & {
-  id: string;
-  title?: react.reactnode;
-  description?: react.reactnode;
-  action?: toastactionelement
+type ToasterToast = ToastProps & {
+  id: string
+  title?: React.ReactNode
+  description?: React.ReactNode
+  action?: ToastActionElement
 }
 
-const actiontypes = {
+const actionTypes = {
   ADD_TOAST: 'ADD_TOAST',
   UPDATE_TOAST: 'UPDATE_TOAST',
   DISMISS_TOAST: 'DISMISS_TOAST',
@@ -31,36 +29,33 @@ function genId() {
   return count.toString()
 }
 
-type actiontype = typeof actiontypes
+type ActionType = typeof actionTypes
 
-type action =
+type Action =
   | {
-      type: actiontype['ADD_TOAST'];
-      toast: toastertoast
+      type: ActionType['ADD_TOAST']
+      toast: ToasterToast
+    }
+  | {
+      type: ActionType['UPDATE_TOAST']
+      toast: Partial<ToasterToast>
+    }
+  | {
+      type: ActionType['DISMISS_TOAST']
+      toastId?: ToasterToast['id']
+    }
+  | {
+      type: ActionType['REMOVE_TOAST']
+      toastId?: ToasterToast['id']
     }
 
-  | {
-      type: actiontype['UPDATE_TOAST'];
-      toast: partial<toastertoast>
-    }
-
-  | {
-      type: actiontype['DISMISS_TOAST'];
-      toastId?: toastertoast['id']
-    }
-
-  | {
-      type: actiontype['REMOVE_TOAST'];
-      toastId?: toastertoast['id']
-    }
-
-interface state {
-  toasts: toastertoast[]
+interface State {
+  toasts: ToasterToast[]
 }
 
-const toasttimeouts = new map<string, returntype<typeof settimeout>>()
+const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
 
-const addtoremovequeue = (toastId: string) => {
+const addToRemoveQueue = (toastId: string) => {
   if (toastTimeouts.has(toastId)) {
     return
   }
@@ -81,7 +76,7 @@ export const reducer = (state: State, action: Action): State => {
     case 'ADD_TOAST':
       return {
         ...state,
-        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT)
+        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
       }
 
     case 'UPDATE_TOAST':
@@ -89,7 +84,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         toasts: state.toasts.map((t) =>
           t.id === action.toast.id ? { ...t, ...action.toast } : t,
-        )
+        ),
       }
 
     case 'DISMISS_TOAST': {

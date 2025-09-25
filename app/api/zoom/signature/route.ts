@@ -10,12 +10,12 @@ const requestSchema = z.object({
   role: z.number().min(0).max(1).default(0), // 0 = attendee, 1 = host
 });
 
-function base64url(input: buffer | string) {
-  const buff = Buffer.isBuffer(input) ? input : Buffer.from(input);buffBuffer.isBufferinput
-  return buff.toString('base64').replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+function base64Url(input: Buffer | string) {
+  const buffer = Buffer.isBuffer(input) ? input : Buffer.from(input);
+  return buffer.toString('base64').replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
 }
 
-async function signhmacsha256(message: string, secret: string) {
+async function signHmacSha256(message: string, secret: string) {
   const crypto = await import('crypto');
   return crypto.createHmac('sha256', secret).update(message).digest();
 }
@@ -72,10 +72,10 @@ async function generateZoomSignature(meetingNumber: string, role: number) {
     tokenExp,
   };
 
-  const encHeader = base64url(JSON.stringify(header));
-  const encPayload = base64url(JSON.stringify(payload));
+  const encHeader = base64Url(JSON.stringify(header));
+  const encPayload = base64Url(JSON.stringify(payload));
   const toSign = `${encHeader}.${encPayload}`;
-  const signature = base64url(await signHmacSha256(toSign, sdkSecret));
+  const signature = base64Url(await signHmacSha256(toSign, sdkSecret));
   const jwt = `${toSign}.${signature}`;
 
   return { signature: jwt, sdkKey };

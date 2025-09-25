@@ -1,19 +1,21 @@
-import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
-import { Analytics } from '@vercel/analytics/next'
-import { ClerkProvider } from '@clerk/nextjs'
-import ConvexClientProvider from '@/components/ConvexClientProvider'
-import { ThemeProvider } from '@/components/ThemeProvider'
-import { GlobalErrorHandler } from '@/components/GlobalErrorHandler'
-import ErrorBoundary, { PageErrorBoundary } from '@/components/ErrorBoundary'
-import { Toaster } from '@/components/ui/toaster'
-import './globals.css'
+import type { Metadata } from 'next';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
+import { Analytics } from '@vercel/analytics/next';
+import { ClerkProvider } from '@clerk/nextjs';
+
+import ConvexClientProvider from '@/components/ConvexClientProvider';
+import { GlobalErrorHandler } from '@/components/GlobalErrorHandler';
+import { PageErrorBoundary } from '@/components/ErrorBoundary';
+import { ThemeProvider } from '@/components/ThemeProvider';
+import { Toaster } from '@/components/ui/toaster';
+
+import './globals.css';
 
 export const metadata: Metadata = {
   title: {
     default: 'Preuniversitario Astral',
-    template: '%s | Preuniversitario Astral'
+    template: '%s | Preuniversitario Astral',
   },
   description: 'Plataforma educativa premium para preparación preuniversitaria. Cursos especializados, simulacros PAES y herramientas de estudio avanzadas.',
   keywords: ['preuniversitario', 'PAES', 'educación', 'chile', 'universidad', 'preparación', 'cursos'],
@@ -35,20 +37,21 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
     ],
     apple: [
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
     shortcut: '/favicon.ico',
   },
-  manifest: '/site.webmanifest'
-}
+  manifest: '/site.webmanifest',
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <ClerkProvider>
@@ -73,5 +76,5 @@ export default function RootLayout({
         </body>
       </html>
     </ClerkProvider>
-  )
+  );
 }

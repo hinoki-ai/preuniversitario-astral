@@ -2,23 +2,22 @@
 
 import { useUser } from '@clerk/nextjs';
 import { useQuery } from 'convex/react';
-
 import {
+  IconBrandOpenai,
   IconCamera,
   IconChartBar,
-  IconDashboard,
   IconDatabase,
   IconFileWord,
   IconFolder,
   IconHelp,
   IconListDetails,
+  IconRefresh,
   IconReport,
   IconSearch,
   IconSettings,
   IconSparkles,
-  IconBrandOpenai,
-  IconRefresh,
   IconTarget as IconTargetAlt,
+  type Icon,
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import * as React from 'react';
@@ -27,9 +26,8 @@ import { NavDocuments } from '@/app/dashboard/NavDocuments';
 import { NavMain } from '@/app/dashboard/NavMain';
 import { NavSecondary } from '@/app/dashboard/NavSecondary';
 import { NavUser } from '@/app/dashboard/NavUser';
-import { Badge } from '@/components/ui/badge';
 import { ComponentErrorBoundary } from '@/components/ErrorBoundary';
-
+import { Badge } from '@/components/ui/badge';
 import {
   Sidebar,
   SidebarContent,
@@ -39,16 +37,39 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { resolveAccessState } from '@/lib/subscription';
 import { api } from '@/convex/_generated/api';
+import { resolveAccessState } from '@/lib/subscription';
+
+type NavigationItem = {
+  title: string;
+  url: string;
+  icon: Icon;
+};
+
+type NavigationDocument = {
+  name: string;
+  url: string;
+  icon: Icon;
+};
+
+interface NavigationData {
+  navMain: NavigationItem[];
+  navSecondary: NavigationItem[];
+  documents: NavigationDocument[];
+}
 
 // Estudiante Turista (Free user) navigation data - Limited features
-const freeUserData = {
+const freeUserData: NavigationData = {
   navMain: [
     {
       title: 'Dashboard',
       url: '/dashboard',
       icon: IconTargetAlt,
+    },
+    {
+      title: 'Convertirse en Iluminado',
+      url: '/dashboard/payment-gated',
+      icon: IconSparkles,
     },
     {
       title: 'Biblioteca',
@@ -73,20 +94,32 @@ const freeUserData = {
   ],
   navSecondary: [
     {
+      title: 'Configuración',
+      url: '#',
+      icon: IconSettings,
+    },
+    {
+      title: 'Ayuda',
+      url: '#',
+      icon: IconHelp,
+    },
+    {
       title: 'Buscar',
-      documents: [
-        {
-          name: 'Biblioteca Básica',
-          url: '#',
-          icon: IconDatabase,
-        },
-      ],
+      url: '#',
+      icon: IconSearch,
+    },
+  ],
+  documents: [
+    {
+      name: 'Biblioteca Básica',
+      url: '#',
+      icon: IconDatabase,
     },
   ],
 };
 
 // Estudiante Iluminado (Paid user) navigation data - Full features
-const paidUserData = {
+const paidUserData: NavigationData = {
   navMain: [
     {
       title: 'Dashboard',
@@ -96,7 +129,7 @@ const paidUserData = {
     {
       title: 'Asistente IA',
       url: '/dashboard/ai-assistant',
-      icon: IconSparkles,
+      icon: IconBrandOpenai,
     },
     {
       title: 'Media',
@@ -136,14 +169,41 @@ const paidUserData = {
   ],
   navSecondary: [
     {
+      title: 'Configuración',
+      url: '#',
+      icon: IconSettings,
+    },
+    {
+      title: 'Ayuda',
+      url: '#',
+      icon: IconHelp,
+    },
+    {
       title: 'Buscar',
-      documents: [
-        {
-          name: 'Asistente IA',
-          url: '#',
-          icon: IconBrandOpenai,
-        },
-      ],
+      url: '#',
+      icon: IconSearch,
+    },
+  ],
+  documents: [
+    {
+      name: 'Asistente IA',
+      url: '#',
+      icon: IconBrandOpenai,
+    },
+    {
+      name: 'Reportes',
+      url: '#',
+      icon: IconReport,
+    },
+    {
+      name: 'Asistente de Word',
+      url: '#',
+      icon: IconFileWord,
+    },
+    {
+      name: 'Biblioteca de Datos',
+      url: '#',
+      icon: IconDatabase,
     },
   ],
 };
@@ -159,18 +219,20 @@ function AppSidebarInternal({ ...props }: React.ComponentProps<typeof Sidebar>) 
     trialEndsAt: publicMetadata.trialEndsAt,
     memberships: user?.organizationMemberships,
   });
+
   const isFreeUser = !accessState.hasAccess;
   const badgeLabel = accessState.hasAccess
     ? accessState.hasActiveTrial
       ? 'Estudiante Iluminado (Trial)'
       : 'Estudiante Iluminado'
     : 'Estudiante Turista';
-  // Check for live classes
-  const liveClassesCount = meetings?.filter(m => {
-    const now = Math.floor(Date.now() / 1000);
-    return now >= m.startTime && now <= (m.startTime + 3600);
-  }).length || 0;
-  // Use appropriate data based on user plan
+
+  const liveClassesCount =
+    meetings?.filter(meeting => {
+      const now = Math.floor(Date.now() / 1000);
+      return now >= meeting.startTime && now <= meeting.startTime + 3600;
+    }).length || 0;
+
   const data = isFreeUser ? freeUserData : paidUserData;
 
   return (
@@ -199,7 +261,7 @@ function AppSidebarInternal({ ...props }: React.ComponentProps<typeof Sidebar>) 
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="px-2 py-4 flex-1 overflow-hidden">
-        <div className="flex flex-col h-full">
+        <div className="flex h-full flex-col">
           <div className="flex-1 overflow-y-auto">
             <NavMain items={data.navMain} />
             <NavDocuments items={data.documents} />
@@ -223,3 +285,4 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     </ComponentErrorBoundary>
   );
 }
+

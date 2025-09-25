@@ -1,7 +1,7 @@
 import { v } from 'convex/values';
 import { mutation, query } from './_generated/server';
 
-async function getuser(ctx: any) {
+async function getUser(ctx: any) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
     const demoUser = await ctx.db
@@ -136,7 +136,7 @@ export const getUserStats = query({
   },
 });
 
-async function checktodayactivity(ctx: any, userid: string) {
+async function checkTodayActivity(ctx: any, userId: string) {
   const today = new Date().toISOString().split('T')[0];
   const todayStart = Math.floor(new Date(today + 'T00:00:00Z').getTime() / 1000);
   const todayEnd = todayStart + 86400;

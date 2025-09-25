@@ -11,7 +11,7 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui
 export function NavUser() {
   const { openUserProfile } = useClerk();
   const { theme } = useTheme();
-  const { user: clerkuser } = useUser();
+  const { user: clerkUser } = useUser();
 
   return (
     <SidebarMenu>

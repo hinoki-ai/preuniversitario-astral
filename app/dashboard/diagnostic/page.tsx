@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useMutation, useQuery } from 'convex/react';
+import { useMutation } from 'convex/react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +14,7 @@ import { api } from '@/convex/_generated/api';
 import { useErrorHandler } from '@/lib/core/error-system';
 import { Target, BookOpen, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
 
-interface diagnosticquestion {
+interface DiagnosticQuestion {
   id: string;
   subject: string;
   question: string;
@@ -95,27 +95,25 @@ export default function DiagnosticPage() {
   const currentQuestion = diagnosticQuestions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / diagnosticQuestions.length) * 100;
 
-  const handleanswer = (questionId: string, answerIndex: number) => {
+  const handleAnswer = (questionId: string, answerIndex: number) => {
     setAnswers(prev => ({ ...prev, [questionId]: answerIndex }));
   };
 
-  const handlenext = () => {
+  const handleNext = () => {
     if (currentQuestionIndex < diagnosticQuestions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
-    }
-
- else {
+    } else {
       handleSubmit();
     }
   };
 
-  const handleprevious = () => {
+  const handlePrevious = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(prev => prev - 1);
     }
   };
 
-  const handlesubmit = async () => {
+  const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
       // Calculate results
@@ -124,7 +122,7 @@ export default function DiagnosticPage() {
         subject: q.subject,
         correct: answers[q.id] === q.correctIndex,
         difficulty: q.difficulty,
-        timeSpent: 30 // Mock time spent
+        timeSpent: 30, // Mock time spent
       }));
 
       const subjectScores = results.reduce((acc, result) => {
@@ -142,15 +140,13 @@ export default function DiagnosticPage() {
         results,
         subjectScores,
         overallScore,
-        completedAt: Date.now()
+        completedAt: Date.now(),
       });
 
       setShowResults(true);
     } catch (error) {
       handleError(error as Error, 'DiagnosticPage.submit');
-    }
-
- finally {
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -295,7 +291,7 @@ export default function DiagnosticPage() {
         <CardContent>
           <RadioGroup
             value={answers[currentQuestion.id]?.toString()}
-            onValueChange={(value) => handleAnswer(currentQuestion.id, parseInt(value))}
+            onValueChange={value => handleAnswer(currentQuestion.id, Number.parseInt(value, 10))}
             className="space-y-3"
           >
             {currentQuestion.options.map((option, index) => (

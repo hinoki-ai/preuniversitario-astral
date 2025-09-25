@@ -1,29 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
-interface mediaabout {
+interface MediaAbout {
   overview: string;
   features: string[];
   conclusion: string;
 }
 
-interface mediacontent {
+interface MediaEntry {
   src: string;
   poster?: string;
   background: string;
   title: string;
   date: string;
   scrollToExpand: string;
-  about: mediaabout;
+  about: MediaAbout;
 }
 
-interface mediacontentcollection {
-  [key: string]: mediacontent;
-}
+type MediaContentCollection = Record<string, MediaEntry>;
 
 const mediaGallery: MediaContentCollection = {
   clases: {
@@ -133,7 +132,7 @@ const mediaGallery: MediaContentCollection = {
   },
 };
 
-const MediaContent = ({ media }: { media: MediaContent }) => {
+const MediaContentSection = ({ media }: { media: MediaEntry }) => {
   return (
     <div className='max-w-5xl mx-auto space-y-12'>
       <div className='text-center space-y-4'>
@@ -186,7 +185,7 @@ export default function MediaPage() {
     const resetEvent = new Event('resetSection');
     window.dispatchEvent(resetEvent);
   }, [selectedMedia]);
-  const handlemediaselect = (key: string) => {
+  const handleMediaSelect = (key: string) => {
     setSelectedMedia(key);
     setShowSelector(false);
     setTimeout(() => setShowSelector(true), 100);
@@ -200,7 +199,7 @@ export default function MediaPage() {
           <CardHeader className='pb-3'>
             <CardTitle className='text-lg'>Explorar Contenido</CardTitle>
             <div className='grid grid-cols-2 md:grid-cols-3 gap-2 mt-3'>
-              {Object.keys(mediaGallery).map((key) => (
+              {Object.keys(mediaGallery).map(key => (
                 <Button
                   key={key}
                   size='sm'
@@ -228,7 +227,7 @@ export default function MediaPage() {
           scrollToExpand={currentMedia.scrollToExpand}
           textBlend={false}
         >
-          <MediaContent media={currentMedia} />
+          <MediaContentSection media={currentMedia} />
         </ScrollExpandMedia>
       )}
     </div>

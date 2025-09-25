@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnergyOrb True Replica</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+
+        .demo-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .orb-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .orb-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .orb-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid;
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+        }
+
+        .orb-canvas {
+            border-radius: 50%;
+        }
+
+        /* Variant Styles - Exact match to your component */
+        .default {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.5) 0%, rgba(15, 23, 42, 0.7) 50%, rgba(20, 184, 166, 0.5) 100%);
+            border-color: rgba(103, 232, 249, 0.6);
+            box-shadow: 0 25px 50px -12px rgba(103, 232, 249, 0.3);
+        }
+
+        .intense {
+            background: linear-gradient(135deg, rgba(225, 29, 72, 0.6) 0%, rgba(15, 23, 42, 0.8) 50%, rgba(219, 39, 119, 0.6) 100%);
+            border-color: rgba(251, 113, 133, 0.7);
+            box-shadow: 0 25px 50px -12px rgba(251, 113, 133, 0.4);
+        }
+
+        .subtle {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.4) 0%, rgba(15, 23, 42, 0.6) 50%, rgba(79, 70, 229, 0.4) 100%);
+            border-color: rgba(196, 181, 253, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(196, 181, 253, 0.25);
+        }
+
+        .amber {
+            background: linear-gradient(135deg, rgba(234, 88, 12, 0.55) 0%, rgba(15, 23, 42, 0.75) 50%, rgba(245, 158, 11, 0.55) 100%);
+            border-color: rgba(251, 146, 60, 0.65);
+            box-shadow: 0 25px 50px -12px rgba(251, 146, 60, 0.35);
+        }
+
+        .crystal {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.45) 0%, rgba(15, 23, 42, 0.65) 50%, rgba(14, 165, 233, 0.45) 100%);
+            border-color: rgba(125, 211, 252, 0.6);
+            box-shadow: 0 25px 50px -12px rgba(125, 211, 252, 0.3);
+        }
+
+        /* Glow Effects - Exact match */
+        .glow-outer {
+            position: absolute;
+            top: -16px;
+            left: -16px;
+            right: -16px;
+            bottom: -16px;
+            border-radius: 50%;
+            filter: blur(32px);
+            opacity: 0.3;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .glow-medium {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            border-radius: 50%;
+            filter: blur(16px);
+            opacity: 0.5;
+        }
+
+        .glow-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            filter: blur(4px);
+            opacity: 0.7;
+        }
+
+        .glow-core {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0.4;
+        }
+
+        .energy-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            border: 2px solid;
+            opacity: 0.2;
+            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        /* Color variants for glow - Exact match */
+        .default .glow-outer { background: linear-gradient(45deg, rgba(103, 232, 249, 0.5), rgba(34, 211, 238, 0.35), rgba(6, 142, 178, 0.5)); }
+        .default .glow-medium { background: linear-gradient(45deg, rgba(103, 232, 249, 0.5), rgba(34, 211, 238, 0.35), rgba(6, 142, 178, 0.5)); }
+        .default .glow-inner { background: linear-gradient(45deg, rgba(103, 232, 249, 0.5), rgba(34, 211, 238, 0.35), rgba(6, 142, 178, 0.5)); }
+        .default .glow-core { background: linear-gradient(45deg, rgba(103, 232, 249, 0.5), rgba(34, 211, 238, 0.35), rgba(6, 142, 178, 0.5)); }
+        .default .energy-ring { border-color: rgba(103, 232, 249, 0.6); }
+
+        .intense .glow-outer { background: linear-gradient(45deg, rgba(251, 113, 133, 0.6), rgba(244, 114, 182, 0.45), rgba(232, 121, 249, 0.6)); }
+        .intense .glow-medium { background: linear-gradient(45deg, rgba(251, 113, 133, 0.6), rgba(244, 114, 182, 0.45), rgba(232, 121, 249, 0.6)); }
+        .intense .glow-inner { background: linear-gradient(45deg, rgba(251, 113, 133, 0.6), rgba(244, 114, 182, 0.45), rgba(232, 121, 249, 0.6)); }
+        .intense .glow-core { background: linear-gradient(45deg, rgba(251, 113, 133, 0.6), rgba(244, 114, 182, 0.45), rgba(232, 121, 249, 0.6)); }
+        .intense .energy-ring { border-color: rgba(251, 113, 133, 0.7); }
+
+        .subtle .glow-outer { background: linear-gradient(45deg, rgba(196, 181, 253, 0.4), rgba(167, 139, 250, 0.25), rgba(208, 180, 254, 0.4)); }
+        .subtle .glow-medium { background: linear-gradient(45deg, rgba(196, 181, 253, 0.4), rgba(167, 139, 250, 0.25), rgba(208, 180, 254, 0.4)); }
+        .subtle .glow-inner { background: linear-gradient(45deg, rgba(196, 181, 253, 0.4), rgba(167, 139, 250, 0.25), rgba(208, 180, 254, 0.4)); }
+        .subtle .glow-core { background: linear-gradient(45deg, rgba(196, 181, 253, 0.4), rgba(167, 139, 250, 0.25), rgba(208, 180, 254, 0.4)); }
+        .subtle .energy-ring { border-color: rgba(196, 181, 253, 0.5); }
+
+        .amber .glow-outer { background: linear-gradient(45deg, rgba(251, 146, 60, 0.55), rgba(251, 191, 36, 0.4), rgba(245, 158, 11, 0.55)); }
+        .amber .glow-medium { background: linear-gradient(45deg, rgba(251, 146, 60, 0.55), rgba(251, 191, 36, 0.4), rgba(245, 158, 11, 0.55)); }
+        .amber .glow-inner { background: linear-gradient(45deg, rgba(251, 146, 60, 0.55), rgba(251, 191, 36, 0.4), rgba(245, 158, 11, 0.55)); }
+        .amber .glow-core { background: linear-gradient(45deg, rgba(251, 146, 60, 0.55), rgba(251, 191, 36, 0.4), rgba(245, 158, 11, 0.55)); }
+        .amber .energy-ring { border-color: rgba(251, 146, 60, 0.65); }
+
+        .crystal .glow-outer { background: linear-gradient(45deg, rgba(125, 211, 252, 0.5), rgba(56, 189, 248, 0.35), rgba(34, 211, 238, 0.5)); }
+        .crystal .glow-medium { background: linear-gradient(45deg, rgba(125, 211, 252, 0.5), rgba(56, 189, 248, 0.35), rgba(34, 211, 238, 0.5)); }
+        .crystal .glow-inner { background: linear-gradient(45deg, rgba(125, 211, 252, 0.5), rgba(56, 189, 248, 0.35), rgba(34, 211, 238, 0.5)); }
+        .crystal .glow-core { background: linear-gradient(45deg, rgba(125, 211, 252, 0.5), rgba(56, 189, 248, 0.35), rgba(34, 211, 238, 0.5)); }
+        .crystal .energy-ring { border-color: rgba(125, 211, 252, 0.6); }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .size-sm { width: 32px; height: 32px; }
+        .size-md { width: 40px; height: 40px; }
+        .size-lg { width: 48px; height: 48px; }
+        .size-xl { width: 64px; height: 64px; }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(45deg, #67e8f9, #a78bfa, #fb7185);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .description {
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">EnergyOrb True Replica</h1>
+    <p class="description">
+        Exact replica of your Three.js EnergyOrb component with proper particle system, 
+        custom textures, and all the visual effects from your original implementation.
+    </p>
+    
+    <div class="demo-container">
+        <div class="orb-section">
+            <div class="orb-label">Default (Cyan/Teal)</div>
+            <div class="orb-container default size-md" id="orb-default">
+                <div class="glow-outer"></div>
+                <div class="glow-medium"></div>
+                <div class="glow-inner"></div>
+                <div class="glow-core"></div>
+                <div class="energy-ring"></div>
+                <canvas class="orb-canvas" width="40" height="40"></canvas>
+            </div>
+        </div>
+
+        <div class="orb-section">
+            <div class="orb-label">Intense (Rose/Pink)</div>
+            <div class="orb-container intense size-md" id="orb-intense">
+                <div class="glow-outer"></div>
+                <div class="glow-medium"></div>
+                <div class="glow-inner"></div>
+                <div class="glow-core"></div>
+                <div class="energy-ring"></div>
+                <canvas class="orb-canvas" width="40" height="40"></canvas>
+            </div>
+        </div>
+
+        <div class="orb-section">
+            <div class="orb-label">Subtle (Violet/Indigo)</div>
+            <div class="orb-container subtle size-md" id="orb-subtle">
+                <div class="glow-outer"></div>
+                <div class="glow-medium"></div>
+                <div class="glow-inner"></div>
+                <div class="glow-core"></div>
+                <div class="energy-ring"></div>
+                <canvas class="orb-canvas" width="40" height="40"></canvas>
+            </div>
+        </div>
+
+        <div class="orb-section">
+            <div class="orb-label">Amber (Orange/Yellow)</div>
+            <div class="orb-container amber size-md" id="orb-amber">
+                <div class="glow-outer"></div>
+                <div class="glow-medium"></div>
+                <div class="glow-inner"></div>
+                <div class="glow-core"></div>
+                <div class="energy-ring"></div>
+                <canvas class="orb-canvas" width="40" height="40"></canvas>
+            </div>
+        </div>
+
+        <div class="orb-section">
+            <div class="orb-label">Crystal (Sky/Blue)</div>
+            <div class="orb-container crystal size-md" id="orb-crystal">
+                <div class="glow-outer"></div>
+                <div class="glow-medium"></div>
+                <div class="glow-inner"></div>
+                <div class="glow-core"></div>
+                <div class="energy-ring"></div>
+                <canvas class="orb-canvas" width="40" height="40"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // True replica of your EnergyOrb component
+        class EnergyOrbReplica {
+            constructor(containerId, variant = 'default', size = 40, intensity = 1.0) {
+                this.container = document.getElementById(containerId);
+                this.canvas = this.container.querySelector('.orb-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.variant = variant;
+                this.size = size;
+                this.intensity = intensity;
+                this.particles = [];
+                this.time = 0;
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.particleSystem = null;
+                this.animationId = null;
+                
+                this.colorPalettes = {
+                    default: [
+                        new THREE.Color(0x67e8f9), // Cyan 300
+                        new THREE.Color(0x22d3ee), // Cyan 400
+                        new THREE.Color(0x0891b2), // Cyan 600
+                        new THREE.Color(0x5eead4), // Teal 300
+                        new THREE.Color(0x2dd4bf), // Teal 400
+                        new THREE.Color(0x0d9488), // Teal 600
+                        new THREE.Color(0x6ee7b7), // Emerald 300
+                        new THREE.Color(0x34d399), // Emerald 400
+                    ],
+                    intense: [
+                        new THREE.Color(0xfda4af), // Rose 300
+                        new THREE.Color(0xfb7185), // Rose 400
+                        new THREE.Color(0xe11d48), // Rose 600
+                        new THREE.Color(0xf9a8d4), // Pink 300
+                        new THREE.Color(0xf472b6), // Pink 400
+                        new THREE.Color(0xdb2777), // Pink 600
+                        new THREE.Color(0xe879f9), // Fuchsia 400
+                        new THREE.Color(0xc026d3), // Fuchsia 600
+                    ],
+                    subtle: [
+                        new THREE.Color(0xc4b5fd), // Violet 300
+                        new THREE.Color(0xa78bfa), // Violet 400
+                        new THREE.Color(0x7c3aed), // Violet 600
+                        new THREE.Color(0xa5b4fc), // Indigo 300
+                        new THREE.Color(0x818cf8), // Indigo 400
+                        new THREE.Color(0x4f46e5), // Indigo 600
+                        new THREE.Color(0xd8b4fe), // Purple 300
+                        new THREE.Color(0xc084fc), // Purple 400
+                    ],
+                    amber: [
+                        new THREE.Color(0xfdba74), // Orange 300
+                        new THREE.Color(0xfb923c), // Orange 400
+                        new THREE.Color(0xea580c), // Orange 600
+                        new THREE.Color(0xfcd34d), // Yellow 300
+                        new THREE.Color(0xfbbf24), // Yellow 400
+                        new THREE.Color(0xd97706), // Yellow 600
+                        new THREE.Color(0xfbbf24), // Amber 400
+                        new THREE.Color(0xf59e0b), // Amber 500
+                    ],
+                    crystal: [
+                        new THREE.Color(0x7dd3fc), // Sky 300
+                        new THREE.Color(0x38bdf8), // Sky 400
+                        new THREE.Color(0x0284c7), // Sky 600
+                        new THREE.Color(0x93c5fd), // Blue 300
+                        new THREE.Color(0x60a5fa), // Blue 400
+                        new THREE.Color(0x2563eb), // Blue 600
+                        new THREE.Color(0x67e8f9), // Cyan 300
+                        new THREE.Color(0x22d3ee), // Cyan 400
+                    ]
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                // Scene setup - exact match to your component
+                this.scene = new THREE.Scene();
+                this.camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+                this.renderer = new THREE.WebGLRenderer({ 
+                    canvas: this.canvas, 
+                    alpha: true, 
+                    antialias: true 
+                });
+
+                this.renderer.setSize(this.size, this.size);
+                this.renderer.setClearColor(0x000000, 0);
+
+                const particleCount = this.variant === "intense" ? 120 : this.variant === "subtle" ? 40 : 80;
+                const positions = new Float32Array(particleCount * 3);
+                const colors = new Float32Array(particleCount * 3);
+                const sizes = new Float32Array(particleCount);
+                const velocities = new Float32Array(particleCount * 3);
+
+                const colorPalette = this.colorPalettes[this.variant];
+
+                // Initialize particles - exact match to your logic
+                for (let i = 0; i < particleCount; i++) {
+                    const layer = Math.floor(i / (particleCount / 3));
+                    const baseRadius = 0.8 + layer * 0.4;
+                    const radius = baseRadius + Math.random() * 0.6;
+                    const theta = Math.random() * Math.PI * 2;
+                    const phi = Math.acos(Math.random() * 2 - 1);
+
+                    positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+                    positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                    positions[i * 3 + 2] = radius * Math.cos(phi);
+
+                    const velocityMultiplier = (layer + 1) * 0.01 * this.intensity;
+                    velocities[i * 3] = (Math.random() - 0.5) * velocityMultiplier;
+                    velocities[i * 3 + 1] = (Math.random() - 0.5) * velocityMultiplier;
+                    velocities[i * 3 + 2] = (Math.random() - 0.5) * velocityMultiplier;
+
+                    const color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+                    colors[i * 3] = color.r;
+                    colors[i * 3 + 1] = color.g;
+                    colors[i * 3 + 2] = color.b;
+
+                    const baseSizeMultiplier = this.variant === "intense" ? 1.5 : this.variant === "subtle" ? 0.8 : 1.0;
+                    sizes[i] = (Math.random() * 4 + 2) * baseSizeMultiplier;
+                }
+
+                // Create particle geometry - exact match
+                const geometry = new THREE.BufferGeometry();
+                geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+                geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+                geometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
+
+                // Create custom texture - exact replica of your texture generation
+                const texture = this.createCustomTexture();
+
+                // Enhanced material properties - exact match
+                const material = new THREE.PointsMaterial({
+                    map: texture,
+                    vertexColors: true,
+                    blending: THREE.AdditiveBlending,
+                    transparent: true,
+                    opacity: this.variant === "intense" ? 0.95 : 
+                             this.variant === "subtle" ? 0.65 : 
+                             this.variant === "crystal" ? 0.88 : 0.82,
+                    size: this.variant === "intense" ? 16 : 
+                          this.variant === "subtle" ? 8 : 
+                          this.variant === "crystal" ? 14 : 12,
+                    sizeAttenuation: true,
+                    depthWrite: false,
+                    alphaTest: 0.001,
+                });
+
+                this.particleSystem = new THREE.Points(geometry, material);
+                this.scene.add(this.particleSystem);
+
+                this.camera.position.z = 4;
+
+                // Store references for animation
+                this.positions = positions;
+                this.velocities = velocities;
+                this.sizes = sizes;
+                this.geometry = geometry;
+
+                this.animate();
+            }
+
+            createCustomTexture() {
+                // Exact replica of your texture generation
+                const canvas = document.createElement("canvas");
+                canvas.width = 256;
+                canvas.height = 256;
+                const ctx = canvas.getContext("2d");
+                const center = 128;
+
+                // Clear the canvas with transparency
+                ctx.clearRect(0, 0, 256, 256);
+
+                // Create the main energy core (bright center)
+                const coreGradient = ctx.createRadialGradient(center, center, 0, center, center, 40);
+                coreGradient.addColorStop(0, "rgba(255,255,255,1.0)");
+                coreGradient.addColorStop(0.3, "rgba(255,255,255,0.9)");
+                coreGradient.addColorStop(0.6, "rgba(255,255,255,0.6)");
+                coreGradient.addColorStop(1, "rgba(255,255,255,0)");
+                
+                ctx.fillStyle = coreGradient;
+                ctx.fillRect(0, 0, 256, 256);
+
+                // Create the outer smoke/energy layer with contrast
+                const smokeGradient = ctx.createRadialGradient(center, center, 30, center, center, 120);
+                smokeGradient.addColorStop(0, "rgba(255,255,255,0.0)");
+                smokeGradient.addColorStop(0.1, "rgba(200,200,200,0.4)");
+                smokeGradient.addColorStop(0.4, "rgba(160,160,160,0.3)");
+                smokeGradient.addColorStop(0.7, "rgba(120,120,120,0.2)");
+                smokeGradient.addColorStop(0.85, "rgba(80,80,80,0.15)");
+                smokeGradient.addColorStop(0.95, "rgba(40,40,40,0.1)");
+                smokeGradient.addColorStop(1, "rgba(0,0,0,0)");
+
+                ctx.globalCompositeOperation = "multiply";
+                ctx.fillStyle = smokeGradient;
+                ctx.fillRect(0, 0, 256, 256);
+                ctx.globalCompositeOperation = "source-over";
+
+                // Add thin bright edge for extra contrast and glow
+                const edgeGradient = ctx.createRadialGradient(center, center, 100, center, center, 128);
+                edgeGradient.addColorStop(0, "rgba(255,255,255,0)");
+                edgeGradient.addColorStop(0.8, "rgba(255,255,255,0)");
+                edgeGradient.addColorStop(0.9, "rgba(255,255,255,0.3)");
+                edgeGradient.addColorStop(0.95, "rgba(255,255,255,0.2)");
+                edgeGradient.addColorStop(1, "rgba(255,255,255,0)");
+
+                ctx.globalCompositeOperation = "screen";
+                ctx.fillStyle = edgeGradient;
+                ctx.fillRect(0, 0, 256, 256);
+                ctx.globalCompositeOperation = "source-over";
+
+                // Add noise and turbulence for organic energy feel
+                const imageData = ctx.getImageData(0, 0, 256, 256);
+                const data = imageData.data;
+                for (let i = 0; i < data.length; i += 4) {
+                    const x = (i / 4) % 256;
+                    const y = Math.floor(i / 4 / 256);
+                    const centerDist = Math.sqrt((x - center) ** 2 + (y - center) ** 2) / center;
+                    
+                    const noise = (Math.sin(x * 0.02) * Math.cos(y * 0.02) + 
+                                   Math.sin(x * 0.05) * Math.cos(y * 0.05) * 0.5 +
+                                   Math.sin(x * 0.1) * Math.cos(y * 0.1) * 0.25) * 0.15;
+                    
+                    const alpha = data[i + 3];
+                    if (alpha > 0) {
+                        const noiseEffect = noise * (1 - centerDist) * 255;
+                        data[i + 3] = Math.max(0, Math.min(255, alpha + noiseEffect));
+                    }
+                }
+                ctx.putImageData(imageData, 0, 0);
+
+                const texture = new THREE.CanvasTexture(canvas);
+                texture.generateMipmaps = false;
+                texture.minFilter = THREE.LinearFilter;
+                texture.magFilter = THREE.LinearFilter;
+
+                return texture;
+            }
+            
+            animate() {
+                this.time = (this.time + 0.012 * this.intensity) % (Math.PI * 6);
+
+                // More sophisticated rotation with varying speeds per axis
+                this.particleSystem.rotation.y = (this.particleSystem.rotation.y + 0.01 * this.intensity) % (Math.PI * 2);
+                this.particleSystem.rotation.x = (this.particleSystem.rotation.x + 0.004 * this.intensity) % (Math.PI * 2);
+                this.particleSystem.rotation.z = (this.particleSystem.rotation.z + 0.002 * this.intensity) % (Math.PI * 2);
+
+                const particleCount = this.positions.length / 3;
+
+                for (let i = 0; i < particleCount; i++) {
+                    const layer = Math.floor(i / (particleCount / 3));
+                    const layerIntensity = (layer + 1) * 0.3;
+
+                    // Base velocity movement
+                    this.positions[i * 3] += this.velocities[i * 3] * this.intensity;
+                    this.positions[i * 3 + 1] += this.velocities[i * 3 + 1] * this.intensity;
+                    this.positions[i * 3 + 2] += this.velocities[i * 3 + 2] * this.intensity;
+
+                    const phase = i * 0.08;
+                    const particleTime = this.time + phase;
+
+                    // Multiple frequency layers for complex movement
+                    const freq1 = particleTime + layer * 0.5;
+                    const freq2 = particleTime * 1.8 + phase * 0.7;
+                    const freq3 = particleTime * 0.6 + phase * 0.4;
+                    const freq4 = particleTime * 2.3 + phase * 1.1;
+
+                    // Enhanced oscillation with layered frequencies
+                    const oscillationX = Math.sin(freq1) * 0.01 + Math.sin(freq4) * 0.004;
+                    const oscillationY = Math.cos(freq2) * 0.01 + Math.cos(freq4 * 0.7) * 0.004;
+                    const oscillationZ = Math.sin(freq3) * 0.008 + Math.sin(freq4 * 1.3) * 0.003;
+
+                    this.positions[i * 3] += oscillationX * layerIntensity * this.intensity;
+                    this.positions[i * 3 + 1] += oscillationY * layerIntensity * this.intensity;
+                    this.positions[i * 3 + 2] += oscillationZ * layerIntensity * this.intensity;
+
+                    // Pulsing effect for particles sizes
+                    const pulsePhase = this.time * 2.5 + i * 0.1;
+                    const pulseFactor = 1.0 + Math.sin(pulsePhase) * 0.3;
+                    const baseSizeMultiplier = this.variant === "intense" ? 1.5 : this.variant === "subtle" ? 0.8 : 1.0;
+                    const originalSize = (Math.random() * 4 + 2) * baseSizeMultiplier;
+                    this.sizes[i] = originalSize * pulseFactor;
+
+                    // Spiral motion for outer particles
+                    if (layer === 2) {
+                        const spiralTime = this.time * 0.8 + i * 0.15;
+                        const radius = Math.sqrt(this.positions[i * 3] ** 2 + this.positions[i * 3 + 1] ** 2);
+                        const spiralForce = 0.002 * this.intensity;
+                        
+                        this.positions[i * 3] += Math.cos(spiralTime) * spiralForce;
+                        this.positions[i * 3 + 1] += Math.sin(spiralTime) * spiralForce;
+                    }
+
+                    // Improved boundary handling with elastic collision
+                    const maxDistance = 2.8;
+                    const damping = 0.85;
+
+                    if (Math.abs(this.positions[i * 3]) > maxDistance) {
+                        this.velocities[i * 3] *= -damping;
+                        this.positions[i * 3] = Math.sign(this.positions[i * 3]) * maxDistance;
+                    }
+                    if (Math.abs(this.positions[i * 3 + 1]) > maxDistance) {
+                        this.velocities[i * 3 + 1] *= -damping;
+                        this.positions[i * 3 + 1] = Math.sign(this.positions[i * 3 + 1]) * maxDistance;
+                    }
+                    if (Math.abs(this.positions[i * 3 + 2]) > maxDistance) {
+                        this.velocities[i * 3 + 2] *= -damping;
+                        this.positions[i * 3 + 2] = Math.sign(this.positions[i * 3 + 2]) * maxDistance;
+                    }
+                }
+
+                this.geometry.attributes.position.needsUpdate = true;
+                this.geometry.attributes.size.needsUpdate = true;
+
+                this.renderer.render(this.scene, this.camera);
+                this.animationId = requestAnimationFrame(() => this.animate());
+            }
+
+            destroy() {
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+                if (this.renderer) {
+                    this.renderer.dispose();
+                }
+                if (this.geometry) {
+                    this.geometry.dispose();
+                }
+            }
+        }
+        
+        // Initialize all orbs
+        let orbs = [];
+        document.addEventListener('DOMContentLoaded', () => {
+            orbs.push(new EnergyOrbReplica('orb-default', 'default', 40, 1.0));
+            orbs.push(new EnergyOrbReplica('orb-intense', 'intense', 40, 1.0));
+            orbs.push(new EnergyOrbReplica('orb-subtle', 'subtle', 40, 1.0));
+            orbs.push(new EnergyOrbReplica('orb-amber', 'amber', 40, 1.0));
+            orbs.push(new EnergyOrbReplica('orb-crystal', 'crystal', 40, 1.0));
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            orbs.forEach(orb => orb.destroy());
+        });
+    </script>
+</body>
+</html>

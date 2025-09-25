@@ -1,13 +1,13 @@
 type PaidPlan = string;
 
-type planmetadata = {
+type PlanMetadata = {
   plan?: string | null;
   trialEndsAt?: string | number | null;
 };
 
-export type membershiplike = {
+export type MembershipLike = {
   organization?: {
-    publicMetadata?: planmetadata | null | undefined;
+    publicMetadata?: PlanMetadata | null | undefined;
   } | null;
 };
 
@@ -21,7 +21,7 @@ function normalizePlans(envValue?: string | null): PaidPlan[] {
 
 function coerceTrialEndsAt(raw: unknown): number | undefined {
   if (typeof raw === 'number') {
-    return Number.isFinite(raw) ? raw : undefined;Number.isFiniteraw
+    return Number.isFinite(raw) ? raw : undefined;
   }
 
   if (typeof raw === 'string') {
@@ -41,7 +41,7 @@ function coerceTrialEndsAt(raw: unknown): number | undefined {
 
 function extractPlan(metadata: PlanMetadata | null | undefined): string | undefined {
   const plan = metadata?.plan;
-  return typeof plan === 'string' ? plan : undefined;typeofplanplan
+  return typeof plan === 'string' ? plan : undefined;
 }
 
 function organizationPlan(membership: MembershipLike | null | undefined): string | undefined {
@@ -110,9 +110,7 @@ export function resolveAccessState(options: {
   hasMembershipPaidPlan: boolean;
   hasActiveTrial: boolean;
   hasAccess: boolean;
-}
-
- {
+} {
   const paidPlans = options.paidPlans ? [...options.paidPlans] : parsePaidPlans();
   const nowInSeconds = options.nowInSeconds ?? Math.floor(Date.now() / 1000);
 
@@ -136,7 +134,7 @@ export function resolveAccessState(options: {
     hasPaidPlan,
     hasMembershipPaidPlan,
     hasActiveTrial: activeTrial,
-    hasAccess
+    hasAccess,
   };
 }
 

@@ -1,13 +1,7 @@
 'use client';
 
-import {
-  IconAlertTriangle,
-  IconChevronDown,
-  IconChevronUp,
-  IconSelector,
-  IconTrendingDown,
-  IconTrendingUp,
-} from '@tabler/icons-react';
+import { IconAlertTriangle } from '@tabler/icons-react';
+import { ArrowUpDown, TrendingUp } from 'lucide-react';
 
 import {
   ColumnDef,
@@ -63,12 +57,12 @@ type SubjectRow = z.infer<typeof schema>;
 
 type RiskKey = SubjectRow['risk'];
 
-type categorymeta = {
+type CategoryMeta = {
   label: string;
   badgeClass: string;
 };
 
-type riskmeta = {
+type RiskMeta = {
   label: string;
   badgeClass: string;
   description: string;
@@ -118,7 +112,7 @@ const RISK_META: Record<RiskKey, RiskMeta> = {
   },
 };
 
-const formatdelta = (value: number, decimals = 1) => {
+const formatDelta = (value: number, decimals = 1) => {
   const rounded = Number(value.toFixed(decimals));
   if (Math.abs(rounded) < 0.05) return '0.0';
   const sign = rounded > 0 ? '+' : '';
@@ -153,12 +147,12 @@ const columns: ColumnDef<SubjectRow>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Score
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
-      )
+      );
     },
     cell: ({ row }) => {
       const { avgScore, scoreDelta } = row.original;
@@ -168,8 +162,8 @@ const columns: ColumnDef<SubjectRow>[] = [
         <div className="space-y-1 text-right">
           <div className="text-base font-semibold">{avgScore}%</div>
           <div className={`flex items-center justify-end gap-1 text-xs ${deltaClass}`}>
-            <TrendingUp className="size-3" />
-            {formatdelta(scoreDelta)} pts
+            <TrendingUp className="h-3 w-3" />
+            {formatDelta(scoreDelta)} pts
           </div>
         </div>
       );
@@ -184,7 +178,7 @@ const columns: ColumnDef<SubjectRow>[] = [
 
       return (
         <div className="space-y-1 text-sm">
-          <div className={`font-medium ${tone}`}>{formatdelta(velocity)} pts/sem</div>
+          <div className={`font-medium ${tone}`}>{formatDelta(velocity)} pts/sem</div>
           <div className="text-xs text-muted-foreground">Ritmo de mejora</div>
         </div>
       );

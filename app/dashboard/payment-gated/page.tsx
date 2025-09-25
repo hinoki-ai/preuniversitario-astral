@@ -58,5 +58,5 @@ export default function PaymentGatedPage() {
   }, [user]);
 
   if (!isSignedIn) return null;
-  return hasAccess ? <FeaturesCard /> : <upgradecard />;hasAccess<FeaturesCard
+  return hasAccess ? <FeaturesCard /> : <UpgradeCard />;
 }
