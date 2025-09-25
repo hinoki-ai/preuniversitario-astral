@@ -1,6 +1,6 @@
 {
   "name": "preuniversitario-astral",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,8 @@
     "deploy": "vercel --prod",
     "version:patch": "node version-signal.js patch",
     "version:minor": "node version-signal.js minor",
-    "version:major": "node version-signal.js major"
+    "version:major": "node version-signal.js major",
+    "version:process": "node version-processor.js"
   },
   "dependencies": {
     "@clerk/backend": "2.15.0",

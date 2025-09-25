@@ -3,7 +3,7 @@
 This file is automatically managed by the gg script. Do not edit manually.
 
 ## Current Version
-**v0.1.0** - Initial release
+**v0.1.1** - Initial release
 
 ## Version History
 
@@ -13,6 +13,9 @@ This file is automatically managed by the gg script. Do not edit manually.
 - Added Zoom integration for virtual classes
 - Basic payment gating system
 - Error handling and logging system
+
+### v0.1.1 (2025-09-25)
+- Testing version increment system
 
 ---
 

@@ -1,6 +1,6 @@
 {
-  "type": "patch",
-  "message": "Testing version increment system",
-  "timestamp": "2025-09-25T23:27:15.862Z",
-  "currentVersion": "0.1.0"
+  "type": "minor",
+  "message": "Added automatic version tracking system with git hooks",
+  "timestamp": "2025-09-25T23:28:02.275Z",
+  "currentVersion": "0.1.1"
 }
