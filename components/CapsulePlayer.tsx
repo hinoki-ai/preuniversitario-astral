@@ -162,7 +162,7 @@ function MultimediaViewer({
         {activeTab === 'video' && hasVideo && (
           <div className="space-y-4">
             <YouTubePlayer
-              videoId={getYouTubeVideoId(lesson.videoUrl) || ''}
+              videoId={getyoutubevideoid(lesson.videoUrl) || ''}
               playbackRate={playbackRate}
               onTimeUpdate={(time) => setCurrentTime(time)}
               onDurationChange={(dur) => setDuration(dur)}
