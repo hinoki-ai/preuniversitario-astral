@@ -203,8 +203,8 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
   }, [filteredData]);
   const activeChartView = React.useMemo(() => CHART_VIEWS[view], [view]);
   const tooltipFormatter = React.useCallback(
-    (value: string | number | (string | number)[] | undefined, name: string | undefined, info: { dataKey?: string } | undefined) => {
-      if (typeof value !== 'number' || typeof name !== 'string') return null;
+    (value: string | number | (string | number)[] | undefined, name: string | number | undefined, info: { dataKey?: string } | undefined) => {
+      if (typeof value !== 'number' || (typeof name !== 'string' && typeof name !== 'number')) return null;
 
       const key = (info?.dataKey ?? name) as keyof ChartViewConfig['config'];
       const configItem = activeChartView.config[key];
