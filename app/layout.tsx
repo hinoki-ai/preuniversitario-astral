@@ -4,12 +4,43 @@ import { GeistMono } from 'geist/font/mono'
 import { Analytics } from '@vercel/analytics/next'
 import { ClerkProvider } from '@clerk/nextjs'
 import ConvexClientProvider from '@/components/ConvexClientProvider'
+import { ThemeProvider } from '@/components/ThemeProvider'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
+  title: {
+    default: 'Preuniversitario Astral',
+    template: '%s | Preuniversitario Astral'
+  },
+  description: 'Plataforma educativa premium para preparación preuniversitaria. Cursos especializados, simulacros PAES y herramientas de estudio avanzadas.',
+  keywords: ['preuniversitario', 'PAES', 'educación', 'chile', 'universidad', 'preparación', 'cursos'],
+  authors: [{ name: 'Preuniversitario Astral' }],
+  creator: 'Preuniversitario Astral',
+  publisher: 'Preuniversitario Astral',
+  openGraph: {
+    type: 'website',
+    locale: 'es_CL',
+    url: 'https://preuniversitario-astral.vercel.app',
+    title: 'Preuniversitario Astral',
+    description: 'Plataforma educativa premium para preparación preuniversitaria',
+    siteName: 'Preuniversitario Astral',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Preuniversitario Astral',
+    description: 'Plataforma educativa premium para preparación preuniversitaria',
+  },
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+  },
+  manifest: '/site.webmanifest',
 }
 
 export default function RootLayout({
@@ -19,11 +50,18 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-          <ConvexClientProvider>
-            {children}
-          </ConvexClientProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem={false}
+            disableTransitionOnChange
+          >
+            <ConvexClientProvider>
+              {children}
+            </ConvexClientProvider>
+          </ThemeProvider>
           <Analytics />
         </body>
       </html>
