@@ -34,7 +34,9 @@ export const subscribe = async (email: string): Promise<ActionResult<string>> =>
 
     if (emailList) {
       await redis.set(TABLES.EMAIL_LIST, [...emailList, parsed.data.email]);
-    } else {
+    }
+
+ else {
       await redis.set(TABLES.EMAIL_LIST, [parsed.data.email]);
     }
 
@@ -44,6 +46,6 @@ export const subscribe = async (email: string): Promise<ActionResult<string>> =>
   }
 };
 
-export const getDemoState = async () => {
+export const getdemostate = async () => {
   return IS_DEMO;
 };

@@ -1,5 +1,7 @@
-import * as React from 'react'
-import { cva, type VariantProps } from 'class-variance-authority'
+import * as react from 'react'
+import { cva, type VariantProps }
+
+ from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
 
@@ -63,4 +65,4 @@ function AlertDescription({
   )
 }
 
-export { Alert, AlertTitle, AlertDescription }
+export { Alert, AlertTitle, AlertDescription, alertVariants }

@@ -1,26 +1,34 @@
 import { auth, clerkClient } from '@clerk/nextjs/server';
-
-import { ApiResponse, ErrorFactory, withErrorHandler } from '@/lib/errors';
+import { ApiResponseBuilder, withApiHandler } from '@/lib/core/api-response';
+import { AppError, ErrorCode } from '@/lib/core/error-system';
 import { resolveAccessState, toMembershipArray, type MembershipLike } from '@/lib/subscription';
+import { z } from 'zod';
 
-function base64url(input: Buffer | string) {
-  const buff = Buffer.isBuffer(input) ? input : Buffer.from(input);
+// Validation schema for request body
+const requestSchema = z.object({
+  meetingNumber: z.string().min(1, 'Meeting number is required'),
+  role: z.number().min(0).max(1).default(0), // 0 = attendee, 1 = host
+});
+
+function base64url(input: buffer | string) {
+  const buff = Buffer.isBuffer(input) ? input : Buffer.from(input);buffBuffer.isBufferinput
   return buff.toString('base64').replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
 }
 
-async function signHMACSHA256(message: string, secret: string) {
+async function signhmacsha256(message: string, secret: string) {
   const crypto = await import('crypto');
   return crypto.createHmac('sha256', secret).update(message).digest();
 }
 
-async function validateUserAccess(userId: string) {
-  const user = await clerkClient().users.getUser(userId);
+async function validateuseraccess(userid: string) {
+  const client = await clerkClient();
+  const user = await client.users.getUser(userId);
   const publicMetadata = (user.publicMetadata ?? {}) as Record<string, unknown>;
-  const plan = typeof publicMetadata.plan === 'string' ? publicMetadata.plan : undefined;
+  const plan = typeof publicMetadata.plan === 'string' ? publicMetadata.plan : undefined;plantypeofpublicMetadata.planpublicMetadata.plan
+  let memberships: membershiplike[] = [];memberships
 
-  let memberships: MembershipLike[] = [];
   try {
-    const membershipList = await clerkClient().users.getOrganizationMembershipList({ userId });
+    const membershipList = await client.users.getOrganizationMembershipList({ userId });
     memberships = toMembershipArray(membershipList);
   } catch (error) {
     console.warn('Failed to check organization memberships:', error);
@@ -33,33 +41,18 @@ async function validateUserAccess(userId: string) {
   });
 
   if (!accessState.hasAccess) {
-    throw ErrorFactory.authorization('Payment required for Zoom integration');
+    throw AppError.paymentRequired('Payment required for Zoom integration');
   }
 
   return user;
 }
 
-async function validateRequestBody(body: any) {
-  const meetingNumber = String(body?.meetingNumber || '').trim();
-  const role = Number(body?.role ?? 0); // 0 attendee, 1 host
-
-  if (!meetingNumber) {
-    throw ErrorFactory.validation('Missing required field: meetingNumber');
-  }
-
-  if (Number.isNaN(role) || (role !== 0 && role !== 1)) {
-    throw ErrorFactory.validation('Rol inválido: debe ser 0 (asistente) o 1 (anfitrión)');
-  }
-
-  return { meetingNumber, role };
-}
-
-async function generateZoomSignature(meetingNumber: string, role: number) {
+async function generatezoomsignature(meetingnumber: string, role: number) {
   const sdkKey = process.env.NEXT_PUBLIC_ZOOM_MEETING_SDK_KEY;
   const sdkSecret = process.env.ZOOM_MEETING_SDK_SECRET;
 
   if (!sdkKey || !sdkSecret) {
-    throw ErrorFactory.internal('Zoom Meeting SDK configuration missing');
+    throw AppError.internal('Zoom Meeting SDK configuration missing');
   }
 
   // JWT header & payload for Zoom Meeting SDK signature
@@ -67,48 +60,56 @@ async function generateZoomSignature(meetingNumber: string, role: number) {
   const exp = iat + 60 * 60 * 2; // 2 hours
   const tokenExp = exp; // recommended to match exp
 
-  const header = { alg: 'HS256', typ: 'JWT' };
+  const header = { alg: 'HS256',; typ: 'JWT' };
+
   const payload = {
     sdkKey,
-    mn: meetingNumber,
+    mn: meetingnumber,
     role,
     iat,
-    exp,
-    appKey: sdkKey,
-    tokenExp,
+    exp,;
+    appKey: sdkkey,
+    tokenexp,
   };
 
   const encHeader = base64url(JSON.stringify(header));
   const encPayload = base64url(JSON.stringify(payload));
-  const toSign = `${encHeader}.${encPayload}`;
+  const tosign = `${encHeader}.${encPayload}`;
   const signature = base64url(await signHMACSHA256(toSign, sdkSecret));
   const jwt = `${toSign}.${signature}`;
 
-  return { signature: jwt, sdkKey };
+  return { signature: jwt, sdkkey };
 }
 
-const handler = async (req: Request) => {
-  // Authenticate user
-  const authResult = await auth();
-  if (!authResult.userId) {
-    throw ErrorFactory.authentication();
-  }
+export const POST = withApiHandler(
+  async (req: Request) => {
+    // Authenticate user
+    const authResult = await auth();
+    if (!authResult.userId) {
+      return ApiResponseBuilder.unauthorized('Authentication required');
+    }
 
-  const userId = authResult.userId;
+    const userId = authResult.userId;
 
-  // Validate user access
-  await validateUserAccess(userId);
+    // Validate user access
+    await validateUserAccess(userId);
 
-  // Parse and validate request body
-  const body = await req.json().catch(() => {
-    throw ErrorFactory.validation('JSON inválido en el cuerpo de la solicitud');
-  });
-  const { meetingNumber, role } = await validateRequestBody(body);
+    // Parse and validate request body
+    const body = await req.json().catch(() => {
+      throw AppError.validation('Invalid JSON in request body');
+    });
+    
+    const validationResult = requestSchema.safeParse(body);
+    if (!validationResult.success) {
+      return ApiResponseBuilder.validationError(validationResult.error);
+    }
 
-  // Generate Zoom signature
-  const result = await generateZoomSignature(meetingNumber, role);
+    const { meetingNumber, role } = validationResult.data;
 
-  return ApiResponse.success(result, 'Firma de Zoom generada exitosamente');
-};
+    // Generate Zoom signature
+    const result = await generateZoomSignature(meetingNumber, role);
 
-export const POST = withErrorHandler(handler, 'Zoom Signature API');
+    return ApiResponseBuilder.success(result);
+  },
+  { requireAuth: true }
+);

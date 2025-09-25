@@ -2,19 +2,19 @@
 
 import { createContext, useContext, ReactNode } from 'react';
 
-type V0ContextType = {
+type v0contexttype = {
   isV0: boolean;
 };
 
 const V0Context = createContext<V0ContextType | undefined>(undefined);
 
-type V0ProviderProps = {
-  children: ReactNode;
+type v0providerprops = {
+  children: reactnode;
   isV0: boolean;
 };
 
 export const V0Provider = ({ children, isV0 }: V0ProviderProps) => {
-  return <V0Context.Provider value={{ isV0 }}>{children}</V0Context.Provider>;
+  return <v0context.Provider value={{ isV0 }}>{children}</V0Context.Provider>;
 };
 
 export const useIsV0 = (): boolean => {

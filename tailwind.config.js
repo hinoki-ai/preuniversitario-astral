@@ -14,6 +14,9 @@ module.exports = {
       backgroundImage: {
         'gradient-primary':
           'linear-gradient(90deg,rgba(255,255,255, 0.1) 0%,rgba(255,255,255, 0.4) 100%),rgba(85,85,85,0.1)',
+        'gradient-warm': 'linear-gradient(135deg, oklch(0.65 0.18 80), oklch(0.55 0.15 75), oklch(0.45 0.12 70))',
+        'gradient-golden': 'linear-gradient(135deg, oklch(0.65 0.18 80), oklch(0.7 0.16 85))',
+        'gradient-bronze': 'linear-gradient(135deg, oklch(0.5 0.18 55), oklch(0.6 0.15 60))',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -35,6 +38,10 @@ module.exports = {
           'inset 0 0 1px 1px rgba(255, 255, 255, 0.05), inset 0 0 2px 1px rgba(255, 255, 255, 0.2), inset -1px -1px 1px 0px rgba(0, 0, 0, 0.0), 0 0 10px 0 rgba(255, 255, 255, 0.1)',
         'button-hover':
           'inset 0 0 5px 1px rgba(255, 255, 255, 0.2), inset 0.5px 0.5px 1px 0.5px rgba(255, 255, 255, 0.5), inset -0.5px -0.5px 0.5px 0.5px rgba(0, 0, 0, 0.2), 0 0 12px 4px rgba(255, 255, 255, 0.5)',
+        premium: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+        'premium-golden': '0 4px 15px -3px rgba(184, 134, 63, 0.15), 0 2px 8px -2px rgba(184, 134, 63, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+        'premium-hover': '0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+        glass: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -81,9 +88,16 @@ module.exports = {
           4: 'hsl(var(--chart-4))',
           5: 'hsl(var(--chart-5))',
         },
-        'deep-blue': 'rgb(var(--deep-blue) / <alpha-value>)',
-        'sage': 'rgb(var(--sage) / <alpha-value>)',
+        'deep-brown': 'rgb(var(--deep-brown) / <alpha-value>)',
+        'warm-sage': 'rgb(var(--warm-sage) / <alpha-value>)',
         'cream': 'rgb(var(--cream) / <alpha-value>)',
+        'golden': 'rgb(var(--golden) / <alpha-value>)',
+        'bronze': 'rgb(var(--bronze) / <alpha-value>)',
+        'amber': 'rgb(var(--amber) / <alpha-value>)',
+        
+        /* Legacy support for existing components */
+        'deep-blue': 'rgb(var(--deep-brown) / <alpha-value>)',
+        'sage': 'rgb(var(--warm-sage) / <alpha-value>)',
       },
     },
   },

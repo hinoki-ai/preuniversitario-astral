@@ -1,9 +1,11 @@
 'use client';
 
-import { IconBrightness, type Icon } from '@tabler/icons-react';
+import { IconBrightness, IconSettings, type Icon } from '@tabler/icons-react';
 import * as React from 'react';
 
 import { ModeToggle } from '@/components/ModeToggle';
+import { SettingsModal } from '@/components/SettingsModal';
+
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -28,12 +30,23 @@ export function NavSecondary({
         <SidebarMenu>
           {items.map(item => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
-                <a href={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </a>
-              </SidebarMenuButton>
+              {item.title === 'Configuración' ? (
+                <SettingsModal
+                  trigger={
+                    <SidebarMenuButton>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </SidebarMenuButton>
+                  }
+                />
+              ) : (
+                <SidebarMenuButton asChild>
+                  <a href={item.url}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </a>
+                </SidebarMenuButton>
+              )}
             </SidebarMenuItem>
           ))}
           <SidebarMenuItem>

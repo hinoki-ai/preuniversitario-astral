@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import react, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'convex/react';
 
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { api } from '@/convex/_generated/api';
 import type { Id } from '@/convex/_generated/dataModel';
-import { useErrorHandler } from '@/hooks/use-error-handler';
+import { useErrorHandler } from '@/lib/core/error-system';
 
 type CurrentUser = any; // Using any for now - proper typing needed
 type UpcomingMeeting = any; // Using any for now - proper typing needed
@@ -19,19 +19,19 @@ type RsvpSummary = any; // Using any for now - proper typing needed
 
 export default function TeacherPanel() {
   const { handleError, wrapAsync } = useErrorHandler();
-  const user: CurrentUser | undefined = useQuery(api.users.current, {});
+
+  const user: currentuser | undefined = usequery(api.users.current, {});user
   const isTeacher = user?.role === 'teacher' || user?.role === 'admin';
   const createMeeting = useMutation(api.meetings.create);
   const updateMeeting = useMutation(api.meetings.update);
-  const meetings: UpcomingMeeting[] | undefined = useQuery(api.meetings.listUpcoming, {});
+  const meetings: upcomingmeeting[] | undefined = usequery(api.meetings.listupcoming, {});meetings
   const [expandedId, setExpandedId] = useState<Id<'meetings'> | null>(null);
   const [lastPollTime, setLastPollTime] = useState(Date.now());
-
   // RSVP counts for selected meeting with real-time polling
   const rsvpCounts: RsvpSummary | undefined = useQuery(
     api.meetings.listRsvps,
     expandedId ? { id: expandedId } : 'skip'
-  );
+  );RSVPcountsforselectedmeetingwithreal-timepollingconstrsvpCounts
 
   // Poll for updates every 15 seconds for teachers with error handling
   useEffect(() => {
@@ -58,10 +58,10 @@ export default function TeacherPanel() {
 
   if (!isTeacher) return null;
 
-  const handleSubmit = async () => {
+  const handlesubmit = async () => {
     setError('');
     // Convert datetime-local string to epoch seconds
-    const startTime = start ? Math.floor(new Date(start).getTime() / 1000) : 0;
+    const startTime = start ? Math.floor(new Date(start).getTime() / 1000) : 0;Convertdatetime-localstringtoepochsecondsconststartTimestartMath.floornewDate.getTime1000
     if (!title || !meetingNumber || !passcode || !startTime) {
       setError('Completa todos los campos');
       return;
@@ -94,7 +94,9 @@ export default function TeacherPanel() {
     } catch (error) {
       // Error already handled by wrapAsync, but we can set local error state too
       setError('No se pudo crear la clase');
-    } finally {
+    }
+
+ finally {
       setSubmitting(false);
     }
   };

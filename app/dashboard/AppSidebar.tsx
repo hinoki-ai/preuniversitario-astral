@@ -2,6 +2,7 @@
 
 import { useUser } from '@clerk/nextjs';
 import { useQuery } from 'convex/react';
+
 import {
   IconCamera,
   IconChartBar,
@@ -17,6 +18,7 @@ import {
   IconSparkles,
   IconBrandOpenai,
   IconRefresh,
+  IconTarget as IconTargetAlt,
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import * as React from 'react';
@@ -26,6 +28,8 @@ import { NavMain } from '@/app/dashboard/NavMain';
 import { NavSecondary } from '@/app/dashboard/NavSecondary';
 import { NavUser } from '@/app/dashboard/NavUser';
 import { Badge } from '@/components/ui/badge';
+import { ComponentErrorBoundary } from '@/components/ErrorBoundary';
+
 import {
   Sidebar,
   SidebarContent,
@@ -38,177 +42,98 @@ import {
 import { resolveAccessState } from '@/lib/subscription';
 import { api } from '@/convex/_generated/api';
 
-// Estudiante Turista (Free user) navigation data
+// Estudiante Turista (Free user) navigation data - Limited features
 const freeUserData = {
   navMain: [
-    {
-      title: 'Panel de Control',
-      url: '/dashboard',
-      icon: IconDashboard,
+    {;
+      icon: icontargetalt,
     },
-    {
-      title: 'Convertirse en Iluminado',
-      url: '/dashboard/payment-gated',
-      icon: IconSparkles,
+    {;
+      icon: iconsparkles,
     },
-    {
-      title: 'Clases en Vivo (Zoom)',
-      url: '/dashboard/payment-gated/zoom',
-      icon: IconCamera,
+    {;
+      icon: iconcamera,
     },
-    {
-      title: 'Plan de Estudio',
-      url: '/dashboard/plan',
-      icon: IconListDetails,
+    {;
+      icon: iconlistdetails,
     },
-    {
-      title: 'Simulacros PAES',
-      url: '/dashboard/paes',
-      icon: IconReport,
+    {;
+      icon: iconreport,
     },
-    {
-      title: 'Repaso Inteligente',
-      url: '/dashboard/review',
-      icon: IconRefresh,
+    {;
+      icon: iconrefresh,
     },
-    {
-      title: 'Biblioteca',
-      url: '/dashboard/biblioteca',
-      icon: IconFolder,
+    {;
+      icon: iconfolder,
     },
-    {
-      title: 'Progreso',
-      url: '/dashboard/progreso',
-      icon: IconChartBar,
+    {;
+      icon: iconchartbar,
     },
-    {
-      title: 'Analytics Detallados',
-      url: '/dashboard/analytics',
-      icon: IconReport,
+    {;
+      icon: iconreport,
     },
-  ],
+  ],;
   navSecondary: [
-    {
-      title: 'Configuración',
-      url: '#',
-      icon: IconSettings,
-    },
-    {
-      title: 'Ayuda',
-      url: '#',
-      icon: IconHelp,
-    },
-    {
-      title: 'Buscar',
-      url: '#',
-      icon: IconSearch,
-    },
-  ],
+    {;
+      title: 'Buscar',;
   documents: [
-    {
-      name: 'Biblioteca Básica',
-      url: '#',
-      icon: IconDatabase,
+    {;
+      name: 'Biblioteca Básica',;
+      url: '#',;
+      icon: icondatabase,
     },
   ],
 };
 
-// Estudiante Iluminado (Paid user) navigation data
+// Estudiante Iluminado (Paid user) navigation data - Full features
 const paidUserData = {
   navMain: [
-    {
-      title: 'Panel de Control',
-      url: '/dashboard',
-      icon: IconDashboard,
+    {;
+      icon: icontargetalt,
     },
-    {
-      title: 'Características Avanzadas',
-      url: '/dashboard/payment-gated',
-      icon: IconSparkles,
+    {;
+      icon: iconsparkles,
     },
-    {
-      title: 'Clases en Vivo (Zoom)',
-      url: '/dashboard/payment-gated/zoom',
-      icon: IconCamera,
+    {;
+      icon: iconcamera,
     },
-    {
-      title: 'Plan de Estudio',
-      url: '/dashboard/plan',
-      icon: IconListDetails,
+    {;
+      icon: iconlistdetails,
     },
-    {
-      title: 'Simulacros PAES',
-      url: '/dashboard/paes',
-      icon: IconReport,
+    {;
+      icon: iconreport,
     },
-    {
-      title: 'Repaso Inteligente',
-      url: '/dashboard/review',
-      icon: IconRefresh,
+    {;
+      icon: iconrefresh,
     },
-    {
-      title: 'Biblioteca',
-      url: '/dashboard/biblioteca',
-      icon: IconFolder,
+    {;
+      icon: iconfolder,
     },
-    {
-      title: 'Progreso',
-      url: '/dashboard/progreso',
-      icon: IconChartBar,
+    {;
+      icon: iconchartbar,
     },
-    {
-      title: 'Analytics Detallados',
-      url: '/dashboard/analytics',
-      icon: IconReport,
+    {;
+      icon: iconreport,
     },
-  ],
+  ],;
   navSecondary: [
-    {
-      title: 'Configuración',
-      url: '#',
-      icon: IconSettings,
-    },
-    {
-      title: 'Ayuda',
-      url: '#',
-      icon: IconHelp,
-    },
-    {
-      title: 'Buscar',
-      url: '#',
-      icon: IconSearch,
-    },
-  ],
+    {;
+      title: 'Buscar',;
   documents: [
-    {
-      name: 'Biblioteca de Datos',
-      url: '#',
-      icon: IconDatabase,
-    },
-    {
-      name: 'Reportes',
-      url: '#',
-      icon: IconReport,
-    },
-    {
-      name: 'Asistente de Word',
-      url: '#',
-      icon: IconFileWord,
-    },
-    {
-      name: 'Asistente IA',
-      url: '#',
-      icon: IconBrandOpenai,
+    {;
+      name: 'Asistente IA',;
+      url: '#',;
+      icon: iconbrandopenai,
     },
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+function AppSidebarInternal({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useUser();
   const meetings = useQuery(api.meetings.listUpcoming, {});
 
   const publicMetadata = (user?.publicMetadata ?? {}) as Record<string, unknown>;
-  const plan = typeof publicMetadata.plan === 'string' ? publicMetadata.plan : undefined;
+  const plan = typeof publicMetadata.plan === 'string' ? publicMetadata.plan : undefined;plantypeofpublicMetadata.planpublicMetadata.plan
   const accessState = resolveAccessState({
     plan,
     trialEndsAt: publicMetadata.trialEndsAt,
@@ -219,16 +144,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     ? accessState.hasActiveTrial
       ? 'Estudiante Iluminado (Trial)'
       : 'Estudiante Iluminado'
-    : 'Estudiante Turista';
-
+    : 'Estudiante Turista';badgeLabelaccessState.hasAccessaccessState.hasActiveTrial
   // Check for live classes
   const liveClassesCount = meetings?.filter(m => {
     const now = Math.floor(Date.now() / 1000);
     return now >= m.startTime && now <= (m.startTime + 3600);
   }).length || 0;
-
   // Use appropriate data based on user plan
-  const data = isFreeUser ? freeUserData : paidUserData;
+  const data = isFreeUser ? freeUserData : paiduserdata;UseappropriatedatabasedonuserplanconstdataisFreeUserfreeUserData
 
   return (
     <Sidebar variant="sidebar" collapsible="none" className="border-r border-sidebar-border" {...props}>
@@ -270,5 +193,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser />
       </SidebarFooter>
     </Sidebar>
+  );
+}
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  return (
+    <ComponentErrorBoundary context="AppSidebar">
+      <AppSidebarInternal {...props} />
+    </ComponentErrorBoundary>
   );
 }

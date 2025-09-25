@@ -7,12 +7,12 @@ import BasicSchedule from '@/components/zoom/BasicSchedule';
 import TeacherPanel from '@/components/zoom/TeacherPanel';
 import ZoomJoinClient from '@/components/zoom/ZoomJoinClient';
 
-type Selected = {
+type selected = {
   meetingNumber?: string;
   passcode?: string;
 };
 
-export default function ZoomDashboard() {
+function ZoomDashboardInternal() {
   const [selected, setSelected] = useState<Selected | null>(null);
   return (
     <div className="space-y-6">
@@ -39,5 +39,13 @@ export default function ZoomDashboard() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ZoomDashboard() {
+  return (
+    <ComponentErrorBoundary context="ZoomDashboard">
+      <ZoomDashboardInternal />
+    </ComponentErrorBoundary>
   );
 }

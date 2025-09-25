@@ -7,6 +7,7 @@ import {
 } from '@tabler/icons-react';
 
 import { Badge } from '@/components/ui/badge';
+
 import {
   Card,
   CardAction,
@@ -41,6 +42,7 @@ export function SectionCards() {
 
   const upcomingExam = dashboardData?.upcomingExam;
   const dueDate = upcomingExam ? new Date(upcomingExam.date) : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+
   const now = Date.now();
   const daysUntilDue = upcomingExam?.daysUntil ?? Math.max(
     0,
@@ -70,7 +72,7 @@ export function SectionCards() {
           </CardTitle>
           <CardAction>
             <Badge variant="outline" className="gap-1">
-              <IconFlame className="size-3 text-amber-500" />
+              <IconFlame className="size-3 text-amber" />
               +2 vs. semana pasada
             </Badge>
           </CardAction>
@@ -84,7 +86,7 @@ export function SectionCards() {
         </CardContent>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="flex items-center gap-2 font-medium">
-            <IconTrendingUp className="size-4 text-emerald-500" />
+            <IconTrendingUp className="size-4 text-golden" />
             Mantén sesiones cortas hoy
           </div>
           <div className="text-muted-foreground">
@@ -130,7 +132,7 @@ export function SectionCards() {
           </CardTitle>
           <CardAction>
             <Badge variant="outline" className="gap-1">
-              <IconSparkles className="size-3 text-indigo-500" />
+              <IconSparkles className="size-3 text-bronze" />
               +{averageGradeDelta.toFixed(1)} pts
             </Badge>
           </CardAction>
@@ -154,7 +156,7 @@ export function SectionCards() {
         </CardContent>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="flex items-center gap-2 font-medium">
-            <IconTrendingUp className="size-4 text-emerald-500" />
+            <IconTrendingUp className="size-4 text-golden" />
             Refuerza química esta semana
           </div>
           <div className="text-muted-foreground">

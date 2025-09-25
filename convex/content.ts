@@ -133,3 +133,136 @@ export const markLessonViewed = mutation({
     });
   },
 });
+
+// Get complete course structure with modules and lessons
+export const getCoursesWithModules = query({
+  args: { track: v.optional(v.string()) },
+  handler: async (ctx, { track }) => {
+    // Get courses filtered by track if provided
+    const courses = await ctx.db
+      .query('courses')
+      .filter(q => track ? q.eq(q.field('track'), track) : true)
+      .collect();
+
+    // For each course, get its modules
+    const coursesWithModules = await Promise.all(
+      courses.map(async (course) => {
+        const modules = await ctx.db
+          .query('modules')
+          .withIndex('byCourse', q => q.eq('courseId', course._id))
+          .collect();
+
+        // For each module, get its lessons
+        const modulesWithLessons = await Promise.all(
+          modules
+            .sort((a, b) => a.order - b.order)
+            .map(async (module) => {
+              const lessons = await ctx.db
+                .query('lessons')
+                .withIndex('byModule', q => q.eq('moduleId', module._id))
+                .collect();
+
+              return {
+                ...module,
+                lessons: lessons
+                  .sort((a, b) => a.order - b.order)
+                  .map(lesson => ({
+                    _id: lesson._id,
+                    title: lesson.title,
+                    order: lesson.order,
+                    videoUrl: lesson.videoUrl,
+                    pdfUrl: lesson.pdfUrl,
+                    subject: lesson.subject,
+                    transcript: lesson.transcript,
+                    attachments: lesson.attachments,
+                  }))
+              };
+            })
+        );
+
+        return {
+          ...course,
+          modules: modulesWithLessons
+        };
+      })
+    );
+
+    return coursesWithModules;
+  },
+});
+
+// Get course by ID with full structure
+export const getCourseStructure = query({
+  args: { courseId: v.id('courses') },
+  handler: async (ctx, { courseId }) => {
+    const course = await ctx.db.get(courseId);
+    if (!course) return null;
+
+    // Get modules for this course
+    const modules = await ctx.db
+      .query('modules')
+      .withIndex('byCourse', q => q.eq('courseId', courseId))
+      .collect();
+
+    // Get lessons for each module
+    const modulesWithLessons = await Promise.all(
+      modules
+        .sort((a, b) => a.order - b.order)
+        .map(async (module) => {
+          const lessons = await ctx.db
+            .query('lessons')
+            .withIndex('byModule', q => q.eq('moduleId', module._id))
+            .collect();
+
+          // Get quiz count for each lesson
+          const lessonsWithQuizzes = await Promise.all(
+            lessons
+              .sort((a, b) => a.order - b.order)
+              .map(async (lesson) => {
+                const quizCount = await ctx.db
+                  .query('quizzes')
+                  .withIndex('byLesson', q => q.eq('lessonId', lesson._id))
+                  .collect()
+                  .then(quizzes => quizzes.length);
+
+                return {
+                  ...lesson,
+                  quizCount
+                };
+              })
+          );
+
+          return {
+            ...module,
+            lessons: lessonsWithQuizzes
+          };
+        })
+    );
+
+    return {
+      ...course,
+      modules: modulesWithLessons
+    };
+  },
+});
+
+// Get courses by track
+export const getCoursesByTrack = query({
+  args: { track: v.string() },
+  handler: async (ctx, { track }) => {
+    return await ctx.db
+      .query('courses')
+      .withIndex('byTrack', q => q.eq('track', track))
+      .collect();
+  },
+});
+
+// Get all available tracks
+export const getAvailableTracks = query({
+  args: {},
+  handler: async ctx => {
+    const courses = await ctx.db.query('courses').collect();
+    const tracks = [...new Set(courses.map(c => c.track))];
+    return tracks.sort();
+  },
+});

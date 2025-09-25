@@ -6,8 +6,35 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { RefreshCw, BookOpen, Clock } from 'lucide-react';
+import { PaymentGate } from '@/components/PaymentGate';
 
 export default function ReviewPage() {
+  return (
+    <div className="px-4 lg:px-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Repaso Inteligente</h1>
+      </div>
+      
+      <PaymentGate 
+        feature="Repaso Inteligente"
+        description="Sistema de repetición espaciada que optimiza tu retención de conocimientos"
+        premiumFeatures={[
+          "Algoritmo adaptativo de repetición espaciada",
+          "Identificación automática de temas débiles",
+          "Programación inteligente de repasos",
+          "Seguimiento de curva de olvido personal",
+          "Notificaciones de repaso optimizadas",
+          "Análisis de efectividad del repaso"
+        ]}
+        showPreview={false}
+      >
+        <ReviewContent />
+      </PaymentGate>
+    </div>
+  );
+}
+
+function ReviewContent() {
   const reviewItems = useQuery(api.spacedRepetition.getReviewItems);
 
   if (!reviewItems) {
@@ -16,25 +43,19 @@ export default function ReviewPage() {
 
   if (reviewItems.length === 0) {
     return (
-      <div className="px-4 lg:px-6 space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Repaso Inteligente</h1>
-        </div>
-        <Card className="p-6 text-center">
-          <BookOpen className="h-12 w-12 text-green-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">¡Excelente trabajo!</h3>
-          <p className="text-muted-foreground">
-            No tienes elementos para repasar ahora. Continúa tomando práctica PAES para mantener tu progreso.
-          </p>
-        </Card>
-      </div>
+      <Card className="p-6 text-center">
+        <BookOpen className="h-12 w-12 text-green-500 mx-auto mb-4" />
+        <h3 className="text-lg font-semibold mb-2">¡Excelente trabajo!</h3>
+        <p className="text-muted-foreground">
+          No tienes elementos para repasar ahora. Continúa tomando práctica PAES para mantener tu progreso.
+        </p>
+      </Card>
     );
   }
 
   return (
-    <div className="px-4 lg:px-6 space-y-6">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Repaso Inteligente</h1>
         <Badge variant="outline" className="text-blue-600">
           {reviewItems.length} elementos listos
         </Badge>

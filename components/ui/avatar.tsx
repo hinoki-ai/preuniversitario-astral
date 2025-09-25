@@ -1,8 +1,10 @@
 "use client"
 
-import type * as React from "react"
-import * as AvatarPrimitive from "@radix-ui/react-avatar"
-import { EnergyOrb } from "@/components/EnergyOrb"
+import type * as react from "react"
+import * as avatarprimitive from "@radix-ui/react-avatar"
+import { EnergyOrb }
+
+ from "@/components/EnergyOrb"
 
 import { cn } from "@/lib/utils"
 
@@ -16,7 +18,7 @@ function Avatar({
   size?: "sm" | "md" | "lg" | "xl"
 }) {
   if (useEnergyOrb) {
-    return <EnergyOrb size={size} className={className} />
+    return <energyorb size={size} classname={className} />
   }
 
   return (

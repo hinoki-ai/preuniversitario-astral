@@ -12,12 +12,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+
 import {
   Select,
   SelectContent,
@@ -33,7 +35,7 @@ export const description = 'Seguimiento del aprendizaje';
 type TimeRange = '7d' | '30d' | '90d';
 type ChartViewKey = 'study-time' | 'performance';
 
-type AcademicDatum = {
+type academicdatum = {
   date: string;
   deepFocusMinutes: number;
   activeRecallMinutes: number;
@@ -41,7 +43,7 @@ type AcademicDatum = {
   accuracy: number;
 };
 
-type SubjectInsight = {
+type subjectinsight = {
   subject: string;
   accuracy: number;
   delta: number;
@@ -51,8 +53,9 @@ type SubjectInsight = {
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
 
-interface ChartAreaInteractiveProps {
-  chartData: AcademicDatum[];
+interface chartareainteractiveprops {
+  chartData: academicdatum[];
+
   subjectProgress: Array<{
     id: string;
     subject: string;
@@ -73,10 +76,10 @@ interface ChartAreaInteractiveProps {
 
 type MetricKey = 'deepFocusMinutes' | 'activeRecallMinutes' | 'avgScore' | 'accuracy';
 
-interface ChartViewConfig {
+interface chartviewconfig {
   label: string;
-  keys: readonly MetricKey[];
-  config: ChartConfig;
+  keys: readonly metrickey[];
+  config: chartconfig;
   stackId?: string;
   formatValue: (value: number) => string;
 }
@@ -95,6 +98,7 @@ const CHART_VIEWS: Record<ChartViewKey, ChartViewConfig> = {
         color: 'hsl(var(--chart-2))',
       },
     },
+
     stackId: 'study',
     formatValue: value => `${(value / 60).toFixed(1)} h`,
   },
@@ -111,13 +115,14 @@ const CHART_VIEWS: Record<ChartViewKey, ChartViewConfig> = {
         color: 'hsl(var(--chart-4))',
       },
     },
+
     formatValue: value => `${Math.round(value)}%`,
   },
 };
 
 const VIEW_DESCRIPTIONS: Record<ChartViewKey, string> = {
   'study-time': 'Distribución entre sesiones de foco profundo y práctica activa.',
-  performance: 'Evolución de puntajes y precisión en evaluaciones recientes.',
+  performance: 'Evolución de puntajes y precisión en evaluaciones recientes.'
 };
 
 
@@ -130,7 +135,7 @@ const formatDelta = (value: number, unit: string) => {
   return `${value > 0 ? '+' : ''}${value.toFixed(1)} ${unit}`;
 };
 
-const deltaClass = (value: number) => {
+const deltaclass = (value: number) => {
   if (value > DELTA_EPSILON) return 'text-emerald-600';
   if (value < -DELTA_EPSILON) return 'text-destructive';
   return 'text-muted-foreground';
@@ -140,25 +145,21 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
   const isMobile = useIsMobile();
   const [timeRange, setTimeRange] = React.useState<TimeRange>('90d');
   const [view, setView] = React.useState<ChartViewKey>('study-time');
-
   React.useEffect(() => {
     if (isMobile) {
       setTimeRange('7d');
     }
   }, [isMobile]);
-
   const handleTimeRangeChange = React.useCallback((value: string) => {
     if (value === '7d' || value === '30d' || value === '90d') {
       setTimeRange(value);
     }
   }, []);
-
   const handleViewChange = React.useCallback((value: string) => {
     if (value === 'study-time' || value === 'performance') {
       setView(value);
     }
   }, []);
-
   const filteredData = React.useMemo(() => {
     if (!chartData.length) return [];
     const referenceDate = new Date(chartData[chartData.length - 1].date);
@@ -167,9 +168,7 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
     startDate.setDate(startDate.getDate() - (daysToSubtract - 1));
     return chartData.filter(item => new Date(item.date) >= startDate);
   }, [timeRange]);
-
   const selectedDays = filteredData.length;
-
   const summary = React.useMemo(() => {
     if (!filteredData.length) {
       return {
@@ -180,21 +179,17 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
         totalHours: 0,
       };
     }
-
     const totalMinutes = filteredData.reduce(
       (acc, item) => acc + item.deepFocusMinutes + item.activeRecallMinutes,
       0
     );
     const averageDailyHours = totalMinutes / filteredData.length / 60;
-
     const lastEntry = filteredData[filteredData.length - 1];
     const previousIndex = Math.max(filteredData.length - 8, 0);
     const previousEntry = filteredData[previousIndex];
     const scoreDelta = previousEntry ? lastEntry.avgScore - previousEntry.avgScore : 0;
-
     const lastSeven = filteredData.slice(-7);
     const previousSeven = filteredData.slice(-14, -7);
-
     const lastSevenMinutes = lastSeven.reduce(
       (acc, item) => acc + item.deepFocusMinutes + item.activeRecallMinutes,
       0
@@ -203,13 +198,11 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
       (acc, item) => acc + item.deepFocusMinutes + item.activeRecallMinutes,
       0
     );
-
     const focusDelta =
       lastSeven.length && previousSeven.length
         ? lastSevenMinutes / lastSeven.length / 60 -
           previousSevenMinutes / previousSeven.length / 60
         : 0;
-
     return {
       averageDailyHours,
       focusDelta,
@@ -218,26 +211,32 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
       totalHours: totalMinutes / 60,
     };
   }, [filteredData]);
-
   const activeChartView = React.useMemo(() => CHART_VIEWS[view], [view]);
-
   const tooltipFormatter = React.useCallback(
-    (value: number, name: string, info: { dataKey?: string } | undefined) => {
-      const key = (info?.dataKey ?? name) as keyof ChartViewConfig['config'];
+    (value: any, name: any, item: any) => {
+      const nameStr = typeof name === 'string' ? name : String(name);
+      const dataKey = item?.dataKey ? String(item.dataKey) : nameStr;
+      const key = dataKey as keyof ChartViewConfig['config'];
       const configItem = activeChartView.config[key];
-      const label = configItem?.label ?? name;
+      const label = configItem?.label ?? nameStr;
+      // Handle array values by taking the first element or fallback
+      let numericValue: number;
+      if (Array.isArray(value)) {
+        numericValue = typeof value[0] === 'number' ? value[0] : (typeof value[0] === 'string' ? parseFloat(value[0]) || 0 : 0);
+      } else {
+        numericValue = typeof value === 'string' ? parseFloat(value) || 0 : (typeof value === 'number' ? value : 0);
+      }
       return (
         <div className="flex w-full items-center justify-between gap-6">
           <span>{label}</span>
           <span className="font-semibold text-foreground">
-            {activeChartView.formatValue(value)}
+            {activeChartView.formatValue(numericValue)}
           </span>
         </div>
       );
     },
     [activeChartView]
   );
-
   const labelFormatter = React.useCallback((value: string | number) => {
     const date = new Date(value);
     return date.toLocaleDateString('es-ES', {
@@ -245,8 +244,7 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
       day: 'numeric',
     });
   }, []);
-
-  const defaultTooltipIndex = !isMobile && filteredData.length ? filteredData.length - 1 : -1;
+  const defaultTooltipIndex = !isMobile && filteredData.length ? filteredData.length - 1 : -1;defaultTooltipIndex!isMobilefilteredData.lengthfilteredData.length1
 
   const weakAreas = React.useMemo(() => {
     return subjectProgress
@@ -263,22 +261,24 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
 
   const getRecommendationForSubject = (subject: string, score: number): string => {
     if (subject.toLowerCase().includes('matemát')) {
-      return score < 70 ? 'Repasa fundamentos algebraicos y práctica problemas mixtos.' : 'Enfócate en problemas avanzados y casos límite.';
+      return score < 70 ? 'Repasa fundamentos algebraicos y práctica problemas mixtos.' : 'Enfócate en problemas avanzados y casos límite.';score70
     } else if (subject.toLowerCase().includes('quím')) {
-      return score < 70 ? 'Repasa estequiometría y equilibrio químico.' : 'Practica reacciones orgánicas y cinética.';
+      return score < 70 ? 'Repasa estequiometría y equilibrio químico.' : 'Practica reacciones orgánicas y cinética.';score70
     } else if (subject.toLowerCase().includes('biol')) {
-      return score < 70 ? 'Repasa genética y fisiología básica.' : 'Enfócate en ecología y evolución.';
+      return score < 70 ? 'Repasa genética y fisiología básica.' : 'Enfócate en ecología y evolución.';score70
     } else if (subject.toLowerCase().includes('lengu') || subject.toLowerCase().includes('lectur')) {
-      return score < 70 ? 'Practica comprensión lectora con textos variados.' : 'Trabaja en análisis crítico y síntesis.';
+      return score < 70 ? 'Practica comprensión lectora con textos variados.' : 'Trabaja en análisis crítico y síntesis.';score70
     } else if (subject.toLowerCase().includes('hist')) {
-      return score < 70 ? 'Estudia líneas de tiempo y eventos clave.' : 'Enfócate en procesos históricos y causalidad.';
-    } else {
+      return score < 70 ? 'Estudia líneas de tiempo y eventos clave.' : 'Enfócate en procesos históricos y causalidad.';score70
+    }
+
+ else {
       return 'Continúa practicando regularmente y revisa errores frecuentes.';
     }
   };
 
-  const focusDeltaValue = Math.abs(summary.focusDelta) < DELTA_EPSILON ? 0 : summary.focusDelta;
-  const scoreDeltaValue = Math.abs(summary.scoreDelta) < DELTA_EPSILON ? 0 : summary.scoreDelta;
+  const focusDeltaValue = Math.abs(summary.focusDelta) < DELTA_EPSILON ? 0 : summary.focusdelta;focusDeltaValueMath.absDELTA_EPSILON0
+  const scoreDeltaValue = Math.abs(summary.scoreDelta) < DELTA_EPSILON ? 0 : summary.scoredelta;scoreDeltaValueMath.absDELTA_EPSILON0
 
   return (
     <Card className="@container/card">

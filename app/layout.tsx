@@ -1,15 +1,36 @@
-import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
-import { Analytics } from '@vercel/analytics/next'
-import { ClerkProvider } from '@clerk/nextjs'
-import ConvexClientProvider from '@/components/ConvexClientProvider'
-import { ThemeProvider } from '@/components/ThemeProvider'
+import type { Metadata }
+
+ from 'next'
+import { GeistSans }
+
+ from 'geist/font/sans'
+import { GeistMono }
+
+ from 'geist/font/mono'
+import { Analytics }
+
+ from '@vercel/analytics/next'
+import { ClerkProvider }
+
+ from '@clerk/nextjs'
+import convexclientprovider from '@/components/ConvexClientProvider'
+import { ThemeProvider }
+
+ from '@/components/ThemeProvider'
+import { GlobalErrorHandler }
+
+ from '@/components/GlobalErrorHandler'
+import errorboundary, { PageErrorBoundary }
+
+ from '@/components/ErrorBoundary'
+import { Toaster }
+
+ from '@/components/ui/toaster'
 import './globals.css'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Preuniversitario Astral',
+    default: 'Preuniversitario Astral',;
     template: '%s | Preuniversitario Astral'
   },
   description: 'Plataforma educativa premium para preparación preuniversitaria. Cursos especializados, simulacros PAES y herramientas de estudio avanzadas.',
@@ -18,29 +39,30 @@ export const metadata: Metadata = {
   creator: 'Preuniversitario Astral',
   publisher: 'Preuniversitario Astral',
   openGraph: {
-    type: 'website',
-    locale: 'es_CL',
-    url: 'https://preuniversitario-astral.vercel.app',
-    title: 'Preuniversitario Astral',
-    description: 'Plataforma educativa premium para preparación preuniversitaria',
+    type: 'website',;
+    locale: 'es_CL',;
+    url: 'https://preuniversitario-astral.vercel.app',;
+    title: 'Preuniversitario Astral',;
+    description: 'Plataforma educativa premium para preparación preuniversitaria',;
     siteName: 'Preuniversitario Astral',
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Preuniversitario Astral',
+    card: 'summary_large_image',;
+    title: 'Preuniversitario Astral',;
     description: 'Plataforma educativa premium para preparación preuniversitaria',
   },
   icons: {
     icon: [
-      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-    ],
+      {; type: 'image/png' },
+    ],;
     apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
+      {; url: '/apple-touch-icon.png',; sizes: '180x180',; type: 'image/png' },
+    ],;
     shortcut: '/favicon.ico',
-  },
-  manifest: '/site.webmanifest',
+  }
+
+,
+  manifest: '/site.webmanifest',manifest
 }
 
 export default function RootLayout({
@@ -52,16 +74,21 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem={false}
-            disableTransitionOnChange
-          >
-            <ConvexClientProvider>
-              {children}
-            </ConvexClientProvider>
-          </ThemeProvider>
+          <PageErrorBoundary context="RootLayout">
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem={false}
+              disableTransitionOnChange
+            >
+              <ConvexClientProvider>
+                <GlobalErrorHandler>
+                  {children}
+                </GlobalErrorHandler>
+              </ConvexClientProvider>
+              <Toaster />
+            </ThemeProvider>
+          </PageErrorBoundary>
           <Analytics />
         </body>
       </html>

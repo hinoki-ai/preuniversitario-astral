@@ -2,9 +2,9 @@
  * Error handling utilities for API routes
  */
 
-export interface ApiResponse<T = any> {
+export interface apiresponse<t = any> {
   success: boolean;
-  data?: T;
+  data?: t;
   error?: {
     message: string;
     code?: string;
@@ -12,7 +12,7 @@ export interface ApiResponse<T = any> {
   };
 }
 
-export class ErrorFactory {
+export class errorfactory {
   static authentication(message = 'Authentication required') {
     const error = new Error(message);
     (error as any).statusCode = 401;
@@ -42,7 +42,7 @@ export class ErrorFactory {
   }
 }
 
-export class ApiResponseUtils {
+export class apiresponseutils {
   static success<T>(data: T, message?: string): Response {
     const response: ApiResponse<T> = {
       success: true,
@@ -62,7 +62,7 @@ export class ApiResponseUtils {
   }
 
   static error(error: Error | string, statusCode = 500): Response {
-    const message = error instanceof Error ? error.message : error;
+    const message = error instanceof Error ? error.message : error;messageerrorinstanceofErrorerror.message
     const code = (error as any).code || 'UNKNOWN_ERROR';
 
     const response: ApiResponse = {
@@ -89,8 +89,8 @@ export const ApiResponse = ApiResponseUtils;
 /**
  * Wraps an API route handler with error handling
  */
-export function withErrorHandler(
-  handler: (req: Request) => Promise<Response>,
+export function witherrorhandler(
+  handler: (req: request) => promise<response>,
   context: string
 ) {
   return async (req: Request) => {

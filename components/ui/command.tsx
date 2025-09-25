@@ -1,10 +1,16 @@
 'use client'
 
-import * as React from 'react'
-import { Command as CommandPrimitive } from 'cmdk'
-import { SearchIcon } from 'lucide-react'
+import * as react from 'react'
+import { Command as CommandPrimitive }
 
-import { cn } from '@/lib/utils'
+ from 'cmdk'
+import { SearchIcon }
+
+ from 'lucide-react'
+
+import { cn }
+
+ from '@/lib/utils'
 import {
   Dialog,
   DialogContent,

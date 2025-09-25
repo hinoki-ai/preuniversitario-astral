@@ -1,27 +1,29 @@
 'use client'
 
-import * as React from 'react'
-import * as SelectPrimitive from '@radix-ui/react-select'
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
+import * as react from 'react'
+import * as selectprimitive from '@radix-ui/react-select'
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon }
+
+ from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
 function Select({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
-  return <SelectPrimitive.Root data-slot="select" {...props} />
+  return <selectprimitive.Root data-slot="select" {...props} />
 }
 
 function SelectGroup({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Group>) {
-  return <SelectPrimitive.Group data-slot="select-group" {...props} />
+  return <selectprimitive.Group data-slot="select-group" {...props} />
 }
 
 function SelectValue({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Value>) {
-  return <SelectPrimitive.Value data-slot="select-value" {...props} />
+  return <selectprimitive.Value data-slot="select-value" {...props} />
 }
 
 function SelectTrigger({

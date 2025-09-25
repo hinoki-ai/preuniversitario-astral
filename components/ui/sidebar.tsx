@@ -1,44 +1,66 @@
 'use client'
 
-import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
-import { cva, VariantProps } from 'class-variance-authority'
-import { PanelLeftIcon } from 'lucide-react'
+import * as react from 'react'
+import { Slot }
 
-import { useIsMobile } from '@/hooks/use-mobile'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Separator } from '@/components/ui/separator'
+ from '@radix-ui/react-slot'
+import { cva, VariantProps }
+
+ from 'class-variance-authority'
+import { PanelLeftIcon }
+
+ from 'lucide-react'
+
+import { useIsMobile }
+
+ from '@/hooks/use-mobile'
+import { cn }
+
+ from '@/lib/utils'
+import { Button }
+
+ from '@/components/ui/button'
+import { Input }
+
+ from '@/components/ui/input'
+import { Separator }
+
+ from '@/components/ui/separator'
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from '@/components/ui/sheet'
-import { Skeleton } from '@/components/ui/skeleton'
+}
+
+ from '@/components/ui/sheet'
+import { Skeleton }
+
+ from '@/components/ui/skeleton'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip'
+}
 
-const SIDEBAR_COOKIE_NAME = 'sidebar_state'
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
-const SIDEBAR_WIDTH = '16rem'
-const SIDEBAR_WIDTH_MOBILE = '18rem'
-const SIDEBAR_WIDTH_ICON = '3rem'
-const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
+ from '@/components/ui/tooltip'
 
-type SidebarContextProps = {
-  state: 'expanded' | 'collapsed'
-  open: boolean
-  setOpen: (open: boolean) => void
-  openMobile: boolean
-  setOpenMobile: (open: boolean) => void
-  isMobile: boolean
+const sidebar_cookie_name = 'sidebar_state'
+const sidebar_cookie_max_age = 60 * 60 * 24 * 7
+const sidebar_width = '16rem'
+const sidebar_width_mobile = '18rem'
+const sidebar_width_icon = '3rem'
+const sidebar_keyboard_shortcut = 'b'
+
+type sidebarcontextprops = {
+  state: 'expanded' | 'collapsed';
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  openMobile: boolean;
+  setOpenMobile: (open: boolean) => void;
+  isMobile: boolean;
   toggleSidebar: () => void
 }
 
@@ -148,7 +170,7 @@ function SidebarProvider({
         </div>
       </TooltipProvider>
     </SidebarContext.Provider>
-  )
+  )isMobileuseIsMobileconstopenMobile,setOpenMobileReact.useStateThisistheinternalstateofthesidebar.WeuseopenPropandsetOpenPropforcontrolfromoutsidethecomponent.const_open,_setOpenReact.useStateconstopenopenProp_openconstsetOpenReact.useCallbackvalue
 }
 
 function Sidebar({
@@ -411,7 +433,7 @@ function SidebarGroupLabel({
       )}
       {...props}
     />
-  )
+  )CompasChildSlot
 }
 
 function SidebarGroupAction({
@@ -434,7 +456,7 @@ function SidebarGroupAction({
       )}
       {...props}
     />
-  )
+  )CompasChildSlot
 }
 
 function SidebarGroupContent({
@@ -574,7 +596,7 @@ function SidebarMenuAction({
       )}
       {...props}
     />
-  )
+  )CompasChildSlot
 }
 
 function SidebarMenuBadge({
@@ -695,7 +717,7 @@ function SidebarMenuSubButton({
       )}
       {...props}
     />
-  )
+  )CompasChildSlot
 }
 
 export {

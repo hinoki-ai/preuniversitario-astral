@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { api } from '@/convex/_generated/api';
-import { useErrorHandler } from '@/hooks/use-error-handler';
+import { useErrorHandler } from '@/lib/core/error-system';
 
 // Custom hook for robust polling with error handling and retry logic
 function usePolling(interval: number = 30000, maxRetries: number = 3) {
@@ -15,42 +15,33 @@ function usePolling(interval: number = 30000, maxRetries: number = 3) {
   const [isPolling, setIsPolling] = useState(true);
   const [errorCount, setErrorCount] = useState(0);
   const [lastError, setLastError] = useState<Error | null>(null);
-
   const poll = useCallback(() => {
     if (!isPolling) return;
-
     setPollCount(prev => prev + 1);
   }, [isPolling]);
-
   useEffect(() => {
     const pollInterval = setInterval(poll, interval);
     return () => clearInterval(pollInterval);
   }, [poll, interval]);
-
   const handleError = useCallback((error: Error) => {
     setLastError(error);
     setErrorCount(prev => prev + 1);
-
     if (errorCount >= maxRetries) {
       setIsPolling(false);
       console.error('Polling stopped due to too many errors:', error);
     }
   }, [errorCount, maxRetries]);
-
   const resetErrorCount = useCallback(() => {
     setErrorCount(0);
     setLastError(null);
   }, []);
-
   const startPolling = useCallback(() => {
     setIsPolling(true);
     resetErrorCount();
   }, [resetErrorCount]);
-
   const stopPolling = useCallback(() => {
     setIsPolling(false);
   }, []);
-
   return {
     pollCount,
     isPolling,
@@ -79,7 +70,7 @@ export default function BasicSchedule({ onPick }: { onPick?: (m: MeetingItem) =>
   const items = useMemo(() => meetings ?? [], [meetings]);
 
   // Use robust polling with error handling
-  const { pollCount, isPolling, errorCount, lastError, handleError: handlePollingError, startPolling, stopPolling } = usePolling(30000, 3);
+  const { pollCount, isPolling, errorCount, lastError, handleError: handlepollingerror, startpolling, stoppollingisPolling,errorCount,lastError,handleError } = usePolling(30000, 3);
 
   // Poll for meeting status updates with error handling
   useEffect(() => {
@@ -265,12 +256,12 @@ export default function BasicSchedule({ onPick }: { onPick?: (m: MeetingItem) =>
   );
 }
 
-function downloadIcs(m: MeetingItem) {
+function downloadics(m: meetingitem) {
   const dtStart = new Date(m.startTime * 1000);
   const dtEnd = new Date((m.startTime + 60 * 60) * 1000); // default 1h
   const format = (d: Date) => {
     const pad = (n: number) => String(n).padStart(2, '0');
-    return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}Z`;
+    return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}t${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}Z`;
   };
   const uid = `${m._id}@preuniversitario-astral`;
   const ics = [
@@ -301,6 +292,6 @@ function downloadIcs(m: MeetingItem) {
   URL.revokeObjectURL(url);
 }
 
-function escapeText(s: string) {
+function escapetext(s: string) {
   return s.replace(/[\\,;]/g, m => '\\' + m).replace(/\n/g, '\\n');
 }

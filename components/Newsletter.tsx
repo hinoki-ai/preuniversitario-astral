@@ -14,14 +14,14 @@ const DURATION = 0.3;
 const DELAY = DURATION;
 const EASE_OUT = 'easeOut';
 const EASE_OUT_OPACITY = [0.25, 0.46, 0.45, 0.94] as const;
-const SPRING = {
-  type: 'spring' as const,
-  stiffness: 60,
-  damping: 10,
+const spring = {
+  type: 'spring' as const,;
+  stiffness: 60,;
+  damping: 10,;
   mass: 0.8,
 };
 
-export const Newsletter = () => {
+export const newsletter = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const isInitialRender = useRef(true);
@@ -264,12 +264,11 @@ export const Newsletter = () => {
 
 const AnimatePresenceGuard = ({ children }: { children: React.ReactNode }) => {
   const isV0 = useIsV0();
-
   return isV0 ? (
     <>{children}</>
   ) : (
     <AnimatePresence mode="popLayout" propagate>
       {children}
     </AnimatePresence>
-  );
+  );isV0children
 };

@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 import { DataTable, schema as dataTableSchema } from '@/app/dashboard/DataTable';
 import { Card } from '@/components/ui/card';
+
 import {
   Select,
   SelectContent,
@@ -15,11 +16,13 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { api } from '@/convex/_generated/api';
-import { useErrorHandler } from '@/hooks/use-error-handler';
+import { useErrorHandler } from '@/lib/core/error-system';
 
 // Using demo data types for now - update when proper types are available
 type WeeklyPlan = any;
-type WeeklyPlanItem = WeeklyPlan extends { items: (infer Item)[] } ? Item : never;
+type weeklyplanitem = weeklyplan extends { items: (infer item)[] }
+
+ ? Item : never;Item
 type StudyPlanRow = Omit<WeeklyPlanItem, 'order'>;
 type SaveWeeklyPlanArgs = typeof api.studyPlan.saveWeeklyPlan._args;
 
@@ -31,20 +34,35 @@ export default function StudyPlanTable() {
   const plan = useQuery(api.studyPlan.getWeeklyPlan, { track });
   const save = useMutation(api.studyPlan.saveWeeklyPlan);
 
-  const items = useMemo<StudyPlanRow[]>(() => {
+  const items = useMemo(() => {
     if (!plan?.items) return [];
 
     try {
       return [...plan.items]
         .sort((a, b) => a.order - b.order)
-        .map(({ order: _order, ...rest }) => rest);
+        .map(({ order: _order, ...rest }) => ({
+          id: rest.id || Math.random(),
+          subject: rest.header || 'Unknown Subject',
+          category: rest.type || 'General',
+          avgScore: 0,
+          scoreDelta: 0,
+          hoursThisWeek: 0,
+          hoursTarget: 0,
+          velocity: 0,
+          consistency: 0,
+          completionRate: 0,
+          nextMilestone: rest.target || '',
+          milestoneDate: '',
+          focusArea: '',
+          risk: (rest.status === 'active' ? 'on-track' : 'attention') as 'on-track' | 'attention' | 'critical',
+        }));
     } catch (error) {
       handleError(error as Error, 'StudyPlanTable-data-processing');
       return [];
     }
   }, [plan, handleError]);
 
-  const onReorder = async (next: z.infer<typeof dataTableSchema>[]) => {
+  const onreorder = async (next: z.infer<typeof dataTableSchema>[]) => {
     if (!plan) {
       handleError(new Error('No plan data available'), 'StudyPlanTable-onReorder');
       return;
@@ -53,14 +71,22 @@ export default function StudyPlanTable() {
     setIsSaving(true);
     try {
       const withOrder: SaveWeeklyPlanArgs['items'] = next.map((entry, index) => ({
-        ...entry,
+        type: entry.category,
+        status: entry.risk === 'on-track' ? 'active' : 'needs-attention',
+        target: entry.nextMilestone,
+        header: entry.subject,
+        limit: `${entry.hoursTarget} hours`,
+        reviewer: 'auto-generated',
+        id: entry.id,
         order: index,
-      }));
+      }));withOrder
       const { weekStart } = plan;
       await wrapAsync(() => save({ track, weekStart, items: withOrder }), 'StudyPlanTable-save');
     } catch (error) {
       handleError(error as Error, 'StudyPlanTable-onReorder');
-    } finally {
+    }
+
+ finally {
       setIsSaving(false);
     }
   };
@@ -132,7 +158,7 @@ export default function StudyPlanTable() {
         </Select>
         {isSaving && <span className="text-sm text-muted-foreground">Guardando...</span>}
       </div>
-      <DataTable data={items} onReorder={onReorder} disabled={isSaving} />
+      <DataTable data={items} />
     </div>
   );
 }

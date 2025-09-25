@@ -7,10 +7,14 @@ import {
   IconNotes,
   IconTrash,
 } from '@tabler/icons-react';
-import { Id } from 'convex/_generated/dataModel';
+import type { Id } from '@/convex/_generated/dataModel';
 import { useMutation, useQuery } from 'convex/react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
+
+import { useStandardErrorHandling } from '@/lib/core/error-wrapper';
+import { ComponentErrorBoundary } from '@/components/ErrorBoundary';
+import { getDemoLesson } from '@/lib/demo-data';
 
 import InlineQuiz from '@/components/InlineQuiz';
 import { Badge } from '@/components/ui/badge';
@@ -21,16 +25,188 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
 import { YouTubePlayer } from '@/components/YouTubePlayer';
 import { api } from '@/convex/_generated/api';
-import { getDemoLesson } from '@/lib/demo-data';
+// Demo data imports removed - using real data only;
 import { Lesson } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
+// PDF Viewer Component
+function PDFViewer({ url, title }: { url: string; title: string }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  return (
+    <div className="w-full h-[600px] border rounded-lg overflow-hidden">
+      {error ? (
+        <div className="flex items-center justify-center h-full bg-muted">
+          <div className="text-center">
+            <p className="text-muted-foreground mb-2">Error al cargar el PDF</p>
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Descargar PDF
+            </a>
+          </div>
+        </div>
+      ) : (
+        <>
+          {isLoading && (
+            <div className="flex items-center justify-center h-full bg-muted">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+                <p className="text-muted-foreground">Cargando PDF...</p>
+              </div>
+            </div>
+          )}
+          <iframe
+            src={`${url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+            className="w-full h-full"
+            title={title}
+            onLoad={() => setIsLoading(false)}
+            onError={() => {
+              setIsLoading(false);
+              setError('No se pudo cargar el PDF');
+            }}
+          />
+        </>
+      )}
+    </div>
+  );
+}
+
+// Enhanced Multimedia Viewer
+function MultimediaViewer({
+  lesson,
+  playbackRate,
+  setCurrentTime,
+  setDuration
+}: {
+  lesson: Lesson;
+  playbackRate: number;
+  setCurrentTime: (time: number) => void;
+  setDuration: (duration: number) => void;
+}) {
+  const [activeTab, setActiveTab] = useState<'video' | 'pdf' | 'transcript'>('video');
+
+  const hasVideo = lesson.videoUrl;
+  const hasPdf = lesson.pdfUrl;
+  const hasTranscript = lesson.transcript;
+
+  // Auto-select first available content
+  useEffect(() => {
+    if (hasVideo) setActiveTab('video');
+    else if (hasPdf) setActiveTab('pdf');
+    else if (hasTranscript) setActiveTab('transcript');
+  }, [hasVideo, hasPdf, hasTranscript]);
+
+  if (!hasVideo && !hasPdf && !hasTranscript) {
+    return (
+      <div className="flex items-center justify-center h-64 bg-muted rounded-lg">
+        <div className="text-center text-muted-foreground">
+          <IconNotes className="w-12 h-12 mx-auto mb-2 opacity-50" />
+          <p>No hay contenido multimedia disponible</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Tab Navigation */}
+      <div className="flex border-b">
+        {hasVideo && (
+          <button
+            onClick={() => setActiveTab('video')}
+            className={cn(
+              "px-4 py-2 text-sm font-medium border-b-2 transition-colors",
+              activeTab === 'video'
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            )}
+          >
+            Video
+          </button>
+        )}
+        {hasPdf && (
+          <button
+            onClick={() => setActiveTab('pdf')}
+            className={cn(
+              "px-4 py-2 text-sm font-medium border-b-2 transition-colors",
+              activeTab === 'pdf'
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            )}
+          >
+            Material PDF
+          </button>
+        )}
+        {hasTranscript && (
+          <button
+            onClick={() => setActiveTab('transcript')}
+            className={cn(
+              "px-4 py-2 text-sm font-medium border-b-2 transition-colors",
+              activeTab === 'transcript'
+                ? "border-primary text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            )}
+          >
+            Transcripción
+          </button>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="min-h-[400px]">
+        {activeTab === 'video' && hasVideo && (
+          <div className="space-y-4">
+            <YouTubePlayer
+              videoId={getYouTubeVideoId(lesson.videoUrl) || ''}
+              playbackRate={playbackRate}
+              onTimeUpdate={(time) => setCurrentTime(time)}
+              onDurationChange={(dur) => setDuration(dur)}
+            />
+            {lesson.pdfUrl && (
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" asChild>
+                  <a href={lesson.pdfUrl} target="_blank" rel="noopener noreferrer">
+                    📄 Ver guía PDF
+                  </a>
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'pdf' && hasPdf && (
+          <PDFViewer url={lesson.pdfUrl!} title={`${lesson.title} - Guía PDF`} />
+        )}
+
+        {activeTab === 'transcript' && hasTranscript && (
+          <ScrollArea className="h-[500px] w-full rounded-md border p-4">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 mb-4">
+                <IconNotes className="w-5 h-5" />
+                <h3 className="font-semibold">Transcripción de la lección</h3>
+              </div>
+              <div className="whitespace-pre-wrap leading-relaxed text-sm">
+                {lesson.transcript}
+              </div>
+            </div>
+          </ScrollArea>
+        )}
+      </div>
+    </div>
+  );
+}
+
 const SPEED_OPTIONS = [0.75, 1, 1.25, 1.5, 1.75, 2];
 
-type LessonAnnotation = {
-  _id: Id<'lessonAnnotations'>;
-  userId: Id<'users'>;
-  lessonId: Id<'lessons'>;
+type lessonannotation = {
+  _id: id<'lessonAnnotations'>;
+  userId: id<'users'>;
+  lessonId: id<'lessons'>;
   type: 'note' | 'bookmark';
   timestampSec?: number | null;
   content: string;
@@ -38,7 +214,7 @@ type LessonAnnotation = {
   updatedAt: number;
 };
 
-function formatSeconds(value: number | undefined) {
+function formatseconds(value: number | undefined) {
   if (typeof value !== 'number' || Number.isNaN(value)) return '0:00';
   const seconds = Math.max(0, Math.floor(value));
   const minutes = Math.floor(seconds / 60);
@@ -46,22 +222,28 @@ function formatSeconds(value: number | undefined) {
   return `${minutes}:${rest.toString().padStart(2, '0')}`;
 }
 
-function getYouTubeVideoId(url: string | null | undefined) {
+function getyoutubevideoid(url: string | null | undefined) {
   if (!url) return null;
-  const patterns = [
-    /youtu\.be\/([^?&#]+)/i,
-    /youtube\.com\/embed\/([^?&#]+)/i,
-    /youtube\.com\/(?:watch|shorts).*?[?&]v=([^?&#]+)/i,
-  ];
-  for (const pattern of patterns) {
-    const match = url.match(pattern);
-    const id = match?.[1];
-    if (id) return id;
+  try {
+    const patterns = [
+      /youtu\.be\/([^?&#]+)/i,
+      /youtube\.com\/embed\/([^?&#]+)/i,
+      /youtube\.com\/(?:watch|shorts).*?[?&]v=([^?&#]+)/i,
+    ];
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      const id = match?.[1];
+      if (id) return id;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error parsing YouTube URL:', error);
+    return null;
   }
-  return null;
 }
 
-export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
+function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
+  const { handleError, safeAsyncCall, safeSyncCall } = useStandardErrorHandling('CapsulePlayer');
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -90,8 +272,8 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
   const deleteAnnotation = useMutation(api.lessonAnnotations.deleteLessonAnnotation);
 
   // Use Convex data if available, otherwise use demo data
-  const lesson: Lesson | (ReturnType<typeof getDemoLesson> & Partial<Lesson>) | null =
-    convexLesson || getDemoLesson(lessonId);
+  const lesson: lesson | (returntype<typeof getdemolesson> & partial<lesson>) | null =
+    convexlesson || getdemolesson(lessonid);UseConvexdataifavailable,otherwiseusedemodataconstlesson
 
   const youtubeVideoId = useMemo(
     () => getYouTubeVideoId(lesson?.videoUrl ?? ''),
@@ -198,7 +380,7 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
     [isFileVideo, isYouTube]
   );
 
-  const handleAddNote = async () => {
+  const handleaddnote = async () => {
     if (!canPersist) {
       toast.error('Conecta esta cápsula a Convex para guardar notas.');
       return;
@@ -221,12 +403,14 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
       toast.success('Nota guardada');
     } catch (_error) {
       toast.error('No se pudo guardar la nota.');
-    } finally {
+    }
+
+ finally {
       setSavingNote(false);
     }
   };
 
-  const handleAddBookmark = async () => {
+  const handleaddbookmark = async () => {
     if (!canPersist || !supportsAdvancedControls) return;
     try {
       setSavingBookmark(true);
@@ -239,12 +423,14 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
       toast.success('Marcador agregado');
     } catch (_error) {
       toast.error('No se pudo crear el marcador.');
-    } finally {
+    }
+
+ finally {
       setSavingBookmark(false);
     }
   };
 
-  const handleDelete = async (id: Id<'lessonAnnotations'>) => {
+  const handledelete = async (id: Id<'lessonAnnotations'>) => {
     try {
       await deleteAnnotation({ id });
       toast.success('Elemento eliminado');
@@ -253,7 +439,7 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
     }
   };
 
-  const handleSpeedChange = (rate: number) => {
+  const handlespeedchange = (rate: number) => {
     if (!supportsAdvancedControls) return;
     setPlaybackRate(rate);
   };
@@ -365,140 +551,31 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
           <div className="text-lg font-semibold">{lesson.title}</div>
           {lesson.subject && <div className="text-sm text-muted-foreground">{lesson.subject}</div>}
         </div>
-        {lesson.videoUrl ? (
-          <div className="space-y-3">
-            <div className="aspect-video w-full overflow-hidden rounded-md bg-muted">
-              {isFileVideo ? (
-                <video
-                  ref={videoRef}
-                  controls
-                  className="h-full w-full"
-                  src={lesson.videoUrl}
-                  onLoadedMetadata={handleLoadedMetadata}
-                  onTimeUpdate={handleTimeUpdate}
-                />
-              ) : isYouTube && youtubeVideoId ? (
-                <YouTubePlayer
-                  videoId={youtubeVideoId}
-                  playbackRate={playbackRate}
-                  onReady={player => {
-                    youtubePlayerRef.current = player;
-                  }}
-                  onTimeUpdate={time => {
-                    if (typeof time === 'number' && !Number.isNaN(time)) {
-                      setCurrentTime(time);
-                    }
-                  }}
-                  onDurationChange={value => {
-                    if (typeof value === 'number' && !Number.isNaN(value)) {
-                      setDuration(value);
-                    }
-                  }}
-                />
-              ) : (
-                <iframe
-                  src={lesson.videoUrl}
-                  allow="autoplay; fullscreen"
-                  className="h-full w-full"
-                  title={`Video: ${lesson.title}`}
-                />
-              )}
-            </div>
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <IconClock className="size-4" />
-                <span>
-                  {formatSeconds(currentTime)} / {duration ? formatSeconds(duration) : '—'}
-                </span>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-medium uppercase text-muted-foreground">
-                  Velocidad
-                </span>
-                {SPEED_OPTIONS.map(option => (
-                  <Button
-                    key={option}
-                    size="sm"
-                    type="button"
-                    variant={option === playbackRate ? 'default' : 'outline'}
-                    className={cn('h-8 px-2 text-xs', option === playbackRate && 'font-semibold')}
-                    onClick={() => handleSpeedChange(option)}
-                    disabled={!supportsAdvancedControls}
-                  >
-                    {`${option}x`}
-                  </Button>
-                ))}
-                <Button
-                  size="sm"
-                  type="button"
-                  variant="outline"
-                  onClick={handleAddBookmark}
-                  disabled={!canPersist || !supportsAdvancedControls || savingBookmark}
-                >
-                  <IconBookmarkPlus className="mr-1 size-4" />
-                  Guardar marcador
-                </Button>
-                {notes.length > 0 && (
-                  <Button
-                    size="sm"
-                    type="button"
-                    variant="outline"
-                    onClick={exportNotes}
-                  >
-                    📄 Exportar notas
-                  </Button>
+        <MultimediaViewer
+          lesson={lesson}
+          playbackRate={playbackRate}
+          setCurrentTime={setCurrentTime}
+          setDuration={setDuration}
+        />
+
+        <div className="space-y-2">
+          {lesson.attachments?.length ? (
+            <div className="space-y-2">
+              <div className="text-sm font-medium">Materiales adicionales</div>
+              <div className="flex flex-wrap gap-2">
+                {lesson.attachments.map(
+                  (attachment: { name: string; url: string }, index: number) => (
+                    <Button key={`${attachment.name}-${index}`} variant="outline" size="sm" asChild>
+                      <a href={attachment.url} target="_blank" rel="noopener noreferrer">
+                        📎 {attachment.name}
+                      </a>
+                    </Button>
+                  )
                 )}
               </div>
             </div>
-            {!supportsAdvancedControls && (
-              <p className="text-xs text-muted-foreground">
-                Los controles avanzados solo funcionan con archivos internos (MP4/WebM) o videos
-                alojados en YouTube.
-              </p>
-            )}
-            {supportsAdvancedControls && (
-              <div className="text-xs text-muted-foreground bg-muted/20 rounded p-2">
-                <strong>Atajos de teclado:</strong> Espacio (play/pausa) • ←→ (saltar 10s) • B (marcador) • N (notas) • 1-5 (velocidad)
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="rounded-md border border-dashed p-6 text-sm text-muted-foreground">
-            Esta cápsula aún no tiene un video asociado.
-          </div>
-        )}
-        <div className="space-y-2">
-          {lesson.pdfUrl && (
-            <Button asChild variant="outline" size="sm">
-              <a href={lesson.pdfUrl} target="_blank" rel="noopener noreferrer">
-                Descargar guía PDF
-              </a>
-            </Button>
-          )}
-          {lesson.attachments?.length ? (
-            <div className="flex flex-wrap gap-2 text-sm">
-              {lesson.attachments.map(
-                (attachment: { name: string; url: string }, index: number) => (
-                  <a
-                    key={`${attachment.name}-${index}`}
-                    href={attachment.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline"
-                  >
-                    {attachment.name}
-                  </a>
-                )
-              )}
-            </div>
           ) : null}
         </div>
-        {lesson.transcript && (
-          <div className="rounded-md border bg-muted/40 p-3 text-sm text-muted-foreground">
-            <div className="mb-2 font-medium">Transcripción</div>
-            <div className="whitespace-pre-wrap leading-relaxed">{lesson.transcript}</div>
-          </div>
-        )}
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -635,5 +712,13 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
 
       <InlineQuiz lessonId={lessonId} />
     </div>
+  );
+}
+
+export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
+  return (
+    <ComponentErrorBoundary context="CapsulePlayer">
+      <CapsulePlayerInternal lessonId={lessonId} />
+    </ComponentErrorBoundary>
   );
 }

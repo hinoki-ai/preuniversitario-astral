@@ -4,12 +4,12 @@ import { useEffect, useRef } from "react"
 import * as THREE from "three"
 
 export function ShaderAnimation() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const sceneRef = useRef<{
-    camera: THREE.Camera
-    scene: THREE.Scene
-    renderer: THREE.WebGLRenderer
-    uniforms: any
+  const containerref = useref<htmldivelement>(null)
+  const sceneref = useref<{
+    camera: three.camera;
+    scene: three.scene;
+    renderer: three.webglrenderer;
+    uniforms: any;
     animationId: number
   } | null>(null)
 

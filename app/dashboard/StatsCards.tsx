@@ -22,19 +22,15 @@ export function StatsCards() {
   const achievements = (stats as any).achievements ?? [];
   const weeklyGoals = (stats as any).weeklyGoals ?? { quizzesCompleted: 0, quizzesTarget: 5 };
 
-  const streakColor = currentStreak > 7 ? 'bg-green-500' : 
-                     currentStreak > 3 ? 'bg-yellow-500' : 'bg-gray-400';
-
   const performanceLevel = avgScore > 0.8 ? 'Excellent' :
                           avgScore > 0.6 ? 'Good' :
-                          avgScore > 0.4 ? 'Improving' : 'Needs Focus';
-
-  const performanceColor = avgScore > 0.8 ? 'text-green-600' :
-                          avgScore > 0.6 ? 'text-blue-600' :
-                          avgScore > 0.4 ? 'text-yellow-600' : 'text-red-600';
+                          avgScore > 0.4 ? 'Average' : 'Needs Improvement';
+  const performanceColor = avgScore > 0.8 ? 'text-golden' :
+                          avgScore > 0.6 ? 'text-accent' :
+                          avgScore > 0.4 ? 'text-amber' : 'text-destructive';
 
   // Calculate level progress percentage
-  const levelProgress = pointsToNextLevel > 0 
+  const levelProgress = pointsToNextLevel > 0
     ? Math.round((experiencePoints / (experiencePoints + pointsToNextLevel)) * 100)
     : 100;
 
@@ -46,7 +42,7 @@ export function StatsCards() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Level & Points</CardTitle>
-            <Star className="h-4 w-4 text-yellow-500" />
+            <Star className="h-4 w-4 text-golden" />
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2 mb-2">
@@ -56,11 +52,9 @@ export function StatsCards() {
               </Badge>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className="h-2 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 progress-bar"
-                style={{
-                  '--progress-width': `${levelProgress}%`
-                } as React.CSSProperties}
+              <div
+                className="h-2 rounded-full bg-gradient-to-r from-golden to-amber progress-bar"
+                data-progress-width={`${levelProgress}%`}
               />
             </div>
             <p className="text-xs text-muted-foreground mt-1">
@@ -73,7 +67,7 @@ export function StatsCards() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Study Streak</CardTitle>
-            <Flame className={`h-4 w-4 ${currentStreak > 0 ? 'text-orange-500' : 'text-gray-400'}`} />
+            <Flame className={`h-4 w-4 ${currentStreak > 0 ? 'text-amber' : 'text-muted-foreground'}`} />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{currentStreak} days</div>
@@ -81,7 +75,7 @@ export function StatsCards() {
               Record: {stats.longestStreak ?? 0} days
             </p>
             {stats.todayActive && (
-              <Badge variant="outline" className="mt-2 text-green-600 border-green-600">
+              <Badge variant="outline" className="mt-2 text-golden border-golden">
                 🔥 Active Today
               </Badge>
             )}
@@ -92,7 +86,7 @@ export function StatsCards() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Achievements</CardTitle>
-            <Award className="h-4 w-4 text-purple-500" />
+            <Award className="h-4 w-4 text-bronze" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{achievements.length}</div>
@@ -100,7 +94,7 @@ export function StatsCards() {
               Badges earned
             </p>
             {achievements.length > 0 && (
-              <Badge variant="outline" className="mt-2 text-purple-600 border-purple-600">
+              <Badge variant="outline" className="mt-2 text-bronze border-bronze">
                 🏆 {achievements[achievements.length - 1]?.title}
               </Badge>
             )}
@@ -111,7 +105,7 @@ export function StatsCards() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Weekly Goal</CardTitle>
-            <Zap className="h-4 w-4 text-blue-500" />
+            <Zap className="h-4 w-4 text-accent" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -121,11 +115,9 @@ export function StatsCards() {
               Quizzes this week
             </p>
             <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-              <div 
-                className="h-2 rounded-full bg-blue-500 progress-bar"
-                style={{
-                  '--progress-width': `${Math.min(100, (weeklyGoals.quizzesCompleted / weeklyGoals.quizzesTarget) * 100)}%`
-                } as React.CSSProperties}
+              <div
+                className="h-2 rounded-full bg-accent progress-bar"
+                data-progress-width={`${Math.min(100, (weeklyGoals.quizzesCompleted / weeklyGoals.quizzesTarget) * 100)}%`}
               />
             </div>
           </CardContent>
@@ -148,15 +140,13 @@ export function StatsCards() {
               {performanceLevel}
             </p>
             <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-              <div 
+              <div
                 className={`h-2 rounded-full progress-bar ${
-                  avgScore > 0.8 ? 'bg-green-500' :
-                  avgScore > 0.6 ? 'bg-blue-500' :
-                  avgScore > 0.4 ? 'bg-yellow-500' : 'bg-red-500'
+                  avgScore > 0.8 ? 'bg-golden' :
+                  avgScore > 0.6 ? 'bg-accent' :
+                  avgScore > 0.4 ? 'bg-amber' : 'bg-destructive'
                 }`}
-                style={{
-                  '--progress-width': `${avgScore * 100}%`
-                } as React.CSSProperties}
+                data-progress-width={`${avgScore * 100}%`}
               />
             </div>
           </CardContent>
@@ -166,7 +156,7 @@ export function StatsCards() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Practice Tests</CardTitle>
-            <Target className="h-4 w-4 text-blue-500" />
+            <Target className="h-4 w-4 text-accent" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalQuizzes ?? 0}</div>
@@ -180,17 +170,17 @@ export function StatsCards() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Subject Focus</CardTitle>
-            <Target className="h-4 w-4 text-green-500" />
+            <Target className="h-4 w-4 text-golden" />
           </CardHeader>
           <CardContent>
             <div className="space-y-1">
               {stats.strongSubjects && stats.strongSubjects.length > 0 ? (
-                <div className="text-sm font-semibold text-green-600">
+                <div className="text-sm font-semibold text-golden">
                   ✅ {stats.strongSubjects[0]}
                 </div>
               ) : null}
               {stats.weakSubjects && stats.weakSubjects.length > 0 ? (
-                <div className="text-sm font-semibold text-orange-600">
+                <div className="text-sm font-semibold text-amber">
                   📚 {stats.weakSubjects[0]}
                 </div>
               ) : null}
@@ -205,7 +195,7 @@ export function StatsCards() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Next Action</CardTitle>
-            <Trophy className="h-4 w-4 text-purple-500" />
+            <Trophy className="h-4 w-4 text-bronze" />
           </CardHeader>
           <CardContent>
             <div className="text-sm font-semibold line-clamp-2">

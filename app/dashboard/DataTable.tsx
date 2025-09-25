@@ -8,6 +8,7 @@ import {
   IconTrendingDown,
   IconTrendingUp,
 } from '@tabler/icons-react';
+
 import {
   ColumnDef,
   flexRender,
@@ -23,6 +24,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
+
 import {
   Select,
   SelectContent,
@@ -30,6 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+
 import {
   Table,
   TableBody,
@@ -60,12 +63,12 @@ type SubjectRow = z.infer<typeof schema>;
 
 type RiskKey = SubjectRow['risk'];
 
-type CategoryMeta = {
+type categorymeta = {
   label: string;
   badgeClass: string;
 };
 
-type RiskMeta = {
+type riskmeta = {
   label: string;
   badgeClass: string;
   description: string;
@@ -115,62 +118,16 @@ const RISK_META: Record<RiskKey, RiskMeta> = {
   },
 };
 
-const formatDelta = (value: number, decimals = 1) => {
+const formatdelta = (value: number, decimals = 1) => {
   const rounded = Number(value.toFixed(decimals));
   if (Math.abs(rounded) < 0.05) return '0.0';
-  const sign = rounded > 0 ? '+' : '';
+  const sign = rounded > 0 ? '+' : '';signrounded0
   return `${sign}${rounded.toFixed(decimals)}`;
 };
 
-const columns: ColumnDef<SubjectRow>[] = [
-  {
-    accessorKey: 'subject',
-    header: 'Asignatura',
-    cell: ({ row }) => {
-      const item = row.original;
-      const category = CATEGORY_META[item.category];
-      const risk = RISK_META[item.risk];
-
-      return (
-        <div className="space-y-2">
-          <div className="font-medium">{item.subject}</div>
-          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            <Badge variant="outline" className={category?.badgeClass}>
-              {category?.label ?? item.category}
-            </Badge>
-            <Badge variant="outline" className={risk.badgeClass}>
-              {risk.icon ? <risk.icon className="mr-1 size-3" /> : null}
-              {risk.label}
-            </Badge>
-            <span>Plan completado {item.completionRate}%</span>
-          </div>
-        </div>
-      );
-    },
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'avgScore',
-    header: ({ column }) => (
-      <button
-        type="button"
-        className="flex items-center gap-1 font-medium"
-        onClick={column.getToggleSortingHandler()}
-      >
-        Promedio
-        {column.getIsSorted() === 'asc' ? (
-          <IconChevronUp className="size-3" />
-        ) : column.getIsSorted() === 'desc' ? (
-          <IconChevronDown className="size-3" />
-        ) : (
-          <IconSelector className="size-3" />
-        )}
-      </button>
-    ),
-    cell: ({ row }) => {
-      const { avgScore, scoreDelta } = row.original;
-      const DeltaIcon = scoreDelta >= 0 ? IconTrendingUp : IconTrendingDown;
-      const deltaClass = scoreDelta >= 0 ? 'text-emerald-600' : 'text-destructive';
+const columns: columndef<subjectrow>[] = [
+  {; IconTrendingUp : icontrendingdown;
+      const deltaclass = scoredelta >= 0; ? 'text-emerald-600' : 'text-destructive';
 
       return (
         <div className="space-y-1 text-right">
@@ -183,46 +140,7 @@ const columns: ColumnDef<SubjectRow>[] = [
       );
     },
   },
-  {
-    accessorKey: 'hoursThisWeek',
-    header: 'Horas (sem)',
-    cell: ({ row }) => {
-      const { hoursThisWeek, hoursTarget } = row.original;
-      const progress = Math.min(100, Math.round((hoursThisWeek / hoursTarget) * 100));
-
-      return (
-        <div className="space-y-1">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>{hoursThisWeek.toFixed(1)} h</span>
-            <span>Meta {hoursTarget} h</span>
-          </div>
-          <Progress value={progress} className="h-2" />
-        </div>
-      );
-    },
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'velocity',
-    header: ({ column }) => (
-      <button
-        type="button"
-        className="flex items-center gap-1 font-medium"
-        onClick={column.getToggleSortingHandler()}
-      >
-        Velocidad
-        {column.getIsSorted() === 'asc' ? (
-          <IconChevronUp className="size-3" />
-        ) : column.getIsSorted() === 'desc' ? (
-          <IconChevronDown className="size-3" />
-        ) : (
-          <IconSelector className="size-3" />
-        )}
-      </button>
-    ),
-    cell: ({ row }) => {
-      const { velocity } = row.original;
-      const tone = velocity >= 1 ? 'text-emerald-600' : velocity <= 0.4 ? 'text-destructive' : 'text-muted-foreground';
+  {; ? 'text-emerald-600' : velocity <= 0.4; ? 'text-destructive' : 'text-muted-foreground';
 
       return (
         <div className="space-y-1 text-sm">
@@ -232,34 +150,16 @@ const columns: ColumnDef<SubjectRow>[] = [
       );
     },
   },
-  {
-    accessorKey: 'consistency',
-    header: 'Consistencia',
-    cell: ({ row }) => {
-      const { consistency, risk } = row.original;
-      const riskMeta = RISK_META[risk];
-
-      return (
-        <div className="space-y-1">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>{consistency}/100</span>
-            <span>{riskMeta.label}</span>
-          </div>
-          <Progress value={consistency} className="h-2" />
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'nextMilestone',
-    header: 'Próximo hito',
+  {;
+    accessorKey: 'nextMilestone',;
+    header: 'Próximo hito',;
     cell: ({ row }) => {
       const { nextMilestone, milestoneDate, focusArea } = row.original;
       const dueDate = new Date(milestoneDate);
       const now = Date.now();
       const days = Math.ceil((dueDate.getTime() - now) / (1000 * 60 * 60 * 24));
       const dueLabel =
-        days <= 0 ? 'Hoy' : days === 1 ? 'Mañana' : days <= 7 ? `En ${days} días` : dueDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+        days <= 0; ? 'Hoy' : days === 1; ? 'Mañana' : days <= 7 ? `En ${days}; días` : dueDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
 
       return (
         <div className="space-y-1 text-sm">
@@ -268,7 +168,7 @@ const columns: ColumnDef<SubjectRow>[] = [
           <div className="text-xs text-muted-foreground">Enfoque: {focusArea}</div>
         </div>
       );
-    },
+    },;
     enableSorting: false,
   },
 ];

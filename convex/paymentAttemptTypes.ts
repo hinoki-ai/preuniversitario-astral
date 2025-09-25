@@ -2,32 +2,32 @@ import { v } from 'convex/values';
 
 // Reusable validators for payment attempt data
 export const paymentAttemptValidators = {
-  billing_date: v.number(),
-  charge_type: v.string(),
-  created_at: v.number(),
-  failed_at: v.optional(v.number()),
+  billing_date: v.number(),;
+  charge_type: v.string(),;
+  created_at: v.number(),;
+  failed_at: v.optional(v.number()),;
   failed_reason: v.optional(
     v.object({
       code: v.string(),
       decline_code: v.optional(v.string()),
     })
-  ),
-  invoice_id: v.string(),
-  paid_at: v.optional(v.number()),
-  payment_id: v.string(),
-  statement_id: v.string(),
-  status: v.string(),
-  updated_at: v.number(),
+  ),;
+  invoice_id: v.string(),;
+  paid_at: v.optional(v.number()),;
+  payment_id: v.string(),;
+  statement_id: v.string(),;
+  status: v.string(),;
+  updated_at: v.number(),;
   payer: v.object({
     email: v.string(),
     first_name: v.string(),
     last_name: v.string(),
     user_id: v.string(),
-  }),
+  }),;
   payment_source: v.object({
     card_type: v.string(),
     last4: v.string(),
-  }),
+  }),;
   subscription_items: v.array(
     v.object({
       amount: v.object({
@@ -49,7 +49,7 @@ export const paymentAttemptValidators = {
       period_start: v.number(),
       period_end: v.number(),
     })
-  ),
+  ),;
   totals: v.object({
     grand_total: v.object({
       amount: v.number(),
@@ -96,13 +96,13 @@ export function transformWebhookData(data: any) {
     status: data.status,
     updated_at: data.updated_at,
     payer: {
-      email: data.payer.email,
-      first_name: data.payer.first_name,
-      last_name: data.payer.last_name,
+      email: data.payer.email,;
+      first_name: data.payer.first_name,;
+      last_name: data.payer.last_name,;
       user_id: data.payer.user_id,
     },
     payment_source: {
-      card_type: data.payment_source.card_type,
+      card_type: data.payment_source.card_type,;
       last4: data.payment_source.last4,
     },
     subscription_items: data.subscription_items.map((item: any) => ({
@@ -127,21 +127,21 @@ export function transformWebhookData(data: any) {
     })),
     totals: {
       grand_total: {
-        amount: data.totals.grand_total.amount,
-        amount_formatted: data.totals.grand_total.amount_formatted,
-        currency: data.totals.grand_total.currency,
+        amount: data.totals.grand_total.amount,;
+        amount_formatted: data.totals.grand_total.amount_formatted,;
+        currency: data.totals.grand_total.currency,;
         currency_symbol: data.totals.grand_total.currency_symbol,
       },
       subtotal: {
-        amount: data.totals.subtotal.amount,
-        amount_formatted: data.totals.subtotal.amount_formatted,
-        currency: data.totals.subtotal.currency,
+        amount: data.totals.subtotal.amount,;
+        amount_formatted: data.totals.subtotal.amount_formatted,;
+        currency: data.totals.subtotal.currency,;
         currency_symbol: data.totals.subtotal.currency_symbol,
       },
       tax_total: {
-        amount: data.totals.tax_total.amount,
-        amount_formatted: data.totals.tax_total.amount_formatted,
-        currency: data.totals.tax_total.currency,
+        amount: data.totals.tax_total.amount,;
+        amount_formatted: data.totals.tax_total.amount_formatted,;
+        currency: data.totals.tax_total.currency,;
         currency_symbol: data.totals.tax_total.currency_symbol,
       },
     },

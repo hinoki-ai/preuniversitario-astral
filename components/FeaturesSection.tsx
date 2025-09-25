@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+
 import {
   Video,
   Users,
@@ -14,8 +15,9 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { ComponentErrorBoundary } from '@/components/ErrorBoundary';
 
-export function FeaturesSection() {
+function FeaturesSectionInternal() {
   const features = [
     {
       icon: Video,
@@ -88,9 +90,9 @@ export function FeaturesSection() {
               transition={{ delay: index * 0.1, duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <Card className="p-8 h-full bg-card/70 backdrop-blur-sm border-border/20 hover:shadow-xl transition-all duration-300 group">
-                <div className="w-16 h-16 bg-gradient-to-br from-accent/10 to-deep-blue/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <feature.icon className="w-8 h-8 text-accent" />
+              <Card className="p-8 h-full bg-card/90 backdrop-blur-sm border-border/50 hover:shadow-2xl hover:shadow-golden/10 transition-all duration-300 group hover:scale-[1.02]">
+                <div className="w-16 h-16 bg-gradient-to-br from-golden/15 to-amber/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <feature.icon className="w-8 h-8 text-golden" />
                 </div>
 
                 <h3 className="font-serif text-2xl font-bold text-card-foreground mb-4">
@@ -102,7 +104,7 @@ export function FeaturesSection() {
                 <ul className="space-y-3 mb-6">
                   {feature.benefits.map((benefit, idx) => (
                     <li key={idx} className="flex items-center gap-3 text-sm text-card-foreground">
-                      <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
+                      <CheckCircle className="w-4 h-4 text-golden flex-shrink-0" />
                       {benefit}
                     </li>
                   ))}
@@ -110,7 +112,7 @@ export function FeaturesSection() {
 
                 <Button
                   variant="ghost"
-                  className="w-full justify-between text-accent hover:text-accent hover:bg-accent/10 group-hover:translate-x-1 transition-transform duration-300"
+                  className="w-full justify-between text-golden hover:text-golden hover:bg-golden/10 group-hover:translate-x-1 transition-transform duration-300"
                 >
                   Explorar función
                   <ArrowRight className="w-4 h-4" />
@@ -121,5 +123,13 @@ export function FeaturesSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+export function FeaturesSection() {
+  return (
+    <ComponentErrorBoundary context="FeaturesSection">
+      <FeaturesSectionInternal />
+    </ComponentErrorBoundary>
   );
 }

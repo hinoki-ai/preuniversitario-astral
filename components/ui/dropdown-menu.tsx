@@ -1,15 +1,17 @@
 'use client'
 
-import * as React from 'react'
-import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
-import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react'
+import * as react from 'react'
+import * as dropdownmenuprimitive from '@radix-ui/react-dropdown-menu'
+import { CheckIcon, ChevronRightIcon, CircleIcon }
+
+ from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
 function DropdownMenu({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
-  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
+  return <dropdownmenuprimitive.Root data-slot="dropdown-menu" {...props} />
 }
 
 function DropdownMenuPortal({
@@ -195,7 +197,7 @@ function DropdownMenuShortcut({
 function DropdownMenuSub({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
-  return <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />
+  return <dropdownmenuprimitive.Sub data-slot="dropdown-menu-sub" {...props} />
 }
 
 function DropdownMenuSubTrigger({

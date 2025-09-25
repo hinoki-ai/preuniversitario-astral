@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import {
   Select,
   SelectContent,
@@ -18,7 +19,10 @@ import {
 } from '@/components/ui/select';
 import { api } from '@/convex/_generated/api';
 import type { Id } from '@/convex/_generated/dataModel';
+import { useStandardErrorHandling } from '@/lib/core/error-wrapper';
+import { ComponentErrorBoundary } from '@/components/ErrorBoundary';
 import { Trophy, Clock, Target, Zap } from 'lucide-react';
+
 import {
   getDemoPaesAssignments,
   getDemoPaesCatalog,
@@ -31,14 +35,14 @@ import type { PaesAssignmentMeta, PaesQuiz, PaesCatalogItem, QuizAttempt } from 
 type PaesCatalog = PaesCatalogItem[];
 type PaesQuizResult = QuizAttempt;
 
-type LocalPaesResult = {
+type localpaesresult = {
   correctCount: number;
   totalCount: number;
   score: number;
   review: { correct: boolean; correctIndex: number; explanation?: string }[];
 };
 
-type CatalogTestBase = {
+type catalogtestbase = {
   id: string;
   title: string;
   assignment: string;
@@ -50,20 +54,20 @@ type CatalogTestBase = {
   session?: string;
 };
 
-type ConvexCatalogTest = CatalogTestBase & {
+type convexcatalogtest = catalogtestbase & {
   sourceType: 'convex';
-  quizId: Id<'quizzes'>;
+  quizId: id<'quizzes'>;
 };
 
-type DemoCatalogTest = CatalogTestBase & {
+type democatalogtest = catalogtestbase & {
   sourceType: 'demo';
   quizId: string;
 };
 
 type CatalogTest = ConvexCatalogTest | DemoCatalogTest;
 
-type CatalogAssignment = PaesAssignmentMeta & {
-  tests: CatalogTest[];
+type catalogassignment = paesassignmentmeta & {
+  tests: catalogtest[];
 };
 
 function resolveAssignmentMeta(id?: string): PaesAssignmentMeta {
@@ -72,40 +76,39 @@ function resolveAssignmentMeta(id?: string): PaesAssignmentMeta {
     if (known) return known;
     return {
       id,
-      label: id,
+      label: id,;
       description: 'Asignatura sin categoría definida. Actualiza el campo "assignment" en Convex.',
     };
   }
+
   return {
-    id: 'general',
-    label: 'Sin asignatura',
+    id: 'general',;
+    label: 'Sin asignatura',;
     description: 'Clasifica este ensayo PAES asignando un módulo (M1, M2, etc.).',
   };
 }
 
 function buildAssignments(
-  convexCatalog: PaesCatalog | undefined,
-  demoAssignments: PaesAssignmentMeta[],
-  demoCatalog: ReturnType<typeof getDemoPaesCatalog>
+  convexCatalog: any[] | undefined
 ): CatalogAssignment[] {
   const assignments = new Map<string, CatalogAssignment>();
-
-  const ensureAssignment = (meta: PaesAssignmentMeta) => {
+  const ensureassignment = (meta: PaesAssignmentMeta) => {
     const existing = assignments.get(meta.id);
     if (existing) return existing;
-    const next: CatalogAssignment = { ...meta, tests: [] };
+    const next: CatalogAssignment = { ...meta, tests: []tests };
     assignments.set(meta.id, next);
     return next;
   };
 
-  demoAssignments.forEach(meta => ensureAssignment(meta));
+  getDemoPaesAssignments().forEach(meta => ensureAssignment(meta));
 
   if (convexCatalog && convexCatalog.length > 0) {
     convexCatalog.forEach(entry => {
-      const meta = ensureAssignment(resolveAssignmentMeta((entry as any).assignment ?? entry.subject));
+      const assignment = (entry as any).assignment || (entry as any).subject || 'general';
+      const meta = ensureAssignment(resolveAssignmentMeta(assignment));
       meta.tests.push({
-        id: entry._id as unknown as string,
-        quizId: entry._id as Id<'quizzes'>,
+        id: (entry as any)._id as unknown as string,
+        quizId: (entry as any)._id,
         sourceType: 'convex',
         title: entry.title,
         assignment: meta.id,
@@ -119,7 +122,7 @@ function buildAssignments(
     });
   }
 
-  demoCatalog.forEach(test => {
+  getDemoPaesCatalog().forEach((test: any) => {
     const meta = ensureAssignment(resolveAssignmentMeta(test.assignment));
     const alreadyIncluded = meta.tests.some(current => current.id === test.id);
     if (!alreadyIncluded) {
@@ -147,52 +150,8 @@ function buildAssignments(
     .sort((a, b) => a.label.localeCompare(b.label));
 }
 
-export default function Simulator() {
-  const convexCatalog = useQuery(api.quizzes.getPaesCatalog, {});
-  const mockExamCatalog = useQuery(api.mockExams.getMockExamCatalog, {});
-  const recommendations = useQuery(api.userStats.getRecommendations);
-
-  const demoAssignments = useMemo(() => getDemoPaesAssignments(), []);
-  const demoCatalog = useMemo(() => getDemoPaesCatalog(), []);
-
-  const assignments = useMemo(
-    () => buildAssignments(convexCatalog, demoAssignments, demoCatalog),
-    [convexCatalog, demoAssignments, demoCatalog]
-  );
-
-  const [selectedAssignmentId, setSelectedAssignmentId] = useState<string | undefined>();
-  const [selectedTestId, setSelectedTestId] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!selectedAssignmentId && assignments.length > 0) {
-      setSelectedAssignmentId(assignments[0].id);
-    }
-  }, [assignments, selectedAssignmentId]);
-
-  const selectedAssignment = useMemo(
-    () => assignments.find(item => item.id === selectedAssignmentId),
-    [assignments, selectedAssignmentId]
-  );
-
-  useEffect(() => {
-    if (!selectedAssignment) {
-      setSelectedTestId(null);
-      return;
-    }
-    if (selectedAssignment.tests.length === 0) {
-      setSelectedTestId(null);
-      return;
-    }
-    const exists = selectedAssignment.tests.some(test => test.id === selectedTestId);
-    if (!exists) {
-      setSelectedTestId(selectedAssignment.tests[0].id);
-    }
-  }, [selectedAssignment, selectedTestId]);
-
-  const selectedTest: CatalogTest | null = useMemo(() => {
-    if (!selectedAssignment) return null;
-    return selectedAssignment.tests.find(test => test.id === selectedTestId) ?? null;
-  }, [selectedAssignment, selectedTestId]);
+function SimulatorInternal() {
+  const { handleError, safeAsyncCall, safeSyncCall }selectedTest
 
   const convexQuiz = useQuery(
     api.quizzes.getPaesQuiz,
@@ -203,17 +162,15 @@ export default function Simulator() {
 
   const demoQuizPayload: DemoPaesQuizPayload | null = useMemo(() => {
     if (!selectedTest || selectedTest.sourceType !== 'demo') return null;
-    return getDemoPaesQuiz(selectedTest.quizId);
-  }, [selectedTest]);
-
+    return getDemoPaesQuiz(selectedTest.quizId) as DemoPaesQuizPayload | null;
+  }, [selectedTest]);demoQuizPayload
   const quiz =
     selectedTest?.sourceType === 'convex'
       ? convexQuiz
-      : selectedTest?.sourceType === 'demo'
-        ? demoQuizPayload?.quiz
+      : selectedtest?.sourcetype === 'demo'
+        ?; demoQuizPayload?.quiz
         : null;
-
-  const answerKey = selectedTest?.sourceType === 'demo' ? demoQuizPayload?.answerKey ?? [] : [];
+  const answerKey = selectedTest?.sourceType === 'demo' ? demoQuizPayload?.answerKey ?? [] : [];answerKeyselectedTest?.sourceTypedemoQuizPayload?.answerKey
 
   const [answers, setAnswers] = useState<number[]>([]);
   const [result, setResult] = useState<(PaesQuizResult | LocalPaesResult) | null>(null);
@@ -245,7 +202,7 @@ export default function Simulator() {
 
   const submit = useMutation(api.quizzes.submitPaesAttempt);
 
-  const onSubmit = async () => {
+  const onsubmit = async () => {
     if (!quiz || quiz.questions.length === 0 || isSubmitting) return;
 
     if (selectedTest?.sourceType === 'convex') {
@@ -255,7 +212,9 @@ export default function Simulator() {
         setResult(res);
       } catch (error) {
         console.error('Error al enviar el simulacro PAES', error);
-      } finally {
+      }
+
+ finally {
         setIsSubmitting(false);
       }
       return;
@@ -273,7 +232,7 @@ export default function Simulator() {
       });
       const correctCount = review.filter(entry => entry.correct).length;
       const totalCount = answerKey.length;
-      const score = totalCount > 0 ? correctCount / totalCount : 0;
+      const score = totalCount > 0 ? correctCount / totalCount : 0;scoretotalCount0correctCounttotalCount
       setResult({ correctCount, totalCount, score, review });
     }
   };
@@ -420,12 +379,12 @@ export default function Simulator() {
               </RadioGroup>
               {result && (
                 <div className="text-sm">
-                  {result.review[index].correct ? (
+                  {'review' in result && result.review[index].correct ? (
                     <span className="text-green-600">Correcto</span>
                   ) : (
                     <span className="text-red-600">
-                      Incorrecto. Respuesta correcta: {result.review[index].correctIndex + 1}
-                      {result.review[index].explanation ? ` — ${result.review[index].explanation}` : ''}
+                      Incorrecto. Respuesta correcta: {'review' in result ? result.review[index].correctIndex + 1 : 'N/A'}
+                      {'review' in result && result.review[index].explanation ? ` — ${result.review[index].explanation}` : ''}
                     </span>
                   )}
                 </div>
@@ -524,5 +483,13 @@ export default function Simulator() {
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+export default function Simulator() {
+  return (
+    <ComponentErrorBoundary context="Simulator">
+      <SimulatorInternal />
+    </ComponentErrorBoundary>
   );
 }

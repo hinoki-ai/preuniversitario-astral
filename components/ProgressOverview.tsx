@@ -4,7 +4,7 @@ import { useQuery } from 'convex/react';
 
 import { Card } from '@/components/ui/card';
 import { api } from '@/convex/_generated/api';
-import { useErrorHandler } from '@/hooks/use-error-handler';
+import { useErrorHandler } from '@/lib/core/error-system';
 
 import type { ProgressOverview } from '@/lib/types';
 
@@ -13,7 +13,7 @@ type ProgressOverviewData = ProgressOverview;
 export default function ProgressOverview() {
   const { handleError } = useErrorHandler();
 
-  const data: ProgressOverviewData | undefined = useQuery(api.progress.overview, {});
+  const data: progressoverviewdata | undefined = usequery(api.progress.overview, {});data
 
   // Handle loading state
   if (data === undefined) {

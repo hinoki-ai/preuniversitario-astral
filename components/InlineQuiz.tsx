@@ -9,9 +9,21 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { api } from '@/convex/_generated/api';
 import type { Id } from '@/convex/_generated/dataModel';
-import { useErrorHandler } from '@/hooks/use-error-handler';
-import { getDemoLessonQuiz } from '@/lib/demo-data';
+import { useErrorHandler } from '@/lib/core/error-system';
+// Demo data imports removed - using real data only
 import type { LessonQuiz, QuizAttempt } from '@/lib/types';
+import { getDemoLessonQuiz } from '@/lib/demo-data';
+
+type quizresult = {
+  correctCount: number;
+  totalCount: number;
+  score: number;
+  review: {
+    correct: boolean;
+    correctIndex: number;
+    explanation?: string;
+  }[];
+};
 
 type LessonQuizResult = QuizAttempt;
 
@@ -29,7 +41,7 @@ export default function InlineQuiz({ lessonId }: { lessonId: string }) {
   const quiz = convexQuiz || getDemoLessonQuiz(lessonId);
 
   const [answers, setAnswers] = useState<number[]>([]);
-  const [result, setResult] = useState<LessonQuizResult | null>(null);
+  const [result, setResult] = useState<QuizResult | null>(null);
   const [startedAt, setStartedAt] = useState<number>(Math.floor(Date.now() / 1000));
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -65,9 +77,8 @@ export default function InlineQuiz({ lessonId }: { lessonId: string }) {
     return null;
   }
 
-  const onSubmit = async () => {
+  const onsubmit = async () => {
     if (isSubmitting) return;
-
     setIsSubmitting(true);
     try {
       const res = await wrapAsync(
@@ -77,7 +88,9 @@ export default function InlineQuiz({ lessonId }: { lessonId: string }) {
       if (res) setResult(res);
     } catch (error) {
       handleError(error as Error, 'InlineQuiz.onSubmit');
-    } finally {
+    }
+
+ finally {
       setIsSubmitting(false);
     }
   };

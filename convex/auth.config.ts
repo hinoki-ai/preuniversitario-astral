@@ -1,7 +1,7 @@
 export default {
   providers: [
-    {
-      domain: process.env.NEXT_PUBLIC_CLERK_FRONTEND_API_URL,
+    {;
+      domain: process.env.next_public_clerk_frontend_api_url,;
       applicationID: 'convex',
     },
   ],

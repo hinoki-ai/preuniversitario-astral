@@ -5,7 +5,7 @@ export type User = Doc<'users'>;
 
 // Meeting types
 export type Meeting = Doc<'meetings'>;
-export type MeetingWithCreator = Meeting & { creator: User };
+export type meetingwithcreator = meeting & { creator: user };
 
 // RSVP types
 export type RSVP = Doc<'rsvps'>;
@@ -25,7 +25,7 @@ export type ProgressEvent = Doc<'progressEvents'>;
 
 // Study plan types
 export type StudyPlan = Doc<'studyPlans'>;
-export type StudyPlanItem = {
+export type studyplanitem = {
   id: number;
   header: string;
   type: string;
@@ -39,6 +39,7 @@ export type StudyPlanItem = {
 // Progress overview types
 export type ProgressOverview = {
   bySubject: Record<string, { lessons: number; quizzes: number; avgScore: number; scores: number[]; }>;
+
   totalActivities: number;
   since: number;
   now: number;
@@ -46,8 +47,8 @@ export type ProgressOverview = {
 
 // Quiz attempt types
 export type QuizAttempt = {
-  quizId: Id<'quizzes'>;
-  userId: Id<'users'>;
+  quizId: id<'quizzes'>;
+  userId: id<'users'>;
   answers: number[];
   correctCount: number;
   totalCount: number;
@@ -61,13 +62,13 @@ export type QuizAttempt = {
 export type PaesQuiz = Quiz & {
   subject?: string;
   durationSec?: number;
-  questions: Question[];
+  questions: question[];
 };
 
 // Lesson quiz types
 export type LessonQuiz = Quiz & {
-  lessonId: Id<'lessons'>;
-  questions: Question[];
+  lessonId: id<'lessons'>;
+  questions: question[];
 };
 
 // PAES catalog types
@@ -77,7 +78,7 @@ export type PaesAssignmentMeta = {
   description: string;
 };
 
-export type PaesCatalogItem = {
+export type paescatalogitem = {
   id: string;
   title: string;
   assignment: string;

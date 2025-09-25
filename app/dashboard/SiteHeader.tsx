@@ -8,18 +8,6 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 function getPageTitle(pathname: string): string {
   // Handle exact matches first
   switch (pathname) {
-    case '/dashboard':
-      return 'Dashboard';
-    case '/dashboard/payment-gated':
-      return 'Payment gated';
-    case '/dashboard/payment-gated/zoom':
-      return 'Zoom';
-    case '/dashboard/plan':
-      return 'Plan de Estudio';
-    case '/dashboard/paes':
-      return 'Simulacros PAES';
-    case '/dashboard/biblioteca':
-      return 'Biblioteca';
     case '/dashboard/progreso':
       return 'Progreso';
     default:

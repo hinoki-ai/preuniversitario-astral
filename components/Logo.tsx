@@ -84,7 +84,7 @@ export const LogoStroke = ({ className }: { className?: string }) => {
   );
 };
 
-export function ChatMaxingIcon(props: React.SVGProps<SVGSVGElement>) {
+export function chatmaxingicon(props: react.svgprops<svgsvgelement>) {
   return (
     <svg
       viewBox="0 0 24 24"

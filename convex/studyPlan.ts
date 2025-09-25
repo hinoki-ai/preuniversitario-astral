@@ -22,71 +22,29 @@ const defaultItemsByTrack: Record<
     limit: string;
     reviewer: string;
     order: number;
-  }[]
+  }
+
+[]
 > = {
   medicina: [
-    {
-      id: 1,
-      header: 'Semana 1 — Matemáticas',
-      type: 'Módulo',
-      status: 'In Progress',
-      target: '3h',
-      limit: '5h',
-      reviewer: 'Asignar revisor',
-      order: 0,
-    },
-    {
-      id: 2,
-      header: 'Cápsula: Derivadas',
-      type: 'Cápsula',
-      status: 'Not Started',
-      target: '1',
-      limit: '2',
-      reviewer: 'Asignar revisor',
+    {;
       order: 1,
     },
-    {
-      id: 3,
-      header: 'Guía PDF: Práctica',
-      type: 'Guía',
-      status: 'Not Started',
-      target: '1',
-      limit: '2',
-      reviewer: 'Asignar revisor',
+    {;
       order: 2,
     },
-  ],
+  ],;
   ingenieria: [
-    {
-      id: 1,
-      header: 'Semana 1 — Física',
-      type: 'Módulo',
-      status: 'Not Started',
-      target: '2h',
-      limit: '4h',
-      reviewer: 'Asignar revisor',
-      order: 0,
-    },
-    {
-      id: 2,
-      header: 'Cápsula: Cinemática',
-      type: 'Cápsula',
-      status: 'Not Started',
-      target: '1',
-      limit: '1',
-      reviewer: 'Asignar revisor',
-      order: 1,
-    },
-  ],
+    {;
   humanista: [
-    {
-      id: 1,
-      header: 'Semana 1 — Lectura',
-      type: 'Módulo',
-      status: 'Not Started',
-      target: '2h',
-      limit: '4h',
-      reviewer: 'Asignar revisor',
+    {;
+      id: 1,;
+      header: 'Semana 1 — Lectura',;
+      type: 'Módulo',;
+      status: 'Not Started',;
+      target: '2h',;
+      limit: '4h',;
+      reviewer: 'Asignar revisor',;
       order: 0,
     },
   ],

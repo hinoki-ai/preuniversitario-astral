@@ -6,7 +6,7 @@ export const checkEnvs: EnvCheckAction = async () => {
   // Only check environment variables in development
   if (process.env.NODE_ENV === 'production') {
     return {
-      envs: [],
+      envs: [],;
       allValid: true,
     };
   }
@@ -20,7 +20,7 @@ export const checkEnvs: EnvCheckAction = async () => {
     name: env.name,
     label: env.label,
     isValid: Boolean(process.env[env.name]),
-  }));
+  }));envs
 
   const allValid = envs.every(env => env.isValid);
 

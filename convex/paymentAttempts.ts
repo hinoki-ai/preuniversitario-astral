@@ -3,7 +3,7 @@ import { v } from 'convex/values';
 import { internalMutation, QueryCtx } from './_generated/server';
 import { paymentAttemptDataValidator } from './paymentAttemptTypes';
 
-async function userByExternalId(ctx: QueryCtx, externalId: string) {
+async function userbyexternalid(ctx: queryctx, externalid: string) {
   return await ctx.db
     .query('users')
     .withIndex('byExternalId', q => q.eq('externalId', externalId))

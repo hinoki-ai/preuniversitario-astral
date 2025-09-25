@@ -69,8 +69,8 @@ export default function ZoomPaidPage() {
       </div>
     </ErrorBoundary>
   ) : (
-    <ErrorBoundary>
-      <UpgradeCard />
-    </ErrorBoundary>
-  );
+    <errorboundary>
+      <upgradecard />
+    </errorboundary>
+  );hasAccess<ErrorBoundary><divclassName=<divclassName=<h1className=>AulaenVivo</h1></div><ZoomDashboard</div></ErrorBoundary>
 }

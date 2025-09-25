@@ -43,14 +43,13 @@ export const seed = action(async ctx => {
   return { success: true, message: 'Demo data seeded successfully' };
 });
 
-async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
+async function seedmedicinacontent(ctx: any, courseid: any, adminuser: any) {
   // Module 1: Matemáticas M1
   const mathM1Module = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Matemáticas M1 - Fundamentos',
     order: 1,
-  });
-
+  });Module1
   const mathM1Lesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: mathM1Module,
     title: 'Álgebra Básica y Ecuaciones',
@@ -59,7 +58,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-algebra-m1',
     transcript: 'En esta lección revisaremos los conceptos fundamentales del álgebra...',
   });
-
   const mathM1Quiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Matemáticas M1 - Álgebra',
     type: 'lesson',
@@ -68,7 +66,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 900,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: mathM1Quiz,
     order: 1,
@@ -77,14 +74,12 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 0,
     explanation: 'Restar 2x de ambos lados: x - 7 = 5, luego sumar 7: x = 12',
   });
-
   // Module 2: Matemáticas M2
   const mathM2Module = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Matemáticas M2 - Avanzado',
     order: 2,
-  });
-
+  });Module2
   const mathM2Lesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: mathM2Module,
     title: 'Cálculo Diferencial',
@@ -93,7 +88,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-calculo-m2',
     transcript: 'El cálculo diferencial es fundamental para carreras científicas...',
   });
-
   const mathM2Quiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Matemáticas M2 - Derivadas',
     type: 'lesson',
@@ -102,7 +96,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 900,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: mathM2Quiz,
     order: 1,
@@ -111,14 +104,12 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 0,
     explanation: 'Derivada: f\'(x) = 6x + 2',
   });
-
   // Module 3: Competencia Lectora
   const lecturaModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Competencia Lectora',
     order: 3,
-  });
-
+  });Module3
   const lecturaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: lecturaModule,
     title: 'Comprensión de Textos Científicos',
@@ -127,7 +118,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-lectura-ciencia',
     transcript: 'La competencia lectora es esencial para el éxito en la PAES...',
   });
-
   const lecturaQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Competencia Lectora - Textos Científicos',
     type: 'lesson',
@@ -136,7 +126,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: lecturaQuiz,
     order: 1,
@@ -150,14 +139,12 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 0,
     explanation: 'El texto presenta información sobre un descubrimiento científico reciente',
   });
-
   // Module 4: Física
   const fisicaModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Física para Ciencias de la Salud',
     order: 4,
-  });
-
+  });Module4
   const fisicaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: fisicaModule,
     title: 'Movimiento y Fuerzas',
@@ -166,7 +153,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-fisica-movimiento',
     transcript: 'La física es fundamental para entender procesos biológicos...',
   });
-
   const fisicaQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Física - Mecánica',
     type: 'lesson',
@@ -175,7 +161,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: fisicaQuiz,
     order: 1,
@@ -189,14 +174,12 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 0,
     explanation: 'La primera ley establece que un objeto mantiene su estado a menos que actúe una fuerza externa',
   });
-
   // Module 5: Química
   const chemModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Química para Ciencias de la Salud',
     order: 5,
-  });
-
+  });Module5
   const chemLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: chemModule,
     title: 'Enlaces Químicos y Biomoléculas',
@@ -205,7 +188,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-enlaces-biomoleculas',
     transcript: 'Los enlaces químicos son las fuerzas que mantienen unidos a los átomos...',
   });
-
   const chemQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Química - Biomoléculas',
     type: 'lesson',
@@ -214,7 +196,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: chemQuiz,
     order: 1,
@@ -223,14 +204,12 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 0,
     explanation: 'El agua está compuesta por 2 átomos de hidrógeno y 1 de oxígeno.',
   });
-
   // Module 6: Biología
   const bioModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Biología Celular y Molecular',
     order: 6,
-  });
-
+  });Module6
   const bioLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: bioModule,
     title: 'Estructura y Función Celular',
@@ -239,7 +218,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-celula-biologia',
     transcript: 'En esta lección aprenderemos sobre la estructura básica de la célula...',
   });
-
   const bioQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Biología Celular',
     type: 'lesson',
@@ -248,7 +226,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: bioQuiz,
     order: 1,
@@ -262,7 +239,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 1,
     explanation: 'El núcleo contiene el ADN y controla todas las actividades celulares.',
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: bioQuiz,
     order: 2,
@@ -271,14 +247,12 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 1,
     explanation: 'Los cloroplastos contienen clorofila y realizan la fotosíntesis.',
   });
-
   // Module 7: Estrategias de Estudio
   const strategiesModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Estrategias de Estudio PAES',
     order: 7,
-  });
-
+  });Module7
   const strategiesLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: strategiesModule,
     title: 'Técnicas de Estudio para Medicina',
@@ -287,7 +261,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-estudio-medicina',
     transcript: 'Las estrategias de estudio efectivas son clave para el éxito en medicina...',
   });
-
   const strategiesQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Evaluación de Hábitos de Estudio',
     type: 'lesson',
@@ -296,7 +269,6 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 300,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: strategiesQuiz,
     order: 1,
@@ -310,13 +282,12 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 1,
     explanation: 'La asociación con casos clínicos facilita la retención y comprensión de conceptos médicos.',
   });
-
   // Module 8: Bienestar y Yoga
   const wellnessModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Bienestar y Salud Mental',
     order: 8,
-  });
+  });Module8
 
   const yogaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: wellnessModule,
@@ -351,14 +322,13 @@ async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
   });
 }
 
-async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
+async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
   // Module 1: Matemáticas M1
   const mathM1Module = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Matemáticas M1 - Fundamentos',
     order: 1,
-  });
-
+  });Module1
   const mathM1Lesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: mathM1Module,
     title: 'Álgebra y Geometría',
@@ -367,7 +337,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-algebra-ingenieria',
     transcript: 'Los conceptos matemáticos básicos son fundamentales para la ingeniería...',
   });
-
   const mathM1Quiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Matemáticas M1 - Ingeniería',
     type: 'lesson',
@@ -376,7 +345,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 900,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: mathM1Quiz,
     order: 1,
@@ -385,14 +353,12 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 1,
     explanation: 'La derivada de x² es 2x según la regla de la potencia.',
   });
-
   // Module 2: Matemáticas M2
   const mathM2Module = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Matemáticas M2 - Avanzado',
     order: 2,
-  });
-
+  });Module2
   const mathM2Lesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: mathM2Module,
     title: 'Cálculo Integral y Aplicaciones',
@@ -401,7 +367,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-calculo-ingenieria',
     transcript: 'El cálculo avanzado es esencial para resolver problemas de ingeniería...',
   });
-
   const mathM2Quiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Matemáticas M2 - Integrales',
     type: 'lesson',
@@ -410,7 +375,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 900,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: mathM2Quiz,
     order: 1,
@@ -419,14 +383,12 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 0,
     explanation: 'La integral de 2x es x² y la de 3 es 3x, más la constante de integración C.',
   });
-
   // Module 3: Competencia Lectora
   const lecturaModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Competencia Lectora',
     order: 3,
-  });
-
+  });Module3
   const lecturaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: lecturaModule,
     title: 'Comprensión de Textos Técnicos',
@@ -435,7 +397,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-lectura-tecnica',
     transcript: 'La lectura técnica es crucial para la formación en ingeniería...',
   });
-
   const lecturaQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Competencia Lectora - Textos Técnicos',
     type: 'lesson',
@@ -444,7 +405,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: lecturaQuiz,
     order: 1,
@@ -458,14 +418,12 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 2,
     explanation: 'El texto se centra en la optimización de procesos técnicos',
   });
-
   // Module 4: Física
   const fisicaModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Física para Ingeniería',
     order: 4,
-  });
-
+  });Module4
   const fisicaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: fisicaModule,
     title: 'Mecánica y Termodinámica',
@@ -474,7 +432,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-fisica-ingenieria',
     transcript: 'Los principios físicos son la base de la ingeniería moderna...',
   });
-
   const fisicaQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Física - Termodinámica',
     type: 'lesson',
@@ -483,7 +440,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: fisicaQuiz,
     order: 1,
@@ -497,14 +453,12 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 0,
     explanation: 'La primera ley establece que la energía no se crea ni se destruye, solo se transforma.',
   });
-
   // Module 5: Química
   const chemModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Química para Ingeniería',
     order: 5,
-  });
-
+  });Module5
   const chemLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: chemModule,
     title: 'Química General y de Materiales',
@@ -513,7 +467,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-quimica-ingenieria',
     transcript: 'La química es fundamental para entender materiales y procesos...',
   });
-
   const chemQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Química - Materiales',
     type: 'lesson',
@@ -522,7 +475,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: chemQuiz,
     order: 1,
@@ -531,14 +483,12 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 1,
     explanation: 'El carbono tiene número atómico 6, lo que significa que tiene 6 protones.',
   });
-
   // Module 6: Biología
   const bioModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Biología para Ingeniería',
     order: 6,
-  });
-
+  });Module6
   const bioLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: bioModule,
     title: 'Biología y Biotecnología',
@@ -547,7 +497,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-biologia-ingenieria',
     transcript: 'La biología es relevante en biotecnología y bioingeniería...',
   });
-
   const bioQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Biología - Biotecnología',
     type: 'lesson',
@@ -556,7 +505,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: bioQuiz,
     order: 1,
@@ -570,14 +518,12 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 1,
     explanation: 'La biotecnología utiliza organismos vivos para crear productos y procesos industriales.',
   });
-
   // Module 7: Historia
   const historiaModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Historia y Ciencias Sociales',
     order: 7,
-  });
-
+  });Module7
   const historiaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: historiaModule,
     title: 'Historia de la Ciencia y Tecnología',
@@ -586,7 +532,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-historia-ciencia',
     transcript: 'La historia de la ciencia y tecnología es fundamental para entender el progreso humano...',
   });
-
   const historiaQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Historia - Ciencia y Tecnología',
     type: 'lesson',
@@ -595,7 +540,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: historiaQuiz,
     order: 1,
@@ -609,14 +553,12 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 2,
     explanation: 'Alan Turing es considerado el padre de la computación moderna por sus trabajos en teoría de la computación.',
   });
-
   // Module 8: Estrategias de Estudio
   const strategiesModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Estrategias de Estudio PAES',
     order: 8,
-  });
-
+  });Module8
   const strategiesLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: strategiesModule,
     title: 'Técnicas de Estudio para Ingeniería',
@@ -625,7 +567,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-estudio-ingenieria',
     transcript: 'Las estrategias de estudio en ingeniería requieren pensamiento lógico y resolución de problemas...',
   });
-
   const strategiesQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Evaluación de Hábitos de Estudio - Ingeniería',
     type: 'lesson',
@@ -634,7 +575,6 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 300,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: strategiesQuiz,
     order: 1,
@@ -648,13 +588,12 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 1,
     explanation: 'El análisis paso a paso desarrolla el pensamiento crítico esencial en ingeniería.',
   });
-
   // Module 9: Bienestar y Yoga
   const wellnessModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Bienestar y Salud Mental',
     order: 9,
-  });
+  });Module9
 
   const yogaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: wellnessModule,
@@ -689,14 +628,13 @@ async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
   });
 }
 
-async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
+async function seedhumanistacontent(ctx: any, courseid: any, adminuser: any) {
   // Module 1: Matemáticas M1
   const mathM1Module = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Matemáticas M1 - Fundamentos',
     order: 1,
-  });
-
+  });Module1
   const mathM1Lesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: mathM1Module,
     title: 'Matemáticas para Ciencias Sociales',
@@ -705,7 +643,6 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-matematicas-humanista',
     transcript: 'Las matemáticas son herramientas esenciales para el análisis en ciencias sociales...',
   });
-
   const mathM1Quiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Matemáticas M1 - Humanista',
     type: 'lesson',
@@ -714,7 +651,6 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 900,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: mathM1Quiz,
     order: 1,
@@ -723,14 +659,12 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 1,
     explanation: 'Área = (base × altura) / 2 = (6 × 4) / 2 = 24/2 = 12 cm²',
   });
-
   // Module 2: Competencia Lectora
   const lecturaModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Competencia Lectora',
     order: 2,
-  });
-
+  });Module2
   const lecturaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: lecturaModule,
     title: 'Comprensión de Textos Humanísticos',
@@ -739,7 +673,6 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-lectura-humanista',
     transcript: 'La competencia lectora es fundamental para el análisis de textos filosóficos, literarios y sociales...',
   });
-
   const lecturaQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Competencia Lectora - Textos Humanísticos',
     type: 'lesson',
@@ -748,7 +681,6 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: lecturaQuiz,
     order: 1,
@@ -762,14 +694,12 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 2,
     explanation: 'El texto desarrolla una teoría sobre la naturaleza de la justicia en la sociedad',
   });
-
   // Module 3: Historia
   const historiaModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Historia y Ciencias Sociales',
     order: 3,
-  });
-
+  });Module3
   const historiaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: historiaModule,
     title: 'Historia Universal y Chilena',
@@ -778,7 +708,6 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-historia-humanista',
     transcript: 'La historia nos ayuda a comprender el desarrollo de las sociedades humanas...',
   });
-
   const historiaQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Quiz Historia - Procesos Sociales',
     type: 'lesson',
@@ -787,7 +716,6 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 600,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: historiaQuiz,
     order: 1,
@@ -801,14 +729,12 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 1,
     explanation: 'La Revolución Industrial creó una nueva clase social urbana: el proletariado industrial.',
   });
-
   // Module 4: Estrategias de Estudio
   const strategiesModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Estrategias de Estudio PAES',
     order: 4,
-  });
-
+  });Module4
   const strategiesLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: strategiesModule,
     title: 'Técnicas de Estudio para Humanistas',
@@ -817,7 +743,6 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     videoUrl: 'https://example.com/video-estudio-humanista',
     transcript: 'Las estrategias de estudio en humanidades enfatizan el análisis crítico y la comprensión contextual...',
   });
-
   const strategiesQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Evaluación de Hábitos de Estudio - Humanista',
     type: 'lesson',
@@ -826,7 +751,6 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     durationSec: 300,
     createdBy: adminUser,
   });
-
   await ctx.runMutation(api.quizzes.createQuestion, {
     quizId: strategiesQuiz,
     order: 1,
@@ -840,13 +764,12 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
     correctIndex: 1,
     explanation: 'El análisis de argumentos y contexto es fundamental en el estudio de humanidades.',
   });
-
   // Module 5: Bienestar y Yoga
   const wellnessModule = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Bienestar y Salud Mental',
     order: 5,
-  });
+  });Module5
 
   const yogaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: wellnessModule,
@@ -881,7 +804,7 @@ async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
   });
 }
 
-async function seedPaesQuiz(ctx: any, adminUser: any) {
+async function seedpaesquiz(ctx: any, adminuser: any) {
   // Create PAES practice quiz
   const paesQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Simulacro PAES 2024',

@@ -4,8 +4,9 @@ import { motion } from 'framer-motion';
 import { TrendingUp, Clock, Target, Award } from 'lucide-react';
 
 import { Card } from '@/components/ui/card';
+import { ComponentErrorBoundary } from '@/components/ErrorBoundary';
 
-export function StatsSection() {
+function StatsSectionInternal() {
   const stats = [
     {
       icon: TrendingUp,
@@ -80,5 +81,13 @@ export function StatsSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+export function StatsSection() {
+  return (
+    <ComponentErrorBoundary context="StatsSection">
+      <StatsSectionInternal />
+    </ComponentErrorBoundary>
   );
 }

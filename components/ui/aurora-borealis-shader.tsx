@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import react, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
-const AuroraBorealisShader = () => {
+const auroraborealisshader = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
 
@@ -148,13 +148,11 @@ const AuroraBorealisShader = () => {
       {/* Optional cursor light */}
       <div
         className="fixed top-0 left-0 w-5 h-5 rounded-full bg-white/50 pointer-events-none -z-10 cursor-light cursor-follower"
-        style={{
-          '--cursor-x': `${mousePos.x}px`,
-          '--cursor-y': `${mousePos.y}px`
-        } as React.CSSProperties}
+        data-cursor-x={mousePos.x}
+        data-cursor-y={mousePos.y}
       />
     </>
   );
-};
+}
 
 export default AuroraBorealisShader;

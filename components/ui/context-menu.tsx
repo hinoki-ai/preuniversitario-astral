@@ -1,15 +1,17 @@
 'use client'
 
-import * as React from 'react'
-import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
-import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react'
+import * as react from 'react'
+import * as contextmenuprimitive from '@radix-ui/react-context-menu'
+import { CheckIcon, ChevronRightIcon, CircleIcon }
+
+ from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
 function ContextMenu({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
-  return <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />
+  return <contextmenuprimitive.Root data-slot="context-menu" {...props} />
 }
 
 function ContextMenuTrigger({
@@ -39,7 +41,7 @@ function ContextMenuPortal({
 function ContextMenuSub({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Sub>) {
-  return <ContextMenuPrimitive.Sub data-slot="context-menu-sub" {...props} />
+  return <contextmenuprimitive.Sub data-slot="context-menu-sub" {...props} />
 }
 
 function ContextMenuRadioGroup({

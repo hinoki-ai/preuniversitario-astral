@@ -1,89 +1,95 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import url('tailwindcss');
+@import url('tw-animate-css');
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Vibrant, colorful light theme with personality */
-  --background: oklch(0.95 0.04 120); /* Light sage-green background */
-  --foreground: oklch(0.2 0.06 240); /* Rich dark blue */
-  --card: oklch(0.98 0.03 85); /* Warm cream cards */
-  --card-foreground: oklch(0.2 0.06 240);
-  --popover: oklch(0.98 0.03 85);
-  --popover-foreground: oklch(0.2 0.06 240);
-  --primary: oklch(0.45 0.2 280); /* Rich purple primary */
-  --primary-foreground: oklch(0.98 0.03 85);
-  --secondary: oklch(0.88 0.08 60); /* Warm peach */
-  --secondary-foreground: oklch(0.2 0.06 240);
-  --muted: oklch(0.9 0.06 180); /* Soft blue-cyan */
-  --muted-foreground: oklch(0.4 0.08 220);
-  --accent: oklch(0.7 0.15 160); /* Vibrant mint green */
-  --accent-foreground: oklch(0.98 0.03 85);
-  --destructive: oklch(0.6 0.25 25); /* Rich coral red */
-  --destructive-foreground: oklch(0.98 0.03 85);
-  --border: oklch(0.85 0.06 140); /* Soft green border */
-  --input: oklch(0.92 0.04 150); /* Light mint input */
-  --ring: oklch(0.5 0.15 280); /* Purple ring */
-  --chart-1: oklch(0.6 0.25 320); /* Vibrant magenta */
-  --chart-2: oklch(0.55 0.2 200); /* Ocean blue */
-  --chart-3: oklch(0.65 0.22 160); /* Forest green */
-  --chart-4: oklch(0.7 0.18 80); /* Golden yellow */
-  --chart-5: oklch(0.6 0.25 30); /* Coral orange */
-  --radius: 0.625rem;
-  --sidebar: oklch(0.92 0.06 100); /* Light peachy sidebar */
-  --sidebar-foreground: oklch(0.2 0.06 240);
-  --sidebar-primary: oklch(0.45 0.2 280); /* Rich purple */
-  --sidebar-primary-foreground: oklch(0.98 0.03 85);
-  --sidebar-accent: oklch(0.88 0.08 140); /* Light green accent */
-  --sidebar-accent-foreground: oklch(0.2 0.06 240);
-  --sidebar-border: oklch(0.85 0.06 120);
-  --sidebar-ring: oklch(0.5 0.15 280);
+  /* Premium warm beige/brown light theme - sophisticated and elegant */
+  --background: oklch(97% 0.01 65deg); /* Ultra light warm beige */
+  --foreground: oklch(25% 0.05 45deg); /* Rich dark brown */
+  --card: oklch(99% 0.005 60deg); /* Pure warm white cards */
+  --card-foreground: oklch(25% 0.05 45deg);
+  --popover: oklch(99% 0.005 60deg);
+  --popover-foreground: oklch(25% 0.05 45deg);
+  --primary: oklch(42% 0.12 75deg); /* Rich golden brown */
+  --primary-foreground: oklch(99% 0.005 60deg);
+  --secondary: oklch(92% 0.03 65deg); /* Soft warm beige */
+  --secondary-foreground: oklch(25% 0.05 45deg);
+  --muted: oklch(94% 0.02 60deg); /* Subtle warm muted */
+  --muted-foreground: oklch(50% 0.06 50deg);
+  --accent: oklch(65% 0.18 80deg); /* Vibrant golden amber */
+  --accent-foreground: oklch(99% 0.005 60deg);
+  --destructive: oklch(55.% 0.22 25deg); /* Warm red */
+  --destructive-foreground: oklch(99% 0.005 60deg);
+  --border: oklch(88% 0.03 70deg); /* Soft warm border */
+  --input: oklch(95% 0.02 65deg); /* Light warm input */
+  --ring: oklch(65% 0.18 80deg); /* Golden ring */
+  --chart-1: oklch(60% 0.18 75deg); /* Warm gold */
+  --chart-2: oklch(55.% 0.15 45deg); /* Rich brown */
+  --chart-3: oklch(70% 0.12 85deg); /* Bright amber */
+  --chart-4: oklch(50% 0.2 60deg); /* Deep bronze */
+  --chart-5: oklch(65% 0.16 95deg); /* Warm yellow */
+  --radius: 0.75rem;
+  --sidebar: oklch(95% 0.02 68deg); /* Very light warm beige sidebar */
+  --sidebar-foreground: oklch(25% 0.05 45deg);
+  --sidebar-primary: oklch(42% 0.12 75deg); /* Rich golden brown */
+  --sidebar-primary-foreground: oklch(99% 0.005 60deg);
+  --sidebar-accent: oklch(88% 0.04 70deg); /* Light warm accent */
+  --sidebar-accent-foreground: oklch(25% 0.05 45deg);
+  --sidebar-border: oklch(88% 0.03 70deg);
+  --sidebar-ring: oklch(65% 0.18 80deg);
   
-  /* Custom brand colors */
-  --deep-blue: 15 23 42; /* slate-800 */
-  --sage: 100 116 139; /* slate-500 */
-  --cream: 248 250 252; /* slate-50 */
+  /* Premium brand colors - warm earth tones */
+  --deep-brown: 62 39 35; /* Rich dark brown */
+  --warm-sage: 139 117 84; /* Warm muted brown */
+  --cream: 252 251 248; /* Warm cream */
+  --golden: 184 134 63; /* Rich golden brown */
+  --bronze: 141 101 66; /* Deep bronze */
+  --amber: 217 162 75; /* Warm amber */
 }
 
 .dark {
-  /* Rich, warm dark theme inspired by older version */
-  --background: oklch(0.12 0.05 220); /* Deep navy blue background */
-  --foreground: oklch(0.95 0.02 85); /* Warm off-white */
-  --card: oklch(0.16 0.04 215); /* Slightly lighter navy for cards */
-  --card-foreground: oklch(0.95 0.02 85);
-  --popover: oklch(0.16 0.04 215);
-  --popover-foreground: oklch(0.95 0.02 85);
-  --primary: oklch(0.95 0.02 85); /* Warm white primary */
-  --primary-foreground: oklch(0.12 0.05 220);
-  --secondary: oklch(0.18 0.06 210); /* Rich blue-grey */
-  --secondary-foreground: oklch(0.95 0.02 85);
-  --muted: oklch(0.18 0.06 210);
-  --muted-foreground: oklch(0.65 0.04 200); /* Muted blue-grey text */
-  --accent: oklch(0.55 0.15 45); /* Warm amber/orange accent */
-  --accent-foreground: oklch(0.95 0.02 85);
-  --destructive: oklch(0.45 0.2 25); /* Rich red */
-  --destructive-foreground: oklch(0.95 0.02 85);
-  --border: oklch(0.18 0.06 210); /* Same as secondary */
-  --input: oklch(0.18 0.06 210);
-  --ring: oklch(0.55 0.15 45); /* Warm accent ring */
-  --chart-1: oklch(0.6 0.2 280); /* Purple */
-  --chart-2: oklch(0.65 0.15 200); /* Blue */
-  --chart-3: oklch(0.7 0.18 160); /* Green */
-  --chart-4: oklch(0.75 0.2 80); /* Yellow */
-  --chart-5: oklch(0.65 0.25 30); /* Orange */
-  --sidebar: oklch(0.08 0.06 225); /* Very deep navy for sidebar */
-  --sidebar-foreground: oklch(0.95 0.02 85);
-  --sidebar-primary: oklch(0.55 0.15 45); /* Warm accent */
-  --sidebar-primary-foreground: oklch(0.95 0.02 85);
-  --sidebar-accent: oklch(0.18 0.06 210); /* Rich blue-grey */
-  --sidebar-accent-foreground: oklch(0.95 0.02 85);
-  --sidebar-border: oklch(0.18 0.06 210);
-  --sidebar-ring: oklch(0.55 0.15 45);
+  /* Luxurious deep dark theme - rich and sophisticated */
+  --background: oklch(8% 0.03 45deg); /* Deep warm dark brown */
+  --foreground: oklch(93% 0.02 65deg); /* Warm cream text */
+  --card: oklch(12% 0.04 50deg); /* Rich dark brown cards */
+  --card-foreground: oklch(93% 0.02 65deg);
+  --popover: oklch(12% 0.04 50deg);
+  --popover-foreground: oklch(93% 0.02 65deg);
+  --primary: oklch(75% 0.15 80deg); /* Bright golden amber primary */
+  --primary-foreground: oklch(8% 0.03 45deg);
+  --secondary: oklch(16% 0.05 55deg); /* Medium dark brown */
+  --secondary-foreground: oklch(93% 0.02 65deg);
+  --muted: oklch(16% 0.05 55deg);
+  --muted-foreground: oklch(70% 0.05 60deg); /* Muted warm text */
+  --accent: oklch(72% 0.18 85deg); /* Vibrant golden accent */
+  --accent-foreground: oklch(8% 0.03 45deg);
+  --destructive: oklch(50% 0.2 25deg); /* Rich warm red */
+  --destructive-foreground: oklch(93% 0.02 65deg);
+  --border: oklch(20% 0.05 50deg); /* Subtle brown border */
+  --input: oklch(16% 0.05 55deg);
+  --ring: oklch(72% 0.18 85deg); /* Golden ring */
+  --chart-1: oklch(75% 0.15 80deg); /* Golden */
+  --chart-2: oklch(60% 0.12 65deg); /* Warm brown */
+  --chart-3: oklch(80% 0.14 90deg); /* Bright amber */
+  --chart-4: oklch(55.% 0.18 55deg); /* Deep bronze */
+  --chart-5: oklch(70% 0.16 95deg); /* Warm yellow */
+  --sidebar: oklch(5% 0.04 40deg); /* Ultra deep brown sidebar */
+  --sidebar-foreground: oklch(93% 0.02 65deg);
+  --sidebar-primary: oklch(72% 0.18 85deg); /* Golden accent */
+  --sidebar-primary-foreground: oklch(5% 0.04 40deg);
+  --sidebar-accent: oklch(16% 0.05 55deg); /* Medium brown accent */
+  --sidebar-accent-foreground: oklch(93% 0.02 65deg);
+  --sidebar-border: oklch(20% 0.05 50deg);
+  --sidebar-ring: oklch(72% 0.18 85deg);
   
-  /* Custom brand colors for dark mode */
-  --deep-blue: 248 250 252; /* slate-50 - inverted for dark mode */
-  --sage: 148 163 184; /* slate-400 - lighter for dark mode */
-  --cream: 30 41 59; /* slate-800 - darker for dark mode */
+  /* Premium brand colors for dark mode - inverted warm tones */
+  --deep-brown: 252 251 248; /* Light cream for text */
+  --warm-sage: 217 195 162; /* Light warm sage */
+  --cream: 62 39 35; /* Deep brown backgrounds */
+  --golden: 217 162 75; /* Bright golden accents */
+  --bronze: 184 134 63; /* Rich bronze */
+  --amber: 255 204 102; /* Bright amber */
 }
 
 @theme inline {
@@ -131,6 +137,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -158,17 +165,91 @@
   
   /* Data attribute based styling to eliminate inline styles */
   [data-progress] .progress-fill {
-    width: attr(data-progress %);
+    transition: width 300ms ease-in-out;
+  }
+
+  /* Progress bar width control via data attributes */
+  [data-progress-width] {
+    --progress-width: attr(data-progress-width);
+    width: var(--progress-width, 0%);
     transition: width 300ms ease-in-out;
   }
   
-  [data-size] {
-    width: attr(data-size px);
-    height: attr(data-size px);
+  /* Energy orb dynamic sizing without inline styles */
+  [data-orb-size] {
+    width: var(--orb-size);
+    height: var(--orb-size);
   }
   
-  [data-cursor-x][data-cursor-y] {
-    transform: translate(attr(data-cursor-x px), attr(data-cursor-y px));
-    transition: transform 75ms ease-out;
+  /* Specific orb sizes */
+  .orb-size-32 { width: 32px; height: 32px; }
+  .orb-size-40 { width: 40px; height: 40px; }
+  .orb-size-48 { width: 48px; height: 48px; }
+  .orb-size-64 { width: 64px; height: 64px; }
+  
+  /* Animation duration control via data attributes */
+  [data-animation-duration="2s"] { animation-duration: 2s; }
+  [data-animation-duration="2.5s"] { animation-duration: 2.5s; }
+  [data-animation-duration="3s"] { animation-duration: 3s; }
+  [data-animation-duration="4s"] { animation-duration: 4s; }
+  [data-animation-duration="1.5s"] { animation-duration: 1.5s; }
+  
+  /* Premium glass effects */
+  .glass-effect {
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    backdrop-filter: blur(12px) saturate(180%);
+    background: rgb(255 255 255 / 10%);
+    border: 1px solid rgb(255 255 255 / 12.5%);
+  }
+  
+  .dark .glass-effect {
+    background: rgb(0 0 0 / 20%);
+    border: 1px solid rgb(255 255 255 / 10%);
+  }
+  
+  /* Premium gradients */
+  .premium-gradient-warm {
+    background: linear-gradient(135deg, 
+      oklch(65% 0.18 80deg) 0%, 
+      oklch(55.% 0.15 75deg) 35%, 
+      oklch(45% 0.12 70deg) 100%);
+  }
+  
+  .dark .premium-gradient-warm {
+    background: linear-gradient(135deg, 
+      oklch(75% 0.15 80deg) 0%, 
+      oklch(65% 0.18 85deg) 35%, 
+      oklch(55.% 0.2 90deg) 100%);
+  }
+  
+  /* Premium shadows */
+  .premium-shadow {
+    box-shadow: 
+      0 4px 6px -1px rgb(0 0 0 / 10%),
+      0 2px 4px -1px rgb(0 0 0 / 6%),
+      inset 0 1px 0 rgb(255 255 255 / 10%);
+  }
+  
+  .premium-shadow-golden {
+    box-shadow: 
+      0 4px 15px -3px rgb(184 134 63 / 15%),
+      0 2px 8px -2px rgb(184 134 63 / 10%),
+      inset 0 1px 0 rgb(255 255 255 / 10%);
+  }
+  
+  .premium-shadow-hover {
+    box-shadow: 
+      0 10px 25px -3px rgb(0 0 0 / 10%),
+      0 4px 6px -2px rgb(0 0 0 / 5%),
+      inset 0 1px 0 rgb(255 255 255 / 10%);
+  }
+  
+  /* Smooth transitions for all interactive elements */
+  .smooth-transition {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .smooth-transition-slow {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }

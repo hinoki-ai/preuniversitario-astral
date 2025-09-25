@@ -2,10 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
+import { ComponentErrorBoundary } from '@/components/ErrorBoundary';
 
 import { Card } from '@/components/ui/card';
 
-export function TestimonialsSection() {
+function TestimonialsSectionInternal() {
   const testimonials = [
     {
       name: 'María González',
@@ -89,5 +90,13 @@ export function TestimonialsSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+export function TestimonialsSection() {
+  return (
+    <ComponentErrorBoundary context="TestimonialsSection">
+      <TestimonialsSectionInternal />
+    </ComponentErrorBoundary>
   );
 }

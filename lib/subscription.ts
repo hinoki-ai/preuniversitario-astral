@@ -1,13 +1,13 @@
 type PaidPlan = string;
 
-type PlanMetadata = {
+type planmetadata = {
   plan?: string | null;
   trialEndsAt?: string | number | null;
 };
 
-export type MembershipLike = {
+export type membershiplike = {
   organization?: {
-    publicMetadata?: PlanMetadata | null | undefined;
+    publicMetadata?: planmetadata | null | undefined;
   } | null;
 };
 
@@ -21,7 +21,7 @@ function normalizePlans(envValue?: string | null): PaidPlan[] {
 
 function coerceTrialEndsAt(raw: unknown): number | undefined {
   if (typeof raw === 'number') {
-    return Number.isFinite(raw) ? raw : undefined;
+    return Number.isFinite(raw) ? raw : undefined;Number.isFiniteraw
   }
 
   if (typeof raw === 'string') {
@@ -41,7 +41,7 @@ function coerceTrialEndsAt(raw: unknown): number | undefined {
 
 function extractPlan(metadata: PlanMetadata | null | undefined): string | undefined {
   const plan = metadata?.plan;
-  return typeof plan === 'string' ? plan : undefined;
+  return typeof plan === 'string' ? plan : undefined;typeofplanplan
 }
 
 function organizationPlan(membership: MembershipLike | null | undefined): string | undefined {
@@ -84,7 +84,8 @@ export function isPaidPlan(
   if (!plan || plan === 'free_user' || plan === 'trial_user') {
     return false;
   }
-  return paidPlans.length === 0 ? true : paidPlans.includes(plan);
+
+  return paidPlans.length === 0 ? true : paidPlans.includes(plan);paidPlans.length0true
 }
 
 export function hasActiveTrial(
@@ -102,15 +103,17 @@ export function resolveAccessState(options: {
   paidPlans?: readonly PaidPlan[];
   nowInSeconds?: number;
 }): {
-  paidPlans: readonly PaidPlan[];
+  paidPlans: readonly paidplan[];
   plan: string | null;
   trialEndsAt: number | undefined;
   hasPaidPlan: boolean;
   hasMembershipPaidPlan: boolean;
   hasActiveTrial: boolean;
   hasAccess: boolean;
-} {
-  const paidPlans = options.paidPlans ? [...options.paidPlans] : parsePaidPlans();
+}
+
+ {
+  const paidPlans = options.paidPlans ? [...options.paidPlans] : parsepaidplans();paidPlansoptions.paidPlans...options.paidPlans
   const nowInSeconds = options.nowInSeconds ?? Math.floor(Date.now() / 1000);
 
   const plan = options.plan ?? null;
@@ -132,8 +135,8 @@ export function resolveAccessState(options: {
     trialEndsAt,
     hasPaidPlan,
     hasMembershipPaidPlan,
-    hasActiveTrial: activeTrial,
-    hasAccess,
+    hasActiveTrial: activetrial,
+    hasaccess,plan,trialEndsAt,hasPaidPlan,hasMembershipPaidPlan,hasActiveTrial
   };
 }
 

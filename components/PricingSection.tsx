@@ -6,8 +6,9 @@ import { CheckCircle, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { ComponentErrorBoundary } from '@/components/ErrorBoundary';
 
-export function PricingSection() {
+function PricingSectionInternal() {
   const plans = [
     {
       name: 'Básico',
@@ -87,7 +88,7 @@ export function PricingSection() {
               className="relative"
             >
               {plan.popular && (
-                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-primary-foreground px-4 py-1 z-10">
+                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-golden to-amber text-white px-4 py-1 z-10 shadow-lg">
                   <Star className="w-4 h-4 mr-1" />
                   Más Popular
                 </Badge>
@@ -96,9 +97,9 @@ export function PricingSection() {
               <Card
                 className={`p-8 h-full relative ${
                   plan.popular
-                    ? 'bg-card border-accent border-2 shadow-xl scale-105'
-                    : 'bg-card/70 backdrop-blur-sm border-border/20'
-                } hover:shadow-xl transition-all duration-300`}
+                    ? 'bg-card border-golden border-2 shadow-2xl scale-105 shadow-golden/10'
+                    : 'bg-card/70 backdrop-blur-sm border-border/50 shadow-lg'
+                } hover:shadow-2xl hover:scale-[1.02] transition-all duration-300`}
               >
                 <div className="text-center mb-8">
                   <h3 className="font-serif text-2xl font-bold text-card-foreground mb-2">{plan.name}</h3>
@@ -114,7 +115,7 @@ export function PricingSection() {
                 <ul className="space-y-4 mb-8">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-golden flex-shrink-0 mt-0.5" />
                       <span className="text-card-foreground">{feature}</span>
                     </li>
                   ))}
@@ -123,9 +124,9 @@ export function PricingSection() {
                 <Button
                   className={`w-full ${
                     plan.popular
-                      ? 'bg-accent hover:bg-accent/90 text-primary-foreground'
-                      : 'bg-primary hover:bg-primary/90 text-primary-foreground'
-                  }`}
+                      ? 'bg-gradient-to-r from-golden to-amber hover:from-golden/90 hover:to-amber/90 text-white shadow-xl hover:shadow-golden/25'
+                      : 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/25'
+                  } transition-all duration-300 hover:scale-105`}
                   size="lg"
                 >
                   Comenzar {plan.name}
@@ -150,5 +151,13 @@ export function PricingSection() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+export function PricingSection() {
+  return (
+    <ComponentErrorBoundary context="PricingSection">
+      <PricingSectionInternal />
+    </ComponentErrorBoundary>
   );
 }

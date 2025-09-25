@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import react, { useEffect, useMemo, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Script from 'next/script';
 
@@ -9,14 +9,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 declare global {
-  interface Window {
+  interface window {
     ZoomMtg: any;
   }
 }
 
 const ZOOM_VERSION = '2.13.0'; // adjust in one place if needed
 
-export default function ZoomJoinClient({
+function ZoomJoinClientInternal({
   initialMeetingNumber,
   initialPasscode,
 }: {
@@ -69,7 +69,7 @@ export default function ZoomJoinClient({
     }
   };
 
-  const joinMeeting = async () => {
+  const joinmeeting = async () => {
     setError('');
     if (isDemoMode) {
       // In demo mode, just show the video player
@@ -84,6 +84,7 @@ export default function ZoomJoinClient({
       setError('Ingresa ID de reunión y código de acceso');
       return;
     }
+
     setLoading(true);
     try {
       const res = await fetch('/api/zoom/signature', {
@@ -116,9 +117,13 @@ export default function ZoomJoinClient({
           error: (err: any) => reject(err),
         });
       });
-    } catch (e: any) {
+    }
+
+ catch (e: any) {
       setError(e?.message || 'Error al unirse a la reunión');
-    } finally {
+    }
+
+ finally {
       setLoading(false);
     }
   };
@@ -233,5 +238,22 @@ export default function ZoomJoinClient({
 
       {/* Zoom SDK attaches its UI to the document; ensure layout has space below header */}
     </div>
+  );
+}
+
+export default function ZoomJoinClient({
+  initialMeetingNumber,
+  initialPasscode,
+}: {
+  initialMeetingNumber?: string;
+  initialPasscode?: string;
+}) {
+  return (
+    <ComponentErrorBoundary context="ZoomJoinClient">
+      <ZoomJoinClientInternal 
+        initialMeetingNumber={initialMeetingNumber}
+        initialPasscode={initialPasscode}
+      />
+    </ComponentErrorBoundary>
   );
 }

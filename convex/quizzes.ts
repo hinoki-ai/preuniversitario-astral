@@ -2,7 +2,7 @@ import { v } from 'convex/values';
 
 import { mutation, query } from './_generated/server';
 
-async function getUser(ctx: any) {
+async function getuser(ctx: any) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
     // For demo purposes, create or get a demo user
@@ -11,7 +11,6 @@ async function getUser(ctx: any) {
       .withIndex('byExternalId', (q: any) => q.eq('externalId', 'demo-user'))
       .unique();
     if (demoUser) return demoUser;
-
     // Create a demo user if it doesn't exist
     return await ctx.db.insert('users', {
       name: 'Demo User',
@@ -27,7 +26,6 @@ async function getUser(ctx: any) {
   if (!user) throw new Error('User not found');
   return user;
 }
-
 export const getLessonQuiz = query({
   args: { lessonId: v.id('lessons') },
   handler: async (ctx, { lessonId }) => {
@@ -55,7 +53,6 @@ export const getLessonQuiz = query({
     };
   },
 });
-
 export const submitLessonQuizAttempt = mutation({
   args: { lessonId: v.id('lessons'), answers: v.array(v.number()), startedAt: v.number() },
   handler: async (ctx, { lessonId, answers, startedAt }) => {
@@ -102,14 +99,11 @@ export const submitLessonQuizAttempt = mutation({
       value: score,
       createdAt: completedAt,
     });
-
     // Update user stats with gamification (import at the top instead)
     // This will be handled by the userStats mutation directly
-
     return { correctCount, totalCount, score, review };
   },
 });
-
 export const getPaesCatalog = query({
   args: {},
   handler: async ctx => {
@@ -118,7 +112,6 @@ export const getPaesCatalog = query({
       .withIndex('byType', q => q.eq('type', 'paes'))
       .collect();
     if (quizzes.length === 0) return [];
-
     const catalog = await Promise.all(
       quizzes.map(async quiz => {
         const questions = await ctx.db
@@ -137,12 +130,10 @@ export const getPaesCatalog = query({
         };
       })
     );
-
     catalog.sort((a, b) => b.createdAt - a.createdAt);
     return catalog;
   },
 });
-
 export const getPaesQuiz = query({
   args: { quizId: v.optional(v.id('quizzes')) },
   handler: async (ctx, { quizId }) => {
@@ -159,44 +150,40 @@ export const getPaesQuiz = query({
       quizzes.sort((a, b) => b.createdAt - a.createdAt);
       quiz = quizzes[0];
     }
-
     if (!quiz || quiz.type !== 'paes') return null;
-
     const questions = await ctx.db
       .query('questions')
       .withIndex('byQuiz', q => q.eq('quizId', quiz._id))
       .collect();
     questions.sort((a, b) => a.order - b.order);
-
     // Get user's recent attempts for adaptive difficulty
     const recentAttempts = await ctx.db
       .query('attempts')
       .withIndex('byUser', q => q.eq('userId', user._id))
       .order('desc')
       .take(5);
-
     const avgScore = recentAttempts.length > 0 
       ? recentAttempts.reduce((sum, attempt) => sum + attempt.score, 0) / recentAttempts.length
-      : 0.5;
+      : 0.5;avgScorerecentAttempts.length0recentAttempts.reducesumattempt.score,0recentAttempts.length
 
     // Adapt question selection based on performance
     let adaptedQuestions = questions;
     if (avgScore < 0.4) {
       // Poor performance: mix easier questions first
-      adaptedQuestions = questions.slice(0, Math.floor(questions.length * 0.7));
+      adaptedquestions = questions.slice(0, math.floor(questions.length * 0.7));Poorperformance
     } else if (avgScore > 0.8) {
       // High performance: include all questions, harder ones first
-      adaptedQuestions = [...questions].reverse();
+      adaptedquestions = [...questions].reverse();Highperformance
     }
 
     return {
-      _id: quiz._id,
-      title: quiz.title,
-      durationSec: quiz.durationSec ?? 1800,
-      assignment: quiz.assignment,
-      subject: quiz.subject,
-      source: quiz.source,
-      adaptiveLevel: avgScore < 0.4 ? 'beginner' : avgScore > 0.8 ? 'advanced' : 'intermediate',
+      _id: quiz._id,;
+      title: quiz.title,;
+      durationSec: quiz.durationsec ?? 1800,;
+      assignment: quiz.assignment,;
+      subject: quiz.subject,;
+      source: quiz.source,;
+      adaptiveLevel: avgscore < 0.4; ? 'beginner' : avgscore > 0.8; ? 'advanced' : 'intermediate',;
       questions: adaptedQuestions.map(q => ({
         _id: q._id,
         order: q.order,

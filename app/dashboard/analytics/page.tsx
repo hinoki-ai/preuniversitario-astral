@@ -5,16 +5,19 @@ import { api } from '@/convex/_generated/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  TrendingUp, 
-  Target, 
-  BarChart3, 
-  Clock, 
-  Award, 
-  Users, 
+
+import {
+  TrendingUp,
+  Target,
+  BarChart3,
+  Clock,
+  Award,
+  Users,
   BookOpen,
-  Zap
+  Zap,
+  AlertTriangle
 } from 'lucide-react';
+import { PaymentGate } from '@/components/PaymentGate';
 
 export default function AnalyticsPage() {
   const stats = useQuery(api.userStats.getUserStats);
@@ -22,7 +25,34 @@ export default function AnalyticsPage() {
   const achievements = useQuery(api.userStats.getUserAchievements);
   const leaderboard = useQuery(api.userStats.getLeaderboard, { limit: 5 });
   const dashboardData = useQuery(api.dashboard.metrics);
+  const predictiveData = useQuery(api.dashboard.predictiveAnalytics);
 
+  return (
+    <div className="px-4 lg:px-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Analytics Avanzados</h1>
+      </div>
+      
+      <PaymentGate 
+        feature="Analytics Avanzados"
+        description="Obtén insights detallados sobre tu progreso y rendimiento académico"
+        premiumFeatures={[
+          "Análisis detallado por materia y competencia",
+          "Predicciones de rendimiento PAES",
+          "Seguimiento de tendencias de aprendizaje", 
+          "Comparación con otros estudiantes",
+          "Recomendaciones personalizadas de estudio",
+          "Reportes exportables en PDF"
+        ]}
+        showPreview={true}
+      >
+        <AnalyticsContent stats={stats} dashboardData={dashboardData} predictiveData={null} />
+      </PaymentGate>
+    </div>
+  );
+}
+
+function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any, dashboardData: any, predictiveData: any }) {
   if (!stats || !dashboardData) {
     return <div className="animate-pulse p-6">Loading comprehensive analytics...</div>;
   }
@@ -33,11 +63,10 @@ export default function AnalyticsPage() {
   // Calculate performance trends
   const recentScores = stats.recentPerformance?.slice(0, 10) || [];
   const averageRecentScore = recentScores.length > 0 
-    ? recentScores.reduce((sum, perf) => sum + perf.score, 0) / recentScores.length 
-    : 0;
-
+    ? recentScores.reduce((sum: number, perf: any) => sum + perf.score, 0) / recentScores.length 
+    : 0;averageRecentScorerecentScores.length0recentScores.reducesumperf.score,0recentScores.length
   const performanceTrend = averageRecentScore > stats.avgScore ? 'improving' : 
-                          averageRecentScore < stats.avgScore ? 'declining' : 'stable';
+                          averagerecentscore < stats.avgscore; ? 'declining' : 'stable'
 
   return (
     <div className="space-y-6">
@@ -51,10 +80,11 @@ export default function AnalyticsPage() {
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="subjects">By Subject</TabsTrigger>
           <TabsTrigger value="performance">Performance</TabsTrigger>
+          <TabsTrigger value="predictive">Predictive</TabsTrigger>
           <TabsTrigger value="achievements">Achievements</TabsTrigger>
           <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
         </TabsList>
@@ -100,8 +130,9 @@ export default function AnalyticsPage() {
                   Consistency rating
                 </p>
                 <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                  <div 
+                  <div
                     className="h-2 rounded-full bg-blue-500 progress-bar"
+                    // eslint-disable-next-line react/style-prop-object
                     style={{
                       '--progress-width': `${dashboardData.consistencyScore}%`
                     } as React.CSSProperties}
@@ -177,7 +208,7 @@ export default function AnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {subjectStats.map((subject) => (
+                {subjectStats.map((subject: any) => (
                   <div key={subject.id} className="p-4 border rounded-lg">
                     <div className="flex items-center justify-between mb-2">
                       <div className="font-semibold">{subject.subject}</div>
@@ -213,12 +244,13 @@ export default function AnalyticsPage() {
                     </div>
 
                     <div className="w-full bg-gray-200 rounded-full h-2 mt-3">
-                      <div 
+                      <div
                         className={`h-2 rounded-full progress-bar ${
                           subject.avgScore >= 80 ? 'bg-green-500' :
                           subject.avgScore >= 70 ? 'bg-blue-500' :
                           subject.avgScore >= 60 ? 'bg-yellow-500' : 'bg-red-500'
                         }`}
+                        // eslint-disable-next-line react/style-prop-object
                         style={{
                           '--progress-width': `${subject.avgScore}%`
                         } as React.CSSProperties}
@@ -242,15 +274,15 @@ export default function AnalyticsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {userHistory?.summary ? (
+                {dashboardData?.summary ? (
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center p-3 bg-muted rounded-lg">
-                        <div className="text-2xl font-bold">{userHistory.summary.totalAttempts}</div>
+                        <div className="text-2xl font-bold">{dashboardData.summary.totalAttempts}</div>
                         <div className="text-sm text-muted-foreground">Total Attempts</div>
                       </div>
                       <div className="text-center p-3 bg-muted rounded-lg">
-                        <div className="text-2xl font-bold">{userHistory.summary.averageScore}%</div>
+                        <div className="text-2xl font-bold">{dashboardData.summary.averageScore}%</div>
                         <div className="text-sm text-muted-foreground">Average Score</div>
                       </div>
                     </div>
@@ -258,17 +290,17 @@ export default function AnalyticsPage() {
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span>Best Score:</span>
-                        <span className="font-semibold">{userHistory.summary.bestScore}%</span>
+                        <span className="font-semibold">{dashboardData.summary.bestScore}%</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span>Trend:</span>
                         <span className={`font-semibold ${
-                          userHistory.summary.improvementTrend > 0 ? 'text-green-600' :
-                          userHistory.summary.improvementTrend < 0 ? 'text-red-600' : 'text-blue-600'
+                          dashboardData.summary.improvementTrend > 0 ? 'text-green-600' :
+                          dashboardData.summary.improvementTrend < 0 ? 'text-red-600' : 'text-blue-600'
                         }`}>
-                          {userHistory.summary.improvementTrend > 0 ? '↗️' :
-                           userHistory.summary.improvementTrend < 0 ? '↘️' : '→'} 
-                          {Math.abs(userHistory.summary.improvementTrend)}%
+                          {dashboardData.summary.improvementTrend > 0 ? '↗️' :
+                           dashboardData.summary.improvementTrend < 0 ? '↘️' : '→'} 
+                          {Math.abs(dashboardData.summary.improvementTrend)}%
                         </span>
                       </div>
                     </div>
@@ -305,8 +337,9 @@ export default function AnalyticsPage() {
                   </div>
                   
                   <div className="w-full bg-gray-200 rounded-full h-3">
-                    <div 
+                    <div
                       className="h-3 rounded-full bg-gradient-to-r from-blue-500 to-green-500 progress-bar"
+                      // eslint-disable-next-line
                       style={{
                         '--progress-width': `${Math.min(100, ((dashboardData.weeklyGoal?.completed || 0) / (dashboardData.weeklyGoal?.target || 1)) * 100)}%`
                       } as React.CSSProperties}
@@ -322,6 +355,170 @@ export default function AnalyticsPage() {
           </div>
         </TabsContent>
 
+        <TabsContent value="predictive" className="space-y-6">
+          <div className="grid gap-6">
+            {/* Predicted PAES Score */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="w-5 h-5" />
+                  Predicted PAES Score
+                </CardTitle>
+                <CardDescription>
+                  AI-powered prediction based on your current performance and learning trends
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {predictiveData ? (
+                  <div className="space-y-4">
+                    <div className="text-center">
+                      <div className="text-6xl font-bold text-primary mb-2">
+                        {predictiveData.predictedPaesScore}
+                      </div>
+                      <div className="text-sm text-muted-foreground mb-4">
+                        Predicted PAES Score • Confidence: {
+                          predictiveData.confidenceLevel === 'high' ? 'High' :
+                          predictiveData.confidenceLevel === 'medium' ? 'Medium' : 'Low'
+                        }
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Performance Trend:</span>
+                          <Badge variant={
+                            predictiveData.performanceTrend?.overall === 'improving' ? 'default' :
+                            predictiveData.performanceTrend?.overall === 'declining' ? 'destructive' : 'secondary'
+                          }>
+                            {predictiveData.performanceTrend?.overall === 'improving' ? '↗️ Improving' :
+                             predictiveData.performanceTrend?.overall === 'declining' ? '↘️ Declining' : '→ Stable'}
+                          </Badge>
+                        </div>
+
+                        <div className="flex justify-between text-sm">
+                          <span>Timeline to 750+:</span>
+                          <span className="font-semibold">
+                            {predictiveData.timelinePrediction?.weeksNeeded || 'N/A'} weeks
+                          </span>
+                        </div>
+
+                        <div className="flex justify-between text-sm">
+                          <span>1-Month Projection:</span>
+                          <span className="font-semibold">
+                            {predictiveData.timelinePrediction?.projectedScore || 'N/A'}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="text-sm font-medium">Study Recommendations:</div>
+                        <div className="text-sm text-muted-foreground">
+                          Daily study time: {predictiveData.studyRecommendations?.dailyStudyTime || 90} min
+                        </div>
+                        {predictiveData.studyRecommendations?.focusSubjects?.length > 0 && (
+                          <div className="text-sm">
+                            <span className="font-medium">Focus subjects:</span>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {predictiveData.studyRecommendations.focusSubjects.map((subject: string) => (
+                                <Badge key={subject} variant="outline" className="text-xs">
+                                  {subject}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Target className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                    <p>Loading predictive analytics...</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Improvement Areas */}
+            {predictiveData?.improvementAreas && predictiveData.improvementAreas.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5" />
+                    Areas for Improvement
+                  </CardTitle>
+                  <CardDescription>
+                    Priority areas that need your attention
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {predictiveData.improvementAreas.map((area: any, index: number) => (
+                      <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
+                        <div className={`w-2 h-2 rounded-full mt-2 ${
+                          area.priority === 'high' ? 'bg-red-500' :
+                          area.priority === 'medium' ? 'bg-yellow-500' : 'bg-blue-500'
+                        }`} />
+                        <div className="flex-1">
+                          <div className="font-medium">{area.subject}</div>
+                          <div className="text-sm text-muted-foreground">{area.issue}</div>
+                          <div className="text-sm text-primary mt-1">{area.recommendation}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Strengths and Risk Factors */}
+            <div className="grid gap-6 md:grid-cols-2">
+              {predictiveData?.strengths && predictiveData.strengths.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-green-600">
+                      <Award className="w-5 h-5" />
+                      Your Strengths
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {predictiveData.strengths.map((strength: string, index: number) => (
+                        <li key={index} className="flex items-center gap-2 text-sm">
+                          <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+                          {strength}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
+
+              {predictiveData?.riskFactors && predictiveData.riskFactors.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-orange-600">
+                      <AlertTriangle className="w-5 h-5" />
+                      Risk Factors
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {predictiveData.riskFactors.map((risk: string, index: number) => (
+                        <li key={index} className="flex items-center gap-2 text-sm">
+                          <div className="w-1.5 h-1.5 bg-orange-500 rounded-full" />
+                          {risk}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </div>
+        </TabsContent>
+
         <TabsContent value="achievements" className="space-y-6">
           <Card>
             <CardHeader>
@@ -331,9 +528,9 @@ export default function AnalyticsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {achievements && achievements.length > 0 ? (
+              {dashboardData?.achievements && dashboardData.achievements.length > 0 ? (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {achievements.map((achievement) => (
+                  {dashboardData.achievements.map((achievement: any) => (
                     <div 
                       key={achievement.id} 
                       className={`p-4 border rounded-lg ${
@@ -385,9 +582,9 @@ export default function AnalyticsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {leaderboard && leaderboard.length > 0 ? (
+              {dashboardData?.leaderboard && dashboardData.leaderboard.length > 0 ? (
                 <div className="space-y-3">
-                  {leaderboard.map((student, index) => (
+                  {dashboardData.leaderboard.map((student: any, index: number) => (
                     <div key={student.userId} className="flex items-center gap-4 p-3 border rounded-lg">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${
                         index === 0 ? 'bg-yellow-500 text-white' :

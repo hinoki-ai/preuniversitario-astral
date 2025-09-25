@@ -1,0 +1,42 @@
+{
+  "extends": [
+    "stylelint-config-standard"
+  ],
+  "rules": {
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "apply",
+          "config",
+          "custom-variant",
+          "layer",
+          "screen",
+          "tailwind",
+          "theme",
+          "variants",
+          "import"
+        ]
+      }
+    ],
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": [
+          "theme",
+          "screen"
+        ]
+      }
+    ],
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": [
+          "/^--/"
+        ]
+      }
+    ],
+    "no-invalid-position-at-import-rule": null,
+    "no-inline-styles": null
+  }
+}

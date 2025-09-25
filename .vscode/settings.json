@@ -1,0 +1,52 @@
+{
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "css.customData": [
+    {
+      "version": 1.1,
+      "atDirectives": [
+        {
+          "name": "@apply",
+          "description": "Use @apply to inline any existing utility classes into your own custom CSS.",
+          "references": [
+            {
+              "name": "Tailwind CSS Documentation",
+              "url": "https://tailwindcss.com/docs/functions-and-directives#apply"
+            }
+          ]
+        },
+        {
+          "name": "@custom-variant",
+          "description": "Define custom variants for Tailwind CSS.",
+          "references": [
+            {
+              "name": "Tailwind CSS Documentation",
+              "url": "https://tailwindcss.com/docs/functions-and-directives#custom-variant"
+            }
+          ]
+        },
+        {
+          "name": "@theme",
+          "description": "Define theme values for Tailwind CSS.",
+          "references": [
+            {
+              "name": "Tailwind CSS Documentation",
+              "url": "https://tailwindcss.com/docs/configuration#theme"
+            }
+          ]
+        },
+        {
+          "name": "@layer",
+          "description": "Use @layer to control the order of CSS rules.",
+          "references": [
+            {
+              "name": "Tailwind CSS Documentation",
+              "url": "https://tailwindcss.com/docs/functions-and-directives#layer"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

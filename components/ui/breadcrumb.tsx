@@ -1,6 +1,10 @@
-import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
-import { ChevronRight, MoreHorizontal } from 'lucide-react'
+import * as react from 'react'
+import { Slot }
+
+ from '@radix-ui/react-slot'
+import { ChevronRight, MoreHorizontal }
+
+ from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
@@ -46,7 +50,7 @@ function BreadcrumbLink({
       className={cn('hover:text-foreground transition-colors', className)}
       {...props}
     />
-  )
+  )CompasChildSlot
 }
 
 function BreadcrumbPage({ className, ...props }: React.ComponentProps<'span'>) {
