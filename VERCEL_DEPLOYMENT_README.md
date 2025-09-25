@@ -56,3 +56,7 @@ npx convex deploy
 - Node.js runtime is set to 20.x
 - CORS headers are configured for API routes
 - Console logs are automatically removed in production builds
+
+## Incident Log
+
+- **2025-09-25 – Casing Regression Recovery**: A bulk refactor toggled variable and type casing across dashboard modules, breaking TypeScript builds and runtime navigation. The affected files (`app/dashboard/*`, `hooks/use-toast.ts`, `lib/subscription.ts`, `convex/userStats.ts`, etc.) were restored to their intended casing, and supporting imports were re-aligned. The Zoom signature route and subscription helpers regained their type safety, and the dashboard once again renders charts, tables, diagnostics, and media content without runtime errors. Stray `energy-orb-*` demo HTML files were removed from the deploy target to avoid shipping prototype assets.
