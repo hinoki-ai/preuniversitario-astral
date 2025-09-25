@@ -13,6 +13,8 @@ export type navitem = {
   onClick?: () => void;
 };
 
+export type NavItem = navitem;
+
 const defaultNavItems: NavItem[] = [
   { id: 'home', label: 'Home', icon: <div>Home</div> },
   { id: 'explore', label: 'Explore', icon: <div>Explore</div> },
@@ -29,6 +31,8 @@ type limelightnavprops = {
   iconContainerClassName?: string;
   iconClassName?: string;
 };
+
+type LimelightNavProps = limelightnavprops;
 
 /**
  * An adaptive-width navigation bar with a "limelight" effect that highlights the active item.
