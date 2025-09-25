@@ -1,5 +1,5 @@
 import { auth, clerkClient } from '@clerk/nextjs/server';
-import { ApiResponseBuilder, withApiHandler } from '@/lib/core/api-response';
+import { ApiResponseBuilder } from '@/lib/core/api-response';
 import { AppError, ErrorCode } from '@/lib/core/error-system';
 import { resolveAccessState, toMembershipArray, type MembershipLike } from '@/lib/subscription';
 import { z } from 'zod';
@@ -81,8 +81,8 @@ async function generateZoomSignature(meetingNumber: string, role: number) {
   return { signature: jwt, sdkKey };
 }
 
-export const POST = withApiHandler(
-  async (req: Request) => {
+export async function POST(req: Request) {
+  try {
     // Authenticate user
     const authResult = await auth();
     if (!authResult.userId) {
@@ -110,6 +110,8 @@ export const POST = withApiHandler(
     const result = await generateZoomSignature(meetingNumber, role);
 
     return ApiResponseBuilder.success(result);
-  },
-  { requireAuth: true }
-);
+  } catch (error) {
+    console.error('Error generating Zoom signature:', error);
+    return ApiResponseBuilder.error(error instanceof Error ? error : 'Internal server error');
+  }
+}
