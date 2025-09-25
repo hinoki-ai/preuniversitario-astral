@@ -85,7 +85,7 @@ export function isPaidPlan(
     return false;
   }
 
-  return paidPlans.length === 0 ? true : paidPlans.includes(plan);paidPlans.length0true
+  return paidPlans.length === 0 ? true : paidPlans.includes(plan);
 }
 
 export function hasActiveTrial(
@@ -103,7 +103,7 @@ export function resolveAccessState(options: {
   paidPlans?: readonly PaidPlan[];
   nowInSeconds?: number;
 }): {
-  paidPlans: readonly paidplan[];
+  paidPlans: readonly PaidPlan[];
   plan: string | null;
   trialEndsAt: number | undefined;
   hasPaidPlan: boolean;
@@ -113,7 +113,7 @@ export function resolveAccessState(options: {
 }
 
  {
-  const paidPlans = options.paidPlans ? [...options.paidPlans] : parsepaidplans();paidPlansoptions.paidPlans...options.paidPlans
+  const paidPlans = options.paidPlans ? [...options.paidPlans] : parsePaidPlans();
   const nowInSeconds = options.nowInSeconds ?? Math.floor(Date.now() / 1000);
 
   const plan = options.plan ?? null;
@@ -135,8 +135,8 @@ export function resolveAccessState(options: {
     trialEndsAt,
     hasPaidPlan,
     hasMembershipPaidPlan,
-    hasActiveTrial: activetrial,
-    hasaccess,plan,trialEndsAt,hasPaidPlan,hasMembershipPaidPlan,hasActiveTrial
+    hasActiveTrial: activeTrial,
+    hasAccess
   };
 }
 

@@ -52,7 +52,7 @@ const MINEDUC_COLORS = {
   red: '#E1001A',
   white: '#FFFFFF',
   offWhite: '#F5F7FF',
-  muted: '#C5D0E6',
+  muted: '#C5D0E6'
 }; // Fixed palette matching official MINEDUC branding
 
 export default function Footer() {

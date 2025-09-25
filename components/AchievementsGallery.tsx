@@ -30,7 +30,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface achievement {
+interface Achievement {
   id: string;
   title: string;
   description: string;
@@ -45,114 +45,114 @@ interface achievement {
   season?: string;
 }
 
-const categoryconfig = {
+const categoryConfig = {
   streak: {
-    name: 'Consistency',;
-    icon: flame,;
-    color: 'text-orange-600',;
-    bgColor: 'bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20',;
+    name: 'Consistency',
+    icon: Flame,
+    color: 'text-orange-600',
+    bgColor: 'bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20',
     description: 'Achievements for maintaining study streaks'
   },
   performance: {
-    name: 'Excellence',;
-    icon: star,;
-    color: 'text-yellow-600',;
-    bgColor: 'bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-950/20 dark:to-amber-950/20',;
+    name: 'Excellence',
+    icon: Star,
+    color: 'text-yellow-600',
+    bgColor: 'bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-950/20 dark:to-amber-950/20',
     description: 'Achievements for high performance and perfect scores'
   },
   persistence: {
-    name: 'Dedication',;
-    icon: target,;
-    color: 'text-blue-600',;
-    bgColor: 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20',;
+    name: 'Dedication',
+    icon: Target,
+    color: 'text-blue-600',
+    bgColor: 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20',
     description: 'Achievements for completing many quizzes and staying dedicated'
   },
   efficiency: {
-    name: 'Speed',;
-    icon: zap,;
-    color: 'text-purple-600',;
-    bgColor: 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20',;
+    name: 'Speed',
+    icon: Zap,
+    color: 'text-purple-600',
+    bgColor: 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20',
     description: 'Achievements for fast and efficient learning'
   },
   mastery: {
-    name: 'Subject Mastery',;
-    icon: book,;
-    color: 'text-emerald-600',;
-    bgColor: 'bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20',;
+    name: 'Subject Mastery',
+    icon: Book,
+    color: 'text-emerald-600',
+    bgColor: 'bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20',
     description: 'Achievements for mastering specific subjects'
   },
   discipline: {
-    name: 'Discipline',;
-    icon: trendingup,;
-    color: 'text-indigo-600',;
-    bgColor: 'bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20',;
+    name: 'Discipline',
+    icon: TrendingUp,
+    color: 'text-indigo-600',
+    bgColor: 'bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20',
     description: 'Achievements for consistent improvement and discipline'
   },
   milestone: {
-    name: 'Milestones',;
-    icon: crown,;
-    color: 'text-amber-600',;
-    bgColor: 'bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20',;
+    name: 'Milestones',
+    icon: Crown,
+    color: 'text-amber-600',
+    bgColor: 'bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20',
     description: 'Achievements for reaching important levels and points'
   },
   seasonal: {
-    name: 'Special Events',;
-    icon: calendar,;
-    color: 'text-rose-600',;
-    bgColor: 'bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-950/20 dark:to-pink-950/20',;
+    name: 'Special Events',
+    icon: Calendar,
+    color: 'text-rose-600',
+    bgColor: 'bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-950/20 dark:to-pink-950/20',
     description: 'Limited-time and seasonal achievements'
   },
   social: {
-    name: 'Community',;
-    icon: users,;
-    color: 'text-cyan-600',;
-    bgColor: 'bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20',;
+    name: 'Community',
+    icon: Users,
+    color: 'text-cyan-600',
+    bgColor: 'bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20',
     description: 'Achievements for social and competitive activities'
   },
   exploration: {
-    name: 'Explorer',;
-    icon: award,;
-    color: 'text-teal-600',;
-    bgColor: 'bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-teal-950/20 dark:to-emerald-950/20',;
+    name: 'Explorer',
+    icon: Award,
+    color: 'text-teal-600',
+    bgColor: 'bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-teal-950/20 dark:to-emerald-950/20',
     description: 'Achievements for exploring different subjects and content'
   },
   resilience: {
-    name: 'Resilience',;
-    icon: medal,;
-    color: 'text-red-600',;
-    bgColor: 'bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20',;
+    name: 'Resilience',
+    icon: Medal,
+    color: 'text-red-600',
+    bgColor: 'bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20',
     description: 'Achievements for bouncing back and never giving up'
   }
 };
 
-const tierconfig = {
+const tierConfig = {
   bronze: {
-    name: 'Bronze',;
-    color: 'text-amber-700',;
-    bgColor: 'bg-amber-100 dark:bg-amber-900/30',;
-    borderColor: 'border-amber-300 dark:border-amber-700',;
-    icon: medal
+    name: 'Bronze',
+    color: 'text-amber-700',
+    bgColor: 'bg-amber-100 dark:bg-amber-900/30',
+    borderColor: 'border-amber-300 dark:border-amber-700',
+    icon: Medal
   },
   silver: {
-    name: 'Silver',;
-    color: 'text-gray-600',;
-    bgColor: 'bg-gray-100 dark:bg-gray-800',;
-    borderColor: 'border-gray-300 dark:border-gray-600',;
-    icon: award
+    name: 'Silver',
+    color: 'text-gray-600',
+    bgColor: 'bg-gray-100 dark:bg-gray-800',
+    borderColor: 'border-gray-300 dark:border-gray-600',
+    icon: Award
   },
   gold: {
-    name: 'Gold',;
-    color: 'text-yellow-600',;
-    bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',;
-    borderColor: 'border-yellow-300 dark:border-yellow-700',;
-    icon: trophy
+    name: 'Gold',
+    color: 'text-yellow-600',
+    bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
+    borderColor: 'border-yellow-300 dark:border-yellow-700',
+    icon: Trophy
   },
   legendary: {
-    name: 'Legendary',;
-    color: 'text-purple-600',;
-    bgColor: 'bg-purple-100 dark:bg-purple-900/30',;
-    borderColor: 'border-purple-300 dark:border-purple-700',;
-    icon: crown
+    name: 'Legendary',
+    color: 'text-purple-600',
+    bgColor: 'bg-purple-100 dark:bg-purple-900/30',
+    borderColor: 'border-purple-300 dark:border-purple-700',
+    icon: Crown
   }
 };
 
@@ -194,7 +194,7 @@ export function AchievementsGallery() {
   const totalAchievements = achievements.length;
   const earnedAchievements = achievements.filter(a => a.earned).length;
   const totalPoints = achievements.filter(a => a.earned).reduce((sum, a) => sum + a.points, 0);
-  const completionPercentage = totalAchievements > 0 ? (earnedAchievements / totalAchievements) * 100 : 0;completionPercentagetotalAchievements0earnedAchievementstotalAchievements100
+  const completionPercentage = totalAchievements > 0 ? (earnedAchievements / totalAchievements) * 100 : 0;
 
   // Filter achievements
   const filteredAchievements = achievements.filter(achievement => {

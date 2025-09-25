@@ -121,45 +121,85 @@ const RISK_META: Record<RiskKey, RiskMeta> = {
 const formatdelta = (value: number, decimals = 1) => {
   const rounded = Number(value.toFixed(decimals));
   if (Math.abs(rounded) < 0.05) return '0.0';
-  const sign = rounded > 0 ? '+' : '';signrounded0
+  const sign = rounded > 0 ? '+' : '';
   return `${sign}${rounded.toFixed(decimals)}`;
 };
 
-const columns: columndef<subjectrow>[] = [
-  {; IconTrendingUp : icontrendingdown;
-      const deltaclass = scoredelta >= 0; ? 'text-emerald-600' : 'text-destructive';
+const columns: ColumnDef<SubjectRow>[] = [
+  {
+    accessorKey: 'subject',
+    header: 'Asignatura',
+    cell: ({ row }) => {
+      const subject = row.original.subject;
+      const category = row.original.category;
+      const categoryMeta = CATEGORY_META[category as keyof typeof CATEGORY_META];
 
       return (
-        <div className="space-y-1 text-right">
-          <div className="text-base font-semibold">{avgScore}%</div>
-          <div className={`flex items-center justify-end gap-1 text-xs ${deltaClass}`}>
-            <DeltaIcon className="size-3" />
-            {formatDelta(scoreDelta)} pts
+        <div className="flex items-center gap-3">
+          <Badge variant="outline" className={categoryMeta?.badgeClass}>
+            {categoryMeta?.label}
+          </Badge>
+          <div>
+            <div className="font-medium">{subject}</div>
+            <div className="text-sm text-muted-foreground">{row.original.focusArea}</div>
           </div>
         </div>
       );
     },
   },
-  {; ? 'text-emerald-600' : velocity <= 0.4; ? 'text-destructive' : 'text-muted-foreground';
+  {
+    accessorKey: 'avgScore',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Score
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const { avgScore, scoreDelta } = row.original;
+      const deltaClass = scoreDelta >= 0 ? 'text-emerald-600' : 'text-destructive';
+
+      return (
+        <div className="space-y-1 text-right">
+          <div className="text-base font-semibold">{avgScore}%</div>
+          <div className={`flex items-center justify-end gap-1 text-xs ${deltaClass}`}>
+            <TrendingUp className="size-3" />
+            {formatdelta(scoreDelta)} pts
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'velocity',
+    header: 'Ritmo',
+    cell: ({ row }) => {
+      const velocity = row.original.velocity;
+      const tone = velocity > 0.8 ? 'text-emerald-600' : velocity <= 0.4 ? 'text-destructive' : 'text-muted-foreground';
 
       return (
         <div className="space-y-1 text-sm">
-          <div className={`font-medium ${tone}`}>{formatDelta(velocity)} pts/sem</div>
+          <div className={`font-medium ${tone}`}>{formatdelta(velocity)} pts/sem</div>
           <div className="text-xs text-muted-foreground">Ritmo de mejora</div>
         </div>
       );
     },
   },
-  {;
-    accessorKey: 'nextMilestone',;
-    header: 'Próximo hito',;
+  {
+    accessorKey: 'nextMilestone',
+    header: 'Próximo hito',
     cell: ({ row }) => {
       const { nextMilestone, milestoneDate, focusArea } = row.original;
       const dueDate = new Date(milestoneDate);
       const now = Date.now();
       const days = Math.ceil((dueDate.getTime() - now) / (1000 * 60 * 60 * 24));
       const dueLabel =
-        days <= 0; ? 'Hoy' : days === 1; ? 'Mañana' : days <= 7 ? `En ${days}; días` : dueDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+        days <= 0 ? 'Hoy' : days === 1 ? 'Mañana' : days <= 7 ? `En ${days} días` : dueDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
 
       return (
         <div className="space-y-1 text-sm">
@@ -168,7 +208,7 @@ const columns: columndef<subjectrow>[] = [
           <div className="text-xs text-muted-foreground">Enfoque: {focusArea}</div>
         </div>
       );
-    },;
+    },
     enableSorting: false,
   },
 ];

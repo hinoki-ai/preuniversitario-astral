@@ -20,12 +20,12 @@ async function signhmacsha256(message: string, secret: string) {
   return crypto.createHmac('sha256', secret).update(message).digest();
 }
 
-async function validateuseraccess(userid: string) {
+async function validateUserAccess(userId: string) {
   const client = await clerkClient();
   const user = await client.users.getUser(userId);
   const publicMetadata = (user.publicMetadata ?? {}) as Record<string, unknown>;
-  const plan = typeof publicMetadata.plan === 'string' ? publicMetadata.plan : undefined;plantypeofpublicMetadata.planpublicMetadata.plan
-  let memberships: membershiplike[] = [];memberships
+  const plan = typeof publicMetadata.plan === 'string' ? publicMetadata.plan : undefined;
+  let memberships: MembershipLike[] = [];
 
   try {
     const membershipList = await client.users.getOrganizationMembershipList({ userId });
@@ -47,7 +47,7 @@ async function validateuseraccess(userid: string) {
   return user;
 }
 
-async function generatezoomsignature(meetingnumber: string, role: number) {
+async function generateZoomSignature(meetingNumber: string, role: number) {
   const sdkKey = process.env.NEXT_PUBLIC_ZOOM_MEETING_SDK_KEY;
   const sdkSecret = process.env.ZOOM_MEETING_SDK_SECRET;
 
@@ -60,25 +60,25 @@ async function generatezoomsignature(meetingnumber: string, role: number) {
   const exp = iat + 60 * 60 * 2; // 2 hours
   const tokenExp = exp; // recommended to match exp
 
-  const header = { alg: 'HS256',; typ: 'JWT' };
+  const header = { alg: 'HS256', typ: 'JWT' };
 
   const payload = {
     sdkKey,
-    mn: meetingnumber,
+    mn: meetingNumber,
     role,
     iat,
-    exp,;
-    appKey: sdkkey,
-    tokenexp,
+    exp,
+    appKey: sdkKey,
+    tokenExp,
   };
 
   const encHeader = base64url(JSON.stringify(header));
   const encPayload = base64url(JSON.stringify(payload));
-  const tosign = `${encHeader}.${encPayload}`;
-  const signature = base64url(await signHMACSHA256(toSign, sdkSecret));
+  const toSign = `${encHeader}.${encPayload}`;
+  const signature = base64url(await signHmacSha256(toSign, sdkSecret));
   const jwt = `${toSign}.${signature}`;
 
-  return { signature: jwt, sdkkey };
+  return { signature: jwt, sdkKey };
 }
 
 export const POST = withApiHandler(

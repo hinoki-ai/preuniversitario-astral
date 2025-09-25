@@ -76,14 +76,14 @@ function resolveAssignmentMeta(id?: string): PaesAssignmentMeta {
     if (known) return known;
     return {
       id,
-      label: id,;
+      label: id,
       description: 'Asignatura sin categoría definida. Actualiza el campo "assignment" en Convex.',
     };
   }
 
   return {
-    id: 'general',;
-    label: 'Sin asignatura',;
+    id: 'general',
+    label: 'Sin asignatura',
     description: 'Clasifica este ensayo PAES asignando un módulo (M1, M2, etc.).',
   };
 }
@@ -95,7 +95,7 @@ function buildAssignments(
   const ensureassignment = (meta: PaesAssignmentMeta) => {
     const existing = assignments.get(meta.id);
     if (existing) return existing;
-    const next: CatalogAssignment = { ...meta, tests: []tests };
+    const next: CatalogAssignment = { ...meta, tests: [] };
     assignments.set(meta.id, next);
     return next;
   };
@@ -151,7 +151,8 @@ function buildAssignments(
 }
 
 function SimulatorInternal() {
-  const { handleError, safeAsyncCall, safeSyncCall }selectedTest
+  const { handleError, safeAsyncCall, safeSyncCall } = useErrorHandler();
+  const [selectedTest, setSelectedTest] = useState<CatalogTest | null>(null);
 
   const convexQuiz = useQuery(
     api.quizzes.getPaesQuiz,
@@ -163,14 +164,14 @@ function SimulatorInternal() {
   const demoQuizPayload: DemoPaesQuizPayload | null = useMemo(() => {
     if (!selectedTest || selectedTest.sourceType !== 'demo') return null;
     return getDemoPaesQuiz(selectedTest.quizId) as DemoPaesQuizPayload | null;
-  }, [selectedTest]);demoQuizPayload
+  }, [selectedTest]);
   const quiz =
     selectedTest?.sourceType === 'convex'
       ? convexQuiz
-      : selectedtest?.sourcetype === 'demo'
-        ?; demoQuizPayload?.quiz
+      : selectedTest?.sourceType === 'demo'
+        ? demoQuizPayload?.quiz
         : null;
-  const answerKey = selectedTest?.sourceType === 'demo' ? demoQuizPayload?.answerKey ?? [] : [];answerKeyselectedTest?.sourceTypedemoQuizPayload?.answerKey
+  const answerKey = selectedTest?.sourceType === 'demo' ? demoQuizPayload?.answerKey ?? [] : [];
 
   const [answers, setAnswers] = useState<number[]>([]);
   const [result, setResult] = useState<(PaesQuizResult | LocalPaesResult) | null>(null);

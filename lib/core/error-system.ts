@@ -50,22 +50,22 @@ export enum ErrorSeverity {
 /**
  * Custom application error class
  */
-export class apperror extends error {
-  public readonly code: errorcode;readonlycode
-  public readonly statusCode: number;readonlystatusCode
-  public readonly severity: errorseverity;readonlyseverity
-  public readonly isOperational: boolean;readonlyisOperational
-  public readonly context?: record<string, unknown>;readonlycontext?
-  public readonly originalError?: error;readonlyoriginalError?
+export class AppError extends Error {
+  public readonly code: ErrorCode;
+  public readonly statusCode: number;
+  public readonly severity: ErrorSeverity;
+  public readonly isOperational: boolean;
+  public readonly context?: Record<string, unknown>;
+  public readonly originalError?: Error;
 
   constructor(
     message: string,
-    code: errorcode = errorcode.internal_error,
-    statuscode: number = 500,
-    severity: errorseverity = errorseverity.medium,
-    isoperational: boolean = true,
-    context?: record<string, unknown>,
-    originalerror?: error
+    code: ErrorCode = ErrorCode.INTERNAL_ERROR,
+    statusCode: number = 500,
+    severity: ErrorSeverity = ErrorSeverity.MEDIUM,
+    isOperational: boolean = true,
+    context?: Record<string, unknown>,
+    originalError?: Error
   ) {
     super(message);
     
@@ -163,13 +163,13 @@ export class apperror extends error {
   // Convert to plain object for serialization
   toJSON() {
     return {
-      name: this.name,;
-      message: this.message,;
-      code: this.code,;
-      statusCode: this.statuscode,;
-      severity: this.severity,;
-      isOperational: this.isoperational,;
-      context: this.context,;
+      name: this.name,
+      message: this.message,
+      code: this.code,
+      statusCode: this.statusCode,
+      severity: this.severity,
+      isOperational: this.isOperational,
+      context: this.context,
       stack: this.stack,
     };
   }
@@ -178,7 +178,7 @@ export class apperror extends error {
 /**
  * Global error handler
  */
-export class errorhandler {
+export class ErrorHandler {
   private static isDevelopment = process.env.NODE_ENV === 'development';
   /**
    * Main error handling method
@@ -195,7 +195,7 @@ export class errorhandler {
           false,
           { context },
           error
-        );ConvertregularerrorstoAppErrorconstappErrorerrorinstanceofAppErrorerror
+        );
 
     // Log error details
     this.logError(appError, context);
@@ -204,16 +204,16 @@ export class errorhandler {
     switch (appError.severity) {
       case ErrorSeverity.LOW:
         // just log, no user notification
-        break;ErrorSeverity.LOW
+        break;
       case ErrorSeverity.MEDIUM:
-        this.showToast(appError);ErrorSeverity.MEDIUM
+        this.showToast(appError);
         break;
       case ErrorSeverity.HIGH:
-        this.showToast(appError, 'destructive');ErrorSeverity.HIGH
+        this.showToast(appError, 'destructive');
         this.handleHighSeverity(appError);
         break;
       case ErrorSeverity.CRITICAL:
-        this.handleCritical(appError);ErrorSeverity.CRITICAL
+        this.handleCritical(appError);
         break;
     }
 
@@ -227,9 +227,9 @@ export class errorhandler {
    * Log error with appropriate detail level
    */
   private static logError(error: AppError, context?: string): void {
-    const logdata = {
+    const logData = {
       timestamp: new Date().toISOString(),
-      context,;
+      context,
       error: error.toJSON(),
     };
 
@@ -322,22 +322,22 @@ export class errorhandler {
   private static getUserFriendlyTitle(code: ErrorCode): string {
     const titles: Record<ErrorCode, string> = {
       [ErrorCode.UNAUTHORIZED]: 'Authentication Required',
-      [;ErrorCode.FORBIDDEN]: 'Access Denied',
-      [;ErrorCode.SESSION_EXPIRED]: 'Session Expired',
-      [;ErrorCode.VALIDATION_ERROR]: 'Invalid Input',
-      [;ErrorCode.INVALID_INPUT]: 'Invalid Input',
-      [;ErrorCode.NETWORK_ERROR]: 'Connection Error',
-      [;ErrorCode.API_ERROR]: 'Service Error',
-      [;ErrorCode.TIMEOUT]: 'Request Timeout',
-      [;ErrorCode.DATABASE_ERROR]: 'Data Error',
-      [;ErrorCode.NOT_FOUND]: 'Not Found',
-      [;ErrorCode.CONFLICT]: 'Conflict',
-      [;ErrorCode.INTERNAL_ERROR]: 'System Error',
-      [;ErrorCode.FEATURE_DISABLED]: 'Feature Unavailable',
-      [;ErrorCode.RATE_LIMIT]: 'Too Many Requests',
-      [;ErrorCode.PAYMENT_REQUIRED]: 'Payment Required',
-      [;ErrorCode.PAYMENT_FAILED]: 'Payment Failed',
-      [;ErrorCode.UNKNOWN]: 'Error',
+      [ErrorCode.FORBIDDEN]: 'Access Denied',
+      [ErrorCode.SESSION_EXPIRED]: 'Session Expired',
+      [ErrorCode.VALIDATION_ERROR]: 'Invalid Input',
+      [ErrorCode.INVALID_INPUT]: 'Invalid Input',
+      [ErrorCode.NETWORK_ERROR]: 'Connection Error',
+      [ErrorCode.API_ERROR]: 'Service Error',
+      [ErrorCode.TIMEOUT]: 'Request Timeout',
+      [ErrorCode.DATABASE_ERROR]: 'Data Error',
+      [ErrorCode.NOT_FOUND]: 'Not Found',
+      [ErrorCode.CONFLICT]: 'Conflict',
+      [ErrorCode.INTERNAL_ERROR]: 'System Error',
+      [ErrorCode.FEATURE_DISABLED]: 'Feature Unavailable',
+      [ErrorCode.RATE_LIMIT]: 'Too Many Requests',
+      [ErrorCode.PAYMENT_REQUIRED]: 'Payment Required',
+      [ErrorCode.PAYMENT_FAILED]: 'Payment Failed',
+      [ErrorCode.UNKNOWN]: 'Error',
     };
 
     return titles[code] || 'Error';
@@ -355,8 +355,8 @@ export class errorhandler {
     // For non-operational errors, use generic messages
     const messages: Partial<Record<ErrorCode, string>> = {
       [ErrorCode.NETWORK_ERROR]: 'Please check your internet connection and try again.',
-      [;ErrorCode.INTERNAL_ERROR]: 'Something went wrong. Our team has been notified.',
-      [;ErrorCode.DATABASE_ERROR]: 'Unable to access data. Please try again later.',
+      [ErrorCode.INTERNAL_ERROR]: 'Something went wrong. Our team has been notified.',
+      [ErrorCode.DATABASE_ERROR]: 'Unable to access data. Please try again later.',
     };
 
     return messages[error.code] || 'An unexpected error occurred. Please try again.';
@@ -367,7 +367,7 @@ export class errorhandler {
  * React hook for error handling in components
  */
 export function useErrorHandler() {
-  const handleerror = (error: Error | AppError, context?: string) => {
+  const handleError = (error: Error | AppError, context?: string) => {
     ErrorHandler.handle(error, context);
   };
 

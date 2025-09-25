@@ -70,7 +70,7 @@ export default function BasicSchedule({ onPick }: { onPick?: (m: MeetingItem) =>
   const items = useMemo(() => meetings ?? [], [meetings]);
 
   // Use robust polling with error handling
-  const { pollCount, isPolling, errorCount, lastError, handleError: handlepollingerror, startpolling, stoppollingisPolling,errorCount,lastError,handleError } = usePolling(30000, 3);
+  const { pollCount, isPolling, errorCount, lastError, handleError: handlePollingError, startPolling, stopPolling } = usePolling(30000, 3);
 
   // Poll for meeting status updates with error handling
   useEffect(() => {

@@ -6,9 +6,7 @@ import * as rechartsprimitive from 'recharts'
 import { cn } from '@/lib/utils'
 
 // Format: { THEME_NAME: css_selector }
-const themes = { light: '',; dark: '.dark' }
-
- as const
+const themes = { light: '', dark: '.dark' } as const
 
 export type chartconfig = {
   [k in string]: {
@@ -342,7 +340,7 @@ function getPayloadConfigFromPayload(
 
   return configLabelKey in config
     ? config[configLabelKey]
-    : config[key as keyof typeof config]configLabelKeyinconfigconfigconfigLabelKey
+    : config[key as keyof typeof config]
 }
 
 export {

@@ -23,32 +23,62 @@ interface diagnosticquestion {
   difficulty: 'easy' | 'medium' | 'hard';
 }
 
-const diagnosticQuestions: diagnosticquestion[] = [
-  {;
+const diagnosticQuestions: DiagnosticQuestion[] = [
+  {
+    id: 'math1',
+    subject: 'Matemáticas',
+    question: '¿Cuál es el resultado de 2 + 2 × 3?',
+    options: ['8', '12', '6', '10'],
+    correctIndex: 0,
     difficulty: 'easy'
   },
-  {;
+  {
+    id: 'spanish1',
+    subject: 'Lenguaje',
+    question: '¿Cuál es el antónimo de "rápido"?',
+    options: ['Lento', 'Veloz', 'Ágil', 'Rápido'],
+    correctIndex: 0,
     difficulty: 'easy'
   },
-  {;
+  {
+    id: 'history1',
+    subject: 'Historia',
+    question: '¿En qué año llegó Cristóbal Colón a América?',
+    options: ['1492', '1500', '1485', '1510'],
+    correctIndex: 0,
     difficulty: 'easy'
   },
-  {;
+  {
+    id: 'science1',
+    subject: 'Ciencias',
+    question: '¿Cuál es el planeta más cercano al Sol?',
+    options: ['Venus', 'Tierra', 'Mercurio', 'Marte'],
+    correctIndex: 2,
     difficulty: 'easy'
   },
-  {;
-    difficulty: 'hard'
-  },
-  {;
+  {
+    id: 'math2',
+    subject: 'Matemáticas',
+    question: '¿Cuál es la solución de la ecuación x² - 4 = 0?',
+    options: ['x = 2', 'x = ±2', 'x = 4', 'x = -4'],
+    correctIndex: 1,
     difficulty: 'medium'
   },
-  {;
-    id: 'math4',;
-    subject: 'Matemáticas',;
-    question: '¿Cuál es la solución de la ecuación x² - 4 = 0?',;
-    options: ['x = 2', 'x = ±2', 'x = 4', 'x = -4'],;
-    correctIndex: 1,;
-    difficulty: 'easy'
+  {
+    id: 'spanish2',
+    subject: 'Lenguaje',
+    question: '¿Qué figura literaria se usa en "el sol reía"?',
+    options: ['Metáfora', 'Personificación', 'Hipérbole', 'Ironía'],
+    correctIndex: 1,
+    difficulty: 'medium'
+  },
+  {
+    id: 'history2',
+    subject: 'Historia',
+    question: '¿Qué tratado puso fin a la Primera Guerra Mundial?',
+    options: ['Tratado de Versalles', 'Tratado de París', 'Tratado de Viena', 'Tratado de Westfalia'],
+    correctIndex: 0,
+    difficulty: 'hard'
   }
 ];
 

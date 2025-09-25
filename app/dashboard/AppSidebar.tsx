@@ -45,42 +45,42 @@ import { api } from '@/convex/_generated/api';
 // Estudiante Turista (Free user) navigation data - Limited features
 const freeUserData = {
   navMain: [
-    {;
-      icon: icontargetalt,
+    {
+      title: 'Dashboard',
+      url: '/dashboard',
+      icon: IconTargetAlt,
     },
-    {;
-      icon: iconsparkles,
+    {
+      title: 'Biblioteca',
+      url: '/dashboard/biblioteca',
+      icon: IconFolder,
     },
-    {;
-      icon: iconcamera,
+    {
+      title: 'Plan de Estudio',
+      url: '/dashboard/plan',
+      icon: IconListDetails,
     },
-    {;
-      icon: iconlistdetails,
+    {
+      title: 'Progreso',
+      url: '/dashboard/progreso',
+      icon: IconRefresh,
     },
-    {;
-      icon: iconreport,
+    {
+      title: 'Análisis',
+      url: '/dashboard/analytics',
+      icon: IconChartBar,
     },
-    {;
-      icon: iconrefresh,
-    },
-    {;
-      icon: iconfolder,
-    },
-    {;
-      icon: iconchartbar,
-    },
-    {;
-      icon: iconreport,
-    },
-  ],;
+  ],
   navSecondary: [
-    {;
-      title: 'Buscar',;
-  documents: [
-    {;
-      name: 'Biblioteca Básica',;
-      url: '#',;
-      icon: icondatabase,
+    {
+      title: 'Buscar',
+      documents: [
+        {
+          name: 'Biblioteca Básica',
+          url: '#',
+          icon: IconDatabase,
+        },
+      ],
     },
   ],
 };
@@ -88,42 +88,62 @@ const freeUserData = {
 // Estudiante Iluminado (Paid user) navigation data - Full features
 const paidUserData = {
   navMain: [
-    {;
-      icon: icontargetalt,
+    {
+      title: 'Dashboard',
+      url: '/dashboard',
+      icon: IconTargetAlt,
     },
-    {;
-      icon: iconsparkles,
+    {
+      title: 'Asistente IA',
+      url: '/dashboard/ai-assistant',
+      icon: IconSparkles,
     },
-    {;
-      icon: iconcamera,
+    {
+      title: 'Media',
+      url: '/dashboard/media',
+      icon: IconCamera,
     },
-    {;
-      icon: iconlistdetails,
+    {
+      title: 'Plan de Estudio',
+      url: '/dashboard/plan',
+      icon: IconListDetails,
     },
-    {;
-      icon: iconreport,
+    {
+      title: 'Diagnóstico',
+      url: '/dashboard/diagnostic',
+      icon: IconReport,
     },
-    {;
-      icon: iconrefresh,
+    {
+      title: 'Progreso',
+      url: '/dashboard/progreso',
+      icon: IconRefresh,
     },
-    {;
-      icon: iconfolder,
+    {
+      title: 'Biblioteca',
+      url: '/dashboard/biblioteca',
+      icon: IconFolder,
     },
-    {;
-      icon: iconchartbar,
+    {
+      title: 'Análisis',
+      url: '/dashboard/analytics',
+      icon: IconChartBar,
     },
-    {;
-      icon: iconreport,
+    {
+      title: 'PAES',
+      url: '/dashboard/paes',
+      icon: IconReport,
     },
-  ],;
+  ],
   navSecondary: [
-    {;
-      title: 'Buscar',;
-  documents: [
-    {;
-      name: 'Asistente IA',;
-      url: '#',;
-      icon: iconbrandopenai,
+    {
+      title: 'Buscar',
+      documents: [
+        {
+          name: 'Asistente IA',
+          url: '#',
+          icon: IconBrandOpenai,
+        },
+      ],
     },
   ],
 };
@@ -133,7 +153,7 @@ function AppSidebarInternal({ ...props }: React.ComponentProps<typeof Sidebar>) 
   const meetings = useQuery(api.meetings.listUpcoming, {});
 
   const publicMetadata = (user?.publicMetadata ?? {}) as Record<string, unknown>;
-  const plan = typeof publicMetadata.plan === 'string' ? publicMetadata.plan : undefined;plantypeofpublicMetadata.planpublicMetadata.plan
+  const plan = typeof publicMetadata.plan === 'string' ? publicMetadata.plan : undefined;
   const accessState = resolveAccessState({
     plan,
     trialEndsAt: publicMetadata.trialEndsAt,
@@ -144,14 +164,14 @@ function AppSidebarInternal({ ...props }: React.ComponentProps<typeof Sidebar>) 
     ? accessState.hasActiveTrial
       ? 'Estudiante Iluminado (Trial)'
       : 'Estudiante Iluminado'
-    : 'Estudiante Turista';badgeLabelaccessState.hasAccessaccessState.hasActiveTrial
+    : 'Estudiante Turista';
   // Check for live classes
   const liveClassesCount = meetings?.filter(m => {
     const now = Math.floor(Date.now() / 1000);
     return now >= m.startTime && now <= (m.startTime + 3600);
   }).length || 0;
   // Use appropriate data based on user plan
-  const data = isFreeUser ? freeUserData : paiduserdata;UseappropriatedatabasedonuserplanconstdataisFreeUserfreeUserData
+  const data = isFreeUser ? freeUserData : paidUserData;
 
   return (
     <Sidebar variant="sidebar" collapsible="none" className="border-r border-sidebar-border" {...props}>

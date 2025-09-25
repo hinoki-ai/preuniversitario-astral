@@ -13,10 +13,10 @@ export type navitem = {
   onClick?: () => void;
 };
 
-const defaultNavItems: navitem[] = [
-  {; label: 'Home' },
-  {; label: 'Explore' },
-  {; id: 'default-notifications',; icon: <defaultbellicon />,; label: 'Notifications' },
+const defaultNavItems: NavItem[] = [
+  { id: 'home', label: 'Home', icon: <div>Home</div> },
+  { id: 'explore', label: 'Explore', icon: <div>Explore</div> },
+  { id: 'notifications', label: 'Notifications', icon: <div>🔔</div> },
 ];
 
 type limelightnavprops = {
@@ -44,7 +44,7 @@ export const LimelightNav = ({
   iconClassName,
 }: LimelightNavProps) => {
   const [internalActiveIndex, setInternalActiveIndex] = useState(defaultActiveIndex);
-  const activeIndex = controlledActiveIndex !== undefined ? controlledActiveIndex : internalactiveindex;activeIndexcontrolledActiveIndexundefinedcontrolledActiveIndex
+  const activeIndex = controlledActiveIndex !== undefined ? controlledActiveIndex : internalActiveIndex;
   const [isReady, setIsReady] = useState(false);
   const navItemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const limelightRef = useRef<HTMLDivElement | null>(null);
@@ -69,7 +69,7 @@ export const LimelightNav = ({
     return null; 
   }
 
-  const handleitemclick = (index: number, itemOnClick?: () => void) => {
+  const handleItemClick = (index: number, itemOnClick?: () => void) => {
     if (controlledActiveIndex === undefined) {
       setInternalActiveIndex(index);
     }

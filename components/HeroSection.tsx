@@ -13,10 +13,39 @@ import { Button }
 
  from "@/components/ui/button"
 import { withMinimalErrorHandling } from '@/lib/core/auto-error-enhancement'
+import { useEffect, useRef } from 'react'
 
 function HeroSectionInternal() {
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const playAudio = async () => {
+      if (audioRef.current) {
+        try {
+          // Set volume to a reasonable level
+          audioRef.current.volume = 0.3;
+          await audioRef.current.play();
+        } catch (error) {
+          console.log('Audio autoplay prevented by browser:', error);
+          // Could add a play button fallback here if needed
+        }
+      }
+    };
+
+    playAudio();
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center">
+      {/* Background Audio */}
+      <audio
+        ref={audioRef}
+        src="/landing.mp3"
+        loop
+        preload="auto"
+        className="hidden"
+      />
+
       <ShaderAnimation />
       
       <div className="container mx-auto px-6 pt-20 relative z-10">

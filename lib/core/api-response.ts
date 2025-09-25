@@ -33,7 +33,7 @@ export interface apiresponse<t = unknown> {
 /**
  * API Response builder class
  */
-export class apiresponsebuilder {
+export class ApiResponseBuilder {
   /**
    * Create a successful response
    */
@@ -101,9 +101,9 @@ export class apiresponsebuilder {
     const response: ApiResponse = {
       success: false,
       error: {
-        message: apperror.message,;
-        code: apperror.code,;
-        details: apperror.context,
+        message: appError.message,
+        code: appError.code,
+        details: appError.context,
       },
       meta: {
         timestamp: new Date().toISOString(),
@@ -119,8 +119,8 @@ export class apiresponsebuilder {
   static validationError(
     errors: z.ZodError | Record<string, string[]> | string
   ): NextResponse<ApiResponse> {
-    let details: unknown;details
-    let message: string;message
+    let details: unknown;
+    let message: string;
 
     if (errors instanceof z.ZodError) {
       details = errors.flatten();

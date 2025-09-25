@@ -54,7 +54,7 @@ const sidebar_width_mobile = '18rem'
 const sidebar_width_icon = '3rem'
 const sidebar_keyboard_shortcut = 'b'
 
-type sidebarcontextprops = {
+type SidebarContextProps = {
   state: 'expanded' | 'collapsed';
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -170,7 +170,7 @@ function SidebarProvider({
         </div>
       </TooltipProvider>
     </SidebarContext.Provider>
-  )isMobileuseIsMobileconstopenMobile,setOpenMobileReact.useStateThisistheinternalstateofthesidebar.WeuseopenPropandsetOpenPropforcontrolfromoutsidethecomponent.const_open,_setOpenReact.useStateconstopenopenProp_openconstsetOpenReact.useCallbackvalue
+  )
 }
 
 function Sidebar({
@@ -433,7 +433,7 @@ function SidebarGroupLabel({
       )}
       {...props}
     />
-  )CompasChildSlot
+)
 }
 
 function SidebarGroupAction({
@@ -456,7 +456,7 @@ function SidebarGroupAction({
       )}
       {...props}
     />
-  )CompasChildSlot
+)
 }
 
 function SidebarGroupContent({
@@ -596,7 +596,7 @@ function SidebarMenuAction({
       )}
       {...props}
     />
-  )CompasChildSlot
+)
 }
 
 function SidebarMenuBadge({
@@ -717,7 +717,7 @@ function SidebarMenuSubButton({
       )}
       {...props}
     />
-  )CompasChildSlot
+)
 }
 
 export {

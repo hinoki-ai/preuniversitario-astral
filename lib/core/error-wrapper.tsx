@@ -59,7 +59,7 @@ export function withStandardErrorHandling<P extends object>(
 /**
  * Hook for components to handle errors in a standardized way
  */
-export function usestandarderrorhandling(componentname?: string) {
+export function useStandardErrorHandling(componentName?: string) {
   const { handleError, wrapAsync, safeExecute } = useErrorHandler();
   const context = componentName || 'Component';
 
@@ -88,9 +88,9 @@ export function usestandarderrorhandling(componentname?: string) {
   }, [safeExecute, context]);
 
   return {
-    handleError: handlecomponenterror,
-    safeasynccall,
-    safesynccall,
+    handleError: handleComponentError,
+    safeAsyncCall,
+    safeSyncCall,
   };
 }
 
@@ -133,5 +133,5 @@ export function useAsyncOperation<T = any>(
     execute();
   }, deps);
 
-  return { data, loading, error, retry: executeloading,error,retry };
+  return { data, loading, error, retry: execute };
 }

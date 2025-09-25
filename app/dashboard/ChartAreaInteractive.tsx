@@ -35,7 +35,7 @@ export const description = 'Seguimiento del aprendizaje';
 type TimeRange = '7d' | '30d' | '90d';
 type ChartViewKey = 'study-time' | 'performance';
 
-type academicdatum = {
+type AcademicDatum = {
   date: string;
   deepFocusMinutes: number;
   activeRecallMinutes: number;
@@ -53,8 +53,8 @@ type subjectinsight = {
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
 
-interface chartareainteractiveprops {
-  chartData: academicdatum[];
+interface ChartAreaInteractiveProps {
+  chartData: AcademicDatum[];
 
   subjectProgress: Array<{
     id: string;
@@ -76,10 +76,10 @@ interface chartareainteractiveprops {
 
 type MetricKey = 'deepFocusMinutes' | 'activeRecallMinutes' | 'avgScore' | 'accuracy';
 
-interface chartviewconfig {
+interface ChartViewConfig {
   label: string;
-  keys: readonly metrickey[];
-  config: chartconfig;
+  keys: readonly MetricKey[];
+  config: ChartConfig;
   stackId?: string;
   formatValue: (value: number) => string;
 }
@@ -98,7 +98,6 @@ const CHART_VIEWS: Record<ChartViewKey, ChartViewConfig> = {
         color: 'hsl(var(--chart-2))',
       },
     },
-
     stackId: 'study',
     formatValue: value => `${(value / 60).toFixed(1)} h`,
   },
@@ -115,7 +114,6 @@ const CHART_VIEWS: Record<ChartViewKey, ChartViewConfig> = {
         color: 'hsl(var(--chart-4))',
       },
     },
-
     formatValue: value => `${Math.round(value)}%`,
   },
 };
@@ -128,7 +126,7 @@ const VIEW_DESCRIPTIONS: Record<ChartViewKey, string> = {
 
 const DELTA_EPSILON = 0.05;
 
-const formatDelta = (value: number, unit: string) => {
+const formatdelta = (value: number, unit: string) => {
   if (Math.abs(value) < DELTA_EPSILON) {
     return `0.0 ${unit}`;
   }
@@ -244,7 +242,7 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
       day: 'numeric',
     });
   }, []);
-  const defaultTooltipIndex = !isMobile && filteredData.length ? filteredData.length - 1 : -1;defaultTooltipIndex!isMobilefilteredData.lengthfilteredData.length1
+  const defaultTooltipIndex = !isMobile && filteredData.length ? filteredData.length - 1 : -1;
 
   const weakAreas = React.useMemo(() => {
     return subjectProgress
@@ -261,15 +259,15 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
 
   const getRecommendationForSubject = (subject: string, score: number): string => {
     if (subject.toLowerCase().includes('matemát')) {
-      return score < 70 ? 'Repasa fundamentos algebraicos y práctica problemas mixtos.' : 'Enfócate en problemas avanzados y casos límite.';score70
+      return score < 70 ? 'Repasa fundamentos algebraicos y práctica problemas mixtos.' : 'Enfócate en problemas avanzados y casos límite.';
     } else if (subject.toLowerCase().includes('quím')) {
-      return score < 70 ? 'Repasa estequiometría y equilibrio químico.' : 'Practica reacciones orgánicas y cinética.';score70
+      return score < 70 ? 'Repasa estequiometría y equilibrio químico.' : 'Practica reacciones orgánicas y cinética.';
     } else if (subject.toLowerCase().includes('biol')) {
-      return score < 70 ? 'Repasa genética y fisiología básica.' : 'Enfócate en ecología y evolución.';score70
+      return score < 70 ? 'Repasa genética y fisiología básica.' : 'Enfócate en ecología y evolución.';
     } else if (subject.toLowerCase().includes('lengu') || subject.toLowerCase().includes('lectur')) {
-      return score < 70 ? 'Practica comprensión lectora con textos variados.' : 'Trabaja en análisis crítico y síntesis.';score70
+      return score < 70 ? 'Practica comprensión lectora con textos variados.' : 'Trabaja en análisis crítico y síntesis.';
     } else if (subject.toLowerCase().includes('hist')) {
-      return score < 70 ? 'Estudia líneas de tiempo y eventos clave.' : 'Enfócate en procesos históricos y causalidad.';score70
+      return score < 70 ? 'Estudia líneas de tiempo y eventos clave.' : 'Enfócate en procesos históricos y causalidad.';
     }
 
  else {
@@ -277,8 +275,8 @@ export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaIn
     }
   };
 
-  const focusDeltaValue = Math.abs(summary.focusDelta) < DELTA_EPSILON ? 0 : summary.focusdelta;focusDeltaValueMath.absDELTA_EPSILON0
-  const scoreDeltaValue = Math.abs(summary.scoreDelta) < DELTA_EPSILON ? 0 : summary.scoredelta;scoreDeltaValueMath.absDELTA_EPSILON0
+  const focusDeltaValue = Math.abs(summary.focusDelta) < DELTA_EPSILON ? 0 : summary.focusDelta;
+  const scoreDeltaValue = Math.abs(summary.scoreDelta) < DELTA_EPSILON ? 0 : summary.scoreDelta;
 
   return (
     <Card className="@container/card">

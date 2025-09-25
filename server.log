@@ -1,0 +1,2095 @@
+
+> preuniversitario-astral@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.5.4
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.8.104:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+ ✓ Starting...
+ ✓ Ready in 4.1s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 554ms (221 modules)
+ ○ Compiling / ...
+
+[2m[224.56ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[  0.14ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 20.39ms][22m  [2m ↳ [22mSetup compiler
+[2m[  1.11ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
+[2m[ 19.25ms][22m    [2m ↳ [22mCreate compiler
+[2m[  0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[  1.30ms][22m  [2m ↳ [22mSetup scanner
+[2m[ 24.22ms][22m  [2m ↳ [22mScan for candidates
+[2m[  9.23ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[125.17ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 14.81ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[ 28.63ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⨯ ./components/ThemeProvider.tsx
+Error:   [31mx[0m Expected corresponding JSX closing tag for <nextthemesprovider>
+   ,-[[36;1;4m/mnt/Secondary/Projects/Websites/Preuniversitario/components/ThemeProvider.tsx[0m:7:1]
+ [2m4[0m | import * as React from 'react';
+ [2m5[0m | 
+ [2m6[0m | export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+ [2m7[0m |   return <nextthemesprovider {...props}>{children}</NextThemesProvider>;
+   : [35;1m                                                    ^^^^^^^^^^^^^^^^^^[0m
+ [2m8[0m | }
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/ThemeProvider.tsx
+./app/layout.tsx
+
+[2m[103.43ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.05ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 17.18ms][22m  [2m ↳ [22mScan for candidates
+[2m[  6.77ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.46ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 77.66ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⨯ ./components/ThemeProvider.tsx
+Error:   [31mx[0m Expected corresponding JSX closing tag for <nextthemesprovider>
+   ,-[[36;1;4m/mnt/Secondary/Projects/Websites/Preuniversitario/components/ThemeProvider.tsx[0m:7:1]
+ [2m4[0m | import * as React from 'react';
+ [2m5[0m | 
+ [2m6[0m | export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+ [2m7[0m |   return <nextthemesprovider {...props}>{children}</NextThemesProvider>;
+   : [35;1m                                                    ^^^^^^^^^^^^^^^^^^[0m
+ [2m8[0m | }
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/ThemeProvider.tsx
+./app/layout.tsx
+ ⨯ ./components/ThemeProvider.tsx
+Error:   [31mx[0m Expected corresponding JSX closing tag for <nextthemesprovider>
+   ,-[[36;1;4m/mnt/Secondary/Projects/Websites/Preuniversitario/components/ThemeProvider.tsx[0m:7:1]
+ [2m4[0m | import * as React from 'react';
+ [2m5[0m | 
+ [2m6[0m | export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+ [2m7[0m |   return <nextthemesprovider {...props}>{children}</NextThemesProvider>;
+   : [35;1m                                                    ^^^^^^^^^^^^^^^^^^[0m
+ [2m8[0m | }
+   `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/ThemeProvider.tsx
+./app/layout.tsx
+ GET / 500 in 12480ms
+
+[2m[32.92ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.06ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 7.72ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 6.58ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 2.25ms][22m  [2m ↳ [22mBuild utilities
+[2m[15.99ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+[2m[46.90ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[10.05ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.11ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.87ms][22m  [2m ↳ [22mBuild utilities
+[2m[31.69ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+[2m[45.42ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[22.22ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 3.96ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.14ms][22m  [2m ↳ [22mBuild utilities
+[2m[17.83ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+[2m[51.96ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[10.44ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 3.73ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[17.37ms][22m  [2m ↳ [22mBuild utilities
+[2m[20.24ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+[2m[40.20ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 8.60ms][22m  [2m ↳ [22mScan for candidates
+[2m[10.51ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.98ms][22m  [2m ↳ [22mBuild utilities
+[2m[18.88ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+./components/FeaturesSection.tsx
+./app/page.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+./components/FeaturesSection.tsx
+./app/page.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/Header.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./components/Header.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+./lib/core/auto-error-enhancement.tsx
+Attempted import error: 'useStandardErrorHandling' is not exported from '@/lib/core/error-wrapper' (imported as 'useStandardErrorHandling').
+
+Import trace for requested module:
+./lib/core/auto-error-enhancement.tsx
+./components/HeroSection.tsx
+./app/page.tsx
+
+[2m[99.82ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[18.84ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 9.56ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 8.14ms][22m  [2m ↳ [22mBuild utilities
+[2m[63.09ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[109.40ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[  0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 24.67ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 13.54ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.74ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 69.26ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[24.75ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 6.92ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 3.93ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.91ms][22m  [2m ↳ [22mBuild utilities
+[2m[12.85ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[27.35ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 7.93ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 7.66ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.26ms][22m  [2m ↳ [22mBuild utilities
+[2m[10.32ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[26.90ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 9.82ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 3.81ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.09ms][22m  [2m ↳ [22mBuild utilities
+[2m[11.98ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[58.28ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[15.73ms][22m  [2m ↳ [22mScan for candidates
+[2m[11.25ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 3.42ms][22m  [2m ↳ [22mBuild utilities
+[2m[27.68ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⨯ [Error [InvariantError]: Invariant: Expected clientReferenceManifest to be defined. This is a bug in Next.js.]
+ ⨯ [Error [InvariantError]: Invariant: Expected clientReferenceManifest to be defined. This is a bug in Next.js.] {
+  page: '/'
+}
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⨯ [Error: Cannot find module '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/pages/_document.js'
+Require stack:
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-components.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/options.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/index.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/parse-module.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ ⨯ TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+[Error [InvariantError]: Invariant: Expected clientReferenceManifest to be defined. This is a bug in Next.js.] {
+  page: '/'
+}
+ ⨯ [Error: Cannot find module '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/pages/_document.js'
+Require stack:
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-components.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/options.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/index.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/parse-module.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ ⨯ TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ GET / 500 in 3594ms
+ GET / 500 in 154ms
+
+[2m[24.31ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 9.61ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 3.97ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.93ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 9.44ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[39.38ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 9.62ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.26ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.11ms][22m  [2m ↳ [22mBuild utilities
+[2m[24.13ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⨯ Error: ENOENT: no such file or directory, open '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/vendor-chunks/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1.js'
+    at <unknown> (.next/server/app/_not-found/page.js:531:47)
+    at Object.<anonymous> (.next/server/app/_not-found/page.js:534:3) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/vendor-chunks/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1.js'
+}
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ ⨯ TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ ⨯ TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ ⨯ [Error: Cannot find module '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/pages/_document.js'
+Require stack:
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-components.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/options.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/index.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/parse-module.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ ⨯ TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ ⨯ [Error: Cannot find module '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/pages/_document.js'
+Require stack:
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-components.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/options.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/index.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/parse-module.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ ⨯ TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ GET / 500 in 1968ms
+ GET / 500 in 96ms
+
+[2m[472.06ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[  0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 46.15ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 31.29ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 13.32ms][22m  [2m ↳ [22mBuild utilities
+[2m[380.97ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+
+[2m[32.41ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 8.44ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 5.41ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.11ms][22m  [2m ↳ [22mBuild utilities
+[2m[17.27ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[34.92ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[16.84ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 7.08ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.80ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 9.00ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⨯ [Error [InvariantError]: Invariant: Expected clientReferenceManifest to be defined. This is a bug in Next.js.]
+ ⨯ [Error [InvariantError]: Invariant: Expected clientReferenceManifest to be defined. This is a bug in Next.js.] {
+  page: '/'
+}
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⨯ [Error: Cannot find module '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/pages/_document.js'
+Require stack:
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-components.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/options.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/index.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/parse-module.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ ⨯ TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+[Error [InvariantError]: Invariant: Expected clientReferenceManifest to be defined. This is a bug in Next.js.] {
+  page: '/'
+}
+ ⨯ [Error: Cannot find module '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/pages/_document.js'
+Require stack:
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-components.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/options.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/index.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/parse-module.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ ⨯ TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+TypeError: Cannot read properties of undefined (reading '/_app')
+    at new Promise (<anonymous>)
+ GET / 500 in 4524ms
+ GET / 500 in 109ms
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+ ⨯ [Error: ENOENT: no such file or directory, open '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/build-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/routes-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/routes-manifest.json'
+}
+ ⨯ [Error: Cannot find module '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/pages/_document.js'
+Require stack:
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-components.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/options.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/index.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/parse-module.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: ENOENT: no such file or directory, open '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/routes-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/routes-manifest.json'
+}
+ ⨯ [Error: Cannot find module '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/pages/_document.js'
+Require stack:
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-components.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/options.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/index.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/parse-module.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: ENOENT: no such file or directory, open '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/routes-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/routes-manifest.json'
+}
+ GET / 500 in 1109ms
+ GET / 500 in 103ms
+ ⨯ [Error: ENOENT: no such file or directory, open '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/build-manifest.json',
+  page: '/'
+}
+ ⨯ [Error: Cannot find module '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/pages/_document.js'
+Require stack:
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-components.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/options.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/index.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/parse-module.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: ENOENT: no such file or directory, open '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/build-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/build-manifest.json',
+  page: '/'
+}
+ ⨯ [Error: Cannot find module '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/server/pages/_document.js'
+Require stack:
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/require.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/load-components.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/options.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/swc/index.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/parse-module.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/analysis/get-page-static-info.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/router-server.js
+- /mnt/Secondary/Projects/Websites/Preuniversitario/node_modules/.pnpm/next@15.5.4_@babel+core@7.28.4_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/server/lib/start-server.js] {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+[Error: ENOENT: no such file or directory, open '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/routes-manifest.json'] {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/mnt/Secondary/Projects/Websites/Preuniversitario/.next/routes-manifest.json'
+}
+ GET / 500 in 428ms
+ GET / 500 in 70ms
+
+[2m[92.64ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.03ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.27ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[13.29ms][22m  [2m ↳ [22mScan for candidates
+[2m[11.28ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 2.29ms][22m  [2m ↳ [22mBuild utilities
+[2m[65.33ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[77.37ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 8.87ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.11ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.07ms][22m  [2m ↳ [22mBuild utilities
+[2m[63.16ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[39.70ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[21.84ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.21ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.98ms][22m  [2m ↳ [22mBuild utilities
+[2m[12.47ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[24.59ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.03ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 9.54ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.36ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.20ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 9.27ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[21.55ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.02ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 6.51ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.66ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.19ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 9.06ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[26.80ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 9.56ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.01ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.89ms][22m  [2m ↳ [22mBuild utilities
+[2m[12.15ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[29.40ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[11.12ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 6.97ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.11ms][22m  [2m ↳ [22mBuild utilities
+[2m[10.01ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[28.57ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[11.46ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.27ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 3.11ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 9.54ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[22.61ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.06ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 8.38ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.10ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.84ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 9.10ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ⚠ ./components/ErrorBoundary.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/ErrorBoundary.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+./components/GlobalErrorHandler.tsx
+Attempted import error: 'ErrorHandler' is not exported from '@/lib/core/error-system' (imported as 'ErrorHandler').
+
+Import trace for requested module:
+./components/GlobalErrorHandler.tsx
+
+[2m[24.66ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[10.19ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.98ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.87ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 8.44ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ✓ Compiled /_not-found in 584ms (1154 modules)
+
+[2m[45.78ms][22m [@tailwindcss/postcss] node_modules/.pnpm/tailwindcss@4.1.13/node_modules/tailwindcss/index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[15.42ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 8.50ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 5.13ms][22m  [2m ↳ [22mBuild utilities
+[2m[16.53ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+ ✓ Compiled in 985ms (1154 modules)

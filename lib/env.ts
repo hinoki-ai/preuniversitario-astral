@@ -57,13 +57,13 @@ function validateEnv(): Env {
       
       // Return partial config with defaults in development
       return {
-        NODE_ENV: 'development',;
-        NEXT_PUBLIC_CONVEX_URL: 'https://upbeat-marlin-114.convex.cloud',;
-        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: '',;
-        CLERK_SECRET_KEY: '',;
-        NEXT_PUBLIC_APP_URL: 'http://localhost:3000',;
-        NEXT_PUBLIC_ENABLE_MOCK_EXAMS: true,;
-        NEXT_PUBLIC_ZOOM_DEMO_MODE: false,;
+        NODE_ENV: 'development',
+        NEXT_PUBLIC_CONVEX_URL: 'https://upbeat-marlin-114.convex.cloud',
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: '',
+        CLERK_SECRET_KEY: '',
+        NEXT_PUBLIC_APP_URL: 'http://localhost:3000',
+        NEXT_PUBLIC_ENABLE_MOCK_EXAMS: true,
+        NEXT_PUBLIC_ZOOM_DEMO_MODE: false,
         NEXT_PUBLIC_ENABLE_ZOOM: false,
       } as Env;
     }

@@ -29,7 +29,7 @@ const sizeMap = {
   sm: 32,
   md: 40,
   lg: 48,
-  xl: 64,
+  xl: 64
 }
 
 const containerSizeMap = {
@@ -55,7 +55,7 @@ function getOrbIntensity(userId?: string): number {
     a = (a << 7) - a + b.charCodeAt(0)
     return a & a
   }, 0)
-  return 0.7 + ((Math.abs(hash) % 100) / 100) * 0.6 // Range: 0.7 to 1.3return1.0consthashuserId.split.reduceaab.charCodeAtreturnaa0return0.7Math.abs1001000.6Range
+  return 0.7 + ((Math.abs(hash) % 100) / 100) * 0.6 // Range: 0.7 to 1.3
 }
 
 export function EnergyOrb({

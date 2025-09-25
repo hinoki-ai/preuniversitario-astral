@@ -18,9 +18,9 @@ type toastertoast = toastprops & {
 }
 
 const actiontypes = {
-  ADD_TOAST: 'ADD_TOAST',;
-  UPDATE_TOAST: 'UPDATE_TOAST',;
-  DISMISS_TOAST: 'DISMISS_TOAST',;
+  ADD_TOAST: 'ADD_TOAST',
+  UPDATE_TOAST: 'UPDATE_TOAST',
+  DISMISS_TOAST: 'DISMISS_TOAST',
   REMOVE_TOAST: 'REMOVE_TOAST',
 } as const
 
@@ -81,7 +81,7 @@ export const reducer = (state: State, action: Action): State => {
     case 'ADD_TOAST':
       return {
         ...state,
-        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),toasts
+        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT)
       }
 
     case 'UPDATE_TOAST':
@@ -89,7 +89,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         toasts: state.toasts.map((t) =>
           t.id === action.toast.id ? { ...t, ...action.toast } : t,
-        ),toasts
+        )
       }
 
     case 'DISMISS_TOAST': {

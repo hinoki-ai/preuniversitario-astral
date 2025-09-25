@@ -34,13 +34,13 @@ const mediaGallery: MediaContentCollection = {
     date: 'Educación Premium',
     scrollToExpand: 'Desplaza para explorar',
     about: {
-      overview: 'Nuestras clases en vivo ofrecen una experiencia educativa inmersiva con profesores expertos. Cada sesión está diseñada para maximizar tu aprendizaje y preparación para la PAES.',;
+       overview: 'Nuestras clases en vivo ofrecen una experiencia educativa inmersiva con profesores expertos. Cada sesión está diseñada para maximizar tu aprendizaje y preparación para la PAES.',
       features: [
         'Clases en vivo con interacción en tiempo real',
         'Profesores especializados en PAES',
         'Material de apoyo descargable',
         'Grabaciones disponibles para repaso',
-      ],;
+      ],
       conclusion: 'Únete a miles de estudiantes que han mejorado sus resultados con nuestro método probado de enseñanza.',
     },
   },
@@ -51,13 +51,13 @@ const mediaGallery: MediaContentCollection = {
     date: 'Experimenta y Aprende',
     scrollToExpand: 'Desplaza para descubrir',
     about: {
-      overview: 'Explora conceptos científicos complejos a través de nuestro laboratorio virtual interactivo. Realiza experimentos sin límites y comprende la ciencia de manera práctica.',;
+      overview: 'Explora conceptos científicos complejos a través de nuestro laboratorio virtual interactivo. Realiza experimentos sin límites y comprende la ciencia de manera práctica.',
       features: [
         'Simulaciones interactivas de física y química',
         'Experimentos virtuales seguros',
         'Visualización 3D de conceptos',
         'Práctica ilimitada sin restricciones',
-      ],;
+      ],
       conclusion: 'Transforma tu manera de aprender ciencias con tecnología de vanguardia.',
     },
   },
@@ -69,13 +69,13 @@ const mediaGallery: MediaContentCollection = {
     date: 'Aprende con Claridad',
     scrollToExpand: 'Desplaza para explorar',
     about: {
-      overview: 'Domina las matemáticas con nuestro enfoque visual único. Desde álgebra hasta cálculo, hacemos que los conceptos más complejos sean fáciles de entender.',;
+      overview: 'Domina las matemáticas con nuestro enfoque visual único. Desde álgebra hasta cálculo, hacemos que los conceptos más complejos sean fáciles de entender.',
       features: [
         'Gráficos interactivos y animaciones',
         'Resolución paso a paso',
         'Ejercicios adaptativos',
         'Retroalimentación instantánea',
-      ],;
+      ],
       conclusion: 'Convierte las matemáticas en tu fortaleza con nuestro método innovador.',
     },
   },
@@ -86,13 +86,13 @@ const mediaGallery: MediaContentCollection = {
     date: 'Aprende en Equipo',
     scrollToExpand: 'Desplaza para conocer más',
     about: {
-      overview: 'Forma parte de una comunidad vibrante de estudiantes motivados. Comparte experiencias, resuelve dudas y alcanza tus metas junto a otros que comparten tu objetivo.',;
+      overview: 'Forma parte de una comunidad vibrante de estudiantes motivados. Comparte experiencias, resuelve dudas y alcanza tus metas junto a otros que comparten tu objetivo.',
       features: [
         'Grupos de estudio colaborativo',
         'Foros de discusión moderados',
         'Mentorías entre pares',
         'Eventos y competencias académicas',
-      ],;
+      ],
       conclusion: 'El éxito se construye mejor en comunidad. Únete a la nuestra.',
     },
   },
@@ -104,13 +104,13 @@ const mediaGallery: MediaContentCollection = {
     date: 'Resultados Reales',
     scrollToExpand: 'Desplaza para inspirarte',
     about: {
-      overview: 'Conoce las historias de estudiantes que lograron sus objetivos con nuestro preuniversitario. Sus experiencias pueden ser tu motivación.',;
+      overview: 'Conoce las historias de estudiantes que lograron sus objetivos con nuestro preuniversitario. Sus experiencias pueden ser tu motivación.',
       features: [
         'Testimonios verificados de ex-alumnos',
         'Mejoras promedio de 150+ puntos',
         'Ingreso a las mejores universidades',
         'Apoyo continuo post-admisión',
-      ],;
+      ],
       conclusion: 'Tu historia de éxito comienza aquí. Da el primer paso hoy.',
     },
   },
@@ -121,13 +121,13 @@ const mediaGallery: MediaContentCollection = {
     date: 'Recursos Ilimitados',
     scrollToExpand: 'Desplaza para explorar',
     about: {
-      overview: 'Accede a nuestra extensa biblioteca de recursos educativos. Miles de ejercicios, guías y material de estudio a tu disposición 24/7.',;
+      overview: 'Accede a nuestra extensa biblioteca de recursos educativos. Miles de ejercicios, guías y material de estudio a tu disposición 24/7.',
       features: [
         'Más de 10,000 ejercicios resueltos',
         'Guías de estudio actualizadas',
         'Ensayos PAES anteriores',
         'Material multimedia interactivo',
-      ],;
+      ],
       conclusion: 'Todo lo que necesitas para tu preparación, en un solo lugar.',
     },
   },

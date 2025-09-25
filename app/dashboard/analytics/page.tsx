@@ -62,11 +62,11 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
 
   // Calculate performance trends
   const recentScores = stats.recentPerformance?.slice(0, 10) || [];
-  const averageRecentScore = recentScores.length > 0 
-    ? recentScores.reduce((sum: number, perf: any) => sum + perf.score, 0) / recentScores.length 
-    : 0;averageRecentScorerecentScores.length0recentScores.reducesumperf.score,0recentScores.length
-  const performanceTrend = averageRecentScore > stats.avgScore ? 'improving' : 
-                          averagerecentscore < stats.avgscore; ? 'declining' : 'stable'
+  const averageRecentScore = recentScores.length > 0
+    ? recentScores.reduce((sum: number, perf: any) => sum + perf.score, 0) / recentScores.length
+    : 0;
+  const performanceTrend = averageRecentScore > stats.avgScore ? 'improving' :
+                          averageRecentScore < stats.avgScore ? 'declining' : 'stable'
 
   return (
     <div className="space-y-6">

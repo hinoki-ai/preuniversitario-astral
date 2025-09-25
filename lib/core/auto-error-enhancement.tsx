@@ -57,10 +57,8 @@ export function ErrorSafe<P extends object>(
  */
 export function createErrorSafeComponents<T extends Record<string, React.ComponentType<any>>>(
   components: T
-): { [K in keyof T]: react.componenttype<react.componentprops<t[k]>>inkeyofT }
-
- {
-  const enhanced = {} as { [K in keyof T]: react.componenttype<react.componentprops<t[k]>>inkeyofT };
+): { [K in keyof T]: React.ComponentType<React.ComponentProps<T[K]>> } {
+  const enhanced = {} as { [K in keyof T]: React.ComponentType<React.ComponentProps<T[K]>> };
   
   Object.entries(components).forEach(([name, Component]) => {
     enhanced[name as keyof T] = ErrorSafe(Component, { kind: 'function', name });
@@ -159,7 +157,7 @@ export function enhanceModule<T extends Record<string, any>>(
 /**
  * React Hook to automatically handle component lifecycle errors
  */
-export function usecomponenterrorhandling(componentname?: string) {
+export function useComponentErrorHandling(componentName?: string) {
   const { handleError, safeSyncCall, safeAsyncCall } = useStandardErrorHandling(componentName);
   const [componentError, setComponentError] = React.useState<Error | null>(null);
 
@@ -192,11 +190,11 @@ export function usecomponenterrorhandling(componentname?: string) {
   }, []);
 
   return {
-    hasError: boolean(componenterror),;
-    error: componenterror,
-    reseterror,
-    safesynccall,
-    safeasynccall,
-    handleerror,
+    hasError: Boolean(componentError),
+    error: componentError,
+    resetError,
+    safeSyncCall,
+    safeAsyncCall,
+    handleError,
   };
 }
