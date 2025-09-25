@@ -3,7 +3,7 @@
 This file is automatically managed by the gg script. Do not edit manually.
 
 ## Current Version
-**v0.1.1** - Initial release
+**v0.2.0** - Initial release
 
 ## Version History
 
@@ -16,6 +16,9 @@ This file is automatically managed by the gg script. Do not edit manually.
 
 ### v0.1.1 (2025-09-25)
 - Testing version increment system
+
+### v0.2.0 (2025-09-25)
+- Added automatic version tracking system with git hooks
 
 ---
 

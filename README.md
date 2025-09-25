@@ -1,5 +1,7 @@
 # Preuniversitario Astral
 
+**Version 0.2.0**
+
 Next.js educational platform with gamification, subscription management, and real-time features
 for pre-university students preparing for university entrance exams (PAES).
 
@@ -97,8 +99,40 @@ Required environment variables (see `VERCEL_DEPLOYMENT_README.md` for details):
 
 1. **Local Development**: Use `pnpm dev` for hot reloading
 2. **Database Changes**: Update Convex schema, run `npx convex deploy`
-3. **Deployment**: Push to main branch triggers Vercel deployment
-4. **Testing**: Manual testing with error scenarios (see `ERROR_HANDLING_SYSTEM.md`)
+3. **Version Management**: Use version scripts to signal releases (see Version Management below)
+4. **Deployment**: Push to main branch triggers Vercel deployment
+5. **Testing**: Manual testing with error scenarios (see `ERROR_HANDLING_SYSTEM.md`)
+
+## 🔢 Version Management
+
+This project uses an automated version tracking system integrated with the `gg` git automation tool:
+
+### Creating Version Signals
+
+```bash
+# For bug fixes (patch: 0.2.0 → 0.2.1)
+npm run version:patch "Fixed critical login bug"
+
+# For new features (minor: 0.2.0 → 0.3.0)
+npm run version:minor "Added new dashboard analytics"
+
+# For breaking changes (major: 0.2.0 → 1.0.0)
+npm run version:major "Complete UI redesign"
+```
+
+### How It Works
+
+1. **Signal Creation**: Version scripts create `.version-signal` files with increment type and message
+2. **Auto-Processing**: Git pre-commit hooks automatically process signals during `gg` runs
+3. **Version Updates**: `package.json` and `VERSION.md` are updated with new version and changelog entry
+4. **Clean Commits**: Signals are removed after processing, keeping commits clean
+
+### Files Involved
+
+- `VERSION.md`: Auto-generated changelog with version history
+- `version-signal.js`: Creates version increment signals
+- `version-processor.js`: Processes signals and updates files
+- `.git/hooks/pre-commit`: Automatically runs processor before commits
 
 ## 📖 Documentation
 
