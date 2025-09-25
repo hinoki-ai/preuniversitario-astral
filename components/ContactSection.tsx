@@ -40,7 +40,7 @@ export function ContactSection() {
   ];
 
   return (
-    <section id="contact" className="py-24 bg-white/30">
+    <section id="contact" className="py-24 bg-background/50">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -49,10 +49,10 @@ export function ContactSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-deep-blue mb-6">
+          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-6">
             Contáctanos
           </h2>
-          <p className="text-xl text-sage max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Estamos aquí para ayudarte en tu camino hacia el éxito académico. No dudes en
             comunicarte con nosotros.
           </p>
@@ -67,17 +67,17 @@ export function ContactSection() {
               transition={{ delay: index * 0.1, duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <Card className="p-6 text-center bg-white/70 backdrop-blur-sm border-sage/20 hover:shadow-xl transition-all duration-300 h-full">
+              <Card className="p-6 text-center bg-card/70 backdrop-blur-sm border-border/20 hover:shadow-xl transition-all duration-300 h-full">
                 <div className="flex flex-col items-center gap-4">
                   <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
                     <contact.icon className="w-6 h-6 text-accent" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-deep-blue mb-2">{contact.label}</h3>
+                    <h3 className="font-semibold text-card-foreground mb-2">{contact.label}</h3>
                     {contact.href !== '#' ? (
                       <a
                         href={contact.href}
-                        className="text-sage hover:text-accent transition-colors"
+                        className="text-muted-foreground hover:text-accent transition-colors"
                         target={
                           contact.label === 'Sitio Web' || contact.label === 'Instagram'
                             ? '_blank'
@@ -92,7 +92,7 @@ export function ContactSection() {
                         {contact.value}
                       </a>
                     ) : (
-                      <span className="text-sage">{contact.value}</span>
+                      <span className="text-muted-foreground">{contact.value}</span>
                     )}
                   </div>
                 </div>

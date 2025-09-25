@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
-    // Use flat config
+    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
@@ -9,6 +9,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

@@ -1,8 +1,13 @@
-import { clerkMiddleware } from '@clerk/nextjs/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-export default clerkMiddleware({
-  // Routes that can be accessed while signed out
-  publicRoutes: ['/', '/sign-in', '/sign-up'],
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/sign-in',
+  '/sign-up',
+]);
+
+export default clerkMiddleware((auth, req) => {
+  if (isPublicRoute(req)) return; // Skip middleware for public routes
 });
 
 export const config = {

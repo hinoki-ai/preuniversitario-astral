@@ -70,6 +70,8 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
   const [attachTimestamp, setAttachTimestamp] = useState(true);
   const [savingNote, setSavingNote] = useState(false);
   const [savingBookmark, setSavingBookmark] = useState(false);
+  const [showChapters, setShowChapters] = useState(false);
+  const [autoPauseForNotes, setAutoPauseForNotes] = useState(false);
 
   const convexLesson = useQuery(
     api.content.getLesson,
@@ -256,6 +258,104 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
     setPlaybackRate(rate);
   };
 
+  // Enhanced keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Only handle shortcuts when not typing in input fields
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      switch (e.key.toLowerCase()) {
+        case ' ':
+          e.preventDefault();
+          // Toggle play/pause
+          if (isFileVideo && videoRef.current) {
+            if (videoRef.current.paused) {
+              videoRef.current.play();
+            } else {
+              videoRef.current.pause();
+            }
+          }
+          if (isYouTube && youtubePlayerRef.current) {
+            try {
+              const state = youtubePlayerRef.current.getPlayerState?.();
+              if (state === 1) { // playing
+                youtubePlayerRef.current.pauseVideo();
+              } else {
+                youtubePlayerRef.current.playVideo();
+              }
+            } catch (_error) {
+              // ignore
+            }
+          }
+          break;
+        case 'arrowleft':
+          e.preventDefault();
+          seekTo(currentTime - 10); // Seek back 10 seconds
+          break;
+        case 'arrowright':
+          e.preventDefault();
+          seekTo(currentTime + 10); // Seek forward 10 seconds
+          break;
+        case 'b':
+          e.preventDefault();
+          if (supportsAdvancedControls && canPersist) {
+            handleAddBookmark();
+          }
+          break;
+        case 'n':
+          e.preventDefault();
+          // Focus note input
+          const noteInput = document.querySelector('textarea[placeholder*="notas"]') as HTMLTextAreaElement;
+          if (noteInput) {
+            noteInput.focus();
+            if (autoPauseForNotes && isFileVideo && videoRef.current && !videoRef.current.paused) {
+              videoRef.current.pause();
+            }
+          }
+          break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+          e.preventDefault();
+          const speedIndex = parseInt(e.key) - 1;
+          if (speedIndex < SPEED_OPTIONS.length) {
+            handleSpeedChange(SPEED_OPTIONS[speedIndex]);
+          }
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [currentTime, isFileVideo, isYouTube, supportsAdvancedControls, canPersist, autoPauseForNotes]);
+
+  const exportNotes = useCallback(() => {
+    if (!notes.length) {
+      toast.error('No hay notas para exportar');
+      return;
+    }
+
+    const notesContent = notes.map(note => {
+      const timestamp = note.timestampSec ? ` (${formatSeconds(note.timestampSec)})` : '';
+      return `${note.content}${timestamp}`;
+    }).join('\n\n');
+
+    const blob = new Blob([`Notas de: ${lesson?.title}\n\n${notesContent}`], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `notas-${lesson?.title?.replace(/[^a-zA-Z0-9]/g, '-') || 'leccion'}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success('Notas exportadas');
+  }, [notes, lesson?.title]);
+
   if (!lesson) return null;
 
   return (
@@ -338,6 +438,16 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
                   <IconBookmarkPlus className="mr-1 size-4" />
                   Guardar marcador
                 </Button>
+                {notes.length > 0 && (
+                  <Button
+                    size="sm"
+                    type="button"
+                    variant="outline"
+                    onClick={exportNotes}
+                  >
+                    📄 Exportar notas
+                  </Button>
+                )}
               </div>
             </div>
             {!supportsAdvancedControls && (
@@ -345,6 +455,11 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
                 Los controles avanzados solo funcionan con archivos internos (MP4/WebM) o videos
                 alojados en YouTube.
               </p>
+            )}
+            {supportsAdvancedControls && (
+              <div className="text-xs text-muted-foreground bg-muted/20 rounded p-2">
+                <strong>Atajos de teclado:</strong> Espacio (play/pausa) • ←→ (saltar 10s) • B (marcador) • N (notas) • 1-5 (velocidad)
+              </div>
             )}
           </div>
         ) : (
@@ -413,6 +528,13 @@ export default function CapsulePlayer({ lessonId }: { lessonId: string }) {
                   }
                 />
                 Adjuntar minuto actual ({formatSeconds(currentTime)})
+              </label>
+              <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Checkbox
+                  checked={autoPauseForNotes}
+                  onCheckedChange={value => setAutoPauseForNotes(Boolean(value))}
+                />
+                Pausar al tomar notas (N)
               </label>
               <Button
                 size="sm"

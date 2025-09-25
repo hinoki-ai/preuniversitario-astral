@@ -9,7 +9,6 @@ import { cn } from '@/lib/utils';
 
 import { FormNewsletter } from './FormNewsletter';
 import { Button, buttonVariants } from './ui/button';
-import { inputVariants } from './ui/input';
 
 const DURATION = 0.3;
 const DELAY = DURATION;
@@ -90,8 +89,8 @@ export const Newsletter = () => {
                     <motion.input
                       autoCapitalize="off"
                       autoComplete="email"
-                      placeholder="Enter your email"
-                      className={inputVariants()}
+                      placeholder="Ingrese su correo electrónico"
+                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                       initial={isInitialRender.current ? false : { opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{
@@ -113,8 +112,8 @@ export const Newsletter = () => {
                     /* @ts-expect-error - Type mismatch */
                     <motion.button
                       className={buttonVariants({
-                        variant: 'iconButton',
-                        size: 'icon-xl',
+                        variant: 'ghost',
+                        size: 'icon',
                       })}
                       {...props}
                       initial={isInitialRender.current ? false : { opacity: 0 }}
@@ -150,8 +149,8 @@ export const Newsletter = () => {
                   }}
                   className="text-base short:lg:text-lg sm:text-lg lg:text-xl !leading-[1.1] font-medium text-center text-foreground text-pretty"
                 >
-                  Stay updated with the latest news and exclusive content! Subscribe to our
-                  newsletter today and never miss out on exciting updates.
+                  Manténgase actualizado con las últimas noticias y contenido exclusivo. Suscríbase a nuestro
+                  boletín informativo hoy y nunca se pierda de emocionantes actualizaciones.
                 </motion.p>
               </div>
             </motion.div>
@@ -166,7 +165,6 @@ export const Newsletter = () => {
             <Button
               className={cn('relative px-8')}
               onClick={() => setIsOpen(!isOpen)}
-              shine={!isOpen}
             >
               <motion.span
                 animate={{ x: isOpen ? -16 : 0 }}
@@ -179,7 +177,7 @@ export const Newsletter = () => {
               {isOpen && (
                 <motion.div
                   className={cn(
-                    buttonVariants({ variant: 'iconButton', size: 'icon' }),
+                    buttonVariants({ variant: 'ghost', size: 'icon' }),
                     'absolute -top-px -right-px aspect-square'
                   )}
                   initial={{ opacity: 0, scale: 0.8, rotate: -40 }}

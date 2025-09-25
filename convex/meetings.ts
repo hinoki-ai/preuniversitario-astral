@@ -27,23 +27,30 @@ export const listUpcoming = query({
       trialEndsAt = userRecord?.trialEndsAt;
     }
 
-    // Query upcoming meetings from now-1h to allow late joins
-    const results = await ctx.db
-      .query('meetings')
-      .withIndex('byStartTime', q => q.gte('startTime', now - 3600))
-      .collect();
-
     const trialActive =
       plan === 'trial_user' && typeof trialEndsAt === 'number' && trialEndsAt > now;
     const isPaid = plan ? (plan !== 'free_user' && plan !== 'trial_user') || trialActive : false; // default to free if unknown
     const isTeacher = isTeacherOrAdmin(role);
 
-    // If logged-in, fetch RSVPs for these meetings for current user
+    // Query upcoming meetings from now-1h to allow late joins - optimized with better filtering
+    let query = ctx.db
+      .query('meetings')
+      .withIndex('byStartTime', (q: any) => q.gte('startTime', now - 3600));
+
+    if (!isTeacher) {
+      query = query.filter((q: any) => q.eq('published', true));
+    }
+
+    const results = await query.collect();
+
+    // Optimized RSVP fetching - only fetch for meetings that exist
     const rsvpMap: Record<string, 'yes' | 'no' | 'maybe'> = {};
-    if (userRecord) {
+    if (userRecord && results.length > 0) {
+      const meetingIds = results.map(m => m._id);
       const rsvps = await ctx.db
         .query('rsvps')
-        .withIndex('byUser', q => q.eq('userId', userRecord._id))
+        .withIndex('byUser', (q: any) => q.eq('userId', userRecord._id))
+        .filter((q: any) => meetingIds.includes(q.meetingId))
         .collect();
       for (const r of rsvps) {
         rsvpMap[r.meetingId] = r.status as any;
@@ -51,7 +58,6 @@ export const listUpcoming = query({
     }
 
     return results
-      .filter(m => (isTeacher ? true : m.published))
       .sort((a, b) => a.startTime - b.startTime)
       .map(m => ({
         _id: m._id,
@@ -66,6 +72,83 @@ export const listUpcoming = query({
         // Include my RSVP if logged in
         myRsvp: rsvpMap[m._id] as any as undefined | 'yes' | 'no' | 'maybe',
       }));
+  },
+});
+
+// Optimized query for current user's RSVPs - used for real-time polling
+export const listMyRsvps = query({
+  args: {},
+  handler: async ctx => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return [];
+
+    const user = await ctx.db
+      .query('users')
+      .withIndex('byExternalId', q => q.eq('externalId', identity.subject))
+      .unique();
+    if (!user) return [];
+
+    const rsvps = await ctx.db
+      .query('rsvps')
+      .withIndex('byUser', q => q.eq('userId', user._id))
+      .collect();
+
+    return rsvps.map(r => ({
+      meetingId: r.meetingId,
+      status: r.status,
+      updatedAt: r.updatedAt,
+    }));
+  },
+});
+
+// Get meeting status and participant info (for real-time updates)
+export const getMeetingStatus = query({
+  args: { id: v.id('meetings') },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthorized');
+
+    const user = await ctx.db
+      .query('users')
+      .withIndex('byExternalId', q => q.eq('externalId', identity.subject))
+      .unique();
+    if (!user) throw new Error('User not found');
+
+    const meeting = await ctx.db.get(args.id);
+    if (!meeting) throw new Error('Meeting not found');
+
+    // Get RSVP summary for this meeting
+    const rsvps = await ctx.db
+      .query('rsvps')
+      .withIndex('byMeetingUser', (q: any) => q.eq('meetingId', args.id))
+      .collect();
+
+    const byStatus: Record<string, number> = { yes: 0, no: 0, maybe: 0 };
+    for (const r of rsvps) {
+      byStatus[r.status] = (byStatus[r.status] || 0) + 1;
+    }
+
+    // Get my RSVP status
+    const myRsvp = rsvps.find(r => r.userId === user._id)?.status;
+
+    const now = Math.floor(Date.now() / 1000);
+    const meetingData = meeting as any; // We know this is a meeting document
+    const meetingStart = meetingData.startTime;
+    const meetingEnd = meetingStart + (60 * 60); // Assume 1 hour duration
+
+    return {
+      id: meetingData._id,
+      title: meetingData.title,
+      startTime: meetingStart,
+      endTime: meetingEnd,
+      isActive: now >= meetingStart && now <= meetingEnd,
+      isUpcoming: now < meetingStart,
+      isPast: now > meetingEnd,
+      rsvpCounts: byStatus,
+      totalRsvps: rsvps.length,
+      myRsvp: myRsvp as 'yes' | 'no' | 'maybe' | undefined,
+      lastUpdated: Math.max(...rsvps.map(r => r.updatedAt)),
+    };
   },
 });
 
@@ -192,14 +275,45 @@ export const listRsvps = query({
     if (!user) throw new Error('User not found');
     if (!isTeacherOrAdmin(user.role)) throw new Error('Forbidden');
 
+    // Use optimized index for RSVP counts by meeting
     const list = await ctx.db
       .query('rsvps')
-      .withIndex('byMeetingUser', q => q.eq('meetingId', id))
+      .withIndex('byMeetingStatus', q => q.eq('meetingId', id))
       .collect();
+
     const byStatus: Record<string, number> = { yes: 0, no: 0, maybe: 0 } as any;
     for (const r of list) {
       byStatus[r.status] = (byStatus[r.status] || 0) + 1;
     }
     return { counts: byStatus, total: list.length };
+  },
+});
+
+// Optimized query for getting RSVP updates since a certain time (for real-time polling)
+export const getRsvpUpdates = query({
+  args: { since: v.optional(v.number()) },
+  handler: async (ctx, { since }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Unauthorized');
+
+    const user = await ctx.db
+      .query('users')
+      .withIndex('byExternalId', q => q.eq('externalId', identity.subject))
+      .unique();
+    if (!user) throw new Error('User not found');
+
+    const cutoff = since || Math.floor(Date.now() / 1000) - 300; // Default to last 5 minutes
+
+    const updates = await ctx.db
+      .query('rsvps')
+      .withIndex('byUpdatedAt', q => q.gte('updatedAt', cutoff))
+      .collect();
+
+    return updates.map(r => ({
+      meetingId: r.meetingId,
+      userId: r.userId,
+      status: r.status,
+      updatedAt: r.updatedAt,
+    }));
   },
 });

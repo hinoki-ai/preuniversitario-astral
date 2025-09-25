@@ -3,6 +3,7 @@ import { useUser } from '@clerk/nextjs';
 import { useMemo } from 'react';
 
 import CustomClerkPricing from '@/components/CustomClerkPricing';
+import { resolveAccessState } from '@/lib/subscription';
 
 function UpgradeCard() {
   return (
@@ -45,37 +46,15 @@ export default function PaymentGatedPage() {
   const { user, isSignedIn } = useUser();
   const hasAccess = useMemo(() => {
     if (!user) return false;
-    const paidPlans = (process.env.NEXT_PUBLIC_CLERK_PAID_PLANS || '')
-      .split(',')
-      .map(p => p.trim())
-      .filter(Boolean);
-    const plan = (user.publicMetadata as any)?.plan as string | undefined;
-    const trialRaw = (user.publicMetadata as any)?.trialEndsAt as any;
-    let trialEndsAt: number | undefined;
-    if (typeof trialRaw === 'number') trialEndsAt = trialRaw;
-    else if (typeof trialRaw === 'string') {
-      const n = Number(trialRaw);
-      if (!Number.isNaN(n) && n > 1000000000) trialEndsAt = n;
-      else {
-        const d = new Date(trialRaw);
-        if (!isNaN(d.getTime())) trialEndsAt = Math.floor(d.getTime() / 1000);
-      }
-    }
-    const now = Math.floor(Date.now() / 1000);
-    const isPaidPlan = (p?: string | null) => {
-      if (!p) return false;
-      if (p === 'free_user') return false;
-      if (p === 'trial_user') return false;
-      return paidPlans.length > 0 ? paidPlans.includes(p) : true;
-    };
-    if (isPaidPlan(plan)) return true;
-    // org precedence
-    const orgPaid = (user.organizationMemberships || []).some((m: any) =>
-      isPaidPlan((m.organization.publicMetadata as any)?.plan)
-    );
-    if (orgPaid) return true;
-    // active trial
-    return plan === 'trial_user' && typeof trialEndsAt === 'number' && trialEndsAt > now;
+
+    const publicMetadata = (user.publicMetadata ?? {}) as Record<string, unknown>;
+    const plan = typeof publicMetadata.plan === 'string' ? publicMetadata.plan : undefined;
+
+    return resolveAccessState({
+      plan,
+      trialEndsAt: publicMetadata.trialEndsAt,
+      memberships: user.organizationMemberships,
+    }).hasAccess;
   }, [user]);
 
   if (!isSignedIn) return null;

@@ -59,7 +59,7 @@ export function FeaturesSection() {
   ];
 
   return (
-    <section id="features" className="py-24 bg-white/30">
+    <section id="features" className="py-24 bg-background/50">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -68,12 +68,12 @@ export function FeaturesSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-deep-blue mb-6">
+          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-6">
             Tecnología al servicio de
             <br />
             <span className="text-accent">tu educación</span>
           </h2>
-          <p className="text-xl text-sage max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Descubre cómo nuestra plataforma revoluciona la experiencia de aprendizaje con
             herramientas diseñadas para maximizar tu potencial académico.
           </p>
@@ -88,20 +88,20 @@ export function FeaturesSection() {
               transition={{ delay: index * 0.1, duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <Card className="p-8 h-full bg-white/70 backdrop-blur-sm border-sage/20 hover:shadow-xl transition-all duration-300 group">
+              <Card className="p-8 h-full bg-card/70 backdrop-blur-sm border-border/20 hover:shadow-xl transition-all duration-300 group">
                 <div className="w-16 h-16 bg-gradient-to-br from-accent/10 to-deep-blue/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <feature.icon className="w-8 h-8 text-accent" />
                 </div>
 
-                <h3 className="font-serif text-2xl font-bold text-deep-blue mb-4">
+                <h3 className="font-serif text-2xl font-bold text-card-foreground mb-4">
                   {feature.title}
                 </h3>
 
-                <p className="text-sage mb-6 leading-relaxed">{feature.description}</p>
+                <p className="text-muted-foreground mb-6 leading-relaxed">{feature.description}</p>
 
                 <ul className="space-y-3 mb-6">
                   {feature.benefits.map((benefit, idx) => (
-                    <li key={idx} className="flex items-center gap-3 text-sm text-deep-blue">
+                    <li key={idx} className="flex items-center gap-3 text-sm text-card-foreground">
                       <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
                       {benefit}
                     </li>

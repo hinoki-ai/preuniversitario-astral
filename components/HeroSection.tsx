@@ -17,14 +17,10 @@ export function HeroSection() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="text-center max-w-5xl mx-auto"
         >
-          <Badge className="mb-6 bg-accent/10 text-accent border-accent/20 hover:bg-accent/20">
-            🚀 Plataforma de Educación Virtual Premium
-          </Badge>
-
           <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-deep-blue mb-8 leading-tight">
             Excelencia académica
             <br />
-            <span className="text-accent">meets</span> tecnología
+            <span className="text-accent">con</span> tecnología
             <br />
             <span className="text-sage">avanzada</span>
           </h1>

@@ -7,23 +7,32 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { api as generatedApi } from '@/convex/_generated/api';
+import { api } from '@/convex/_generated/api';
+import type { Id } from '@/convex/_generated/dataModel';
+import { useErrorHandler } from '@/hooks/use-error-handler';
 import { getDemoLessonQuiz } from '@/lib/demo-data';
+import type { LessonQuiz, QuizAttempt } from '@/lib/types';
+
+type LessonQuizResult = QuizAttempt;
 
 export default function InlineQuiz({ lessonId }: { lessonId: string }) {
-  const api: any = generatedApi as any;
+  const { handleError, wrapAsync } = useErrorHandler();
+
+  const convexLessonId = lessonId as Id<'lessons'>;
   const convexQuiz = useQuery(
     api.quizzes.getLessonQuiz,
-    lessonId ? { lessonId: lessonId as any } : 'skip'
-  ) as any;
+    lessonId ? { lessonId: convexLessonId } : 'skip'
+  );
   const submit = useMutation(api.quizzes.submitLessonQuizAttempt);
 
   // Use Convex data if available, otherwise use demo data
   const quiz = convexQuiz || getDemoLessonQuiz(lessonId);
 
   const [answers, setAnswers] = useState<number[]>([]);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<LessonQuizResult | null>(null);
   const [startedAt, setStartedAt] = useState<number>(Math.floor(Date.now() / 1000));
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useEffect(() => {
     setStartedAt(Math.floor(Date.now() / 1000));
   }, [lessonId]);
@@ -32,11 +41,45 @@ export default function InlineQuiz({ lessonId }: { lessonId: string }) {
     if (quiz?.questions) setAnswers(Array(quiz.questions.length).fill(-1));
   }, [quiz]);
 
-  if (!quiz) return null;
+  // Handle loading state
+  if (convexQuiz === undefined) {
+    return (
+      <Card className="p-4">
+        <div className="text-sm text-muted-foreground">Cargando quiz...</div>
+      </Card>
+    );
+  }
+
+  // Handle error state
+  if (convexQuiz === null) {
+    handleError(new Error('Error al cargar el quiz de la lección'), 'InlineQuiz.useQuery');
+    return (
+      <Card className="p-4 text-center text-destructive">
+        Error al cargar el quiz. Por favor, intenta recargar la página.
+      </Card>
+    );
+  }
+
+  if (!quiz) {
+    handleError(new Error('No se encontró quiz para esta lección'), 'InlineQuiz.noQuiz');
+    return null;
+  }
 
   const onSubmit = async () => {
-    const res = await submit({ lessonId: lessonId as any, answers, startedAt });
-    setResult(res);
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const res = await wrapAsync(
+        () => submit({ lessonId: convexLessonId, answers, startedAt }),
+        'InlineQuiz.submit'
+      );
+      if (res) setResult(res);
+    } catch (error) {
+      handleError(error as Error, 'InlineQuiz.onSubmit');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -73,7 +116,11 @@ export default function InlineQuiz({ lessonId }: { lessonId: string }) {
         </div>
       ))}
       <div className="flex items-center gap-3">
-        {!result && <Button onClick={onSubmit}>Enviar</Button>}
+        {!result && (
+          <Button onClick={onSubmit} disabled={isSubmitting}>
+            {isSubmitting ? 'Enviando...' : 'Enviar'}
+          </Button>
+        )}
         {result && (
           <div className="text-sm">
             Puntaje: {result.correctCount}/{result.totalCount} ({Math.round(result.score * 100)}%)

@@ -5,7 +5,7 @@ import { dark } from '@clerk/themes';
 import { IconDotsVertical } from '@tabler/icons-react';
 import { useTheme } from 'next-themes';
 
-import { EnergyOrbAvatar } from '@/components/EnergyOrbAvatar';
+import { EnergyOrb } from '@/components/EnergyOrb';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 
 export function NavUser() {
@@ -27,7 +27,7 @@ export function NavUser() {
             })
           }
         >
-          <EnergyOrbAvatar userId={clerkUser?.id || 'anonymous'} size={32} className="h-8 w-8" />
+          <EnergyOrb userId={clerkUser?.id || 'anonymous'} size="sm" className="h-8 w-8" />
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-medium">{clerkUser?.fullName}</span>
             <span className="text-muted-foreground truncate text-xs">

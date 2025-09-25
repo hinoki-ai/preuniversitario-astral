@@ -34,7 +34,7 @@ export function TestimonialsSection() {
   ];
 
   return (
-    <section id="testimonials" className="py-24 bg-cream">
+    <section id="testimonials" className="py-24 bg-background/50">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -43,10 +43,10 @@ export function TestimonialsSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-deep-blue mb-6">
+          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-6">
             Historias de <span className="text-accent">éxito</span>
           </h2>
-          <p className="text-xl text-sage max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Conoce las experiencias de estudiantes que lograron sus metas académicas con nuestra
             plataforma educativa.
           </p>
@@ -61,7 +61,7 @@ export function TestimonialsSection() {
               transition={{ delay: index * 0.2, duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <Card className="p-8 h-full bg-white/70 backdrop-blur-sm border-sage/20 hover:shadow-xl transition-all duration-300">
+              <Card className="p-8 h-full bg-card/70 backdrop-blur-sm border-border/20 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-center gap-1 mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-accent text-accent" />
@@ -70,7 +70,7 @@ export function TestimonialsSection() {
 
                 <Quote className="w-8 h-8 text-accent/30 mb-4" />
 
-                <p className="text-sage mb-6 leading-relaxed italic">"{testimonial.content}"</p>
+                <p className="text-muted-foreground mb-6 leading-relaxed italic">"{testimonial.content}"</p>
 
                 <div className="flex items-center gap-4">
                   <img
@@ -79,8 +79,8 @@ export function TestimonialsSection() {
                     className="w-12 h-12 rounded-full object-cover"
                   />
                   <div>
-                    <h4 className="font-semibold text-deep-blue">{testimonial.name}</h4>
-                    <p className="text-sm text-sage">{testimonial.role}</p>
+                    <h4 className="font-semibold text-card-foreground">{testimonial.name}</h4>
+                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
                   </div>
                 </div>
               </Card>

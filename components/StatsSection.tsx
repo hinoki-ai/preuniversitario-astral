@@ -38,7 +38,7 @@ export function StatsSection() {
   ];
 
   return (
-    <section className="py-24 bg-cream">
+    <section className="py-24 bg-background/50">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -47,10 +47,10 @@ export function StatsSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-deep-blue mb-6">
+          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-6">
             Resultados que hablan por sí solos
           </h2>
-          <p className="text-xl text-sage max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Nuestros números reflejan el compromiso con la excelencia educativa y el éxito de
             nuestros estudiantes.
           </p>
@@ -65,15 +65,15 @@ export function StatsSection() {
               transition={{ delay: index * 0.1, duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <Card className="p-8 text-center bg-white/50 backdrop-blur-sm border-sage/20 hover:shadow-lg transition-all duration-300">
+              <Card className="p-8 text-center bg-card/50 backdrop-blur-sm border-border/20 hover:shadow-lg transition-all duration-300">
                 <div
                   className={`w-16 h-16 rounded-full bg-gradient-to-br from-accent/10 to-deep-blue/10 flex items-center justify-center mx-auto mb-6`}
                 >
                   <stat.icon className={`w-8 h-8 ${stat.color}`} />
                 </div>
-                <h3 className="font-serif text-4xl font-bold text-deep-blue mb-2">{stat.value}</h3>
-                <h4 className="font-semibold text-deep-blue mb-2">{stat.label}</h4>
-                <p className="text-sage text-sm">{stat.description}</p>
+                <h3 className="font-serif text-4xl font-bold text-card-foreground mb-2">{stat.value}</h3>
+                <h4 className="font-semibold text-card-foreground mb-2">{stat.label}</h4>
+                <p className="text-muted-foreground text-sm">{stat.description}</p>
               </Card>
             </motion.div>
           ))}

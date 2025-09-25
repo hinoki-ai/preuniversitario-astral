@@ -8,6 +8,7 @@ import {
   CardAction,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -27,119 +28,118 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-export const description = 'An interactive area chart';
+export const description = 'Seguimiento del aprendizaje';
 
-const chartData = [
-  { date: '2024-04-01', desktop: 222, mobile: 150 },
-  { date: '2024-04-02', desktop: 97, mobile: 180 },
-  { date: '2024-04-03', desktop: 167, mobile: 120 },
-  { date: '2024-04-04', desktop: 242, mobile: 260 },
-  { date: '2024-04-05', desktop: 373, mobile: 290 },
-  { date: '2024-04-06', desktop: 301, mobile: 340 },
-  { date: '2024-04-07', desktop: 245, mobile: 180 },
-  { date: '2024-04-08', desktop: 409, mobile: 320 },
-  { date: '2024-04-09', desktop: 59, mobile: 110 },
-  { date: '2024-04-10', desktop: 261, mobile: 190 },
-  { date: '2024-04-11', desktop: 327, mobile: 350 },
-  { date: '2024-04-12', desktop: 292, mobile: 210 },
-  { date: '2024-04-13', desktop: 342, mobile: 380 },
-  { date: '2024-04-14', desktop: 137, mobile: 220 },
-  { date: '2024-04-15', desktop: 120, mobile: 170 },
-  { date: '2024-04-16', desktop: 138, mobile: 190 },
-  { date: '2024-04-17', desktop: 446, mobile: 360 },
-  { date: '2024-04-18', desktop: 364, mobile: 410 },
-  { date: '2024-04-19', desktop: 243, mobile: 180 },
-  { date: '2024-04-20', desktop: 89, mobile: 150 },
-  { date: '2024-04-21', desktop: 137, mobile: 200 },
-  { date: '2024-04-22', desktop: 224, mobile: 170 },
-  { date: '2024-04-23', desktop: 138, mobile: 230 },
-  { date: '2024-04-24', desktop: 387, mobile: 290 },
-  { date: '2024-04-25', desktop: 215, mobile: 250 },
-  { date: '2024-04-26', desktop: 75, mobile: 130 },
-  { date: '2024-04-27', desktop: 383, mobile: 420 },
-  { date: '2024-04-28', desktop: 122, mobile: 180 },
-  { date: '2024-04-29', desktop: 315, mobile: 240 },
-  { date: '2024-04-30', desktop: 454, mobile: 380 },
-  { date: '2024-05-01', desktop: 165, mobile: 220 },
-  { date: '2024-05-02', desktop: 293, mobile: 310 },
-  { date: '2024-05-03', desktop: 247, mobile: 190 },
-  { date: '2024-05-04', desktop: 385, mobile: 420 },
-  { date: '2024-05-05', desktop: 481, mobile: 390 },
-  { date: '2024-05-06', desktop: 498, mobile: 520 },
-  { date: '2024-05-07', desktop: 388, mobile: 300 },
-  { date: '2024-05-08', desktop: 149, mobile: 210 },
-  { date: '2024-05-09', desktop: 227, mobile: 180 },
-  { date: '2024-05-10', desktop: 293, mobile: 330 },
-  { date: '2024-05-11', desktop: 335, mobile: 270 },
-  { date: '2024-05-12', desktop: 197, mobile: 240 },
-  { date: '2024-05-13', desktop: 197, mobile: 160 },
-  { date: '2024-05-14', desktop: 448, mobile: 490 },
-  { date: '2024-05-15', desktop: 473, mobile: 380 },
-  { date: '2024-05-16', desktop: 338, mobile: 400 },
-  { date: '2024-05-17', desktop: 499, mobile: 420 },
-  { date: '2024-05-18', desktop: 315, mobile: 350 },
-  { date: '2024-05-19', desktop: 235, mobile: 180 },
-  { date: '2024-05-20', desktop: 177, mobile: 230 },
-  { date: '2024-05-21', desktop: 82, mobile: 140 },
-  { date: '2024-05-22', desktop: 81, mobile: 120 },
-  { date: '2024-05-23', desktop: 252, mobile: 290 },
-  { date: '2024-05-24', desktop: 294, mobile: 220 },
-  { date: '2024-05-25', desktop: 201, mobile: 250 },
-  { date: '2024-05-26', desktop: 213, mobile: 170 },
-  { date: '2024-05-27', desktop: 420, mobile: 460 },
-  { date: '2024-05-28', desktop: 233, mobile: 190 },
-  { date: '2024-05-29', desktop: 78, mobile: 130 },
-  { date: '2024-05-30', desktop: 340, mobile: 280 },
-  { date: '2024-05-31', desktop: 178, mobile: 230 },
-  { date: '2024-06-01', desktop: 178, mobile: 200 },
-  { date: '2024-06-02', desktop: 470, mobile: 410 },
-  { date: '2024-06-03', desktop: 103, mobile: 160 },
-  { date: '2024-06-04', desktop: 439, mobile: 380 },
-  { date: '2024-06-05', desktop: 88, mobile: 140 },
-  { date: '2024-06-06', desktop: 294, mobile: 250 },
-  { date: '2024-06-07', desktop: 323, mobile: 370 },
-  { date: '2024-06-08', desktop: 385, mobile: 320 },
-  { date: '2024-06-09', desktop: 438, mobile: 480 },
-  { date: '2024-06-10', desktop: 155, mobile: 200 },
-  { date: '2024-06-11', desktop: 92, mobile: 150 },
-  { date: '2024-06-12', desktop: 492, mobile: 420 },
-  { date: '2024-06-13', desktop: 81, mobile: 130 },
-  { date: '2024-06-14', desktop: 426, mobile: 380 },
-  { date: '2024-06-15', desktop: 307, mobile: 350 },
-  { date: '2024-06-16', desktop: 371, mobile: 310 },
-  { date: '2024-06-17', desktop: 475, mobile: 520 },
-  { date: '2024-06-18', desktop: 107, mobile: 170 },
-  { date: '2024-06-19', desktop: 341, mobile: 290 },
-  { date: '2024-06-20', desktop: 408, mobile: 450 },
-  { date: '2024-06-21', desktop: 169, mobile: 210 },
-  { date: '2024-06-22', desktop: 317, mobile: 270 },
-  { date: '2024-06-23', desktop: 480, mobile: 530 },
-  { date: '2024-06-24', desktop: 132, mobile: 180 },
-  { date: '2024-06-25', desktop: 141, mobile: 190 },
-  { date: '2024-06-26', desktop: 434, mobile: 380 },
-  { date: '2024-06-27', desktop: 448, mobile: 490 },
-  { date: '2024-06-28', desktop: 149, mobile: 200 },
-  { date: '2024-06-29', desktop: 103, mobile: 160 },
-  { date: '2024-06-30', desktop: 446, mobile: 400 },
-];
+type TimeRange = '7d' | '30d' | '90d';
+type ChartViewKey = 'study-time' | 'performance';
 
-const chartConfig = {
-  visitors: {
-    label: 'Visitantes',
-  },
-  desktop: {
-    label: 'Escritorio',
-    color: 'var(--primary)',
-  },
-  mobile: {
-    label: 'Móvil',
-    color: 'var(--primary)',
-  },
-} satisfies ChartConfig;
+type AcademicDatum = {
+  date: string;
+  deepFocusMinutes: number;
+  activeRecallMinutes: number;
+  avgScore: number;
+  accuracy: number;
+};
 
-export function ChartAreaInteractive() {
+type SubjectInsight = {
+  subject: string;
+  accuracy: number;
+  delta: number;
+  recommendation: string;
+};
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+interface ChartAreaInteractiveProps {
+  chartData: AcademicDatum[];
+  subjectProgress: Array<{
+    id: string;
+    subject: string;
+    category: string;
+    avgScore: number;
+    scoreDelta: number;
+    hoursThisWeek: number;
+    hoursTarget: number;
+    velocity: number;
+    consistency: number;
+    completionRate: number;
+    nextMilestone: string;
+    milestoneDate: string;
+    focusArea: string;
+    risk: string;
+  }>;
+}
+
+type MetricKey = 'deepFocusMinutes' | 'activeRecallMinutes' | 'avgScore' | 'accuracy';
+
+interface ChartViewConfig {
+  label: string;
+  keys: readonly MetricKey[];
+  config: ChartConfig;
+  stackId?: string;
+  formatValue: (value: number) => string;
+}
+
+const CHART_VIEWS: Record<ChartViewKey, ChartViewConfig> = {
+  'study-time': {
+    label: 'Tiempo de estudio',
+    keys: ['deepFocusMinutes', 'activeRecallMinutes'],
+    config: {
+      deepFocusMinutes: {
+        label: 'Foco profundo',
+        color: 'hsl(var(--chart-1))',
+      },
+      activeRecallMinutes: {
+        label: 'Práctica activa',
+        color: 'hsl(var(--chart-2))',
+      },
+    },
+    stackId: 'study',
+    formatValue: value => `${(value / 60).toFixed(1)} h`,
+  },
+  performance: {
+    label: 'Desempeño',
+    keys: ['avgScore', 'accuracy'],
+    config: {
+      avgScore: {
+        label: 'Promedio evaluaciones',
+        color: 'hsl(var(--chart-3))',
+      },
+      accuracy: {
+        label: 'Precisión ejercicios',
+        color: 'hsl(var(--chart-4))',
+      },
+    },
+    formatValue: value => `${Math.round(value)}%`,
+  },
+};
+
+const VIEW_DESCRIPTIONS: Record<ChartViewKey, string> = {
+  'study-time': 'Distribución entre sesiones de foco profundo y práctica activa.',
+  performance: 'Evolución de puntajes y precisión en evaluaciones recientes.',
+};
+
+
+const DELTA_EPSILON = 0.05;
+
+const formatDelta = (value: number, unit: string) => {
+  if (Math.abs(value) < DELTA_EPSILON) {
+    return `0.0 ${unit}`;
+  }
+  return `${value > 0 ? '+' : ''}${value.toFixed(1)} ${unit}`;
+};
+
+const deltaClass = (value: number) => {
+  if (value > DELTA_EPSILON) return 'text-emerald-600';
+  if (value < -DELTA_EPSILON) return 'text-destructive';
+  return 'text-muted-foreground';
+};
+
+export function ChartAreaInteractive({ chartData, subjectProgress }: ChartAreaInteractiveProps) {
   const isMobile = useIsMobile();
-  const [timeRange, setTimeRange] = React.useState('90d');
+  const [timeRange, setTimeRange] = React.useState<TimeRange>('90d');
+  const [view, setView] = React.useState<ChartViewKey>('study-time');
 
   React.useEffect(() => {
     if (isMobile) {
@@ -147,33 +147,176 @@ export function ChartAreaInteractive() {
     }
   }, [isMobile]);
 
-  const filteredData = chartData.filter(item => {
-    const date = new Date(item.date);
-    const referenceDate = new Date('2024-06-30');
-    let daysToSubtract = 90;
-    if (timeRange === '30d') {
-      daysToSubtract = 30;
-    } else if (timeRange === '7d') {
-      daysToSubtract = 7;
+  const handleTimeRangeChange = React.useCallback((value: string) => {
+    if (value === '7d' || value === '30d' || value === '90d') {
+      setTimeRange(value);
     }
+  }, []);
+
+  const handleViewChange = React.useCallback((value: string) => {
+    if (value === 'study-time' || value === 'performance') {
+      setView(value);
+    }
+  }, []);
+
+  const filteredData = React.useMemo(() => {
+    if (!chartData.length) return [];
+    const referenceDate = new Date(chartData[chartData.length - 1].date);
+    const daysToSubtract = timeRange === '30d' ? 30 : timeRange === '7d' ? 7 : 90;
     const startDate = new Date(referenceDate);
-    startDate.setDate(startDate.getDate() - daysToSubtract);
-    return date >= startDate;
-  });
+    startDate.setDate(startDate.getDate() - (daysToSubtract - 1));
+    return chartData.filter(item => new Date(item.date) >= startDate);
+  }, [timeRange]);
+
+  const selectedDays = filteredData.length;
+
+  const summary = React.useMemo(() => {
+    if (!filteredData.length) {
+      return {
+        averageDailyHours: 0,
+        focusDelta: 0,
+        latestScore: 0,
+        scoreDelta: 0,
+        totalHours: 0,
+      };
+    }
+
+    const totalMinutes = filteredData.reduce(
+      (acc, item) => acc + item.deepFocusMinutes + item.activeRecallMinutes,
+      0
+    );
+    const averageDailyHours = totalMinutes / filteredData.length / 60;
+
+    const lastEntry = filteredData[filteredData.length - 1];
+    const previousIndex = Math.max(filteredData.length - 8, 0);
+    const previousEntry = filteredData[previousIndex];
+    const scoreDelta = previousEntry ? lastEntry.avgScore - previousEntry.avgScore : 0;
+
+    const lastSeven = filteredData.slice(-7);
+    const previousSeven = filteredData.slice(-14, -7);
+
+    const lastSevenMinutes = lastSeven.reduce(
+      (acc, item) => acc + item.deepFocusMinutes + item.activeRecallMinutes,
+      0
+    );
+    const previousSevenMinutes = previousSeven.reduce(
+      (acc, item) => acc + item.deepFocusMinutes + item.activeRecallMinutes,
+      0
+    );
+
+    const focusDelta =
+      lastSeven.length && previousSeven.length
+        ? lastSevenMinutes / lastSeven.length / 60 -
+          previousSevenMinutes / previousSeven.length / 60
+        : 0;
+
+    return {
+      averageDailyHours,
+      focusDelta,
+      latestScore: lastEntry.avgScore,
+      scoreDelta,
+      totalHours: totalMinutes / 60,
+    };
+  }, [filteredData]);
+
+  const activeChartView = React.useMemo(() => CHART_VIEWS[view], [view]);
+
+  const tooltipFormatter = React.useCallback(
+    (value: number, name: string, info: { dataKey?: string } | undefined) => {
+      const key = (info?.dataKey ?? name) as keyof ChartViewConfig['config'];
+      const configItem = activeChartView.config[key];
+      const label = configItem?.label ?? name;
+      return (
+        <div className="flex w-full items-center justify-between gap-6">
+          <span>{label}</span>
+          <span className="font-semibold text-foreground">
+            {activeChartView.formatValue(value)}
+          </span>
+        </div>
+      );
+    },
+    [activeChartView]
+  );
+
+  const labelFormatter = React.useCallback((value: string | number) => {
+    const date = new Date(value);
+    return date.toLocaleDateString('es-ES', {
+      month: 'short',
+      day: 'numeric',
+    });
+  }, []);
+
+  const defaultTooltipIndex = !isMobile && filteredData.length ? filteredData.length - 1 : -1;
+
+  const weakAreas = React.useMemo(() => {
+    return subjectProgress
+      .filter(subject => subject.avgScore < 82)
+      .sort((a, b) => a.avgScore - b.avgScore)
+      .slice(0, 2)
+      .map(subject => ({
+        subject: subject.subject,
+        accuracy: subject.avgScore,
+        delta: subject.scoreDelta,
+        recommendation: getRecommendationForSubject(subject.subject, subject.avgScore),
+      }));
+  }, [subjectProgress]);
+
+  const getRecommendationForSubject = (subject: string, score: number): string => {
+    if (subject.toLowerCase().includes('matemát')) {
+      return score < 70 ? 'Repasa fundamentos algebraicos y práctica problemas mixtos.' : 'Enfócate en problemas avanzados y casos límite.';
+    } else if (subject.toLowerCase().includes('quím')) {
+      return score < 70 ? 'Repasa estequiometría y equilibrio químico.' : 'Practica reacciones orgánicas y cinética.';
+    } else if (subject.toLowerCase().includes('biol')) {
+      return score < 70 ? 'Repasa genética y fisiología básica.' : 'Enfócate en ecología y evolución.';
+    } else if (subject.toLowerCase().includes('lengu') || subject.toLowerCase().includes('lectur')) {
+      return score < 70 ? 'Practica comprensión lectora con textos variados.' : 'Trabaja en análisis crítico y síntesis.';
+    } else if (subject.toLowerCase().includes('hist')) {
+      return score < 70 ? 'Estudia líneas de tiempo y eventos clave.' : 'Enfócate en procesos históricos y causalidad.';
+    } else {
+      return 'Continúa practicando regularmente y revisa errores frecuentes.';
+    }
+  };
+
+  const focusDeltaValue = Math.abs(summary.focusDelta) < DELTA_EPSILON ? 0 : summary.focusDelta;
+  const scoreDeltaValue = Math.abs(summary.scoreDelta) < DELTA_EPSILON ? 0 : summary.scoreDelta;
 
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Visitantes Totales</CardTitle>
-        <CardDescription>
-          <span className="hidden @[540px]/card:block">Total de los últimos 3 meses</span>
-          <span className="@[540px]/card:hidden">Últimos 3 meses</span>
-        </CardDescription>
-        <CardAction>
+        <CardTitle>Estudio y desempeño</CardTitle>
+        <CardDescription>{VIEW_DESCRIPTIONS[view]}</CardDescription>
+        <CardAction className="flex flex-wrap items-center justify-end gap-3">
+          <ToggleGroup
+            type="single"
+            value={view}
+            onValueChange={handleViewChange}
+            variant="outline"
+            className="hidden *:data-[slot=toggle-group-item]:!px-4 @[767px]/card:flex"
+          >
+            <ToggleGroupItem value="study-time">Tiempo de estudio</ToggleGroupItem>
+            <ToggleGroupItem value="performance">Desempeño</ToggleGroupItem>
+          </ToggleGroup>
+          <Select value={view} onValueChange={handleViewChange}>
+            <SelectTrigger
+              aria-label="Seleccionar métrica"
+              className="w-44 @[767px]/card:hidden"
+              size="sm"
+            >
+              <SelectValue placeholder="Tiempo de estudio" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="study-time" className="rounded-lg">
+                Tiempo de estudio
+              </SelectItem>
+              <SelectItem value="performance" className="rounded-lg">
+                Desempeño
+              </SelectItem>
+            </SelectContent>
+          </Select>
           <ToggleGroup
             type="single"
             value={timeRange}
-            onValueChange={setTimeRange}
+            onValueChange={handleTimeRangeChange}
             variant="outline"
             className="hidden *:data-[slot=toggle-group-item]:!px-4 @[767px]/card:flex"
           >
@@ -181,11 +324,11 @@ export function ChartAreaInteractive() {
             <ToggleGroupItem value="30d">Últimos 30 días</ToggleGroupItem>
             <ToggleGroupItem value="7d">Últimos 7 días</ToggleGroupItem>
           </ToggleGroup>
-          <Select value={timeRange} onValueChange={setTimeRange}>
+          <Select value={timeRange} onValueChange={handleTimeRangeChange}>
             <SelectTrigger
+              aria-label="Seleccionar rango de tiempo"
               className="flex w-40 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate @[767px]/card:hidden"
               size="sm"
-              aria-label="Select a value"
             >
               <SelectValue placeholder="Últimos 3 meses" />
             </SelectTrigger>
@@ -203,18 +346,45 @@ export function ChartAreaInteractive() {
           </Select>
         </CardAction>
       </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
+      <CardContent className="space-y-5 px-2 pt-4 sm:px-6 sm:pt-6">
+        <div className="grid gap-3 text-sm @[540px]/card:grid-cols-3">
+          <div className="rounded-lg border border-border/60 bg-muted/10 p-3">
+            <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Promedio diario
+            </div>
+            <div className="text-lg font-semibold">
+              {summary.averageDailyHours.toFixed(1)} h
+            </div>
+            <div className={`text-xs ${deltaClass(focusDeltaValue)}`}>
+              {formatDelta(focusDeltaValue, 'h')} vs. semana previa
+            </div>
+          </div>
+          <div className="rounded-lg border border-border/60 bg-muted/10 p-3">
+            <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Último puntaje
+            </div>
+            <div className="text-lg font-semibold">{Math.round(summary.latestScore)}%</div>
+            <div className={`text-xs ${deltaClass(scoreDeltaValue)}`}>
+              {formatDelta(scoreDeltaValue, 'pts')} frente al periodo anterior
+            </div>
+          </div>
+          <div className="rounded-lg border border-border/60 bg-muted/10 p-3">
+            <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Horas acumuladas
+            </div>
+            <div className="text-lg font-semibold">{summary.totalHours.toFixed(1)} h</div>
+            <div className="text-xs text-muted-foreground">{selectedDays} días seleccionados</div>
+          </div>
+        </div>
+        <ChartContainer config={activeChartView.config} className="aspect-auto h-[260px] w-full">
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={1.0} />
-                <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0.1} />
-              </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-mobile)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0.1} />
-              </linearGradient>
+              {activeChartView.keys.map(key => (
+                <linearGradient key={key} id={`fill-${key}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={`var(--color-${key})`} stopOpacity={0.9} />
+                  <stop offset="95%" stopColor={`var(--color-${key})`} stopOpacity={0.05} />
+                </linearGradient>
+              ))}
             </defs>
             <CartesianGrid vertical={false} />
             <XAxis
@@ -233,36 +403,67 @@ export function ChartAreaInteractive() {
             />
             <ChartTooltip
               cursor={false}
-              defaultIndex={isMobile ? -1 : 10}
+              defaultIndex={defaultTooltipIndex}
               content={
                 <ChartTooltipContent
-                  labelFormatter={value => {
-                    return new Date(value).toLocaleDateString('es-ES', {
-                      month: 'short',
-                      day: 'numeric',
-                    });
-                  }}
+                  labelFormatter={labelFormatter}
+                  formatter={tooltipFormatter}
                   indicator="dot"
                 />
               }
             />
-            <Area
-              dataKey="mobile"
-              type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
-              stackId="a"
-            />
-            <Area
-              dataKey="desktop"
-              type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
-              stackId="a"
-            />
+            {activeChartView.keys.map(key => (
+              <Area
+                key={key}
+                dataKey={key}
+                type="natural"
+                fill={`url(#fill-${key})`}
+                stroke={`var(--color-${key})`}
+                strokeWidth={2}
+                stackId={activeChartView.stackId}
+                dot={false}
+                isAnimationActive={false}
+              />
+            ))}
           </AreaChart>
         </ChartContainer>
       </CardContent>
+      <CardFooter className="flex flex-col gap-3 border-t px-6 py-4 text-sm">
+        <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          Áreas a reforzar
+        </div>
+        {weakAreas.length ? (
+          <div className="grid gap-2 @[1024px]/card:grid-cols-2">
+            {weakAreas.map(area => (
+              <div
+                key={area.subject}
+                className="rounded-lg border border-border/60 bg-muted/15 p-3"
+              >
+                <div className="flex items-center justify-between gap-2 text-sm font-medium">
+                  <span>{area.subject}</span>
+                  <span>
+                    {area.accuracy}%
+                    <span className={`ml-1 text-xs font-normal ${deltaClass(area.delta)}`}>
+                      {area.delta >= 0 ? '+' : ''}
+                      {area.delta} pts
+                    </span>
+                  </span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">{area.recommendation}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-xs text-muted-foreground">
+            Excelente equilibrio en todas las asignaturas. Mantén el ritmo.
+          </div>
+        )}
+        {weakAreas.length ? (
+          <div className="text-xs text-muted-foreground">
+            Consejo: programa una tutoría breve para {weakAreas[0].subject.toLowerCase()} esta semana.
+          </div>
+        ) : null}
+      </CardFooter>
     </Card>
   );
 }

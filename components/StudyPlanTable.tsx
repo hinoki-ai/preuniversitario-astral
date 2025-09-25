@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 import { z } from 'zod';
 
 import { DataTable, schema as dataTableSchema } from '@/app/dashboard/DataTable';
+import { Card } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -12,39 +13,114 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { api as generatedApi } from '@/convex/_generated/api';
+import { Skeleton } from '@/components/ui/skeleton';
+import { api } from '@/convex/_generated/api';
+import { useErrorHandler } from '@/hooks/use-error-handler';
+
+// Using demo data types for now - update when proper types are available
+type WeeklyPlan = any;
+type WeeklyPlanItem = WeeklyPlan extends { items: (infer Item)[] } ? Item : never;
+type StudyPlanRow = Omit<WeeklyPlanItem, 'order'>;
+type SaveWeeklyPlanArgs = typeof api.studyPlan.saveWeeklyPlan._args;
 
 export default function StudyPlanTable() {
-  const api: any = generatedApi as any;
+  const { handleError, wrapAsync } = useErrorHandler();
   const [track, setTrack] = useState<string>('medicina');
-  const plan = useQuery(api.studyPlan.getWeeklyPlan, { track }) as any;
+  const [isSaving, setIsSaving] = useState(false);
+
+  const plan = useQuery(api.studyPlan.getWeeklyPlan, { track });
   const save = useMutation(api.studyPlan.saveWeeklyPlan);
 
-  const items = useMemo<z.infer<typeof dataTableSchema>[]>(() => {
-    const list = plan?.items || [];
-    return list
-      .sort((a: any, b: any) => a.order - b.order)
-      .map((it: any) => ({
-        id: it.id,
-        header: it.header,
-        type: it.type,
-        status: it.status,
-        target: it.target,
-        limit: it.limit,
-        reviewer: it.reviewer,
-      }));
-  }, [plan]);
+  const items = useMemo<StudyPlanRow[]>(() => {
+    if (!plan?.items) return [];
+
+    try {
+      return [...plan.items]
+        .sort((a, b) => a.order - b.order)
+        .map(({ order: _order, ...rest }) => rest);
+    } catch (error) {
+      handleError(error as Error, 'StudyPlanTable-data-processing');
+      return [];
+    }
+  }, [plan, handleError]);
 
   const onReorder = async (next: z.infer<typeof dataTableSchema>[]) => {
-    if (!plan) return;
-    const withOrder = next.map((n, idx) => ({ ...n, order: idx }));
-    await save({ track, weekStart: plan.weekStart, items: withOrder as any });
+    if (!plan) {
+      handleError(new Error('No plan data available'), 'StudyPlanTable-onReorder');
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const withOrder: SaveWeeklyPlanArgs['items'] = next.map((entry, index) => ({
+        ...entry,
+        order: index,
+      }));
+      const { weekStart } = plan;
+      await wrapAsync(() => save({ track, weekStart, items: withOrder }), 'StudyPlanTable-save');
+    } catch (error) {
+      handleError(error as Error, 'StudyPlanTable-onReorder');
+    } finally {
+      setIsSaving(false);
+    }
   };
+
+  // Handle loading state
+  if (plan === undefined) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <Select defaultValue={track} onValueChange={setTrack}>
+            <SelectTrigger className="w-56">
+              <SelectValue placeholder="Seleccionar track" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="medicina">Medicina</SelectItem>
+              <SelectItem value="ingenieria">Ingeniería</SelectItem>
+              <SelectItem value="humanista">Humanista</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <Card className="p-4">
+          <Skeleton className="h-8 w-full mb-4" />
+          <div className="space-y-2">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} className="h-12 w-full" />
+            ))}
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // Handle error state
+  if (plan === null) {
+    handleError(new Error('Error al cargar el plan de estudio'), 'StudyPlanTable');
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <Select defaultValue={track} onValueChange={setTrack}>
+            <SelectTrigger className="w-56">
+              <SelectValue placeholder="Seleccionar track" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="medicina">Medicina</SelectItem>
+              <SelectItem value="ingenieria">Ingeniería</SelectItem>
+              <SelectItem value="humanista">Humanista</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <Card className="p-4 text-sm text-destructive">
+          Error al cargar el plan de estudio. Por favor, intenta recargar la página.
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <Select defaultValue={track} onValueChange={setTrack}>
+        <Select defaultValue={track} onValueChange={setTrack} disabled={isSaving}>
           <SelectTrigger className="w-56">
             <SelectValue placeholder="Seleccionar track" />
           </SelectTrigger>
@@ -54,8 +130,9 @@ export default function StudyPlanTable() {
             <SelectItem value="humanista">Humanista</SelectItem>
           </SelectContent>
         </Select>
+        {isSaving && <span className="text-sm text-muted-foreground">Guardando...</span>}
       </div>
-      {items ? <DataTable data={items} onReorder={onReorder} /> : null}
+      <DataTable data={items} onReorder={onReorder} disabled={isSaving} />
     </div>
   );
 }

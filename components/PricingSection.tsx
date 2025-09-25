@@ -58,7 +58,7 @@ export function PricingSection() {
   ];
 
   return (
-    <section id="pricing" className="py-24 bg-white/30">
+    <section id="pricing" className="py-24 bg-background/50">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -67,10 +67,10 @@ export function PricingSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-deep-blue mb-6">
+          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-6">
             Invierte en tu <span className="text-accent">futuro</span>
           </h2>
-          <p className="text-xl text-sage max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Elige el plan que mejor se adapte a tus necesidades y objetivos académicos. Todos
             incluyen garantía de satisfacción de 30 días.
           </p>
@@ -87,7 +87,7 @@ export function PricingSection() {
               className="relative"
             >
               {plan.popular && (
-                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-cream px-4 py-1 z-10">
+                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-accent text-primary-foreground px-4 py-1 z-10">
                   <Star className="w-4 h-4 mr-1" />
                   Más Popular
                 </Badge>
@@ -96,18 +96,18 @@ export function PricingSection() {
               <Card
                 className={`p-8 h-full relative ${
                   plan.popular
-                    ? 'bg-white border-accent border-2 shadow-xl scale-105'
-                    : 'bg-white/70 backdrop-blur-sm border-sage/20'
+                    ? 'bg-card border-accent border-2 shadow-xl scale-105'
+                    : 'bg-card/70 backdrop-blur-sm border-border/20'
                 } hover:shadow-xl transition-all duration-300`}
               >
                 <div className="text-center mb-8">
-                  <h3 className="font-serif text-2xl font-bold text-deep-blue mb-2">{plan.name}</h3>
-                  <p className="text-sage mb-4">{plan.description}</p>
+                  <h3 className="font-serif text-2xl font-bold text-card-foreground mb-2">{plan.name}</h3>
+                  <p className="text-muted-foreground mb-4">{plan.description}</p>
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="font-serif text-5xl font-bold text-deep-blue">
+                    <span className="font-serif text-5xl font-bold text-card-foreground">
                       {plan.price}
                     </span>
-                    <span className="text-sage">{plan.period}</span>
+                    <span className="text-muted-foreground">{plan.period}</span>
                   </div>
                 </div>
 
@@ -115,7 +115,7 @@ export function PricingSection() {
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                      <span className="text-deep-blue">{feature}</span>
+                      <span className="text-card-foreground">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -123,8 +123,8 @@ export function PricingSection() {
                 <Button
                   className={`w-full ${
                     plan.popular
-                      ? 'bg-accent hover:bg-accent/90 text-cream'
-                      : 'bg-deep-blue hover:bg-deep-blue/90 text-cream'
+                      ? 'bg-accent hover:bg-accent/90 text-primary-foreground'
+                      : 'bg-primary hover:bg-primary/90 text-primary-foreground'
                   }`}
                   size="lg"
                 >
@@ -142,7 +142,7 @@ export function PricingSection() {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <p className="text-sage text-sm">
+          <p className="text-muted-foreground text-sm">
             * Garantía de admisión aplica bajo términos y condiciones específicos.
             <br />
             Todos los planes incluyen período de prueba gratuito de 7 días.

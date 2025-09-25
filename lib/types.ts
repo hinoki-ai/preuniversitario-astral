@@ -38,21 +38,10 @@ export type StudyPlanItem = {
 
 // Progress overview types
 export type ProgressOverview = {
-  totalLessons: number;
-  viewedLessons: number;
-  totalQuizzes: number;
-  completedQuizzes: number;
-  averageScore: number;
-  bySubject: Record<
-    string,
-    {
-      lessons: number;
-      viewed: number;
-      quizzes: number;
-      completed: number;
-      averageScore: number;
-    }
-  >;
+  bySubject: Record<string, { lessons: number; quizzes: number; avgScore: number; scores: number[]; }>;
+  totalActivities: number;
+  since: number;
+  now: number;
 };
 
 // Quiz attempt types
@@ -79,4 +68,23 @@ export type PaesQuiz = Quiz & {
 export type LessonQuiz = Quiz & {
   lessonId: Id<'lessons'>;
   questions: Question[];
+};
+
+// PAES catalog types
+export type PaesAssignmentMeta = {
+  id: string;
+  label: string;
+  description: string;
+};
+
+export type PaesCatalogItem = {
+  id: string;
+  title: string;
+  assignment: string;
+  assignmentLabel: string;
+  questionCount: number;
+  durationSec?: number;
+  source?: string;
+  year?: number;
+  session?: string;
 };

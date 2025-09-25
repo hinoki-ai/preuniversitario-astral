@@ -49,7 +49,9 @@ export default defineSchema({
     updatedAt: v.number(),
   })
     .index('byMeetingUser', ['meetingId', 'userId']) // unique per user per meeting
-    .index('byUser', ['userId']), // quick lookup of user's RSVPs
+    .index('byUser', ['userId']) // quick lookup of user's RSVPs
+    .index('byMeetingStatus', ['meetingId', 'status']) // for RSVP counts by meeting and status
+    .index('byUpdatedAt', ['updatedAt']), // for real-time polling of recent updates
 
   // Study content skeleton
   courses: defineTable({
@@ -97,15 +99,33 @@ export default defineSchema({
   // Quizzes and questions
   quizzes: defineTable({
     title: v.string(),
-    type: v.string(), // 'lesson' | 'paes'
+    type: v.string(), // 'lesson' | 'paes' | 'mock'
+    examType: v.optional(v.string()), // 'practice' | 'mock' | 'full_simulation'
     lessonId: v.optional(v.id('lessons')),
     subject: v.optional(v.string()),
+    assignment: v.optional(v.string()),
     durationSec: v.optional(v.number()),
+    source: v.optional(v.string()),
+    difficulty: v.optional(v.string()), // 'beginner' | 'intermediate' | 'advanced'
+    totalQuestions: v.optional(v.number()),
+    mockExamMetadata: v.optional(v.object({
+      subjects: v.array(v.string()),
+      totalDurationMin: v.number(),
+      questionBreakdown: v.array(v.object({
+        subject: v.string(),
+        questionCount: v.number(),
+        timeAllotment: v.number(),
+      })),
+      isRanked: v.boolean(),
+      scheduledStart: v.optional(v.number()),
+    })),
     createdBy: v.id('users'),
     createdAt: v.number(),
   })
     .index('byLesson', ['lessonId'])
-    .index('byType', ['type']),
+    .index('byType', ['type'])
+    .index('byExamType', ['examType'])
+    .index('byScheduledStart', ['mockExamMetadata.scheduledStart']),
 
   questions: defineTable({
     quizId: v.id('quizzes'),
@@ -128,21 +148,71 @@ export default defineSchema({
     startedAt: v.number(),
     completedAt: v.number(),
     timeTakenSec: v.optional(v.number()),
+    mockExamData: v.optional(v.object({
+      subjectBreakdown: v.array(v.object({
+        subject: v.string(),
+        correct: v.number(),
+        total: v.number(),
+        score: v.number(),
+        timeSpent: v.number(),
+      })),
+      ranking: v.optional(v.number()),
+      percentile: v.optional(v.number()),
+      averageComparison: v.optional(v.number()),
+    })),
   })
     .index('byQuizUser', ['quizId', 'userId'])
     .index('byUser', ['userId'])
-    .index('byQuiz', ['quizId']),
+    .index('byQuiz', ['quizId'])
+    .index('byCompletedAt', ['completedAt']),
 
   // Progress events
   progressEvents: defineTable({
     userId: v.id('users'),
     subject: v.optional(v.string()),
-    kind: v.string(), // 'lesson_viewed' | 'quiz_completed'
+    kind: v.string(), // 'lesson_viewed' | 'quiz_completed' | 'streak_maintained'
     value: v.optional(v.number()),
     createdAt: v.number(),
   })
     .index('byUser', ['userId'])
     .index('byUserCreatedAt', ['userId', 'createdAt']),
+
+  // User streaks, achievements, and gamification
+  userStats: defineTable({
+    userId: v.id('users'),
+    currentStreak: v.number(),
+    longestStreak: v.number(),
+    totalQuizzes: v.number(),
+    avgScore: v.number(),
+    weakSubjects: v.array(v.string()),
+    strongSubjects: v.array(v.string()),
+    lastActiveDate: v.string(), // YYYY-MM-DD format
+    
+    // Gamification fields
+    totalPoints: v.number(),
+    level: v.number(),
+    experiencePoints: v.number(),
+    pointsToNextLevel: v.number(),
+    achievements: v.array(v.object({
+      id: v.string(),
+      title: v.string(),
+      description: v.string(),
+      iconType: v.string(), // 'streak', 'score', 'completion', 'speed', 'consistency'
+      earnedAt: v.number(),
+      points: v.number(),
+    })),
+    weeklyGoals: v.object({
+      quizzesTarget: v.number(),
+      quizzesCompleted: v.number(),
+      studyTimeTarget: v.number(), // in minutes
+      studyTimeCompleted: v.number(),
+      weekStart: v.number(), // epoch seconds
+    }),
+    
+    updatedAt: v.number(),
+  }).index('byUser', ['userId'])
+    .index('byLevel', ['level'])
+    .index('byTotalPoints', ['totalPoints']),
 
   // Weekly study plan by track
   studyPlans: defineTable({

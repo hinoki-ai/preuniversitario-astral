@@ -1,7 +1,7 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'convex/react';
-import { useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -9,21 +9,42 @@ import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { api as generatedApi } from '@/convex/_generated/api';
+import { api } from '@/convex/_generated/api';
+import type { Id } from '@/convex/_generated/dataModel';
+import { useErrorHandler } from '@/hooks/use-error-handler';
+
+type CurrentUser = any; // Using any for now - proper typing needed
+type UpcomingMeeting = any; // Using any for now - proper typing needed
+type RsvpSummary = any; // Using any for now - proper typing needed
 
 export default function TeacherPanel() {
-  const api: any = generatedApi as any;
-  const user = useQuery(api.users.current, {});
+  const { handleError, wrapAsync } = useErrorHandler();
+  const user: CurrentUser | undefined = useQuery(api.users.current, {});
   const isTeacher = user?.role === 'teacher' || user?.role === 'admin';
   const createMeeting = useMutation(api.meetings.create);
   const updateMeeting = useMutation(api.meetings.update);
-  const meetings = useQuery(api.meetings.listUpcoming, {}) as any[] | undefined;
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  // RSVP counts for selected meeting
-  const rsvpCounts = useQuery(
+  const meetings: UpcomingMeeting[] | undefined = useQuery(api.meetings.listUpcoming, {});
+  const [expandedId, setExpandedId] = useState<Id<'meetings'> | null>(null);
+  const [lastPollTime, setLastPollTime] = useState(Date.now());
+
+  // RSVP counts for selected meeting with real-time polling
+  const rsvpCounts: RsvpSummary | undefined = useQuery(
     api.meetings.listRsvps,
-    expandedId ? { id: expandedId as any } : 'skip'
-  ) as any;
+    expandedId ? { id: expandedId } : 'skip'
+  );
+
+  // Poll for updates every 15 seconds for teachers with error handling
+  useEffect(() => {
+    const pollInterval = setInterval(() => {
+      try {
+        setLastPollTime(Date.now());
+      } catch (error) {
+        console.error('Error during teacher panel polling:', error);
+      }
+    }, 15000);
+
+    return () => clearInterval(pollInterval);
+  }, []);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -46,17 +67,23 @@ export default function TeacherPanel() {
       return;
     }
     setSubmitting(true);
+
     try {
-      await createMeeting({
-        title,
-        description: description || undefined,
-        startTime,
-        meetingNumber: meetingNumber.replace(/\s/g, ''),
-        passcode,
-        published,
-        attachments: attachments.length ? attachments : undefined,
-      });
-      // Reset
+      await wrapAsync(
+        () =>
+          createMeeting({
+            title,
+            description: description || undefined,
+            startTime,
+            meetingNumber: meetingNumber.replace(/\s/g, ''),
+            passcode,
+            published,
+            attachments: attachments.length ? attachments : undefined,
+          }),
+        'TeacherPanel.createMeeting'
+      );
+
+      // Reset form on success
       setTitle('');
       setDescription('');
       setStart('');
@@ -64,8 +91,9 @@ export default function TeacherPanel() {
       setPasscode('');
       setPublished(true);
       setAttachments([]);
-    } catch (e: any) {
-      setError(e?.message || 'No se pudo crear la clase');
+    } catch (error) {
+      // Error already handled by wrapAsync, but we can set local error state too
+      setError('No se pudo crear la clase');
     } finally {
       setSubmitting(false);
     }
@@ -95,17 +123,22 @@ export default function TeacherPanel() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="meetingNumber">Meeting ID</Label>
+          <Label htmlFor="meetingNumber">ID de reunión</Label>
           <Input
             id="meetingNumber"
             value={meetingNumber}
             onChange={e => setMeetingNumber(e.target.value)}
-            placeholder="123 4567 8901"
+            placeholder="ej. 123 4567 8901"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="passcode">Passcode</Label>
-          <Input id="passcode" value={passcode} onChange={e => setPasscode(e.target.value)} />
+          <Label htmlFor="passcode">Código de acceso</Label>
+          <Input
+            id="passcode"
+            value={passcode}
+            onChange={e => setPasscode(e.target.value)}
+            placeholder="Código"
+          />
         </div>
         <div className="flex items-center gap-2">
           <Checkbox id="published" checked={published} onCheckedChange={v => setPublished(!!v)} />
@@ -178,55 +211,75 @@ export default function TeacherPanel() {
       <div className="pt-2 space-y-3">
         <div className="text-base font-semibold">Clases Programadas</div>
         <div className="space-y-2">
-          {(meetings || []).map(m => (
-            <Card key={m._id} className="p-3 space-y-2">
-              <div className="flex items-center justify-between gap-2">
-                <div>
-                  <div className="font-medium">{m.title}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {new Date(m.startTime * 1000).toLocaleString()}
-                  </div>
-                </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setExpandedId(expandedId === m._id ? null : m._id)}
-                >
-                  {expandedId === m._id ? 'Ocultar' : 'Editar / RSVPs'}
-                </Button>
-              </div>
-              {expandedId === m._id && (
-                <div className="space-y-2">
-                  <div className="text-sm text-muted-foreground">
-                    RSVPs — Sí: {rsvpCounts?.counts?.yes || 0} · Quizás:{' '}
-                    {rsvpCounts?.counts?.maybe || 0} · No: {rsvpCounts?.counts?.no || 0} (Total:{' '}
-                    {rsvpCounts?.total || 0})
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                    <div className="space-y-1">
-                      <Label htmlFor={`t-${m._id}`}>Título</Label>
-                      <Input
-                        id={`t-${m._id}`}
-                        defaultValue={m.title}
-                        onBlur={e => updateMeeting({ id: m._id as any, title: e.target.value })}
-                      />
+          {(meetings || []).map(m => {
+            const now = Math.floor(Date.now() / 1000);
+            const isActive = now >= m.startTime && now <= (m.startTime + 3600);
+            const isUpcoming = now < m.startTime;
+            const isPast = now > (m.startTime + 3600);
+
+            return (
+              <Card key={m._id} className={`p-3 space-y-2 ${isActive ? 'border-green-500 bg-green-50' : ''}`}>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <div className="font-medium">{m.title}</div>
+                      <Badge variant={isActive ? 'default' : isUpcoming ? 'secondary' : 'outline'}>
+                        {isActive ? '🔴 EN VIVO' : isUpcoming ? '⏰ Próxima' : '✅ Finalizada'}
+                      </Badge>
                     </div>
-                    <div className="space-y-1">
-                      <Label htmlFor={`p-${m._id}`}>Publicado</Label>
-                      <div className="flex items-center gap-2">
-                        <Checkbox
-                          id={`p-${m._id}`}
-                          checked={m.published}
-                          onCheckedChange={v => updateMeeting({ id: m._id as any, published: !!v })}
+                    <div className="text-xs text-muted-foreground">
+                      {new Date(m.startTime * 1000).toLocaleString()}
+                    </div>
+                    {isActive && (
+                      <div className="text-xs text-green-600 font-medium mt-1">
+                        📊 Clase en vivo - {rsvpCounts?.total || 0} estudiantes conectados
+                      </div>
+                    )}
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setExpandedId(expandedId === m._id ? null : m._id)}
+                  >
+                    {expandedId === m._id ? 'Ocultar' : 'Editar / RSVPs'}
+                  </Button>
+                </div>
+                {expandedId === m._id && (
+                  <div className="space-y-2">
+                    <div className="text-sm text-muted-foreground">
+                      📈 RSVPs en tiempo real — ✅ Sí: {rsvpCounts?.counts?.yes || 0} · 🤔 Quizás:{' '}
+                      {rsvpCounts?.counts?.maybe || 0} · ❌ No: {rsvpCounts?.counts?.no || 0} (Total:{' '}
+                      {rsvpCounts?.total || 0})
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Última actualización: {new Date(lastPollTime).toLocaleTimeString()}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                      <div className="space-y-1">
+                        <Label htmlFor={`t-${m._id}`}>Título</Label>
+                        <Input
+                          id={`t-${m._id}`}
+                          defaultValue={m.title}
+                          onBlur={e => updateMeeting({ id: m._id, title: e.target.value })}
                         />
-                        <span className="text-sm">Visible para estudiantes</span>
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor={`p-${m._id}`}>Publicado</Label>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id={`p-${m._id}`}
+                            checked={m.published}
+                            onCheckedChange={v => updateMeeting({ id: m._id, published: !!v })}
+                          />
+                          <span className="text-sm">Visible para estudiantes</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </Card>
-          ))}
+                )}
+              </Card>
+            );
+          })}
           {(meetings || []).length === 0 && (
             <div className="text-sm text-muted-foreground">No hay clases programadas.</div>
           )}

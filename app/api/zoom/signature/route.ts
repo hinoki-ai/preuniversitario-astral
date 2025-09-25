@@ -1,5 +1,7 @@
 import { auth, clerkClient } from '@clerk/nextjs/server';
-import { NextResponse } from 'next/server';
+
+import { ApiResponse, ErrorFactory, withErrorHandler } from '@/lib/errors';
+import { resolveAccessState, toMembershipArray, type MembershipLike } from '@/lib/subscription';
 
 function base64url(input: Buffer | string) {
   const buff = Buffer.isBuffer(input) ? input : Buffer.from(input);
@@ -11,113 +13,102 @@ async function signHMACSHA256(message: string, secret: string) {
   return crypto.createHmac('sha256', secret).update(message).digest();
 }
 
-export async function POST(req: Request) {
+async function validateUserAccess(userId: string) {
+  const user = await clerkClient().users.getUser(userId);
+  const publicMetadata = (user.publicMetadata ?? {}) as Record<string, unknown>;
+  const plan = typeof publicMetadata.plan === 'string' ? publicMetadata.plan : undefined;
+
+  let memberships: MembershipLike[] = [];
   try {
-    const { userId } = auth();
-    if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    // Enforce paid plan on the server (paid or active trial)
-    const paidPlansEnv = (process.env.NEXT_PUBLIC_CLERK_PAID_PLANS || '')
-      .split(',')
-      .map(p => p.trim())
-      .filter(Boolean);
-    const user = await clerkClient.users.getUser(userId);
-    const userPlan = (user.publicMetadata as any)?.plan as string | undefined;
-    const trialRaw = (user.publicMetadata as any)?.trialEndsAt as any;
-    const nowSec = Math.floor(Date.now() / 1000);
-    let trialEndsAt: number | undefined = undefined;
-    if (typeof trialRaw === 'number') {
-      trialEndsAt = trialRaw;
-    } else if (typeof trialRaw === 'string') {
-      const n = Number(trialRaw);
-      if (!Number.isNaN(n) && n > 1000000000) {
-        trialEndsAt = n;
-      } else {
-        const d = new Date(trialRaw);
-        if (!isNaN(d.getTime())) trialEndsAt = Math.floor(d.getTime() / 1000);
-      }
-    }
-
-    // Helper to check if a plan is considered paid
-    const isPaidPlan = (plan?: string | null) => {
-      if (!plan) return false;
-      if (plan === 'free_user') return false;
-      if (plan === 'trial_user') return false; // handled by trial check
-      return paidPlansEnv.length > 0 ? paidPlansEnv.includes(plan) : true;
-    };
-
-    let hasAccess = isPaidPlan(userPlan);
-
-    // Check org memberships' publicMetadata.plan
-    if (!hasAccess) {
-      try {
-        const memberships = await clerkClient.users.getOrganizationMembershipList({ userId });
-        for (const m of (memberships as any).data || memberships) {
-          const orgPlan = (m.organization.publicMetadata as any)?.plan as string | undefined;
-          if (isPaidPlan(orgPlan)) {
-            hasAccess = true;
-            break;
-          }
-        }
-      } catch {}
-    }
-
-    // Fallback to active trial if any
-    if (!hasAccess) {
-      const trialActive =
-        userPlan === 'trial_user' && typeof trialEndsAt === 'number' && trialEndsAt > nowSec;
-      if (trialActive) hasAccess = true;
-    }
-
-    if (!hasAccess) {
-      return NextResponse.json({ error: 'Payment required' }, { status: 402 });
-    }
-
-    const body = await req.json().catch(() => ({}));
-    const meetingNumber = String(body?.meetingNumber || '').trim();
-    const role = Number(body?.role ?? 0); // 0 attendee, 1 host
-
-    if (!meetingNumber) {
-      return NextResponse.json({ error: 'Missing meetingNumber' }, { status: 400 });
-    }
-    if (Number.isNaN(role) || (role !== 0 && role !== 1)) {
-      return NextResponse.json({ error: 'Invalid role' }, { status: 400 });
-    }
-
-    const sdkKey = process.env.NEXT_PUBLIC_ZOOM_MEETING_SDK_KEY;
-    const sdkSecret = process.env.ZOOM_MEETING_SDK_SECRET;
-    if (!sdkKey || !sdkSecret) {
-      return NextResponse.json(
-        { error: 'Zoom Meeting SDK env vars not configured' },
-        { status: 500 }
-      );
-    }
-
-    // JWT header & payload for Zoom Meeting SDK signature
-    const iat = Math.floor(Date.now() / 1000) - 30; // backdate to allow clock skew
-    const exp = iat + 60 * 60 * 2; // 2 hours
-    const tokenExp = exp; // recommended to match exp
-
-    const header = { alg: 'HS256', typ: 'JWT' };
-    const payload = {
-      sdkKey,
-      mn: meetingNumber,
-      role,
-      iat,
-      exp,
-      appKey: sdkKey,
-      tokenExp,
-    };
-
-    const encHeader = base64url(JSON.stringify(header));
-    const encPayload = base64url(JSON.stringify(payload));
-    const toSign = `${encHeader}.${encPayload}`;
-    const signature = base64url(await signHMACSHA256(toSign, sdkSecret));
-    const jwt = `${toSign}.${signature}`;
-
-    return NextResponse.json({ signature: jwt, sdkKey });
-  } catch (err) {
-    console.error('/api/zoom/signature error', err);
-    return NextResponse.json({ error: 'Internal error' }, { status: 500 });
+    const membershipList = await clerkClient().users.getOrganizationMembershipList({ userId });
+    memberships = toMembershipArray(membershipList);
+  } catch (error) {
+    console.warn('Failed to check organization memberships:', error);
   }
+
+  const accessState = resolveAccessState({
+    plan,
+    trialEndsAt: publicMetadata.trialEndsAt,
+    memberships,
+  });
+
+  if (!accessState.hasAccess) {
+    throw ErrorFactory.authorization('Payment required for Zoom integration');
+  }
+
+  return user;
 }
+
+async function validateRequestBody(body: any) {
+  const meetingNumber = String(body?.meetingNumber || '').trim();
+  const role = Number(body?.role ?? 0); // 0 attendee, 1 host
+
+  if (!meetingNumber) {
+    throw ErrorFactory.validation('Missing required field: meetingNumber');
+  }
+
+  if (Number.isNaN(role) || (role !== 0 && role !== 1)) {
+    throw ErrorFactory.validation('Rol inválido: debe ser 0 (asistente) o 1 (anfitrión)');
+  }
+
+  return { meetingNumber, role };
+}
+
+async function generateZoomSignature(meetingNumber: string, role: number) {
+  const sdkKey = process.env.NEXT_PUBLIC_ZOOM_MEETING_SDK_KEY;
+  const sdkSecret = process.env.ZOOM_MEETING_SDK_SECRET;
+
+  if (!sdkKey || !sdkSecret) {
+    throw ErrorFactory.internal('Zoom Meeting SDK configuration missing');
+  }
+
+  // JWT header & payload for Zoom Meeting SDK signature
+  const iat = Math.floor(Date.now() / 1000) - 30; // backdate to allow clock skew
+  const exp = iat + 60 * 60 * 2; // 2 hours
+  const tokenExp = exp; // recommended to match exp
+
+  const header = { alg: 'HS256', typ: 'JWT' };
+  const payload = {
+    sdkKey,
+    mn: meetingNumber,
+    role,
+    iat,
+    exp,
+    appKey: sdkKey,
+    tokenExp,
+  };
+
+  const encHeader = base64url(JSON.stringify(header));
+  const encPayload = base64url(JSON.stringify(payload));
+  const toSign = `${encHeader}.${encPayload}`;
+  const signature = base64url(await signHMACSHA256(toSign, sdkSecret));
+  const jwt = `${toSign}.${signature}`;
+
+  return { signature: jwt, sdkKey };
+}
+
+const handler = async (req: Request) => {
+  // Authenticate user
+  const authResult = await auth();
+  if (!authResult.userId) {
+    throw ErrorFactory.authentication();
+  }
+
+  const userId = authResult.userId;
+
+  // Validate user access
+  await validateUserAccess(userId);
+
+  // Parse and validate request body
+  const body = await req.json().catch(() => {
+    throw ErrorFactory.validation('JSON inválido en el cuerpo de la solicitud');
+  });
+  const { meetingNumber, role } = await validateRequestBody(body);
+
+  // Generate Zoom signature
+  const result = await generateZoomSignature(meetingNumber, role);
+
+  return ApiResponse.success(result, 'Firma de Zoom generada exitosamente');
+};
+
+export const POST = withErrorHandler(handler, 'Zoom Signature API');

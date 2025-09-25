@@ -1,8 +1,8 @@
 'use client';
 
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Script from 'next/script';
-import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,6 +34,9 @@ export default function ZoomJoinClient({
   const [displayName, setDisplayName] = useState<string>(defaultName);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
+  const [isDemoMode, setIsDemoMode] = useState(
+    process.env.NEXT_PUBLIC_ZOOM_DEMO_MODE === 'true'
+  );
   const initializedRef = useRef(false);
 
   useEffect(() => {
@@ -68,6 +71,15 @@ export default function ZoomJoinClient({
 
   const joinMeeting = async () => {
     setError('');
+    if (isDemoMode) {
+      // In demo mode, just show the video player
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000); // Simulate loading
+      return;
+    }
+
     if (!meetingNumber || !passcode) {
       setError('Ingresa ID de reunión y código de acceso');
       return;
@@ -136,18 +148,52 @@ export default function ZoomJoinClient({
 
       <div className="rounded-lg border bg-card p-6 space-y-4">
         <div>
-          <h2 className="text-lg font-semibold">Unirse a Clase en Vivo (Zoom)</h2>
+          <h2 className="text-lg font-semibold">
+            {isDemoMode ? 'Modo Demo - Video de Prueba' : 'Unirse a Clase en Vivo (Zoom)'}
+          </h2>
           <p className="text-sm text-muted-foreground">
-            Ingresa el ID y código entregados por el profesor. La videollamada se abrirá aquí mismo.
+            {isDemoMode
+              ? 'Estás en modo demo. Puedes probar la interfaz con un video de ejemplo.'
+              : 'Ingresa el ID y código entregados por el profesor. La videollamada se abrirá aquí mismo.'
+            }
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="flex items-center justify-between">
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={isDemoMode}
+              onChange={(e) => setIsDemoMode(e.target.checked)}
+              className="rounded"
+            />
+            Modo demo (sin Zoom)
+          </label>
+        </div>
+
+        {isDemoMode ? (
+          <div className="space-y-4">
+            <div className="aspect-video w-full overflow-hidden rounded-md bg-muted">
+              <video
+                controls
+                className="h-full w-full"
+                src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                poster="https://i.ytimg.com/vi/YE7VzlLtp-4/maxresdefault.jpg"
+              >
+                Tu navegador no soporta el elemento de video.
+              </video>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Este es un video de demostración. En un entorno real, aquí se mostraría la reunión de Zoom.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label htmlFor="meetingNumber">ID de reunión</Label>
             <Input
               id="meetingNumber"
-              placeholder="e.g. 123 4567 8901"
+              placeholder="ej. 123 4567 8901"
               value={meetingNumber}
               onChange={e => setMeetingNumber(e.target.value.replace(/\s/g, ''))}
             />
@@ -170,13 +216,17 @@ export default function ZoomJoinClient({
               onChange={e => setDisplayName(e.target.value)}
             />
           </div>
-        </div>
+          </div>
+        )}
 
         {error && <p className="text-sm text-destructive">{error}</p>}
 
         <div className="flex gap-3">
           <Button onClick={joinMeeting} disabled={loading}>
-            {loading ? 'Conectando...' : 'Unirse a la clase'}
+            {loading
+              ? (isDemoMode ? 'Cargando demo...' : 'Conectando...')
+              : (isDemoMode ? 'Iniciar demo' : 'Unirse a la clase')
+            }
           </Button>
         </div>
       </div>
