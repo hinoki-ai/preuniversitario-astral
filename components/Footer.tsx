@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 const navigationSections = [
@@ -167,11 +168,13 @@ export default function Footer() {
               ΛRΛMΛC®
             </span>
           </div>
-          <div className="flex justify-center items-center mt-2">
-            <img
+          <div className="mt-2 flex items-center justify-center">
+            <Image
               src="/devicon.png"
               alt="Dev Favicon"
-              className="w-8 h-8 mr-2 opacity-60"
+              width={32}
+              height={32}
+              className="mr-2 h-8 w-8 opacity-60"
             />
             <span className="text-xs" style={{ color: MINEDUC_COLORS.offWhite }}>
               Desarrollado con ❤️

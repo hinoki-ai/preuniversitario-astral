@@ -22,14 +22,6 @@ export function withStandardErrorHandling<P extends object>(
     const { handleError, safeExecute } = useErrorHandler();
     const context = componentName || Component.displayName || Component.name || 'Anonymous Component';
     
-    // Handle custom error callback
-    const customHandleError = React.useCallback((error: Error, errorContext: string) => {
-      if (onError) {
-        onError(error, errorContext);
-      }
-      handleError(error, errorContext);
-    }, [handleError, onError]);
-    
     // Wrap the component render with error handling
     const renderComponent = React.useCallback(() => {
       return safeExecute(
@@ -37,7 +29,7 @@ export function withStandardErrorHandling<P extends object>(
         `${context}.render`,
         fallbackValue
       );
-    }, [props, ref, context, fallbackValue, safeExecute]);
+    }, [context, props, ref, safeExecute]);
 
     const ErrorBoundaryComponent = level === 'page' 
       ? React.Fragment 
@@ -131,7 +123,8 @@ export function useAsyncOperation<T = any>(
 
   React.useEffect(() => {
     execute();
-  }, deps);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [execute, ...deps]);
 
   return { data, loading, error, retry: execute };
 }

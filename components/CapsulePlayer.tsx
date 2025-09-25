@@ -164,8 +164,8 @@ function MultimediaViewer({
             <YouTubePlayer
               videoId={getyoutubevideoid(lesson.videoUrl) || ''}
               playbackRate={playbackRate}
-              onTimeUpdate={(time) => setCurrentTime(time)}
-              onDurationChange={(dur) => setDuration(dur)}
+              onTimeUpdate={(time: number) => setCurrentTime(time)}
+              onDurationChange={(dur: number) => setDuration(dur)}
             />
             {lesson.pdfUrl && (
               <div className="flex gap-2">
@@ -204,9 +204,9 @@ function MultimediaViewer({
 const SPEED_OPTIONS = [0.75, 1, 1.25, 1.5, 1.75, 2];
 
 type lessonannotation = {
-  _id: id<'lessonAnnotations'>;
-  userId: id<'users'>;
-  lessonId: id<'lessons'>;
+  _id: Id<'lessonAnnotations'>;
+  userId: Id<'users'>;
+  lessonId: Id<'lessons'>;
   type: 'note' | 'bookmark';
   timestampSec?: number | null;
   content: string;
@@ -264,7 +264,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
   const annotations = useQuery(
     api.lessonAnnotations.listLessonAnnotations,
     convexLessonId ? { lessonId: convexLessonId } : 'skip'
-  ) as LessonAnnotation[] | undefined;
+  ) as lessonannotation[] | undefined;
 
   const youtubePlayerRef = useRef<any | null>(null);
   const markViewed = useMutation(api.content.markLessonViewed);
@@ -272,11 +272,11 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
   const deleteAnnotation = useMutation(api.lessonAnnotations.deleteLessonAnnotation);
 
   // Use Convex data if available, otherwise use demo data
-  const lesson: lesson | (returntype<typeof getdemolesson> & partial<lesson>) | null =
-    convexlesson || getdemolesson(lessonid);UseConvexdataifavailable,otherwiseusedemodataconstlesson
+  const lesson: Lesson | (ReturnType<typeof getDemoLesson> & Partial<Lesson>) | null =
+    convexLesson || getDemoLesson(lessonId);
 
   const youtubeVideoId = useMemo(
-    () => getYouTubeVideoId(lesson?.videoUrl ?? ''),
+    () => getyoutubevideoid(lesson?.videoUrl ?? ''),
     [lesson?.videoUrl]
   );
   const isYouTube = Boolean(youtubeVideoId);
@@ -410,7 +410,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
     }
   };
 
-  const handleaddbookmark = async () => {
+  const handleaddbookmark = useCallback(async () => {
     if (!canPersist || !supportsAdvancedControls) return;
     try {
       setSavingBookmark(true);
@@ -418,7 +418,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
         lessonId: convexLessonId as Id<'lessons'>,
         type: 'bookmark',
         timestampSec: currentTime,
-        content: formatSeconds(currentTime),
+        content: formatseconds(currentTime),
       });
       toast.success('Marcador agregado');
     } catch (_error) {
@@ -428,7 +428,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
  finally {
       setSavingBookmark(false);
     }
-  };
+  }, [canPersist, supportsAdvancedControls, createAnnotation, convexLessonId, currentTime]);
 
   const handledelete = async (id: Id<'lessonAnnotations'>) => {
     try {
@@ -439,10 +439,10 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
     }
   };
 
-  const handlespeedchange = (rate: number) => {
+  const handlespeedchange = useCallback((rate: number) => {
     if (!supportsAdvancedControls) return;
     setPlaybackRate(rate);
-  };
+  }, [supportsAdvancedControls, setPlaybackRate]);
 
   // Enhanced keyboard shortcuts
   useEffect(() => {
@@ -487,7 +487,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
         case 'b':
           e.preventDefault();
           if (supportsAdvancedControls && canPersist) {
-            handleAddBookmark();
+            handleaddbookmark();
           }
           break;
         case 'n':
@@ -509,7 +509,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
           e.preventDefault();
           const speedIndex = parseInt(e.key) - 1;
           if (speedIndex < SPEED_OPTIONS.length) {
-            handleSpeedChange(SPEED_OPTIONS[speedIndex]);
+            handlespeedchange(SPEED_OPTIONS[speedIndex]);
           }
           break;
       }
@@ -517,7 +517,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [currentTime, isFileVideo, isYouTube, supportsAdvancedControls, canPersist, autoPauseForNotes]);
+  }, [autoPauseForNotes, canPersist, currentTime, isFileVideo, isYouTube, seekTo, supportsAdvancedControls, handleaddbookmark, handlespeedchange]);
 
   const exportNotes = useCallback(() => {
     if (!notes.length) {
@@ -526,7 +526,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
     }
 
     const notesContent = notes.map(note => {
-      const timestamp = note.timestampSec ? ` (${formatSeconds(note.timestampSec)})` : '';
+      const timestamp = note.timestampSec ? ` (${formatseconds(note.timestampSec)})` : '';
       return `${note.content}${timestamp}`;
     }).join('\n\n');
 
@@ -604,7 +604,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
                     setAttachTimestamp(Boolean(value) && supportsAdvancedControls)
                   }
                 />
-                Adjuntar minuto actual ({formatSeconds(currentTime)})
+                Adjuntar minuto actual ({formatseconds(currentTime)})
               </label>
               <label className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Checkbox
@@ -616,7 +616,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
               <Button
                 size="sm"
                 type="button"
-                onClick={handleAddNote}
+                onClick={handleaddnote}
                 disabled={!canPersist || savingNote}
               >
                 Guardar nota
@@ -637,7 +637,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
                           disabled={!supportsAdvancedControls}
                         >
                           <IconClock className="size-3" />
-                          {formatSeconds(note.timestampSec ?? 0)}
+                          {formatseconds(note.timestampSec ?? 0)}
                         </button>
                       ) : (
                         <span className="text-xs text-muted-foreground">Sin marca de tiempo</span>
@@ -646,7 +646,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
                         variant="ghost"
                         size="icon"
                         className="text-muted-foreground hover:text-destructive"
-                        onClick={() => handleDelete(note._id)}
+                        onClick={() => handledelete(note._id)}
                         aria-label="Eliminar nota"
                       >
                         <IconTrash className="size-4" />
@@ -684,9 +684,9 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
                     onClick={() => seekTo(bookmark.timestampSec ?? 0)}
                     disabled={!supportsAdvancedControls}
                   >
-                    <span className="font-medium">{formatSeconds(bookmark.timestampSec ?? 0)}</span>
+                    <span className="font-medium">{formatseconds(bookmark.timestampSec ?? 0)}</span>
                     {bookmark.content &&
-                    bookmark.content !== formatSeconds(bookmark.timestampSec ?? 0) ? (
+                    bookmark.content !== formatseconds(bookmark.timestampSec ?? 0) ? (
                       <span className="text-xs text-muted-foreground">{bookmark.content}</span>
                     ) : null}
                   </button>
@@ -694,7 +694,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
                     variant="ghost"
                     size="icon"
                     className="text-muted-foreground hover:text-destructive"
-                    onClick={() => handleDelete(bookmark._id)}
+                    onClick={() => handledelete(bookmark._id)}
                     aria-label="Eliminar marcador"
                   >
                     <IconTrash className="size-4" />

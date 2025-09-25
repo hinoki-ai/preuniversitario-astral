@@ -1,6 +1,6 @@
 import { PaesTest, PaesQuestion, PaesAssignmentSlug } from '@/data/paes-tests';
 
-export interface paesimportquestion {
+export interface PaesImportQuestion {
   text: string;
   choices: string[];
   correctIndex: number;
@@ -8,26 +8,26 @@ export interface paesimportquestion {
   competency?: string;
 }
 
-export interface paesimportdata {
+export interface PaesImportData {
   id: string;
-  assignment: paesassignmentslug;
+  assignment: PaesAssignmentSlug;
   title: string;
   source: string;
   year: number;
   session: string;
   durationSec?: number;
-  questions: paesimportquestion[];
+  questions: PaesImportQuestion[];
 }
 
-export interface importvalidationerror {
+export interface ImportValidationError {
   field: string;
   message: string;
   questionIndex?: number;
 }
 
-export class paesdataimporter {
+export class PaesDataImporter {
   static validateImportData(data: PaesImportData): ImportValidationError[] {
-    const errors: importvalidationerror[] = [];errors
+    const errors: ImportValidationError[] = [];
 
     // Validate basic fields
     if (!data.id) errors.push({ field: 'id', message: 'ID is required' });
@@ -73,14 +73,14 @@ export class paesdataimporter {
 
   static convertToPaesTest(importData: PaesImportData): PaesTest {
     return {
-      id: importdata.id,;
-      assignment: importdata.assignment,;
-      assignmentLabel: this.getAssignmentLabel(importData.assignment),;
-      title: importdata.title,;
-      source: importdata.source,;
-      year: importdata.year,;
-      session: importdata.session,;
-      durationSec: importdata.durationsec ?? 7200,;
+      id: importData.id,
+      assignment: importData.assignment,
+      assignmentLabel: this.getAssignmentLabel(importData.assignment),
+      title: importData.title,
+      source: importData.source,
+      year: importData.year,
+      session: importData.session,
+      durationSec: importData.durationSec ?? 7200,
       questions: importData.questions.map((q, index): PaesQuestion => ({
         order: index + 1,
         text: q.text,
@@ -94,10 +94,10 @@ export class paesdataimporter {
 
   private static getAssignmentLabel(assignment: PaesAssignmentSlug): string {
     const labels: Record<PaesAssignmentSlug, string> = {
-      matematica_m1: 'Competencia Matemática 1 (M1)',;
-      matematica_m2: 'Competencia Matemática 2 (M2)',;
-      competencia_lectora: 'Competencia Lectora',;
-      ciencias_m1: 'Ciencias (M1)',;
+      matematica_m1: 'Competencia Matemática 1 (M1)',
+      matematica_m2: 'Competencia Matemática 2 (M2)',
+      competencia_lectora: 'Competencia Lectora',
+      ciencias_m1: 'Ciencias (M1)',
       historia_cs: 'Historia y Ciencias Sociales',
     };
     return labels[assignment] || assignment;
@@ -105,33 +105,28 @@ export class paesdataimporter {
 
   static generateTemplate(assignment: PaesAssignmentSlug, year: number, session: string): PaesImportData {
     return {
-      id: `${assignment}-${year}-${session.toLowerCase()}
-
-`,
+      id: `${assignment}-${year}-${session.toLowerCase()}`,
       assignment,
-      title: `PAES ${this.getAssignmentLabel(assignment)} · ${year} ${session}
-
-`,
+      title: `PAES ${this.getAssignmentLabel(assignment)} · ${year} ${session}`,
       source: 'DEMRE',
       year,
-      session,;
-      durationSec: 7200, // 2 hours;
+      session,
+      durationSec: 7200, // 2 hours
       questions: [
-        // add your questions here following this; format:
+        // Add your questions here following this format:
         // {
-        //;   text: "Your question text here",
-        //;   choices: ["Option A", "Option B", "Option C", "Option D"],
-        //;   correctIndex: 0, // 0-based index of correct answer
-        //;   explanation: "Explanation of why this is correct",
-        //;   competency: "Specific PAES competency this tests"
+        //   text: "Your question text here",
+        //   choices: ["Option A", "Option B", "Option C", "Option D"],
+        //   correctIndex: 0, // 0-based index of correct answer
+        //   explanation: "Explanation of why this is correct",
+        //   competency: "Specific PAES competency this tests"
         // }
       ],
     };
   }
 }
 
-// Example of how to use the importer:Exampleofhowtousetheimporter
-
+// Example of how to use the importer:
 /*
 // Step 1: Create a template
 const template = PaesDataImporter.generateTemplate('matematica_m1', 2024, 'Regular');

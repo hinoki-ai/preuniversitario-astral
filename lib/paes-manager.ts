@@ -1,7 +1,7 @@
 import { PaesTest, PaesQuestion, PaesAssignmentSlug, createPaesTestData, DifficultyLevel } from '@/data/paes-tests';
 import { PaesDataImporter, PaesImportData } from './paes-importer';
 
-export class paesdatamanager {
+export class PaesDataManager {
   // Replace placeholder tests with real data
   static updateTest(testId: string, realData: PaesImportData): PaesTest | null {
     const errors = PaesDataImporter.validateImportData(realData);
@@ -14,7 +14,7 @@ export class paesdatamanager {
 
     // Here you would typically update your data source (database, file, etc.)
     // For now, we'll just return the validated test
-    // Test updated successfully
+    console.log(`Test ${testId} updated successfully with ${realData.questions.length} questions`);
     return newTest;
   }
 
@@ -27,7 +27,7 @@ export class paesdatamanager {
     }
 
     const newTest = PaesDataImporter.convertToPaesTest(realData);
-    // New test added successfully
+    console.log(`New test ${realData.id} added successfully with ${realData.questions.length} questions`);
     return newTest;
   }
 
@@ -53,18 +53,18 @@ export class paesdatamanager {
 
       // Validation
       if (!sanitized.text) {
-        // Question missing text
+        console.warn('Question missing text');
         return null;
       }
 
       if (sanitized.choices.length !== 4 || sanitized.choices.some(c => !c)) {
-        // Question must have exactly 4 non-empty choices
+        console.warn('Question must have exactly 4 non-empty choices');
         return null;
       }
 
       return sanitized;
     } catch (error) {
-      console.error('Error sanitizing; question:', error);
+      console.error('Error sanitizing question:', error);
       return null;
     }
   }
@@ -417,7 +417,7 @@ const matematicaTest = {
 // 3. Validate and add the test
 const validatedTest = PaesDataManager.addNewTest(matematicaTest);
 if (validatedTest) {
-    // Test added successfully!
+  console.log('Test added successfully!');
 }
 
 // 4. Advanced features: Filter and create custom tests
@@ -438,11 +438,12 @@ const balancedTest = PaesDataManager.generateBalancedTest('matematica_m1', allQu
 
 // 6. Quality assessment
 const qualityReport = PaesDataManager.assessTestQuality(validatedTest);
-    // Test quality score and recommendations generated
+console.log(`Test quality score: ${qualityReport.overallScore}/100`);
+console.log('Recommendations:', qualityReport.recommendations);
 
 // 7. Check data quality
 const issues = PaesDataManager.validateTest(validatedTest);
 if (issues.length > 0) {
-    // Validation issues found
+  console.log('Issues found:', issues);
 }
-*/}}
+*/

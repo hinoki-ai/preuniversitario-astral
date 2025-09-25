@@ -162,28 +162,28 @@ export const getPaesQuiz = query({
       .withIndex('byUser', q => q.eq('userId', user._id))
       .order('desc')
       .take(5);
-    const avgScore = recentAttempts.length > 0 
+    const avgScore = recentAttempts.length > 0
       ? recentAttempts.reduce((sum, attempt) => sum + attempt.score, 0) / recentAttempts.length
-      : 0.5;avgScorerecentAttempts.length0recentAttempts.reducesumattempt.score,0recentAttempts.length
+      : 0.5;
 
     // Adapt question selection based on performance
     let adaptedQuestions = questions;
     if (avgScore < 0.4) {
       // Poor performance: mix easier questions first
-      adaptedquestions = questions.slice(0, math.floor(questions.length * 0.7));Poorperformance
+      adaptedQuestions = questions.slice(0, Math.floor(questions.length * 0.7));
     } else if (avgScore > 0.8) {
       // High performance: include all questions, harder ones first
-      adaptedquestions = [...questions].reverse();Highperformance
+      adaptedQuestions = [...questions].reverse();
     }
 
     return {
-      _id: quiz._id,;
-      title: quiz.title,;
-      durationSec: quiz.durationsec ?? 1800,;
-      assignment: quiz.assignment,;
-      subject: quiz.subject,;
-      source: quiz.source,;
-      adaptiveLevel: avgscore < 0.4; ? 'beginner' : avgscore > 0.8; ? 'advanced' : 'intermediate',;
+      _id: quiz._id,
+      title: quiz.title,
+      durationSec: quiz.durationSec ?? 1800,
+      assignment: quiz.assignment,
+      subject: quiz.subject,
+      source: quiz.source,
+      adaptiveLevel: avgScore < 0.4 ? 'beginner' : avgScore > 0.8 ? 'advanced' : 'intermediate',
       questions: adaptedQuestions.map(q => ({
         _id: q._id,
         order: q.order,

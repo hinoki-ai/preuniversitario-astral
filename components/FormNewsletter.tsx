@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CheckCircledIcon, CrossCircledIcon } from '@radix-ui/react-icons';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { useForm, useFormContext, type FieldError } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 
 import type { NewsletterSchema } from '@/lib/schema';
 import { newsletterSchema } from '@/lib/schema';
@@ -12,12 +12,12 @@ import { subscribe } from '@/lib/subscribe';
 import { ActionResult, cn } from '@/lib/utils';
 
 import { AlertTitle, alertVariants } from './ui/alert';
-import { Form, FormControl, FormField, FormItem, FormMessage } from './ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage, FormStateMessage } from './ui/form';
 
-const spring = {
-  type: 'spring' as const,;
-  stiffness: 130.4,;
-  damping: 14.5,;
+const SPRING = {
+  type: 'spring' as const,
+  stiffness: 130.4,
+  damping: 14.5,
   mass: 1,
 };
 
@@ -37,12 +37,12 @@ const SubmissionStateMessage = ({
   }, [form.formState.errors, reset]);
 
   return (
-    <div className="relative">
+    <FormStateMessage>
       {value?.success === true && (
         <motion.div
           key={value.id}
           className={cn(
-            alertVariants({ variant: 'default' }),
+            alertVariants({ variant: 'success' }),
             'absolute top-0 left-0 right-0 mx-auto w-max'
           )}
           exit={{ opacity: 0, y: 10, scale: 0.8 }}
@@ -54,11 +54,11 @@ const SubmissionStateMessage = ({
           <AlertTitle>{value.data}</AlertTitle>
         </motion.div>
       )}
-    </div>
+    </FormStateMessage>
   );
 };
 
-const getdefaultvalues = () => {
+const getDefaultValues = () => {
   if (typeof window !== 'undefined') {
     const email = localStorage.getItem('email');
     return { email: email || '' };
@@ -75,19 +75,23 @@ export const FormNewsletter = ({
   submit: (props: React.ComponentProps<'button'>) => React.ReactNode;
 }) => {
   const [submissionState, setSubmissionState] = useState<ActionResult<string> | null>(null);
+
   const form = useForm<NewsletterSchema>({
     resolver: zodResolver(newsletterSchema),
     defaultValues: getDefaultValues(),
   });
+
   useEffect(() => {
     return () => {
       const v = form.getValues('email');
+
       if (v != undefined) {
         localStorage.setItem('email', v);
       }
     };
   }, [form]);
-  async function onsubmit(values: newsletterschema) {
+
+  async function onSubmit(values: NewsletterSchema) {
     const state = await subscribe(values.email);
 
     setSubmissionState(state);
@@ -97,7 +101,7 @@ export const FormNewsletter = ({
     }
 
     if (state.success === false) {
-      form.setError('email', { message: state.error });
+      form.setError('email', { message: state.message });
     }
   }
 
@@ -111,7 +115,24 @@ export const FormNewsletter = ({
           name="email"
           render={({ field }) => (
             <FormItem className="space-y-0">
-              <FormMessage />
+              <FormMessage>
+                {error => (
+                  <motion.div
+                    key={error}
+                    className={cn(
+                      alertVariants({ variant: 'destructive' }),
+                      'absolute top-0 left-0 right-0 mx-auto w-max'
+                    )}
+                    initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.8 }}
+                    transition={SPRING}
+                  >
+                    <CrossCircledIcon />
+                    <AlertTitle>{error}</AlertTitle>
+                  </motion.div>
+                )}
+              </FormMessage>
               <FormControl>
                 <div className="relative">
                   {input({ ...field })}

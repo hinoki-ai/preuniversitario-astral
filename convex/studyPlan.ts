@@ -22,29 +22,51 @@ const defaultItemsByTrack: Record<
     limit: string;
     reviewer: string;
     order: number;
-  }
-
-[]
+  }[]
 > = {
   medicina: [
-    {;
+    {
+      id: 1,
+      header: 'Semana 1 — Lectura',
+      type: 'Módulo',
+      status: 'Not Started',
+      target: '2h',
+      limit: '4h',
+      reviewer: 'Asignar revisor',
       order: 1,
     },
-    {;
+    {
+      id: 2,
+      header: 'Semana 2 — Matemáticas',
+      type: 'Módulo',
+      status: 'Not Started',
+      target: '2h',
+      limit: '4h',
+      reviewer: 'Asignar revisor',
       order: 2,
     },
-  ],;
+  ],
   ingenieria: [
-    {;
+    {
+      id: 1,
+      header: 'Semana 1 — Lectura',
+      type: 'Módulo',
+      status: 'Not Started',
+      target: '2h',
+      limit: '4h',
+      reviewer: 'Asignar revisor',
+      order: 0,
+    },
+  ],
   humanista: [
-    {;
-      id: 1,;
-      header: 'Semana 1 — Lectura',;
-      type: 'Módulo',;
-      status: 'Not Started',;
-      target: '2h',;
-      limit: '4h',;
-      reviewer: 'Asignar revisor',;
+    {
+      id: 1,
+      header: 'Semana 1 — Lectura',
+      type: 'Módulo',
+      status: 'Not Started',
+      target: '2h',
+      limit: '4h',
+      reviewer: 'Asignar revisor',
       order: 0,
     },
   ],

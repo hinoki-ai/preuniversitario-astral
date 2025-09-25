@@ -2,10 +2,12 @@
   "name": "preuniversitario-astral",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build --no-lint",
     "dev": "next dev",
-    "lint": "next lint",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "start": "next start",
     "deploy": "vercel --prod"
   },
@@ -72,6 +74,7 @@
     "zod": "3.25.67"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
     "@stylelint/postcss-css-in-js": "^0.38.0",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
@@ -79,6 +82,7 @@
     "@types/react-dom": "^18",
     "@types/three": "^0.170.0",
     "eslint": "^9.36.0",
+    "eslint-config-next": "^15.5.4",
     "postcss": "^8.5",
     "stylelint": "^16.24.0",
     "stylelint-config-standard": "^39.0.0",

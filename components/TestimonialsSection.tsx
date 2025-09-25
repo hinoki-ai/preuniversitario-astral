@@ -1,7 +1,9 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Star, Quote } from 'lucide-react';
+import { Quote, Star } from 'lucide-react';
+
 import { ComponentErrorBoundary } from '@/components/ErrorBoundary';
 
 import { Card } from '@/components/ui/card';
@@ -71,13 +73,17 @@ function TestimonialsSectionInternal() {
 
                 <Quote className="w-8 h-8 text-accent/30 mb-4" />
 
-                <p className="text-muted-foreground mb-6 leading-relaxed italic">"{testimonial.content}"</p>
+                <p className="text-muted-foreground mb-6 leading-relaxed italic">
+                  &ldquo;{testimonial.content}&rdquo;
+                </p>
 
                 <div className="flex items-center gap-4">
-                  <img
+                  <Image
                     src={testimonial.image || '/placeholder.svg'}
                     alt={testimonial.name}
-                    className="w-12 h-12 rounded-full object-cover"
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 rounded-full object-cover"
                   />
                   <div>
                     <h4 className="font-semibold text-card-foreground">{testimonial.name}</h4>

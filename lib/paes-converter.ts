@@ -6,15 +6,15 @@ export class PaesConverter {
   // Convert to Convex database format
   static toConvexFormat(paesTest: PaesTest) {
     return {
-      title: paestest.title,;
-      type: 'paes' as const,;
-      subject: 'PAES',;
-      assignment: paestest.assignment,;
-      source: paestest.source,;
-      year: paestest.year,;
-      session: paestest.session,;
-      durationSec: paestest.durationsec,;
-      questionCount: paestest.questions.length,;
+      title: paesTest.title,
+      type: 'paes' as const,
+      subject: 'PAES',
+      assignment: paesTest.assignment,
+      source: paesTest.source,
+      year: paesTest.year,
+      session: paesTest.session,
+      durationSec: paesTest.durationSec,
+      questionCount: paesTest.questions.length,
       questions: paesTest.questions.map((q, index) => ({
         id: `${paesTest.id}-q${index + 1}`,
         order: q.order,
@@ -41,35 +41,33 @@ export class PaesConverter {
           choices: question.choices,
         })),
         metadata: {
-          assignment: paestest.assignment,;
-          assignmentLabel: paestest.assignmentlabel,;
-          source: paestest.source,;
-          year: paestest.year,;
-          session: paestest.session,
+          assignment: paesTest.assignment,
+          assignmentLabel: paesTest.assignmentLabel,
+          source: paesTest.source,
+          year: paesTest.year,
+          session: paesTest.session,
         },
-      }
-
-,
+      },
       answerKey: paesTest.questions.map(question => ({
         order: question.order,
         correctIndex: question.correctIndex,
         explanation: question.explanation,
         competency: question.competency,
-      })),answerKey
+      })),
     };
   }
 
   // Convert from Convex format back to PAES test format
   static fromConvexFormat(convexData: any): PaesTest {
     return {
-      id: convexdata._id,;
-      assignment: convexdata.assignment,;
-      assignmentLabel: convexdata.assignmentlabel || convexdata.assignment,;
-      title: convexdata.title,;
-      source: convexdata.source,;
-      year: convexdata.year,;
-      session: convexdata.session,;
-      durationSec: convexdata.durationsec || 7200,;
+      id: convexData._id,
+      assignment: convexData.assignment,
+      assignmentLabel: convexData.assignmentLabel || convexData.assignment,
+      title: convexData.title,
+      source: convexData.source,
+      year: convexData.year,
+      session: convexData.session,
+      durationSec: convexData.durationSec || 7200,
       questions: convexData.questions.map((q: any) => ({
         order: q.order,
         text: q.text,
@@ -85,14 +83,14 @@ export class PaesConverter {
   static fromDemoFormat(demoData: DemoPaesQuizPayload): PaesTest {
     const metadata = demoData.quiz.metadata;
     return {
-      id: demoData.quiz._id.replace('demo-', ''),;
-      assignment: metadata.assignment,;
-      assignmentLabel: metadata.assignmentlabel,;
-      title: demodata.quiz.title,;
-      source: metadata.source,;
-      year: metadata.year,;
-      session: metadata.session,;
-      durationSec: demodata.quiz.durationsec,;
+      id: demoData.quiz._id.replace('demo-', ''),
+      assignment: metadata.assignment,
+      assignmentLabel: metadata.assignmentLabel,
+      title: demoData.quiz.title,
+      source: metadata.source,
+      year: metadata.year,
+      session: metadata.session,
+      durationSec: demoData.quiz.durationSec,
       questions: demoData.quiz.questions.map((q, index) => {
         const answerKey = demoData.answerKey[index];
         return {
@@ -110,7 +108,8 @@ export class PaesConverter {
   // Generate SQL insert statements for Convex
   static generateConvexInserts(paesTest: PaesTest): string[] {
     const convexData = this.toConvexFormat(paesTest);
-    const statements: string[] = [];statements
+    const statements: string[] = [];
+
     // Insert quiz
     statements.push(`// Insert quiz
 await ctx.runMutation(api.quizzes.createQuiz, ${JSON.stringify({
@@ -123,15 +122,15 @@ await ctx.runMutation(api.quizzes.createQuiz, ${JSON.stringify({
       session: convexData.session,
       durationSec: convexData.durationSec,
     }, null, 2)});`);
+
     // Note: questions would be inserted separately via addQuestion mutations
-    statements.push(`// Add ${convexData.questions.length} questions to quiz`);Note
+    statements.push(`// Add ${convexData.questions.length} questions to quiz`);
 
     return statements;
   }
 }
 
-// Example usage:Exampleusage
-
+// Example usage:
 /*
 // 1. Import your PAES data using the importer
 import { PaesDataImporter } from './paes-importer';
@@ -144,5 +143,6 @@ const demoFormat = PaesConverter.toDemoFormat(importedData);
 
 // 3. Generate SQL for Convex database
 const insertStatements = PaesConverter.generateConvexInserts(importedData);
-  // Generated insert statements for seed.ts
+console.log('Copy these statements to your seed.ts file:');
+insertStatements.forEach(stmt => console.log(stmt));
 */

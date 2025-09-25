@@ -132,7 +132,7 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                 <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                   <div
                     className="h-2 rounded-full bg-blue-500 progress-bar"
-                    // eslint-disable-next-line react/style-prop-object
+                     
                     style={{
                       '--progress-width': `${dashboardData.consistencyScore}%`
                     } as React.CSSProperties}
@@ -250,7 +250,7 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                           subject.avgScore >= 70 ? 'bg-blue-500' :
                           subject.avgScore >= 60 ? 'bg-yellow-500' : 'bg-red-500'
                         }`}
-                        // eslint-disable-next-line react/style-prop-object
+                         
                         style={{
                           '--progress-width': `${subject.avgScore}%`
                         } as React.CSSProperties}
@@ -339,7 +339,7 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                   <div className="w-full bg-gray-200 rounded-full h-3">
                     <div
                       className="h-3 rounded-full bg-gradient-to-r from-blue-500 to-green-500 progress-bar"
-                      // eslint-disable-next-line
+                       
                       style={{
                         '--progress-width': `${Math.min(100, ((dashboardData.weeklyGoal?.completed || 0) / (dashboardData.weeklyGoal?.target || 1)) * 100)}%`
                       } as React.CSSProperties}

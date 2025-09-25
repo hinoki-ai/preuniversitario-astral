@@ -130,7 +130,7 @@ export function YouTubePlayer({
         playerRef.current = null;
       }
     };
-  }, [containerId, onDurationChange, onReady, videoId]);
+  }, [containerId, onDurationChange, onReady, playbackRate, videoId]);
 
   useEffect(() => {
     if (!playerRef.current) return;

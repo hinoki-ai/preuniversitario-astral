@@ -6,6 +6,8 @@ import { useMemo, useState, useEffect, useCallback } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Calendar, Lightbulb, AlertTriangle, CheckCircle, Clock, Circle, Download, Users, Brain, Sparkles, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { api } from '@/convex/_generated/api';
 import { useErrorHandler } from '@/lib/core/error-system';
 
@@ -127,7 +129,30 @@ export default function BasicSchedule({ onPick }: { onPick?: (m: MeetingItem) =>
   }
 
   if (items.length === 0) {
-    return <Card className="p-4">No hay clases programadas por ahora.</Card>;
+    return (
+      <Card className="p-6">
+        <div className="text-center space-y-4">
+          <Calendar className="h-16 w-16 mx-auto text-muted-foreground" />
+          <div className="space-y-2">
+            <h3 className="text-lg font-medium">No hay clases programadas</h3>
+            <p className="text-sm text-muted-foreground">
+              Las clases en vivo se programan regularmente. Revisa pronto para no perderte ninguna sesión.
+            </p>
+          </div>
+          <div className="bg-muted/50 rounded-lg p-4 text-left">
+            <div className="flex items-center gap-2 mb-2">
+              <Lightbulb className="h-4 w-4 text-amber-500" />
+              <h4 className="font-medium">Consejos mientras esperas:</h4>
+            </div>
+            <ul className="text-sm text-muted-foreground space-y-1">
+              <li>• Revisa el material de estudio en la biblioteca</li>
+              <li>• Practica con los exámenes de prueba disponibles</li>
+              <li>• Completa tus objetivos diarios de gamificación</li>
+            </ul>
+          </div>
+        </div>
+      </Card>
+    );
   }
 
   // Show polling status and errors
@@ -140,8 +165,18 @@ export default function BasicSchedule({ onPick }: { onPick?: (m: MeetingItem) =>
         <Card className="p-3">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
-              <Badge variant={errorCount > 0 ? 'destructive' : 'outline'}>
-                {errorCount > 0 ? `⚠️ Errores: ${errorCount}` : '✅ Actualizaciones en vivo'}
+              <Badge variant={errorCount > 0 ? 'destructive' : 'outline'} className="flex items-center gap-1">
+                {errorCount > 0 ? (
+                  <>
+                    <AlertTriangle className="h-3 w-3" />
+                    Errores: {errorCount}
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="h-3 w-3" />
+                    Actualizaciones en vivo
+                  </>
+                )}
               </Badge>
               <span className="text-muted-foreground">
                 Última actualización: {new Date(lastPollTime).toLocaleTimeString()}
@@ -163,100 +198,250 @@ export default function BasicSchedule({ onPick }: { onPick?: (m: MeetingItem) =>
         </Card>
       )}
 
-      {items.map((m: MeetingItem) => {
+      {items.map((m: MeetingItem, index: number) => {
         const dt = new Date(m.startTime * 1000);
         const canJoin = !!m.meetingNumber && !!m.passcode;
         const now = Math.floor(Date.now() / 1000);
         const isActive = now >= m.startTime && now <= (m.startTime + 3600);
         const isUpcoming = now < m.startTime;
         const isPast = now > (m.startTime + 3600);
+        const timeUntilStart = m.startTime - now;
+        const isRecommended = index === 0 && isUpcoming && timeUntilStart < 3600; // Recommend next class if within 1 hour
 
         const meetingStatus = meetingStatuses[m._id];
 
         return (
-          <Card key={m._id} className={`p-4 flex flex-col gap-3 ${isActive ? 'border-green-500 bg-green-50' : ''}`}>
-            <div className="flex items-center justify-between gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <div className="font-medium">{m.title}</div>
-                  <Badge variant={isActive ? 'default' : isUpcoming ? 'secondary' : 'outline'}>
-                    {isActive ? '🔴 EN VIVO' : isUpcoming ? '⏰ Próxima' : '✅ Finalizada'}
+          <motion.div
+            key={m._id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+          >
+            <Card className={`relative p-6 flex flex-col gap-4 border-0 shadow-lg hover:shadow-xl transition-all duration-300 ${
+              isActive
+                ? 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200/50'
+                : isRecommended
+                ? 'bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border-blue-200/50 ring-2 ring-blue-200/50'
+                : 'bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50'
+            } backdrop-blur-sm`}>
+              {/* AI Recommendation Badge */}
+              {isRecommended && (
+                <div className="absolute -top-3 left-6">
+                  <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 text-white border-0 shadow-lg">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    Recomendado por IA
                   </Badge>
                 </div>
-                <div className="text-sm text-muted-foreground">{dt.toLocaleString()}</div>
-                {isActive && (
-                  <div className="text-xs text-green-600 font-medium">
-                    ¡La clase está en vivo! Únete ahora.
+              )}
+
+              <div className="space-y-3 flex-1">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg">
+                      <Calendar className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-lg">{m.title}</div>
+                      <div className="text-sm text-muted-foreground flex items-center gap-2">
+                        <Clock className="h-3 w-3" />
+                        {dt.toLocaleString()}
+                      </div>
+                    </div>
                   </div>
+                </div>
+
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge variant={isActive ? 'default' : isUpcoming ? 'secondary' : 'outline'} className={`flex items-center gap-1 ${
+                    isActive ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white border-0 animate-pulse' : ''
+                  }`}>
+                    {isActive ? (
+                      <>
+                        <Circle className="h-2 w-2 fill-current animate-pulse" />
+                        EN VIVO
+                      </>
+                    ) : isUpcoming ? (
+                      <>
+                        <Clock className="h-3 w-3" />
+                        Próxima
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle className="h-3 w-3" />
+                        Finalizada
+                      </>
+                    )}
+                  </Badge>
+
+                  {isRecommended && (
+                    <Badge variant="outline" className="border-blue-200 text-blue-700 bg-blue-50 dark:bg-blue-950/20">
+                      <Brain className="h-3 w-3 mr-1" />
+                      Optimizado
+                    </Badge>
+                  )}
+
+                  {canJoin && (
+                    <Badge variant="outline" className="border-green-200 text-green-700 bg-green-50 dark:bg-green-950/20">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      Listo para unirse
+                    </Badge>
+                  )}
+                </div>
+
+                {isActive && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-200/50 rounded-lg p-3"
+                  >
+                    <div className="flex items-center gap-2 text-sm text-green-700 dark:text-green-300">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                      <span className="font-medium">¡La clase está en vivo!</span>
+                      <span>Únete ahora para experiencia óptima</span>
+                    </div>
+                  </motion.div>
+                )}
+
+                {isRecommended && !isActive && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-200/50 rounded-lg p-3"
+                  >
+                    <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-300">
+                      <Brain className="h-4 w-4" />
+                      <span className="font-medium">Recomendación IA:</span>
+                      <span>Esta es tu próxima clase óptima basada en tu progreso</span>
+                    </div>
+                  </motion.div>
                 )}
               </div>
-              {onPick && (
-                <Button
-                  variant={canJoin && isActive ? 'default' : 'outline'}
-                  disabled={!canJoin}
-                  onClick={() => onPick(m)}
-                  className={isActive ? 'bg-green-600 hover:bg-green-700' : ''}
-                >
-                  {canJoin ? (isActive ? '🔴 Unirse ahora' : 'Usar en el formulario') : 'Solo para iluminados'}
-                </Button>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-muted-foreground">
-                RSVP: {m.myRsvp ?? '—'}
-              </Badge>
-              {meetingStatus && (
-                <Badge variant="outline" className="text-muted-foreground">
-                  Confirmados: {meetingStatus.rsvpCounts?.yes || 0}
-                </Badge>
-              )}
-              <Button size="sm" variant="outline" onClick={() => downloadIcs(m)}>
-                📅 Calendario
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={async () => {
-                  try {
-                    await wrapAsync(
-                      () =>
-                        rsvp({
-                          meetingId: m._id,
-                          status: m.myRsvp === 'yes' ? 'maybe' : 'yes',
-                        }),
-                      'BasicSchedule.rsvp'
-                    );
-                  } catch (error) {
-                    // Error already handled by wrapAsync
-                  }
-                }}
-              >
-                {m.myRsvp === 'yes' ? 'Cambiar a "quizás"' : '✅ Confirmar asistencia'}
-              </Button>
-            </div>
-            {m.attachments && m.attachments.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {m.attachments.map((a: { name: string; url: string }, idx: number) => (
-                  <a
-                    key={idx}
-                    href={a.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm underline"
+              <div className="flex flex-col gap-3">
+                {/* Primary Action Button */}
+                {onPick && (
+                  <Button
+                    variant={canJoin && isActive ? 'default' : canJoin ? 'outline' : 'secondary'}
+                    disabled={!canJoin}
+                    onClick={() => onPick(m)}
+                    className={`transition-all duration-300 ${
+                      isActive
+                        ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white border-0 shadow-lg hover:shadow-xl'
+                        : canJoin
+                        ? 'hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 border-blue-200'
+                        : ''
+                    }`}
+                    size="lg"
                   >
-                    {a.name}
-                  </a>
-                ))}
+                    <div className="flex items-center gap-2">
+                      {canJoin ? (
+                        isActive ? (
+                          <>
+                            <motion.div
+                              animate={{ scale: [1, 1.2, 1] }}
+                              transition={{ duration: 1, repeat: Infinity }}
+                            >
+                              <Zap className="h-4 w-4" />
+                            </motion.div>
+                            Unirse en Vivo
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="h-4 w-4" />
+                            Autocompletar
+                          </>
+                        )
+                      ) : (
+                        <>
+                          <Lightbulb className="h-4 w-4" />
+                          Solo para iluminados
+                        </>
+                      )}
+                    </div>
+                  </Button>
+                )}
+
+                {/* Secondary Actions */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Badge variant="outline" className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-gray-200">
+                    <Users className="h-3 w-3 mr-1" />
+                    RSVP: {m.myRsvp ?? 'Pendiente'}
+                  </Badge>
+
+                  {meetingStatus && (
+                    <Badge variant="outline" className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 text-green-700">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      {meetingStatus.rsvpCounts?.yes || 0} confirmados
+                    </Badge>
+                  )}
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => downloadIcs(m)}
+                    className="hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 border-blue-200 transition-colors"
+                  >
+                    <Download className="h-3 w-3 mr-1" />
+                    iCal
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant={m.myRsvp === 'yes' ? 'default' : 'outline'}
+                    onClick={async () => {
+                      try {
+                        await wrapAsync(
+                          () =>
+                            rsvp({
+                              meetingId: m._id,
+                              status: m.myRsvp === 'yes' ? 'maybe' : 'yes',
+                            }),
+                          'BasicSchedule.rsvp'
+                        );
+                      } catch (error) {
+                        // Error already handled by wrapAsync
+                      }
+                    }}
+                    className={`transition-all duration-300 ${
+                      m.myRsvp === 'yes'
+                        ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white border-0'
+                        : 'hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 border-green-200'
+                    }`}
+                  >
+                    {m.myRsvp === 'yes' ? '✓ Confirmado' : 'Confirmar Asistencia'}
+                  </Button>
+                </div>
               </div>
-            )}
-          </Card>
+              {m.attachments && m.attachments.length > 0 && (
+                <div className="border-t border-gray-200/50 dark:border-gray-700/50 pt-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lightbulb className="h-4 w-4 text-amber-500" />
+                    <span className="text-sm font-medium text-muted-foreground">Material de Estudio</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {m.attachments.map((a: { name: string; url: string }, idx: number) => (
+                      <a
+                        key={idx}
+                        href={a.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border border-blue-200/50 rounded-lg text-sm hover:shadow-md transition-shadow"
+                      >
+                        <Download className="h-3 w-3" />
+                        {a.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </Card>
+          </motion.div>
         );
       })}
     </div>
   );
 }
 
-function downloadics(m: meetingitem) {
+function downloadIcs(m: MeetingItem) {
   const dtStart = new Date(m.startTime * 1000);
   const dtEnd = new Date((m.startTime + 60 * 60) * 1000); // default 1h
   const format = (d: Date) => {

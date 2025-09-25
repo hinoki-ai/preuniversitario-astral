@@ -1,10 +1,10 @@
 'use client';
 
-import react, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
-const auroraborealisshader = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+const AuroraBorealisShader = () => {
+  const containerRef = useRef(null);
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
 
   useEffect(() => {
@@ -109,7 +109,7 @@ const auroraborealisshader = () => {
     onResize(); // initial sizing
 
     // 5) Mouse tracking
-    const onMouseMove = (e: MouseEvent) => {
+    const onMouseMove = e => {
       const x = e.clientX;
       const y = container.clientHeight - e.clientY; // flip Y for shader coords
       uniforms.iMouse.value.set(x, y);
@@ -147,12 +147,11 @@ const auroraborealisshader = () => {
       />
       {/* Optional cursor light */}
       <div
-        className="fixed top-0 left-0 w-5 h-5 rounded-full bg-white/50 pointer-events-none -z-10 cursor-light cursor-follower"
-        data-cursor-x={mousePos.x}
-        data-cursor-y={mousePos.y}
+        className="fixed top-0 left-0 w-5 h-5 rounded-full bg-white/50 pointer-events-none -z-10 cursor-light"
+        style={{ transform: `translate(${mousePos.x}px, ${mousePos.y}px)` }}
       />
     </>
   );
-}
+};
 
 export default AuroraBorealisShader;

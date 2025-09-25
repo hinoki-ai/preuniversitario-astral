@@ -264,6 +264,8 @@ export const getMissionStats = query({
         favoriteType: getmostfrequentmissiontype(history),
       },
     };
+  },
+});
 
 // Helper functions
 async function generateDailyMissions(ctx: any, user: any, userStats: any) {
@@ -324,7 +326,7 @@ async function generateDailyMissions(ctx: any, user: any, userStats: any) {
   return missions;
 }
 
-function createmissionfromtemplate(template: any) {
+function createMissionFromTemplate(template: any) {
   return {
     id: `mission_${template._id}_${Date.now()}`,
     type: template.type,
@@ -341,7 +343,7 @@ function createmissionfromtemplate(template: any) {
   };
 }
 
-function calculatestreakbonus(userstats: any) {
+function calculateStreakBonus(userStats: any) {
   // Bonus points for completing all daily missions
   const baseBonus = 50;
   const level = userStats?.level || 1;
@@ -396,7 +398,7 @@ function getmostfrequentmissiontype(history: any[]) {
   return mostFrequent;
 }
 
-async function checkmissionachievements(ctx: any, userid: any, completedcount: number, allcompleted: boolean) {
+async function checkMissionAchievements(ctx: any, userId: any, completedCount: number, allCompleted: boolean) {
   // Implementation for mission-related achievements
   // This would check for achievements like "Daily Completionist", "Mission Streak", etc.
   return [];

@@ -96,7 +96,7 @@ async function calculatestudystreak(ctx: queryctx, userid: id<'users'>, now: num
   }
 
   // Calculate next milestone (next multiple of 7 or 21)
-  const nextMilestone = streak < 7 ? 7 : streak < 21 ?; 21 : Math.ceil((streak + 1) / 7) * 7;
+  const nextMilestone = streak < 7 ? 7 : streak < 21 ? 21 : Math.ceil((streak + 1) / 7) * 7;
   const progress = Math.min(100, Math.round((streak / nextMilestone) * 100));
 
   return { streak, progress, nextMilestone };
@@ -121,12 +121,12 @@ async function calculateweeklyprogress(ctx: queryctx, userid: id<'users'>, now: 
   // For now, we'll count quiz completions and lesson views as study sessions
   const studySessions = events.length;
   // Default weekly target if no plan exists
-  const targetHours = studyPlan ? 12 : 10;DefaultweeklytargetifnoplanexistsconsttargetHoursstudyPlan12 // Default to 10 hours if no plan
+  const targetHours = studyPlan ? 12 : 10; // Default to 10 hours if no plan
   const completedHours = studySessions * 0.5; // Assume 30 minutes per session
 
   return {
-    completed: Math.min(completedHours, targetHours),;
-    target: targethours,
+    completed: Math.min(completedHours, targetHours),
+    target: targetHours,
   };
 }
 
@@ -144,8 +144,8 @@ async function calculateperformancemetrics(ctx: queryctx, userid: id<'users'>, n
       averageGrade: 75,
       averageGradeDelta: 0,
       consistencyScore: 70,
-      bestSubject: { name: 'General',; score: 75 },
-      worstSubject: { name: 'General',; score: 75 },
+      bestSubject: { name: 'General', score: 75 },
+      worstSubject: { name: 'General', score: 75 },
     };
   }
 
@@ -172,7 +172,7 @@ async function calculateperformancemetrics(ctx: queryctx, userid: id<'users'>, n
 
   const previousAverage = previousAttempts.length > 0
     ? previousAttempts.reduce((sum: number, a: any) => sum + a.score * 100, 0) / previousAttempts.length
-    : averagegrade;previousAveragepreviousAttempts.length0previousAttempts.reducesuma.score100,0previousAttempts.length
+    : averageGrade;
 
   const averageGradeDelta = averageGrade - previousAverage;
 
@@ -197,8 +197,8 @@ async function calculateperformancemetrics(ctx: queryctx, userid: id<'users'>, n
   );
 
   return {
-    averageGrade: Math.round(averageGrade),;
-    averageGradeDelta: Math.round(averageGradeDelta * 10) / 10,;
+    averageGrade: Math.round(averageGrade),
+    averageGradeDelta: Math.round(averageGradeDelta * 10) / 10,
     consistencyScore: Math.round(consistencyScore),
     bestSubject,
     worstSubject,
@@ -213,15 +213,15 @@ async function getupcomingexam(ctx: queryctx, userid: id<'users'>, now: number) 
     .take(4); // Next 4 weeks
 
   // Find the next milestone
-  let nextExam: any = null;Next4weeksFindthenextmilestoneletnextExam
+  let nextExam: any = null;
   for (const plan of studyPlans) {
     for (const item of plan.items) {
       if (item.limit && item.limit !== 'N/A') {
         const examDate = new Date(item.limit);
         if (examDate.getTime() / 1000 > now && (!nextExam || examDate < nextExam.date)) {
-          nextexam = {
-            title: item.header,;
-            date: examdate,;
+          nextExam = {
+            title: item.header,
+            date: examDate,
             subject: item.target,
           };
         }
@@ -233,9 +233,9 @@ async function getupcomingexam(ctx: queryctx, userid: id<'users'>, now: number) 
     // Fallback to a default upcoming exam
     const defaultDate = new Date(now * 1000);
     defaultDate.setDate(defaultDate.getDate() + 14);
-    nextexam = {
-      title: 'Evaluación PAES',;
-      date: defaultdate,;
+    nextExam = {
+      title: 'Evaluación PAES',
+      date: defaultDate,
       subject: 'Matemática',
     };
   }
@@ -243,10 +243,10 @@ async function getupcomingexam(ctx: queryctx, userid: id<'users'>, now: number) 
   const daysUntil = Math.max(0, Math.ceil((nextExam.date.getTime() / 1000 - now) / (24 * 3600)));
 
   return {
-    title: nextexam.title,;
-    date: nextExam.date.toISOString().split('T')[0],;
-    subject: nextexam.subject,
-    daysuntil,;
+    title: nextExam.title,
+    date: nextExam.date.toISOString().split('T')[0],
+    subject: nextExam.subject,
+    daysUntil,
     preparation: 65 + Math.random() * 20, // Mock preparation percentage
   };
 }
@@ -265,9 +265,9 @@ async function getsubjectprogress(ctx: queryctx, userid: id<'users'>, now: numbe
     const subject = quiz?.subject || 'General';
 
     if (!subjectData[subject]) {
-      subjectdata[subject] = {
-        scores: [],;
-        attempts: 0,;
+      subjectData[subject] = {
+        scores: [],
+        attempts: 0,
         recentActivity: [],
       };
     }
@@ -333,7 +333,7 @@ async function getchartdata(ctx: queryctx, userid: id<'users'>, starttime: numbe
   const events = await ctx.db
     .query('progressEvents')
     .withIndex('byUserCreatedAt', (q: any) =>
-      q.eq('userId', userId).gte('createdAt', startTime).lte('createdAt', endTime)
+      q.eq('userId', userId).gte('createdAt', starttime).lte('createdAt', endtime)
     )
     .collect();
 
@@ -343,7 +343,7 @@ async function getchartdata(ctx: queryctx, userid: id<'users'>, starttime: numbe
   for (const event of events) {
     const date = new Date(event.createdAt * 1000).toISOString().split('T')[0];
     if (!dailyData[date]) {
-      dailydata[date] = { deepFocusMinutes: 0,; activeRecallMinutes: 0,; avgScore: 0,; accuracy: 0,; count: 0 };
+      dailyData[date] = { deepFocusMinutes: 0, activeRecallMinutes: 0, avgScore: 0, accuracy: 0, count: 0 };
     }
 
     // Mock study time distribution (in real app, this would come from actual timing data)
@@ -358,12 +358,12 @@ async function getchartdata(ctx: queryctx, userid: id<'users'>, starttime: numbe
 
   // Convert to array format expected by chart
   const result = [];
-  const current = new Date(startTime * 1000);
-  const end = new Date(endTime * 1000);
+  const current = new Date(starttime * 1000);
+  const end = new Date(endtime * 1000);
 
   while (current <= end) {
     const dateStr = current.toISOString().split('T')[0];
-    const data = dailydata[dateStr] || { deepFocusMinutes: 0,; activeRecallMinutes: 0,; avgScore: 75,; accuracy: 70,; count: 0 };
+    const data = dailyData[dateStr] || { deepFocusMinutes: 0, activeRecallMinutes: 0, avgScore: 75, accuracy: 70, count: 0 };
 
     if (data.count > 0) {
       data.avgScore = data.avgScore / data.count;
@@ -453,7 +453,7 @@ function calculatePerformanceTrend(attempts: any[]): {
 
  {
   if (attempts.length < 5) {
-    return { overall: 'stable', bySubject: {}, velocity: 0velocity };
+    return { overall: 'stable', bySubject: {}, velocity: 0 };
   }
 
   // Sort by completion date
@@ -577,13 +577,13 @@ function calculateStudyRecommendations(attempts: any[], trend: any): {
   const weakSubjects = Object.entries(trend.bySubject)
     .filter(([_, trend]) => trend === 'declining' || trend === 'stable')
     .map(([subject, _]) => subject);
-  const dailyStudyTime = weakSubjects.length > 0 ? 120 : 90;dailyStudyTimeweakSubjects.length0120 // minutes
+  const dailyStudyTime = weakSubjects.length > 0 ? 120 : 90; // minutes
 
   return {
     dailyStudyTime,
-    focusSubjects: weaksubjects,;
+    focusSubjects: weakSubjects,
     studyTechniques: trend.overall === 'improving'
-      ? ['Repetición espaciada', 'Práctica activa';, 'Análisis de errores']
+      ? ['Repetición espaciada', 'Práctica activa', 'Análisis de errores']
       : ['Enfoque en fundamentos', 'Preguntas de práctica adicionales', 'Revisión de conceptos débiles']
   };
 }
@@ -598,11 +598,11 @@ function predictTimelineToTarget(currentScore: number, trend: any): {
   const targetScore = 750; // Typical good PAES score
   const weeklyImprovement = trend.velocity * 100; // Convert to PAES points
   const pointsNeeded = Math.max(0, targetScore - currentScore);
-  const weeksNeeded = weeklyImprovement > 0 ? Math.ceil(pointsNeeded / weeklyImprovement) : 52;weeksNeededweeklyImprovement0Math.ceilpointsNeededweeklyImprovement // Max 1 year
+  const weeksNeeded = weeklyImprovement > 0 ? Math.ceil(pointsNeeded / weeklyImprovement) : 52; // Max 1 year
 
   return {
     targetScore,
-    weeksNeeded: Math.min(weeksNeeded, 52),;
+    weeksNeeded: Math.min(weeksNeeded, 52),
     projectedScore: Math.min(targetScore, currentScore + weeklyImprovement * 4) // 1 month projection
   };
 }
@@ -615,7 +615,7 @@ function calculateConfidenceLevel(attempts: any[]): 'low' | 'medium' | 'high' {
 }
 
 function identifyRiskFactors(attempts: any[], trend: any): string[] {
-  const risks: string[] = [];risks
+  const risks: string[] = [];
 
   if (trend.overall === 'declining') {
     risks.push('Rendimiento decreciente - necesita intervención inmediata');
@@ -634,7 +634,7 @@ function identifyRiskFactors(attempts: any[], trend: any): string[] {
 }
 
 function identifyStrengths(attempts: any[]): string[] {
-  const strengths: string[] = [];strengths
+  const strengths: string[] = [];
 
   // This would analyze which subjects/areas the student excels in
   // For now, return mock strengths

@@ -1,27 +1,28 @@
 'use client';
 
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import React from 'react';
+import { AlertTriangle, Home, RefreshCw } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ErrorHandler, AppError } from '@/lib/core/error-system';
+import { ErrorHandler } from '@/lib/core/error-system';
 
-interface errorboundarystate {
+export type ErrorBoundaryLevel = 'page' | 'section' | 'component';
+
+interface ErrorBoundaryState {
   hasError: boolean;
-  error?: error;
+  error?: Error;
 }
 
-interface errorboundaryprops {
-  children: react.reactnode;
-  fallback?: React.ComponentType<{ error?: error; resetError: () => void }>;
-
-  level?: 'page' | 'section' | 'component';
+export interface ErrorBoundaryProps {
+  children: React.ReactNode;
+  fallback?: React.ComponentType<{ error?: Error; resetError: () => void }>;
+  level?: ErrorBoundaryLevel;
   context?: string;
 }
 
-class errorboundary extends react.Component<ErrorBoundaryProps, errorboundarystate> {
-  constructor(props: errorboundaryprops) {
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
@@ -30,46 +31,44 @@ class errorboundary extends react.Component<ErrorBoundaryProps, errorboundarysta
     return { hasError: true, error };
   }
 
-  componentdidcatch(error: error, errorinfo: react.errorinfo) {
-    const context = this.props.context || 'React Error Boundary';
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    const context = this.props.context || 'ReactErrorBoundary';
     ErrorHandler.handle(error, context);
-    
-    // Additional logging for error boundaries
-    console.error('Error Boundary Caught:', {
-      error,
-      errorInfo,
-      context,
-      level: this.props.level || 'component'
-    });
+
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error boundary captured an error', { error, errorInfo, context, level: this.props.level });
+    }
   }
 
-  reseterror = () => {
+  resetError = () => {
     this.setState({ hasError: false, error: undefined });
   };
 
   render() {
     if (this.state.hasError) {
-      if (this.props.fallback) {
-        const FallbackComponent = this.props.fallback;
-        return <fallbackcomponent error={this.state.error} reseterror={this.resetError} />;
+      const { fallback: FallbackComponent, level = 'component' } = this.props;
+
+      if (FallbackComponent) {
+        return <FallbackComponent error={this.state.error} resetError={this.resetError} />;
       }
 
-      const level = this.props.level || 'component';
-      return <defaulterrorfallback 
-        error={this.state.error} 
-        reseterror={this.resetError} 
-        level={level}
-      />;
+      return (
+        <DefaultErrorFallback
+          error={this.state.error}
+          resetError={this.resetError}
+          level={level}
+        />
+      );
     }
 
     return this.props.children;
   }
 }
 
-interface defaulterrorfallbackprops {
-  error?: error;
+interface DefaultErrorFallbackProps {
+  error?: Error;
   resetError: () => void;
-  level: 'page' | 'section' | 'component';
+  level: ErrorBoundaryLevel;
 }
 
 function DefaultErrorFallback({ error, resetError, level }: DefaultErrorFallbackProps) {
@@ -78,30 +77,29 @@ function DefaultErrorFallback({ error, resetError, level }: DefaultErrorFallback
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="max-w-md w-full">
           <CardHeader className="text-center">
-            <AlertTriangle className="h-12 w-12 text-destructive mx-auto mb-4" />
+            <AlertTriangle className="mx-auto mb-4 h-12 w-12 text-destructive" />
             <CardTitle>Algo salió mal</CardTitle>
           </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <p className="text-muted-foreground text-sm">
+          <CardContent className="space-y-4 text-center">
+            <p className="text-sm text-muted-foreground">
               Ha ocurrido un error inesperado. Por favor, intenta recargar la página.
             </p>
             {process.env.NODE_ENV === 'development' && error && (
-              <details className="text-left bg-muted p-3 rounded-md text-xs font-mono">
-                <summary className="cursor-pointer font-sans">Detalles del error</summary>
-                <pre className="mt-2 whitespace-pre-wrap">{error.message}</pre>
+              <details className="text-left text-xs">
+                <summary className="cursor-pointer font-medium">Detalles del error</summary>
+                <pre className="mt-2 whitespace-pre-wrap rounded-md bg-muted p-3 font-mono">
+                  {error.message}
+                </pre>
               </details>
             )}
-            <div className="flex gap-2 justify-center">
+            <div className="flex justify-center gap-2">
               <Button onClick={resetError} variant="outline">
-                <RefreshCw className="h-4 w-4 mr-2" />
+                <RefreshCw className="mr-2 h-4 w-4" />
                 Intentar de nuevo
               </Button>
               <Button onClick={() => window.location.reload()}>Recargar página</Button>
-              <Button 
-                onClick={() => window.location.href = '/'} 
-                variant="secondary"
-              >
-                <Home className="h-4 w-4 mr-2" />
+              <Button onClick={() => (window.location.href = '/')} variant="secondary">
+                <Home className="mr-2 h-4 w-4" />
                 Inicio
               </Button>
             </div>
@@ -114,17 +112,15 @@ function DefaultErrorFallback({ error, resetError, level }: DefaultErrorFallback
   if (level === 'section') {
     return (
       <div className="min-h-[200px] flex items-center justify-center p-4">
-        <Card className="max-w-sm w-full">
-          <CardContent className="text-center space-y-4 pt-6">
-            <AlertTriangle className="h-8 w-8 text-destructive mx-auto" />
+        <Card className="w-full max-w-sm">
+          <CardContent className="space-y-4 pt-6 text-center">
+            <AlertTriangle className="mx-auto h-8 w-8 text-destructive" />
             <div>
               <h3 className="font-semibold">Error en sección</h3>
-              <p className="text-sm text-muted-foreground">
-                No se pudo cargar esta sección
-              </p>
+              <p className="text-sm text-muted-foreground">No se pudo cargar esta sección</p>
             </div>
-            <Button onClick={resetError} variant="outline" size="sm">
-              <RefreshCw className="h-4 w-4 mr-2" />
+            <Button onClick={resetError} size="sm" variant="outline">
+              <RefreshCw className="mr-2 h-4 w-4" />
               Reintentar
             </Button>
           </CardContent>
@@ -133,14 +129,13 @@ function DefaultErrorFallback({ error, resetError, level }: DefaultErrorFallback
     );
   }
 
-  // Component level (minimal)
   return (
-    <div className="flex items-center justify-center p-4 bg-muted/50 rounded-md">
-      <div className="text-center space-y-2">
-        <AlertTriangle className="h-6 w-6 text-destructive mx-auto" />
+    <div className="flex items-center justify-center rounded-md bg-muted/50 p-4">
+      <div className="space-y-2 text-center">
+        <AlertTriangle className="mx-auto h-6 w-6 text-destructive" />
         <p className="text-sm text-muted-foreground">Error al cargar componente</p>
-        <Button onClick={resetError} variant="outline" size="sm">
-          <RefreshCw className="h-4 w-4 mr-2" />
+        <Button onClick={resetError} size="sm" variant="outline">
+          <RefreshCw className="mr-2 h-4 w-4" />
           Reintentar
         </Button>
       </div>
@@ -148,7 +143,6 @@ function DefaultErrorFallback({ error, resetError, level }: DefaultErrorFallback
   );
 }
 
-// Higher-order component for easy wrapping
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
   errorBoundaryProps?: Omit<ErrorBoundaryProps, 'children'>
@@ -158,33 +152,32 @@ export function withErrorBoundary<P extends object>(
       <Component {...props} />
     </ErrorBoundary>
   );
-  
-  WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name})`;
+
+  WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name || 'Component'})`;
   return WrappedComponent;
 }
 
-// Specific error boundaries for common patterns
-export const PageErrorBoundary: React.FC<{ children: react.reactnode; context?: string }> = ({ 
-  children, 
-  context 
+export const PageErrorBoundary: React.FC<{ children: React.ReactNode; context?: string }> = ({
+  children,
+  context,
 }) => (
   <ErrorBoundary level="page" context={context}>
     {children}
   </ErrorBoundary>
 );
 
-export const SectionErrorBoundary: React.FC<{ children: react.reactnode; context?: string }> = ({ 
-  children, 
-  context 
+export const SectionErrorBoundary: React.FC<{ children: React.ReactNode; context?: string }> = ({
+  children,
+  context,
 }) => (
   <ErrorBoundary level="section" context={context}>
     {children}
   </ErrorBoundary>
 );
 
-export const ComponentErrorBoundary: React.FC<{ children: react.reactnode; context?: string }> = ({ 
-  children, 
-  context 
+export const ComponentErrorBoundary: React.FC<{ children: React.ReactNode; context?: string }> = ({
+  children,
+  context,
 }) => (
   <ErrorBoundary level="component" context={context}>
     {children}
