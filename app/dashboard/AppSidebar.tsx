@@ -26,7 +26,6 @@ import { NavMain } from '@/app/dashboard/NavMain';
 import { NavSecondary } from '@/app/dashboard/NavSecondary';
 import { NavUser } from '@/app/dashboard/NavUser';
 import { Badge } from '@/components/ui/badge';
-import { EnergyOrb } from '@/components/EnergyOrb';
 import {
   Sidebar,
   SidebarContent,
@@ -238,7 +237,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:!p-3 hover:bg-sidebar-accent">
               <Link href="/" className="flex items-center gap-3">
-                <EnergyOrb size="xl" className="shrink-0" variant="default" userId="astral-brand" />
                 <div className="flex flex-col items-start">
                   <span className="text-base font-semibold">Preuniversitario Astral</span>
                   <div className="flex items-center gap-2">

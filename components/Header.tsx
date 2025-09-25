@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { ModeToggle } from '@/components/ModeToggle';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,6 +48,9 @@ export function Header() {
               <a href="#contact" className="text-deep-blue hover:text-accent transition-colors">
                 Contacto
               </a>
+              <div className="flex items-center gap-2">
+                <ModeToggle />
+              </div>
             </nav>
 
             <Button
@@ -92,6 +96,9 @@ export function Header() {
             <a href="#contact" className="text-deep-blue hover:text-accent transition-colors">
               Contacto
             </a>
+            <div className="flex items-center gap-2">
+              <ModeToggle />
+            </div>
             {!isSignedIn ? (
               <>
                 <SignInButton mode="modal">
