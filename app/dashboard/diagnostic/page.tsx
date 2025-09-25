@@ -291,7 +291,7 @@ export default function DiagnosticPage() {
         <CardContent>
           <RadioGroup
             value={answers[currentQuestion.id]?.toString()}
-            onValueChange={value => handleAnswer(currentQuestion.id, Number.parseInt(value, 10))}
+            onValueChange={(value: string) => handleAnswer(currentQuestion.id, Number.parseInt(value, 10))}
             className="space-y-3"
           >
             {currentQuestion.options.map((option, index) => (
