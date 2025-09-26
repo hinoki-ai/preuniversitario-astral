@@ -9,6 +9,7 @@ import { GlobalErrorHandler } from '@/components/GlobalErrorHandler';
 import { PageErrorBoundary } from '@/components/ErrorBoundary';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/toaster';
+import { env } from '@/lib/env';
 
 import './globals.css';
 
@@ -73,7 +74,7 @@ export default function RootLayout({
               <Toaster />
             </ThemeProvider>
           </PageErrorBoundary>
-          <Analytics />
+          {env.NEXT_PUBLIC_VERCEL_ANALYTICS_ID && <Analytics />}
         </body>
       </html>
     </ClerkProvider>
