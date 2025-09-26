@@ -73,7 +73,7 @@ function ZoomJoinClientInternal({
     }
   };
 
-  const joinmeeting = async () => {
+  const joinMeeting = async () => {
     setError('');
     if (isDemoMode) {
       // In demo mode, just show the video player

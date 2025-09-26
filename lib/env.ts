@@ -78,11 +78,11 @@ export const env = validateEnv();
 export function isFeatureEnabled(feature: 'zoom' | 'mockExams'): boolean {
   switch (feature) {
     case 'zoom':
-      return env.next_public_enable_zoom === true && 
-             !!env.next_public_zoom_meeting_sdk_key && 
-             !!env.zoom_meeting_sdk_secret;
+      return env.NEXT_PUBLIC_ENABLE_ZOOM === true &&
+             !!env.NEXT_PUBLIC_ZOOM_MEETING_SDK_KEY &&
+             !!env.ZOOM_MEETING_SDK_SECRET;
     case 'mockExams':
-      return env.next_public_enable_mock_exams === true;
+      return env.NEXT_PUBLIC_ENABLE_MOCK_EXAMS === true;
     default:
       return false;
   }
