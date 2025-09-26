@@ -25,7 +25,7 @@ export function withStandardErrorHandling<P extends object>(
     // Wrap the component render with error handling
     const renderComponent = React.useCallback(() => {
       return safeExecute(
-        () => React.createElement(Component, { ...props, ...(ref && { ref }) }),
+        () => React.createElement(Component as any, { ...props, ...(ref && { ref }) }),
         `${context}.render`,
         fallbackValue
       );

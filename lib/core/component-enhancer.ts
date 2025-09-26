@@ -63,20 +63,20 @@ const ZOOM_COMPONENTS = [
  * Apply error handling to a component dynamically
  */
 export function applyErrorHandling<T extends React.ComponentType<any>>(
-  Component: T, 
+  Component: T,
   componentName: string,
   options: {
     showFallback?: boolean;
     customFallback?: React.ReactNode;
     logErrors?: boolean;
   } = {}
-): T {
+): React.ComponentType<any> {
   return withMinimalErrorHandling(Component, {
     componentName,
     showFallback: true,
     logErrors: true,
     ...options
-  }) as T;
+  });
 }
 
 /**

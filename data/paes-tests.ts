@@ -200,9 +200,8 @@ export function createPaesTestData(
   };
 }
 
-function createPlaceholderQuestions(seed: PlaceholderSeed, assignmentLabel: string): PaesQuestion[] {
-  // Real Chilean PAES questions based on official DEMRE format
-  const realQuestions: Record<string, PaesQuestion[]> = {
+// Real Chilean PAES questions based on official DEMRE format
+let realQuestions: Record<string, PaesQuestion[]> = {
     'matematica_m1': [
       // Basic Operations and Properties
       {
@@ -231,6 +230,7 @@ function createPlaceholderQuestions(seed: PlaceholderSeed, assignmentLabel: stri
     ]
   };
 
+function createPlaceholderQuestions(seed: PlaceholderSeed, assignmentLabel: string): PaesQuestion[] {
   // Return questions for the specific assignment, or generic ones if not found
   const assignmentKey = seed.assignment;
   if (realQuestions[assignmentKey]) {

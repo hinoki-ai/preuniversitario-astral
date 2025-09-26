@@ -742,12 +742,12 @@ export const saveDiagnosticResults = mutation({
       });
     }
 
-    await ctx.db.patch(userStats._id, {
+    await ctx.db.patch(userStats!._id, {
       weakSubjects,
       strongSubjects,
       achievements: [...currentAchievements, ...newAchievements],
-      totalPoints: (userStats.totalPoints || 0) + newAchievements.reduce((sum, a) => sum + a.points, 0),
-      experiencePoints: (userStats.experiencePoints || 0) + newAchievements.reduce((sum, a) => sum + a.points, 0),
+      totalPoints: (userStats!.totalPoints || 0) + newAchievements.reduce((sum, a) => sum + a.points, 0),
+      experiencePoints: (userStats!.experiencePoints || 0) + newAchievements.reduce((sum, a) => sum + a.points, 0),
       updatedAt: now,
     });
 

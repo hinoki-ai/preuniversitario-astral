@@ -16,11 +16,11 @@ const enhancedComponents = new Map<string, React.ComponentType<any>>();
  * Decorator to automatically add error handling to functional components
  */
 export function ErrorSafe<P extends object>(
-  target: React.ComponentType<P>,
+  TargetComponent: React.ComponentType<P>,
   context: { kind: string; name: string }
 ): React.ComponentType<P> {
-  const componentName = context.name || target.displayName || target.name || 'Component';
-  
+  const componentName = context.name || TargetComponent.displayName || TargetComponent.name || 'Component';
+
   if (enhancedComponents.has(componentName)) {
     return enhancedComponents.get(componentName)!;
   }
@@ -31,7 +31,7 @@ export function ErrorSafe<P extends object>(
     // Wrap the original component with error handling
     const wrappedRender = React.useMemo(() => {
       return safeSyncCall(
-        () => <target {...props} ref={ref} />,
+        () => React.createElement(TargetComponent, { ...props, ref } as any),
         'render',
         <div className="text-sm text-muted-foreground p-4 text-center">
           Component failed to load: {componentName}
@@ -48,8 +48,8 @@ export function ErrorSafe<P extends object>(
 
   EnhancedComponent.displayName = `ErrorSafe(${componentName})`;
   enhancedComponents.set(componentName, EnhancedComponent);
-  
-  return EnhancedComponent;
+
+  return EnhancedComponent as unknown as React.ComponentType<P>;
 }
 
 /**
@@ -98,7 +98,7 @@ export function withMinimalErrorHandling<P extends object>(
     );
 
     const renderedComponent = safeSyncCall(
-      () => <Component {...props} ref={ref} />,
+      () => React.createElement(Component, { ...props, ref } as any),
       'render',
       fallback
     );
@@ -119,14 +119,14 @@ export function withMinimalErrorHandling<P extends object>(
  */
 export function enhanceModule<T extends Record<string, any>>(
   moduleExports: T,
-  options: { 
+  options: {
     exclude?: string[];
     include?: string[];
     prefix?: string;
   } = {}
-): T {
+): Record<string, any> {
   const { exclude = [], include = [], prefix = '' } = options;
-  const enhanced = { ...moduleExports };
+  const enhanced: Record<string, any> = { ...moduleExports };
 
   Object.entries(moduleExports).forEach(([exportName, exportValue]) => {
     // Only enhance React components

@@ -15,7 +15,7 @@ export function withErrorHandling<P extends object>(
 
     return (
       <ComponentErrorBoundary context={componentName}>
-        {React.createElement(WrappedComponent, { ...props, ...(ref && { ref }) })}
+        {React.createElement(WrappedComponent as any, { ...props, ...(ref && { ref }) })}
       </ComponentErrorBoundary>
     );
   });
