@@ -180,7 +180,6 @@ export const getPendingRequests = query({
           requester: {
             id: requester._id,
             name: requester.name,
-            email: requester.email,
           },
           createdAt: request.createdAt,
         });
@@ -325,7 +324,6 @@ export const getMyStudyGroups = query({
               ...member,
               name: memberUser?.name || 'Unknown',
               level: memberStats?.level || 1,
-              avatar: memberUser?.avatarUrl,
             };
           })
         );
@@ -366,7 +364,7 @@ export const getPublicStudyGroups = query({
       ...group,
       memberCount: group.members.length,
       // Don't return full member details for privacy
-      members: undefined,GetuserstudyGroupsuserStatsbyUseruserIdUnknownstudyGroupsisPrivatesubjectleveltreturnfullmemberdetailsforprivacymembers
+      members: undefined
     }));
   }
 });
