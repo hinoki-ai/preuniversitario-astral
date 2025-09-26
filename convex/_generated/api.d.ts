@@ -26,6 +26,7 @@ import type * as progress from "../progress.js";
 import type * as quizzes from "../quizzes.js";
 import type * as rewardsSystem from "../rewardsSystem.js";
 import type * as seed from "../seed.js";
+import type * as shared from "../shared.js";
 import type * as socialFeatures from "../socialFeatures.js";
 import type * as spacedRepetition from "../spacedRepetition.js";
 import type * as studyPlan from "../studyPlan.js";
@@ -54,6 +55,7 @@ declare const fullApi: ApiFromModules<{
   quizzes: typeof quizzes;
   rewardsSystem: typeof rewardsSystem;
   seed: typeof seed;
+  shared: typeof shared;
   socialFeatures: typeof socialFeatures;
   spacedRepetition: typeof spacedRepetition;
   studyPlan: typeof studyPlan;

@@ -1,28 +1,6 @@
 import { v } from 'convex/values';
 import { mutation, query } from './_generated/server';
-
-async function getUser(ctx: any) {
-  const identity = await ctx.auth.getUserIdentity();
-  if (!identity) {
-    const demoUser = await ctx.db
-      .query('users')
-      .withIndex('byExternalId', (q: any) => q.eq('externalId', 'demo-user'))
-      .unique();
-    if (demoUser) return demoUser;
-    return await ctx.db.insert('users', {
-      name: 'Demo User',
-      externalId: 'demo-user',
-      role: 'student',
-      plan: 'free',
-    });
-  }
-  const user = await ctx.db
-    .query('users')
-    .withIndex('byExternalId', (q: any) => q.eq('externalId', identity.subject))
-    .unique();
-  if (!user) throw new Error('User not found');
-  return user;
-}
+import { getUser, calculateLevel, getWeekStart, calculateQuizPoints, requireTeacherOrAdmin } from './shared';
 
 export const getUserStats = query({
   args: {},
@@ -95,13 +73,13 @@ export const getUserStats = query({
 
     const todayStreak = await checkTodayActivity(ctx, user._id);
     
-    // Calculate weekly goal progress
+    // Calculate weekly goal progress - OPTIMIZED with new index
     const weekStart = getWeekStart(now);
     const weeklyQuizzes = await ctx.db
       .query('attempts')
-      .withIndex('byUser', q => q.eq('userId', user._id))
+      .withIndex('byUserCompletedAt', q => q.eq('userId', user._id).gte('completedAt', weekStart))
       .collect()
-      .then(attempts => attempts.filter(a => a.completedAt >= weekStart).length);
+      .then(attempts => attempts.length);
 
     // Ensure backward compatibility with existing stats
     const gamificationFields = {
@@ -388,30 +366,40 @@ export const getRecommendations = query({
   },
 });
 
-// Get leaderboard data
+// Get leaderboard data - FIXED N+1 Query Issue & Added Role Verification
 export const getLeaderboard = query({
   args: { limit: v.optional(v.number()) },
   handler: async (ctx, { limit = 10 }) => {
+    // Only teachers and admins can view leaderboard
+    await requireTeacherOrAdmin(ctx);
     const allStats = await ctx.db
       .query('userStats')
       .withIndex('byTotalPoints')
       .order('desc')
       .take(limit);
 
-    const leaderboard = await Promise.all(
-      allStats.map(async (stats) => {
-        const user = await ctx.db.get(stats.userId);
-        return {
-          userId: stats.userId,
-          userName: user?.name || 'Anonymous',
-          level: stats.level || 1,
-          totalPoints: stats.totalPoints || 0,
-          currentStreak: stats.currentStreak || 0,
-          avgScore: Math.round((stats.avgScore || 0) * 100),
-          achievements: stats.achievements?.length || 0,
-        };
-      })
-    );
+    // Batch fetch all users in a single query to eliminate N+1 problem
+    const userIds = allStats.map(stats => stats.userId);
+    const users = await ctx.db
+      .query('users')
+      .filter(q => q.or(...userIds.map(id => q.eq(q.field('_id'), id))))
+      .collect();
+
+    // Create user lookup map for O(1) access
+    const userMap = new Map(users.map(user => [user._id, user]));
+
+    const leaderboard = allStats.map((stats) => {
+      const user = userMap.get(stats.userId);
+      return {
+        userId: stats.userId,
+        userName: user?.name || 'Anonymous',
+        level: stats.level || 1,
+        totalPoints: stats.totalPoints || 0,
+        currentStreak: stats.currentStreak || 0,
+        avgScore: Math.round((stats.avgScore || 0) * 100),
+        achievements: stats.achievements?.length || 0,
+      };
+    });
 
     return leaderboard;
   },
@@ -441,43 +429,7 @@ export const getUserAchievements = query({
   },
 });
 
-// Helper functions
-function getWeekStart(timestamp: number): number {
-  const date = new Date(timestamp * 1000);
-  const day = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
-  const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
-  const monday = new Date(date.setDate(diff));
-  monday.setHours(0, 0, 0, 0);
-  return Math.floor(monday.getTime() / 1000);
-}
-
-function calculateQuizPoints(score: number): number {
-  if (score >= 0.9) return 50; // Perfect or near-perfect
-  if (score >= 0.8) return 40; // Excellent
-  if (score >= 0.7) return 30; // Good
-  if (score >= 0.6) return 20; // Average
-  if (score >= 0.5) return 10; // Below average
-  return 5; // Participation points
-}
-
-function calculateLevel(experiencePoints: number): { level: number; pointsToNext: number }
-
- {
-  // Level progression: 100, 200, 400, 800, 1600, etc.
-  let level = 1;
-  let pointsNeededForCurrentLevel = 0;
-  let pointsNeededForNextLevel = 100;
-  
-  while (experiencePoints >= pointsNeededForNextLevel) {
-    level++;
-    pointsNeededForCurrentLevel = pointsNeededForNextLevel;
-    pointsNeededForNextLevel = pointsNeededForCurrentLevel + (100 * Math.pow(2, level - 2));
-  }
-  
-  const pointsToNext = pointsNeededForNextLevel - experiencePoints;
-  
-  return { level, pointsToNext };
-}
+// Helper functions moved to shared.ts
 
 function getAllPossibleAchievements() {
   return [

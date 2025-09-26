@@ -1,20 +1,7 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { api } from "./_generated/api";
-
-// Get current user helper function
-async function getUser(ctx: any) {
-  const identity = await ctx.auth.getUserIdentity();
-  if (!identity) throw new Error("Not authenticated");
-  
-  const user = await ctx.db
-    .query("users")
-    .withIndex("byClerkId", (q: any) => q.eq("clerkId", identity.subject))
-    .unique();
-    
-  if (!user) throw new Error("User not found");
-  return user;
-}
+import { getUser, calculateLevel, getWeekStart } from "./shared";
 
 // Get today's daily missions for a user
 export const getTodaysMissions = query({
@@ -384,32 +371,7 @@ function calculateStreakBonus(userStats: any) {
   return Math.floor(baseBonus * (1 + streakMultiplier));
 }
 
-function calculateLevel(experiencePoints: number): { level: number; pointsToNext: number }
-
- {
-  // Same level calculation as in userStats.ts
-  let level = 1;
-  let pointsNeededForNextLevel = 100;
-  let totalPointsNeeded = 0;
-
-  while (experiencePoints >= totalPointsNeeded + pointsNeededForNextLevel) {
-    totalPointsNeeded += pointsNeededForNextLevel;
-    level++;
-    pointsNeededForNextLevel = Math.floor(100 * Math.pow(1.2, level - 1));
-  }
-
-  const pointsToNext = pointsNeededForNextLevel - (experiencePoints - totalPointsNeeded);
-  return { level, pointsToNext };
-}
-
-function getWeekStart(timestamp: number): number {
-  const date = new Date(timestamp * 1000);
-  const day = date.getDay();
-  const diff = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
-  date.setDate(diff);
-  date.setHours(0, 0, 0, 0);
-  return Math.floor(date.getTime() / 1000);
-}
+// calculateLevel and getWeekStart functions moved to shared.ts
 
 function getMostFrequentMissionType(history: any[]) {
   const typeCounts = new Map();
@@ -432,9 +394,128 @@ function getMostFrequentMissionType(history: any[]) {
 }
 
 async function checkMissionAchievements(ctx: any, userId: any, completedCount: number, allCompleted: boolean) {
-  // Implementation for mission-related achievements
-  // This would check for achievements like "Daily Completionist", "Mission Streak", etc.
-  return [];
+  const userStats = await ctx.db
+    .query('userStats')
+    .withIndex('byUser', (q: any) => q.eq('userId', userId))
+    .unique();
+
+  if (!userStats) return [];
+
+  const currentAchievements = userStats.achievements || [];
+  const earnedAchievementIds = new Set(currentAchievements.map((a: any) => a.id));
+  const now = Math.floor(Date.now() / 1000);
+
+  const newAchievements = [];
+
+  // Daily Completionist: Complete all daily missions
+  if (allCompleted && !earnedAchievementIds.has('daily_completionist')) {
+    newAchievements.push({
+      id: 'daily_completionist',
+      title: 'Daily Completionist',
+      description: 'Complete all daily missions in a single day',
+      iconType: 'completion',
+      earnedAt: now,
+      points: 100,
+    });
+  }
+
+  // Mission Streak achievements
+  const missionHistory = await ctx.db
+    .query('userMissionHistory')
+    .withIndex('byUser', (q: any) => q.eq('userId', userId))
+    .collect();
+
+  // Calculate current mission streak
+  let currentStreak = 0;
+  let checkDate = new Date();
+  for (let i = 0; i < 30; i++) { // Check last 30 days
+    const dateStr = checkDate.toISOString().split('T')[0];
+    const dayCompletions = missionHistory.filter((h: any) =>
+      h.date === dateStr && h.completed && h.completedAt
+    ).length;
+
+    if (dayCompletions >= 3) { // At least 3 missions completed that day
+      currentStreak++;
+    } else {
+      break;
+    }
+
+    checkDate.setDate(checkDate.getDate() - 1);
+  }
+
+  // Mission Streak: 3-day streak
+  if (currentStreak >= 3 && !earnedAchievementIds.has('mission_streak_3')) {
+    newAchievements.push({
+      id: 'mission_streak_3',
+      title: 'Mission Streak: 3 Days',
+      description: 'Complete daily missions for 3 consecutive days',
+      iconType: 'streak',
+      earnedAt: now,
+      points: 75,
+    });
+  }
+
+  // Mission Streak: 7-day streak
+  if (currentStreak >= 7 && !earnedAchievementIds.has('mission_streak_7')) {
+    newAchievements.push({
+      id: 'mission_streak_7',
+      title: 'Mission Streak: 7 Days',
+      description: 'Complete daily missions for 7 consecutive days',
+      iconType: 'streak',
+      earnedAt: now,
+      points: 150,
+    });
+  }
+
+  // Mission Streak: 30-day streak
+  if (currentStreak >= 30 && !earnedAchievementIds.has('mission_streak_30')) {
+    newAchievements.push({
+      id: 'mission_streak_30',
+      title: 'Mission Master',
+      description: 'Complete daily missions for 30 consecutive days',
+      iconType: 'streak',
+      earnedAt: now,
+      points: 500,
+    });
+  }
+
+  // Total missions completed milestone
+  const totalCompleted = missionHistory.filter((h: any) => h.completed).length;
+
+  if (totalCompleted >= 10 && !earnedAchievementIds.has('mission_enthusiast_10')) {
+    newAchievements.push({
+      id: 'mission_enthusiast_10',
+      title: 'Mission Enthusiast',
+      description: 'Complete 10 daily missions',
+      iconType: 'completion',
+      earnedAt: now,
+      points: 50,
+    });
+  }
+
+  if (totalCompleted >= 50 && !earnedAchievementIds.has('mission_enthusiast_50')) {
+    newAchievements.push({
+      id: 'mission_enthusiast_50',
+      title: 'Mission Veteran',
+      description: 'Complete 50 daily missions',
+      iconType: 'completion',
+      earnedAt: now,
+      points: 150,
+    });
+  }
+
+  if (totalCompleted >= 100 && !earnedAchievementIds.has('mission_enthusiast_100')) {
+    newAchievements.push({
+      id: 'mission_enthusiast_100',
+      title: 'Mission Legend',
+      description: 'Complete 100 daily missions',
+      iconType: 'completion',
+      earnedAt: now,
+      points: 300,
+    });
+  }
+
+  return newAchievements;
 }
 
 // Seed daily mission templates

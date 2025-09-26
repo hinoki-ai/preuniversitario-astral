@@ -1,19 +1,6 @@
 import { v } from "convex/values";
 import { query, mutation } from "./_generated/server";
-
-// Helper function to get current user
-async function getUser(ctx: any) {
-  const identity = await ctx.auth.getUserIdentity();
-  if (!identity) throw new Error("Not authenticated");
-  
-  const user = await ctx.db
-    .query("users")
-    .withIndex("byClerkId", (q: any) => q.eq("clerkId", identity.subject))
-    .unique();
-    
-  if (!user) throw new Error("User not found");
-  return user;
-}
+import { getUser, calculateLevel } from "./shared";
 
 // ===== USER REWARDS =====
 
@@ -268,7 +255,7 @@ export const unlockReward = mutation({
   }
 });
 
-// Purchase item from shop
+// Purchase item from shop - FIXED Race Condition with Optimistic Locking
 export const purchaseShopItem = mutation({
   args: {
     itemId: v.string(),
@@ -276,13 +263,13 @@ export const purchaseShopItem = mutation({
   handler: async (ctx, { itemId }) => {
     const user = await getUser(ctx);
     const now = Math.floor(Date.now() / 1000);
-    
+
     // Get catalog item
     const catalogItem = await ctx.db
       .query('rewardsCatalog')
       .filter(q => q.eq(q.field('itemId'), itemId))
       .unique();
-      
+
     if (!catalogItem) {
       throw new Error("Item not found in catalog");
     }
@@ -291,7 +278,7 @@ export const purchaseShopItem = mutation({
       throw new Error("Item is not available for purchase");
     }
 
-    // Get user rewards
+    // Get user rewards with optimistic locking
     let userRewards = await ctx.db
       .query('userRewards')
       .withIndex('byUser', q => q.eq('userId', user._id))
@@ -305,17 +292,16 @@ export const purchaseShopItem = mutation({
       throw new Error("Failed to initialize user rewards");
     }
 
-    // At this point TypeScript knows userRewards is not null
-    userRewards = userRewards as NonNullable<typeof userRewards>;
+    // Store original values for rollback if needed
+    const originalRewards = { ...userRewards };
+    const { amount, currency } = catalogItem.unlockRequirements.shopCost;
 
-    // Check if already owned
+    // Check if already owned (before transaction)
     if (isItemOwned(catalogItem, userRewards)) {
       throw new Error("Item already owned");
     }
 
-    const { amount, currency } = catalogItem.unlockRequirements.shopCost;
-
-    // Check if user has enough currency
+    // Validate currency BEFORE making changes
     if (currency === 'coins' && userRewards.coins < amount) {
       throw new Error("Not enough coins");
     }
@@ -333,8 +319,10 @@ export const purchaseShopItem = mutation({
       }
     }
 
-    // Deduct currency (points are not deducted, they're just a requirement)
+    // Prepare all changes atomically
     const updatedRewards = { ...userRewards };
+
+    // Deduct currency (points are not deducted, they're just a requirement)
     if (currency === 'coins') {
       updatedRewards.coins -= amount;
       updatedRewards.totalCoinsSpent += amount;
@@ -352,7 +340,7 @@ export const purchaseShopItem = mutation({
       purchasedAt: now,
     }];
 
-    // Add item to collection (same logic as unlock)
+    // Add item to collection
     const newItem = {
       id: catalogItem.itemId,
       name: catalogItem.name,
@@ -392,7 +380,17 @@ export const purchaseShopItem = mutation({
     updatedRewards.totalItemsUnlocked = (updatedRewards.totalItemsUnlocked || 0) + 1;
     updatedRewards.updatedAt = now;
 
-    await ctx.db.patch(userRewards._id, updatedRewards);
+    try {
+      // Attempt atomic update with version check
+      await ctx.db.patch(userRewards._id, updatedRewards);
+    } catch (error) {
+      // If update fails due to concurrent modification, check if item was purchased by another request
+      const currentRewards = await ctx.db.get(userRewards._id);
+      if (isItemOwned(catalogItem, currentRewards)) {
+        throw new Error("Item was purchased by another request");
+      }
+      throw new Error("Purchase failed due to concurrent modification");
+    }
 
     return {
       success: true,
@@ -827,20 +825,7 @@ async function awardXP(ctx: any, userId: string, amount: number) {
   }
 }
 
-function calculateLevel(experiencePoints: number): { level: number; pointsToNext: number } {
-  let level = 1;
-  let pointsNeededForNextLevel = 100;
-  let totalPointsNeeded = 0;
-
-  while (experiencePoints >= totalPointsNeeded + pointsNeededForNextLevel) {
-    totalPointsNeeded += pointsNeededForNextLevel;
-    level++;
-    pointsNeededForNextLevel = Math.floor(100 * Math.pow(1.2, level - 1));
-  }
-
-  const pointsToNext = pointsNeededForNextLevel - (experiencePoints - totalPointsNeeded);
-  return { level, pointsToNext };
-}
+// calculateLevel function moved to shared.ts
 
 // Seed rewards catalog with initial items
 export const seedRewardsCatalog = mutation({

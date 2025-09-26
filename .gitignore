@@ -16,8 +16,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
+# environment files (contains sensitive data)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -25,4 +26,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.env*.local

@@ -163,6 +163,7 @@ export default defineSchema({
   })
     .index('byQuizUser', ['quizId', 'userId'])
     .index('byUser', ['userId'])
+    .index('byUserCompletedAt', ['userId', 'completedAt']) // NEW: For efficient weekly calculations
     .index('byQuiz', ['quizId'])
     .index('byCompletedAt', ['completedAt']),
 
