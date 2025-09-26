@@ -68,8 +68,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Slider } from '@/components/ui/slider';
 import { Progress } from '@/components/ui/progress';
 
-interface settingsmodalprops {
-  trigger?: react.reactnode;
+interface SettingsModalProps {
+  trigger?: React.ReactNode;
 }
 
 export function SettingsModal({ trigger }: SettingsModalProps) {
