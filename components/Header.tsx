@@ -229,7 +229,6 @@ function HeaderInternal() {
           <HeaderLogo />
           <DesktopNav mounted={mounted} />
           <MobileNav mounted={mounted} isOpen={isMenuOpen} onOpenChange={handleMenuToggle} />
-        </div>
       </div>
     </header>
   );

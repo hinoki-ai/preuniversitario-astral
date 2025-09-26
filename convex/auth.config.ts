@@ -1,9 +1,7 @@
 const authConfig = {
   providers: [
     {
-      domain: process.env.NODE_ENV === 'production'
-        ? "https://preuastral.clerk.com" // Production domain
-        : "https://preuastral.clerk.accounts.dev", // Development domain
+      domain: process.env.NEXT_PUBLIC_CLERK_FRONTEND_API_URL,
       applicationID: 'convex',
     },
   ],

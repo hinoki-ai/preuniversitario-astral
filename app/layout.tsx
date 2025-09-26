@@ -56,7 +56,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      publishableKey={env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      frontendApi={env.NEXT_PUBLIC_CLERK_FRONTEND_API_URL}
+    >
       <html lang="en" suppressHydrationWarning>
         <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
           <PageErrorBoundary context="RootLayout">
