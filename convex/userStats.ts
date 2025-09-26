@@ -687,7 +687,7 @@ export const saveDiagnosticResults = mutation({
 
     if (!userStats) {
       // Initialize with default values
-      userStats = await ctx.db.insert('userStats', {
+      const userStatsId = await ctx.db.insert('userStats', {
         userId: user._id,
         currentStreak: 0,
         longestStreak: 0,
@@ -710,6 +710,11 @@ export const saveDiagnosticResults = mutation({
         },
         updatedAt: now,
       });
+      userStats = await ctx.db.get(userStatsId);
+    }
+
+    if (!userStats) {
+      throw new Error('Failed to create user stats');
     }
 
     // Update user stats with diagnostic results
@@ -722,7 +727,7 @@ export const saveDiagnosticResults = mutation({
       .map(([subject, _]) => subject);
 
     // Add diagnostic completion achievement
-    const currentAchievements = userStats.achievements || [];
+    const currentAchievements = userStats!.achievements || [];
     const earnedAchievementIds = new Set(currentAchievements.map(a => a.id));
 
     let newAchievements: any[] = [];
@@ -737,7 +742,7 @@ export const saveDiagnosticResults = mutation({
       });
     }
 
-    await ctx.db.patch(userStats, {
+    await ctx.db.patch(userStats._id, {
       weakSubjects,
       strongSubjects,
       achievements: [...currentAchievements, ...newAchievements],
