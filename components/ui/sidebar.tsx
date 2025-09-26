@@ -1,6 +1,6 @@
 'use client'
 
-import * as react from 'react'
+import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, VariantProps } from 'class-variance-authority'
 import { PanelLeftIcon } from 'lucide-react'
@@ -131,7 +131,6 @@ function SidebarProvider({
       <TooltipProvider delayDuration={0}>
         <div
           data-slot="sidebar-wrapper"
-           
           style={
             {
               '--sidebar-width': SIDEBAR_WIDTH,
@@ -189,7 +188,6 @@ function Sidebar({
           data-slot="sidebar"
           data-mobile="true"
           className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
-           
           style={
             {
               '--sidebar-width': SIDEBAR_WIDTH_MOBILE,

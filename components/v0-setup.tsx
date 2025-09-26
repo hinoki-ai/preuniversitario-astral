@@ -4,7 +4,7 @@ import { SetupToolbar } from '@joycostudio/v0-setup';
 
 import { checkEnvs } from '@/lib/actions';
 
-export const v0setup = () => {
+export const V0Setup = () => {
   return (
     <SetupToolbar
       title="V0 Newsletter Setup"

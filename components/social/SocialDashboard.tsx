@@ -337,7 +337,7 @@ function StudyGroupsTab() {
                   maxLength={8}
                 />
                 <div className="flex gap-2">
-                  <Button onClick={handlejoinwithcode} disabled={!inviteCode}>
+                  <Button onClick={handleJoinWithCode} disabled={!inviteCode}>
                     Join Group
                   </Button>
                   <Button variant="outline" onClick={() => setShowJoinDialog(false)}>
@@ -401,9 +401,9 @@ function StudyGroupCard({ group, isMember }: { group: any; isMember: boolean }) 
     }
   };
 
-  const progressPercentage = group.goals?.weeklyQuizzes 
-    ? (group.stats?.weeklyProgress / group.goals.weeklyQuizzes) * 100 
-    : 0;progressPercentagegroup.goals?.weeklyQuizzesgroup.stats?.weeklyProgressgroup.goals.weeklyQuizzes100
+  const progressPercentage = group.goals?.weeklyQuizzes
+    ? (group.stats?.weeklyProgress / group.goals.weeklyQuizzes) * 100
+    : 0;
 
   return (
     <Card className={isMember ? "ring-2 ring-primary/20" : ""}>
@@ -509,7 +509,7 @@ function CreateStudyGroupDialog() {
   const createStudyGroup = useMutation(api.socialFeatures.createStudyGroup);
   const { toast } = useToast();
 
-  const handlecreate = async () => {
+  const handleCreate = async () => {
     try {
       const result = await createStudyGroup(formData);
       toast({

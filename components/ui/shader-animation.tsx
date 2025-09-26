@@ -4,19 +4,19 @@ import { useEffect, useRef } from "react"
 import * as THREE from "three"
 
 export function ShaderAnimation() {
-  const containerref = useref<htmldivelement>(null)
-  const sceneref = useref<{
-    camera: three.camera;
-    scene: three.scene;
-    renderer: three.webglrenderer;
+  const containerref = useRef<HTMLDivElement>(null)
+  const sceneref = useRef<{
+    camera: THREE.Camera;
+    scene: THREE.Scene;
+    renderer: THREE.WebGLRenderer;
     uniforms: any;
     animationId: number
   } | null>(null)
 
   useEffect(() => {
-    if (!containerRef.current) return
+    if (!containerref.current) return
 
-    const container = containerRef.current
+    const container = containerref.current
 
     // Vertex shader
     const vertexShader = `
@@ -95,13 +95,13 @@ export function ShaderAnimation() {
       uniforms.time.value += 0.05
       renderer.render(scene, camera)
 
-      if (sceneRef.current) {
-        sceneRef.current.animationId = animationId
+      if (sceneref.current) {
+        sceneref.current.animationId = animationId
       }
     }
 
     // Store scene references for cleanup
-    sceneRef.current = {
+    sceneref.current = {
       camera,
       scene,
       renderer,
@@ -116,14 +116,14 @@ export function ShaderAnimation() {
     return () => {
       window.removeEventListener("resize", onWindowResize)
 
-      if (sceneRef.current) {
-        cancelAnimationFrame(sceneRef.current.animationId)
+      if (sceneref.current) {
+        cancelAnimationFrame(sceneref.current.animationId)
 
-        if (container && sceneRef.current.renderer.domElement) {
-          container.removeChild(sceneRef.current.renderer.domElement)
+        if (container && sceneref.current.renderer.domElement) {
+          container.removeChild(sceneref.current.renderer.domElement)
         }
 
-        sceneRef.current.renderer.dispose()
+        sceneref.current.renderer.dispose()
         geometry.dispose()
         material.dispose()
       }
@@ -132,7 +132,7 @@ export function ShaderAnimation() {
 
   return (
     <div
-      ref={containerRef}
+      ref={containerref}
       className="fixed top-0 left-0 w-screen h-screen -z-10 pointer-events-none bg-black overflow-hidden"
     />
   )

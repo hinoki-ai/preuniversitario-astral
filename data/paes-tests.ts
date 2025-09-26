@@ -87,7 +87,7 @@ type PlaceholderSeed = {
 
 export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
   {
-    id: 'matematica-m1-2023-invierno',
+    id: 'matematica_m1_2023_invierno',
     assignment: 'matematica_m1',
     title: 'PAES Matemática M1 · 2023 Proceso Invierno',
     source: 'DEMRE (placeholder resumido)',
@@ -95,7 +95,7 @@ export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
     session: 'Invierno',
   },
   {
-    id: 'matematica-m1-2023-regular',
+    id: 'matematica_m1_2023_regular',
     assignment: 'matematica_m1',
     title: 'PAES Matemática M1 · 2023 Proceso Regular',
     source: 'DEMRE (placeholder resumido)',
@@ -104,7 +104,7 @@ export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
   },
   // matemática m2
   {
-    id: 'matematica-m2-2023-invierno',
+    id: 'matematica_m2_2023_invierno',
     assignment: 'matematica_m2',
     title: 'PAES Matemática M2 · 2023 Proceso Invierno',
     source: 'DEMRE (placeholder resumido)',
@@ -112,7 +112,7 @@ export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
     session: 'Invierno',
   },
   {
-    id: 'matematica-m2-2023-regular',
+    id: 'matematica_m2_2023_regular',
     assignment: 'matematica_m2',
     title: 'PAES Matemática M2 · 2023 Proceso Regular',
     source: 'DEMRE (placeholder resumido)',
@@ -121,7 +121,7 @@ export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
   },
   // competencia lectora
   {
-    id: 'competencia-lectora-2023-invierno',
+    id: 'competencia_lectora_2023_invierno',
     assignment: 'competencia_lectora',
     title: 'PAES Competencia Lectora · 2023 Proceso Invierno',
     source: 'DEMRE (placeholder resumido)',
@@ -129,7 +129,7 @@ export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
     session: 'Invierno',
   },
   {
-    id: 'competencia-lectora-2023-regular',
+    id: 'competencia_lectora_2023_regular',
     assignment: 'competencia_lectora',
     title: 'PAES Competencia Lectora · 2023 Proceso Regular',
     source: 'DEMRE (placeholder resumido)',
@@ -138,7 +138,7 @@ export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
   },
   // ciencias m1
   {
-    id: 'ciencias-m1-2023-invierno',
+    id: 'ciencias_m1_2023_invierno',
     assignment: 'ciencias_m1',
     title: 'PAES Ciencias M1 · 2023 Proceso Invierno',
     source: 'DEMRE (placeholder resumido)',
@@ -146,7 +146,7 @@ export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
     session: 'Invierno',
   },
   {
-    id: 'ciencias-m1-2023-regular',
+    id: 'ciencias_m1_2023_regular',
     assignment: 'ciencias_m1',
     title: 'PAES Ciencias M1 · 2023 Proceso Regular',
     source: 'DEMRE (placeholder resumido)',
@@ -155,7 +155,7 @@ export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
   },
   // historia y ciencias sociales
   {
-    id: 'historia-cs-2023-regular',
+    id: 'historia_cs_2023_regular',
     assignment: 'historia_cs',
     title: 'PAES Historia y Ciencias Sociales · 2023 Proceso Regular',
     source: 'DEMRE (placeholder resumido)',
@@ -163,7 +163,7 @@ export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
     session: 'Regular',
   },
   {
-    id: 'historia-cs-2023-invierno',
+    id: 'historia_cs_2023_invierno',
     assignment: 'historia_cs',
     title: 'PAES Historia y Ciencias Sociales · 2023 Proceso Invierno',
     source: 'DEMRE (placeholder resumido)',
@@ -171,7 +171,7 @@ export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
     session: 'Invierno',
   },
   {
-    id: 'hc-2022-regular',
+    id: 'historia_cs_2022_regular',
     assignment: 'historia_cs',
     title: 'PAES Historia y Ciencias Sociales · 2022 Proceso Regular',
     source: 'DEMRE (placeholder resumido)',

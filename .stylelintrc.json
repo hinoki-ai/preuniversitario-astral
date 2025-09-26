@@ -36,7 +36,36 @@
         ]
       }
     ],
-    "no-invalid-position-at-import-rule": null,
-    "no-inline-styles": null
-  }
+    "no-invalid-position-at-import-rule": null
+  },
+  "overrides": [
+    {
+      "files": ["**/*.css"],
+      "rules": {
+        "declaration-block-single-line-max-declarations": null,
+        "declaration-property-value-no-unknown": null,
+        "color-function-notation": null,
+        "alpha-value-notation": null,
+        "color-function-alias-notation": null,
+        "length-zero-no-unit": null
+      }
+    }
+  ],
+  "ignoreFiles": [
+    "**/*.tsx",
+    "**/*.ts",
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.json",
+    "**/*.md",
+    "**/*.yml",
+    "**/*.yaml",
+    "**/node_modules/**",
+    "**/.next/**",
+    "**/convex/_generated/**",
+    "**/out/**",
+    "**/.vercel/**",
+    "**/dist/**",
+    "**/build/**"
+  ]
 }

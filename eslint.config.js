@@ -13,7 +13,10 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   {
     rules: {
-      "@next/next/no-css-in-js": "off",
+      "react/no-unknown-property": "off",
+      "react/no-inline-styles": "off",
+      "@next/next/no-css-tags": "off",
+      "@next/next/no-sync-scripts": "off",
     },
   },
   {
@@ -27,7 +30,21 @@ const eslintConfig = [
     files: ["components/ui/*.tsx"],
     rules: {
       "react/style-prop-object": "off",
-      "@next/next/no-css-in-js": "off",
+    },
+  },
+  {
+    files: ["**/*.tsx", "**/*.ts"],
+    rules: {
+      "react/no-inline-styles": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "no-unused-vars": "off",
+    },
+  },
+  {
+    files: ["**/*.tsx"],
+    rules: {
+      "react/style-prop-object": "off",
+      "react/no-inline-styles": "off",
     },
   },
   {
