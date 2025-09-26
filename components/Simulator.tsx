@@ -28,7 +28,7 @@ import {
   getDemoPaesCatalog,
   getDemoPaesQuiz,
   getPaesAssignmentMeta,
-  type DemoPaesQuizPayload,
+  type demopaesquizpayload,
 } from '@/lib/demo-data';
 import type { PaesAssignmentMeta, PaesQuiz, PaesCatalogItem, QuizAttempt } from '@/lib/types';
 
@@ -161,9 +161,9 @@ function SimulatorInternal() {
       : 'skip'
   );
 
-  const demoQuizPayload: DemoPaesQuizPayload | null = useMemo(() => {
+  const demoQuizPayload: demopaesquizpayload | null = useMemo(() => {
     if (!selectedTest || selectedTest.sourceType !== 'demo') return null;
-    return getDemoPaesQuiz(selectedTest.quizId) as DemoPaesQuizPayload | null;
+    return getDemoPaesQuiz(selectedTest.quizId) as demopaesquizpayload | null;
   }, [selectedTest]);
   const quiz =
     selectedTest?.sourceType === 'convex'

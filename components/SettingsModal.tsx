@@ -121,13 +121,13 @@ export function SettingsModal({ trigger }: SettingsModalProps) {
     return null;
   }
 
-  const handlesavesettings = () => {
+  const handleSaveSettings = () => {
     // In a real app, save to backend
     // Settings saved
     setIsOpen(false);
   };
 
-  const handleresetsettings = () => {
+  const handleResetSettings = () => {
     // Reset to defaults
     setNotifications({
       email: true,
