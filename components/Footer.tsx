@@ -108,9 +108,8 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Social Media Links & Visitor Counter */}
+          {/* Social Media Links */}
           <div className="flex flex-wrap items-center gap-4 sm:justify-end">
-            <VisitorCounter />
             <a
               href="https://www.facebook.com/mineduc"
               target="_blank"
@@ -150,29 +149,34 @@ export default function Footer() {
 
         {/* Dev Favicon Copyright */}
         <div
-          className="pt-6 text-center"
+          className="pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
           style={{ borderTop: `1px solid ${MINEDUC_COLORS.muted}` }}
         >
-          <p className="text-sm mb-2" style={{ color: MINEDUC_COLORS.offWhite }}>
-            © {new Date().getFullYear()} Preuniversitario Astral. Todos los derechos reservados.
-          </p>
-          <div className="text-center text-xs" style={{ color: MINEDUC_COLORS.offWhite }}>
-            Desarrollado por{' '}
-            <span className="font-mono text-lg tracking-wider" style={{ color: MINEDUC_COLORS.white }}>
-              ΛRΛMΛC®
-            </span>
+          <div className="flex-1">
+            <p className="text-sm mb-2" style={{ color: MINEDUC_COLORS.offWhite }}>
+              © {new Date().getFullYear()} Preuniversitario Astral. Todos los derechos reservados.
+            </p>
+            <div className="text-xs" style={{ color: MINEDUC_COLORS.offWhite }}>
+              Desarrollado por{' '}
+              <span className="font-mono text-lg tracking-wider" style={{ color: MINEDUC_COLORS.white }}>
+                ΛRΛMΛC®
+              </span>
+            </div>
+            <div className="mt-2 flex items-center">
+              <Image
+                src="/devicon.png"
+                alt="Dev Favicon"
+                width={32}
+                height={32}
+                className="mr-2 h-8 w-8 opacity-60"
+              />
+              <span className="text-xs" style={{ color: MINEDUC_COLORS.offWhite }}>
+                Desarrollado con ❤️
+              </span>
+            </div>
           </div>
-          <div className="mt-2 flex items-center justify-center">
-            <Image
-              src="/devicon.png"
-              alt="Dev Favicon"
-              width={32}
-              height={32}
-              className="mr-2 h-8 w-8 opacity-60"
-            />
-            <span className="text-xs" style={{ color: MINEDUC_COLORS.offWhite }}>
-              Desarrollado con ❤️
-            </span>
+          <div className="flex-shrink-0">
+            <VisitorCounter />
           </div>
         </div>
       </div>
