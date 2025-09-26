@@ -39,21 +39,51 @@ export const getTodaysMissions = query({
       };
     }
 
+    // No missions for today yet
+    return null;
+  },
+});
+
+// Initialize daily missions for today
+export const initializeTodaysMissions = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const user = await getUser(ctx);
+    const today = new Date().toISOString().split('T')[0];
+
+    // Get user stats
+    const userStats = await ctx.db
+      .query('userStats')
+      .withIndex('byUser', q => q.eq('userId', user._id))
+      .unique();
+
+    if (!userStats) {
+      throw new Error('User stats not found');
+    }
+
+    // Check if user already has missions for today
+    if (userStats.dailyMissions?.date === today) {
+      return {
+        missions: userStats.dailyMissions.missions,
+        completedCount: userStats.dailyMissions.completedCount,
+        streakBonus: userStats.dailyMissions.streakBonus,
+        date: today,
+      };
+    }
+
     // Generate new missions for today
     const newMissions = await generateDailyMissions(ctx, user, userStats);
-    
+
     // Update user stats with new missions
-    if (userStats) {
-      await ctx.db.patch(userStats._id, {
-        dailyMissions: {
-          date: today,
-          missions: newMissions,
-          completedCount: 0,
-          streakBonus: calculateStreakBonus(userStats),
-        },
-        updatedAt: Math.floor(Date.now() / 1000),
-      });
-    }
+    await ctx.db.patch(userStats._id, {
+      dailyMissions: {
+        date: today,
+        missions: newMissions,
+        completedCount: 0,
+        streakBonus: calculateStreakBonus(userStats),
+      },
+      updatedAt: Math.floor(Date.now() / 1000),
+    });
 
     return {
       missions: newMissions,
@@ -244,12 +274,15 @@ export const getMissionStats = query({
 
     const leaderboardWithNames = await Promise.all(
       topUsers.map(async ([userId, completions]) => {
-        const user = await ctx.db.get(userId);
+        const user = await ctx.db
+          .query('users')
+          .filter(q => q.eq(q.field('_id'), userId))
+          .first();
         return {
           userId,
           name: user?.name || 'Anonymous',
           completions,
-          isCurrentUser: userId === user._id,
+          isCurrentUser: userId === user?._id,
         };
       })
     );

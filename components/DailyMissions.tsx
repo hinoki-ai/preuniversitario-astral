@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useMutation, useQuery } from 'convex/react';
 import {
   Award,
@@ -112,6 +113,14 @@ export function DailyMissions() {
   const missionsData = useQuery(api.dailyMissions.getTodaysMissions) as MissionsData | undefined;
   const missionStats = useQuery(api.dailyMissions.getMissionStats) as MissionStats | undefined;
   const updateMissionProgress = useMutation(api.dailyMissions.updateMissionProgress);
+  const initializeMissions = useMutation(api.dailyMissions.initializeTodaysMissions);
+
+  // Initialize missions if they don't exist
+  React.useEffect(() => {
+    if (missionsData === null) {
+      initializeMissions();
+    }
+  }, [missionsData, initializeMissions]);
 
   if (!missionsData) {
     return (
