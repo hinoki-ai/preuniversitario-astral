@@ -15,7 +15,7 @@ export function withErrorHandling<P extends object>(
 
     return (
       <ComponentErrorBoundary context={componentName}>
-        <WrappedComponent {...props} ref={ref} />
+        {React.createElement(WrappedComponent, { ...props, ...(ref && { ref }) })}
       </ComponentErrorBoundary>
     );
   });
@@ -40,7 +40,7 @@ export function withFormErrorHandling<P extends object>(
 
     return (
       <ComponentErrorBoundary context={componentName}>
-        <WrappedComponent {...enhancedProps} ref={ref} />
+        {React.createElement(WrappedComponent, { ...enhancedProps, ...(ref && { ref }) })}
       </ComponentErrorBoundary>
     );
   });
@@ -65,7 +65,7 @@ export function withAsyncErrorHandling<P extends object>(
 
     return (
       <ComponentErrorBoundary context={componentName}>
-        <WrappedComponent {...enhancedProps} ref={ref} />
+        {React.createElement(WrappedComponent, { ...enhancedProps, ...(ref && { ref }) })}
       </ComponentErrorBoundary>
     );
   });
@@ -98,7 +98,7 @@ export function enhanceComponentsWithErrorHandling<T extends Record<string, Reac
   const enhanced = {} as { [K in keyof T]: React.ComponentType<React.ComponentProps<T[K]>> };
 
   (Object.entries(components) as Array<[keyof T, React.ComponentType<any>]>).forEach(([name, Component]) => {
-    enhanced[name] = withErrorHandling(Component, String(name));
+    (enhanced as any)[name] = withErrorHandling(Component, String(name));
   });
 
   return enhanced;

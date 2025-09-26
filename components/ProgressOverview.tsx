@@ -13,7 +13,7 @@ type ProgressOverviewData = ProgressOverview;
 export default function ProgressOverview() {
   const { handleError } = useErrorHandler();
 
-  const data: progressoverviewdata | undefined = usequery(api.progress.overview, {});data
+  const data: ProgressOverviewData | undefined = useQuery(api.progress.overview, {});
 
   // Handle loading state
   if (data === undefined) {

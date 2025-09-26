@@ -1,6 +1,6 @@
 {
-  "type": "minor",
-  "message": "Added perfect visitor counter with version tracking to footer",
-  "timestamp": "2025-09-25T23:33:01.350Z",
-  "currentVersion": "0.2.0"
+  "type": "patch",
+  "message": "Testing gg integration",
+  "timestamp": "2025-09-26T02:01:29.880Z",
+  "currentVersion": "0.3.0"
 }
