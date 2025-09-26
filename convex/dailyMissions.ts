@@ -17,7 +17,7 @@ async function getUser(ctx: any) {
 }
 
 // Get today's daily missions for a user
-export const getTodaysMissions = mutation({
+export const getTodaysMissions = query({
   args: {},
   handler: async (ctx) => {
     const user = await getUser(ctx);
