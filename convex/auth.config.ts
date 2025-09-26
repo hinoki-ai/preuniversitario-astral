@@ -1,7 +1,7 @@
 const authConfig = {
   providers: [
     {
-      domain: process.env.next_public_clerk_frontend_api_url,
+      domain: process.env.NEXT_PUBLIC_CLERK_FRONTEND_API_URL,
       applicationID: 'convex',
     },
   ],
