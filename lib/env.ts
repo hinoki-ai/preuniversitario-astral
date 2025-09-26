@@ -52,7 +52,7 @@ function validateEnv(): Env {
       if (process.env.NODE_ENV === 'production') {
         // Allow deployment with dev keys for testing - just log warning
         console.warn('⚠️  Running with invalid environment configuration in production mode (dev keys for testing)');
-        return envSchema.partial().parse(process.env);
+        return envSchema.partial().parse(process.env) as Env;
       }
       
       console.warn('⚠️  Running with invalid environment configuration in development mode');
