@@ -24,7 +24,7 @@ interface MediaEntry {
 
 type MediaContentCollection = Record<string, MediaEntry>;
 
-const mediaGallery: MediaContentCollection = {
+const MEDIA_GALLERY: MediaContentCollection = {
   clases: {
     src: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // Replace with actual educational video
     poster: '/placeholder.jpg',
@@ -179,7 +179,7 @@ const MediaContentSection = ({ media }: { media: MediaEntry }) => {
 export default function MediaPage() {
   const [selectedMedia, setSelectedMedia] = useState<string>('clases');
   const [showSelector, setShowSelector] = useState<boolean>(true);
-  const currentMedia = mediaGallery[selectedMedia];
+  const currentMedia = MEDIA_GALLERY[selectedMedia];
   useEffect(() => {
     window.scrollTo(0, 0);
     const resetEvent = new Event('resetSection');
@@ -199,7 +199,7 @@ export default function MediaPage() {
           <CardHeader className='pb-3'>
             <CardTitle className='text-lg'>Explorar Contenido</CardTitle>
             <div className='grid grid-cols-2 md:grid-cols-3 gap-2 mt-3'>
-              {Object.keys(mediaGallery).map(key => (
+              {Object.keys(MEDIA_GALLERY).map(key => (
                 <Button
                   key={key}
                   size='sm'

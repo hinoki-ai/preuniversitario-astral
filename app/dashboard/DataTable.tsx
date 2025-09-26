@@ -36,7 +36,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-export const schema = z.object({
+export const SCHEMA = z.object({
   id: z.number(),
   subject: z.string(),
   category: z.string(),
@@ -53,7 +53,7 @@ export const schema = z.object({
   risk: z.enum(['on-track', 'attention', 'critical']),
 });
 
-type SubjectRow = z.infer<typeof schema>;
+type SubjectRow = z.infer<typeof SCHEMA>;
 
 type RiskKey = SubjectRow['risk'];
 
@@ -208,7 +208,7 @@ const columns: ColumnDef<SubjectRow>[] = [
 ];
 
 export function DataTable({ data: initialData }: { data: SubjectRow[] }) {
-  const parsedData = React.useMemo(() => schema.array().parse(initialData), [initialData]);
+  const parsedData = React.useMemo(() => SCHEMA.array().parse(initialData), [initialData]);
   const categories = React.useMemo(
     () => Array.from(new Set(parsedData.map(item => item.category))).sort(),
     [parsedData]

@@ -49,12 +49,17 @@ export function RewardsShop() {
 
   const userRewards = useQuery(api.rewardsSystem.getUserRewards) as UserRewards | undefined;
   const catalogItems = useQuery(api.rewardsSystem.getRewardsCatalog, {}) as RewardItem[] | undefined;
-  const dailyRewards = useQuery(api.rewardsSystem.getDailyLoginRewards) as Array<{
-    id: string;
-    day: number;
-    reward: string;
-    claimed?: boolean;
-  }> | undefined;
+  const dailyRewardsData = useQuery(api.rewardsSystem.getDailyLoginRewards) as {
+    upcomingRewards?: Array<{
+      day: number;
+      rewards: Array<{
+        type: string;
+        amount?: number;
+      }>;
+    }>;
+    canClaimToday?: boolean;
+    claimedToday?: boolean;
+  } | undefined;
 
   const purchaseItem = useMutation(api.rewardsSystem.purchaseShopItem);
   const claimDailyReward = useMutation(api.rewardsSystem.claimDailyReward);
@@ -125,27 +130,39 @@ export function RewardsShop() {
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-3">
-              {(dailyRewards ?? []).map(reward => (
-                <div key={reward.id} className={cn('rounded-lg border p-4', reward.claimed && 'border-primary')}> 
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold">Día {reward.day}</span>
-                    <Badge variant={reward.claimed ? 'default' : 'outline'}>
-                      {reward.claimed ? 'Reclamado' : 'Disponible'}
-                    </Badge>
+              {(dailyRewardsData?.upcomingRewards ?? []).map((reward, index) => {
+                const isToday = index === 0;
+                const canClaim = isToday && dailyRewardsData?.canClaimToday;
+                const isClaimed = dailyRewardsData?.claimedToday && isToday;
+
+                const rewardText = reward.rewards.map(r =>
+                  `${r.amount} ${r.type === 'coins' ? 'monedas' : r.type === 'gems' ? 'gemas' : r.type === 'xp' ? 'XP' : r.type}`
+                ).join(', ');
+
+                return (
+                  <div key={reward.day} className={cn('rounded-lg border p-4', isClaimed && 'border-primary')}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-semibold">Día {reward.day}</span>
+                      <Badge variant={isClaimed ? 'default' : 'outline'}>
+                        {isClaimed ? 'Reclamado' : isToday ? 'Hoy' : 'Próximo'}
+                      </Badge>
+                    </div>
+                    <p className="mt-2 text-sm text-muted-foreground">{rewardText}</p>
+                    {isToday && (
+                      <Button
+                        className="mt-3 w-full"
+                        size="sm"
+                        disabled={!canClaim || isClaimed}
+                        onClick={async () => {
+                          await claimDailyReward();
+                        }}
+                      >
+                        {isClaimed ? 'Reclamado' : 'Reclamar'}
+                      </Button>
+                    )}
                   </div>
-                  <p className="mt-2 text-sm text-muted-foreground">{reward.reward}</p>
-                  <Button
-                    className="mt-3 w-full"
-                    size="sm"
-                    disabled={reward.claimed}
-                    onClick={async () => {
-                      await claimDailyReward({ rewardId: reward.id });
-                    }}
-                  >
-                    Reclamar
-                  </Button>
-                </div>
-              ))}
+                );
+              })}
             </CardContent>
           </Card>
         </TabsContent>

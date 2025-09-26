@@ -102,13 +102,11 @@ const ScrollExpandMedia = ({
           <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
             <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative'>
               <div
-                className='absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-none rounded-2xl'
+                className='absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-none rounded-2xl media-container-shadow media-container-size'
+                 
                 style={{
                   width: `${mediaWidth}px`,
                   height: `${mediaHeight}px`,
-                  maxWidth: '95vw',
-                  maxHeight: '85vh',
-                  boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.3)',
                 }}
               >
                 {mediaType === 'video' ? (
@@ -133,8 +131,7 @@ const ScrollExpandMedia = ({
                         allowFullScreen
                       />
                       <div
-                        className='absolute inset-0 z-10'
-                        style={{ pointerEvents: 'none' }}
+                        className='absolute inset-0 z-10 pointer-events-none'
                       ></div>
 
                       <motion.div
@@ -160,8 +157,7 @@ const ScrollExpandMedia = ({
                         disableRemotePlayback
                       />
                       <div
-                        className='absolute inset-0 z-10'
-                        style={{ pointerEvents: 'none' }}
+                        className='absolute inset-0 z-10 pointer-events-none'
                       ></div>
 
                       <motion.div
@@ -195,6 +191,7 @@ const ScrollExpandMedia = ({
                   {date && (
                     <p
                       className='text-2xl text-blue-200'
+                       
                       style={{ transform: `translateX(-${textTranslateX}vw)` }}
                     >
                       {date}
@@ -203,6 +200,7 @@ const ScrollExpandMedia = ({
                   {scrollToExpand && (
                     <p
                       className='text-blue-200 font-medium text-center'
+                       
                       style={{ transform: `translateX(${textTranslateX}vw)` }}
                     >
                       {scrollToExpand}

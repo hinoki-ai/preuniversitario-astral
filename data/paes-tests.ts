@@ -42,7 +42,7 @@ export type PaesAssignmentMeta = {
   description: string;
 };
 
-export const paesAssignments: PaesAssignmentMeta[] = [
+export const PAES_ASSIGNMENTS: PaesAssignmentMeta[] = [
   {
     id: 'matematica_m1',
     label: 'Matemática M1',
@@ -85,7 +85,7 @@ type PlaceholderSeed = {
   durationSec?: number;
 };
 
-export const placeholderSeeds: PlaceholderSeed[] = [
+export const PLACEHOLDER_SEEDS: PlaceholderSeed[] = [
   {
     id: 'matematica-m1-2023-invierno',
     assignment: 'matematica_m1',
@@ -185,7 +185,7 @@ export function createPaesTestData(
   seed: PlaceholderSeed,
   questions: Omit<PaesQuestion, 'order'>[]
 ): PaesTest {
-  const assignment = paesAssignments.find(item => item.id === seed.assignment);
+  const assignment = PAES_ASSIGNMENTS.find(item => item.id === seed.assignment);
   const assignmentLabel = assignment?.label ?? seed.assignment;
   return {
     id: seed.id,
@@ -249,8 +249,8 @@ function createPlaceholderQuestions(seed: PlaceholderSeed, assignmentLabel: stri
   }));
 }
 
-export const paesExamCatalog: PaesTest[] = placeholderSeeds.map(seed => {
-  const assignment = paesAssignments.find(item => item.id === seed.assignment);
+export const PAES_EXAM_CATALOG: PaesTest[] = PLACEHOLDER_SEEDS.map(seed => {
+  const assignment = PAES_ASSIGNMENTS.find(item => item.id === seed.assignment);
   const assignmentLabel = assignment?.label ?? seed.assignment;
   return {
     id: seed.id,
@@ -266,11 +266,11 @@ export const paesExamCatalog: PaesTest[] = placeholderSeeds.map(seed => {
 });
 
 export function getAssignmentById(id: PaesAssignmentSlug): PaesAssignmentMeta | undefined {
-  return paesAssignments.find(item => item.id === id);
+  return PAES_ASSIGNMENTS.find(item => item.id === id);
 }
 
 export function getPaesTestById(id: string): PaesTest | undefined {
-  return paesExamCatalog.find(test => test.id === id);
+  return PAES_EXAM_CATALOG.find(test => test.id === id);
 }
 
 // Expanded content generation system for 1,300+ PAES questions
@@ -284,7 +284,7 @@ export interface QuestionTemplate {
   distractors: string[];
 }
 
-const questionTemplates: QuestionTemplate[] = [
+const QUESTION_TEMPLATES: QuestionTemplate[] = [
   // Mathematics M1 templates
   {
     subject: 'matematica_m1',
@@ -408,14 +408,14 @@ export function expandContentLibrary(targetQuestions: number = 1300): void {
 
   const expandedQuestions: Record<string, PaesQuestion[]> = {};
 
-  for (const assignment of paesAssignments) {
+  for (const assignment of PAES_ASSIGNMENTS) {
     expandedQuestions[assignment.id] = [];
 
     // Generate questions for each template applicable to this assignment
-    const applicableTemplates = questionTemplates.filter(t => t.subject === assignment.id);
+    const applicableTemplates = QUESTION_TEMPLATES.filter(t => t.subject === assignment.id);
 
     let questionCount = 0;
-    while (questionCount < targetQuestions / paesAssignments.length && applicableTemplates.length > 0) {
+    while (questionCount < targetQuestions / PAES_ASSIGNMENTS.length && applicableTemplates.length > 0) {
       const template = applicableTemplates[questionCount % applicableTemplates.length];
       const question = generateQuestionFromTemplate(template, questionCount);
       expandedQuestions[assignment.id].push(question);
@@ -423,7 +423,7 @@ export function expandContentLibrary(targetQuestions: number = 1300): void {
     }
 
     // Fill remaining with enhanced placeholders
-    while (questionCount < targetQuestions / paesAssignments.length) {
+    while (questionCount < targetQuestions / PAES_ASSIGNMENTS.length) {
       expandedQuestions[assignment.id].push({
         order: questionCount + 1,
         text: `Pregunta ${questionCount + 1} de ${assignment.label} - Contenido PAES real por implementar`,

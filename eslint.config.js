@@ -12,13 +12,22 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals"),
   {
-    rules: {},
+    rules: {
+      "@next/next/no-css-in-js": "off",
+    },
   },
   {
     files: ["components/ui/chart.tsx"],
     rules: {
       "react/style-prop-object": "off",
       "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+  {
+    files: ["components/ui/*.tsx"],
+    rules: {
+      "react/style-prop-object": "off",
+      "@next/next/no-css-in-js": "off",
     },
   },
   {

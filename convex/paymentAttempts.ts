@@ -3,7 +3,7 @@ import { v } from 'convex/values';
 import { internalMutation, QueryCtx } from './_generated/server';
 import { paymentAttemptDataValidator } from './paymentAttemptTypes';
 
-async function userbyexternalid(ctx: queryctx, externalid: string) {
+async function userByExternalId(ctx: QueryCtx, externalId: string) {
   return await ctx.db
     .query('users')
     .withIndex('byExternalId', q => q.eq('externalId', externalId))
@@ -16,13 +16,13 @@ export const savePaymentAttempt = internalMutation({
   },
   returns: v.null(),
   handler: async (ctx, { paymentAttemptData }) => {
-    // Find the user by the payer.user_id (which maps to externalId in our users table)
-    const user = await userByExternalId(ctx, paymentAttemptData.payer.user_id);
+    // Find the user by the payer.userId (which maps to externalId in our users table)
+    const user = await userByExternalId(ctx, paymentAttemptData.payer.userId);
 
     // Check if payment attempt already exists to avoid duplicates
     const existingPaymentAttempt = await ctx.db
       .query('paymentAttempts')
-      .withIndex('byPaymentId', q => q.eq('payment_id', paymentAttemptData.payment_id))
+      .withIndex('byPaymentId', q => q.eq('paymentId', paymentAttemptData.paymentId))
       .unique();
 
     const paymentAttemptRecord = {

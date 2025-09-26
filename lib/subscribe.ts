@@ -3,7 +3,7 @@
 import { Redis } from '@upstash/redis';
 
 import { TABLES } from './constants';
-import { newsletterSchema } from './schema';
+import { NEWSLETTER_SCHEMA } from './schema';
 import { ActionResult, error, success } from './utils';
 
 const IS_DEMO = !process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN;
@@ -19,7 +19,7 @@ export const subscribe = async (email: string): Promise<ActionResult<string>> =>
     return error('Missing required setup');
   }
 
-  const parsed = newsletterSchema.safeParse({ email });
+  const parsed = NEWSLETTER_SCHEMA.safeParse({ email });
 
   if (!parsed.success) {
     return error(parsed.error.message);
@@ -46,6 +46,6 @@ export const subscribe = async (email: string): Promise<ActionResult<string>> =>
   }
 };
 
-export const getdemostate = async () => {
+export const getDemoState = async () => {
   return IS_DEMO;
 };

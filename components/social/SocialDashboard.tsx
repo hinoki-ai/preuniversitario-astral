@@ -109,7 +109,7 @@ function FriendsTab() {
   const sendFriendRequest = useMutation(api.socialFeatures.sendFriendRequest);
   const acceptFriendRequest = useMutation(api.socialFeatures.acceptFriendRequest);
 
-  const handlesendrequest = async () => {
+  const handleSendRequest = async () => {
     try {
       await sendFriendRequest({ friendEmail });
       toast({
@@ -129,9 +129,9 @@ function FriendsTab() {
     }
   };
 
-  const handleacceptrequest = async (friendshipId: string) => {
+  const handleAcceptRequest = async (friendshipId: string) => {
     try {
-      await acceptFriendRequest({ friendshipId });
+      await acceptFriendRequest({ friendshipId: friendshipId as any });
       toast({
         title: "Success",
         description: "Friend request accepted!",
@@ -290,7 +290,7 @@ function StudyGroupsTab() {
   const publicGroups = useQuery(api.socialFeatures.getPublicStudyGroups, {});
   const joinStudyGroup = useMutation(api.socialFeatures.joinStudyGroup);
 
-  const handlejoinwithcode = async () => {
+  const handleJoinWithCode = async () => {
     try {
       await joinStudyGroup({ inviteCode });
       toast({
@@ -337,7 +337,7 @@ function StudyGroupsTab() {
                   maxLength={8}
                 />
                 <div className="flex gap-2">
-                  <Button onClick={handleJoinWithCode} disabled={!inviteCode}>
+                  <Button onClick={handlejoinwithcode} disabled={!inviteCode}>
                     Join Group
                   </Button>
                   <Button variant="outline" onClick={() => setShowJoinDialog(false)}>
@@ -383,7 +383,7 @@ function StudyGroupCard({ group, isMember }: { group: any; isMember: boolean }) 
   const joinStudyGroup = useMutation(api.socialFeatures.joinStudyGroup);
   const { toast } = useToast();
 
-  const handlejoin = async () => {
+  const handleJoin = async () => {
     try {
       await joinStudyGroup({ groupId: group._id });
       toast({
@@ -657,7 +657,7 @@ function CompetitionCard({ competition }: { competition: any }) {
   const joinCompetition = useMutation(api.socialFeatures.joinGlobalCompetition);
   const { toast } = useToast();
 
-  const handlejoin = async () => {
+  const handleJoin = async () => {
     try {
       await joinCompetition({ competitionId: competition._id });
       toast({

@@ -57,7 +57,7 @@ export function GamificationAnalytics() {
   const analyticsData = useMemo<AnalyticsData>(() => {
     const level = userStats?.level ?? 1;
     const totalPoints = userStats?.totalPoints ?? 0;
-    const weeklyGrowth = userStats?.weeklyGrowth ?? 12.5;
+    const weeklyGrowth = 12.5; // Default weekly growth percentage
     const streakDays = userStats?.currentStreak ?? 0;
     const averageScore = userStats?.avgScore ? Math.round(userStats.avgScore * 100) : 0;
 
@@ -81,7 +81,7 @@ export function GamificationAnalytics() {
       },
       insights: {
         bestStudyTime: '19:00 - 21:00 hrs',
-        strongestSubjects: userStats?.topSubjects ?? ['Matemáticas', 'Ciencias'],
+        strongestSubjects: userStats?.strongSubjects ?? ['Matemáticas', 'Ciencias'],
         improvementAreas: userStats?.weakSubjects ?? ['Lenguaje'],
         motivationFactors: ['Rachas diarias', 'Logros obtenidos', 'Ranking semanal'],
       },

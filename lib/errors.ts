@@ -2,9 +2,9 @@
  * Error handling utilities for API routes
  */
 
-export interface apiresponse<t = any> {
+export interface ApiResponse<T = any> {
   success: boolean;
-  data?: t;
+  data?: T;
   error?: {
     message: string;
     code?: string;

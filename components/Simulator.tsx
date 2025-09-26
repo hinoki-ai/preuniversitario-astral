@@ -28,21 +28,21 @@ import {
   getDemoPaesCatalog,
   getDemoPaesQuiz,
   getPaesAssignmentMeta,
-  type demopaesquizpayload,
+  type DemoPaesQuizPayload,
 } from '@/lib/demo-data';
 import type { PaesAssignmentMeta, PaesQuiz, PaesCatalogItem, QuizAttempt } from '@/lib/types';
 
 type PaesCatalog = PaesCatalogItem[];
 type PaesQuizResult = QuizAttempt;
 
-type localpaesresult = {
+type LocalPaesResult = {
   correctCount: number;
   totalCount: number;
   score: number;
   review: { correct: boolean; correctIndex: number; explanation?: string }[];
 };
 
-type catalogtestbase = {
+type CatalogTestBase = {
   id: string;
   title: string;
   assignment: string;
@@ -54,20 +54,20 @@ type catalogtestbase = {
   session?: string;
 };
 
-type convexcatalogtest = catalogtestbase & {
+type ConvexCatalogTest = CatalogTestBase & {
   sourceType: 'convex';
-  quizId: id<'quizzes'>;
+  quizId: Id<'quizzes'>;
 };
 
-type democatalogtest = catalogtestbase & {
+type DemoCatalogTest = CatalogTestBase & {
   sourceType: 'demo';
   quizId: string;
 };
 
 type CatalogTest = ConvexCatalogTest | DemoCatalogTest;
 
-type catalogassignment = paesassignmentmeta & {
-  tests: catalogtest[];
+type CatalogAssignment = PaesAssignmentMeta & {
+  tests: CatalogTest[];
 };
 
 function resolveAssignmentMeta(id?: string): PaesAssignmentMeta {
@@ -92,7 +92,7 @@ function buildAssignments(
   convexCatalog: any[] | undefined
 ): CatalogAssignment[] {
   const assignments = new Map<string, CatalogAssignment>();
-  const ensureassignment = (meta: PaesAssignmentMeta) => {
+  const ensureAssignment = (meta: PaesAssignmentMeta) => {
     const existing = assignments.get(meta.id);
     if (existing) return existing;
     const next: CatalogAssignment = { ...meta, tests: [] };
@@ -151,8 +151,10 @@ function buildAssignments(
 }
 
 function SimulatorInternal() {
-  const { handleError, safeAsyncCall, safeSyncCall } = useErrorHandler();
+  const { handleError, safeAsyncCall, safeSyncCall } = useStandardErrorHandling();
   const [selectedTest, setSelectedTest] = useState<CatalogTest | null>(null);
+  const [selectedAssignmentId, setSelectedAssignmentId] = useState<string>('');
+  const [selectedTestId, setSelectedTestId] = useState<string>('');
 
   const convexQuiz = useQuery(
     api.quizzes.getPaesQuiz,
@@ -161,9 +163,13 @@ function SimulatorInternal() {
       : 'skip'
   );
 
-  const demoQuizPayload: demopaesquizpayload | null = useMemo(() => {
+  const convexCatalog = useQuery(api.quizzes.getPaesCatalog);
+  const mockExamCatalog = useQuery(api.mockExams.getMockExamCatalog);
+  const recommendations = useQuery(api.userStats.getRecommendations);
+
+  const demoQuizPayload: DemoPaesQuizPayload | null = useMemo(() => {
     if (!selectedTest || selectedTest.sourceType !== 'demo') return null;
-    return getDemoPaesQuiz(selectedTest.quizId) as demopaesquizpayload | null;
+    return getDemoPaesQuiz(selectedTest.quizId) as DemoPaesQuizPayload | null;
   }, [selectedTest]);
   const quiz =
     selectedTest?.sourceType === 'convex'
@@ -203,7 +209,7 @@ function SimulatorInternal() {
 
   const submit = useMutation(api.quizzes.submitPaesAttempt);
 
-  const onsubmit = async () => {
+  const onSubmit = async () => {
     if (!quiz || quiz.questions.length === 0 || isSubmitting) return;
 
     if (selectedTest?.sourceType === 'convex') {
@@ -233,10 +239,25 @@ function SimulatorInternal() {
       });
       const correctCount = review.filter(entry => entry.correct).length;
       const totalCount = answerKey.length;
-      const score = totalCount > 0 ? correctCount / totalCount : 0;scoretotalCount0correctCounttotalCount
+      const score = totalCount > 0 ? correctCount / totalCount : 0;
       setResult({ correctCount, totalCount, score, review });
     }
   };
+
+  const assignments = useMemo(() => buildAssignments(convexCatalog), [convexCatalog]);
+
+  // Update selectedTest when selectedAssignmentId or selectedTestId changes
+  useEffect(() => {
+    if (selectedAssignmentId && selectedTestId) {
+      const assignment = assignments.find(a => a.id === selectedAssignmentId);
+      const test = assignment?.tests.find(t => t.id === selectedTestId);
+      setSelectedTest(test || null);
+    } else {
+      setSelectedTest(null);
+    }
+  }, [selectedAssignmentId, selectedTestId, assignments]);
+
+  const selectedAssignment = assignments.find(a => a.id === selectedAssignmentId);
 
   const mm = Math.floor(secondsLeft / 60);
   const ss = secondsLeft % 60;

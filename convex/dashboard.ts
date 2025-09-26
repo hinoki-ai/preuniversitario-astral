@@ -53,7 +53,7 @@ export const metrics = query({
   },
 });
 
-async function calculatestudystreak(ctx: queryctx, userid: id<'users'>, now: number) {
+async function calculateStudyStreak(ctx: QueryCtx, userId: Id<'users'>, now: number) {
   // Get all progress events from the last 60 days to calculate streak
   const sixtyDaysAgo = now - 60 * 24 * 3600;
   const events = await ctx.db
@@ -102,7 +102,7 @@ async function calculatestudystreak(ctx: queryctx, userid: id<'users'>, now: num
   return { streak, progress, nextMilestone };
 }
 
-async function calculateweeklyprogress(ctx: queryctx, userid: id<'users'>, now: number) {
+async function calculateWeeklyProgress(ctx: QueryCtx, userId: Id<'users'>, now: number) {
   // Get current week's study plan
   const weekStart = getWeekStart(now);
   const studyPlan = await ctx.db
@@ -130,7 +130,7 @@ async function calculateweeklyprogress(ctx: queryctx, userid: id<'users'>, now: 
   };
 }
 
-async function calculateperformancemetrics(ctx: queryctx, userid: id<'users'>, now: number) {
+async function calculatePerformanceMetrics(ctx: QueryCtx, userId: Id<'users'>, now: number) {
   // Get quiz attempts from the last 30 days
   const thirtyDaysAgo = now - 30 * 24 * 3600;
   const attempts = await ctx.db
@@ -205,7 +205,7 @@ async function calculateperformancemetrics(ctx: queryctx, userid: id<'users'>, n
   };
 }
 
-async function getupcomingexam(ctx: queryctx, userid: id<'users'>, now: number) {
+async function getUpcomingExam(ctx: QueryCtx, userId: Id<'users'>, now: number) {
   // Look for upcoming quizzes or study plan milestones
   const studyPlans = await ctx.db
     .query('studyPlans')
@@ -251,7 +251,7 @@ async function getupcomingexam(ctx: queryctx, userid: id<'users'>, now: number) 
   };
 }
 
-async function getsubjectprogress(ctx: queryctx, userid: id<'users'>, now: number) {
+async function getSubjectProgress(ctx: QueryCtx, userId: Id<'users'>, now: number) {
   // Get quiz attempts grouped by subject
   const attempts = await ctx.db
     .query('attempts')
@@ -329,11 +329,11 @@ async function getsubjectprogress(ctx: queryctx, userid: id<'users'>, now: numbe
   return result;
 }
 
-async function getchartdata(ctx: queryctx, userid: id<'users'>, starttime: number, endtime: number) {
+async function getChartData(ctx: QueryCtx, userId: Id<'users'>, startTime: number, endTime: number) {
   const events = await ctx.db
     .query('progressEvents')
     .withIndex('byUserCreatedAt', (q: any) =>
-      q.eq('userId', userId).gte('createdAt', starttime).lte('createdAt', endtime)
+      q.eq('userId', userId).gte('createdAt', startTime).lte('createdAt', endTime)
     )
     .collect();
 
@@ -358,8 +358,8 @@ async function getchartdata(ctx: queryctx, userid: id<'users'>, starttime: numbe
 
   // Convert to array format expected by chart
   const result = [];
-  const current = new Date(starttime * 1000);
-  const end = new Date(endtime * 1000);
+  const current = new Date(startTime * 1000);
+  const end = new Date(endTime * 1000);
 
   while (current <= end) {
     const dateStr = current.toISOString().split('T')[0];
@@ -447,7 +447,7 @@ export const predictiveAnalytics = query({
 
 function calculatePerformanceTrend(attempts: any[]): {
   overall: 'improving' | 'stable' | 'declining';
-  bySubject: record<string, 'improving' | 'stable' | 'declining'>;
+  bySubject: Record<string, 'improving' | 'stable' | 'declining'>;
   velocity: number; // points per week
 }
 
@@ -466,7 +466,7 @@ function calculatePerformanceTrend(attempts: any[]): {
   const recentAvg = recentHalf.reduce((sum, a) => sum + a.score, 0) / recentHalf.length;
   const earlierAvg = earlierHalf.reduce((sum, a) => sum + a.score, 0) / earlierHalf.length;
 
-  let overall: 'improving' | 'stable' | 'declining' = 'stable';overall
+  let overall: 'improving' | 'stable' | 'declining' = 'stable';
   if (recentAvg > earlierAvg + 0.05) overall = 'improving';
   else if (recentAvg < earlierAvg - 0.05) overall = 'declining';
 
@@ -495,7 +495,7 @@ function calculatePerformanceTrend(attempts: any[]): {
   // Calculate velocity (points improvement per week)
   const timeSpanWeeks = (sortedAttempts[sortedAttempts.length - 1].completedAt - sortedAttempts[0].completedAt) / (7 * 24 * 3600);
   const totalImprovement = recentAvg - earlierAvg;
-  const velocity = timeSpanWeeks > 0 ? totalImprovement / timeSpanWeeks : 0;velocitytimeSpanWeeks0totalImprovementtimeSpanWeeks
+  const velocity = timeSpanWeeks > 0 ? totalImprovement / timeSpanWeeks : 0;
 
   return { overall, bySubject, velocity };
 }

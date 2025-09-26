@@ -2,7 +2,7 @@ import { v } from 'convex/values';
 
 import { query, mutation } from './_generated/server';
 
-function isteacheroradmin(role?: string | null) {
+function isTeacherOrAdmin(role?: string | null) {
   return role === 'teacher' || role === 'admin';
 }
 

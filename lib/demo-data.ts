@@ -21,7 +21,7 @@ export const getPaesAssignmentMeta = (slug: string) => null;
 export const demoCourses = [];
 export const getDemoCourses = () => [];
 
-export type demopaesquizpayload = {
+export type DemoPaesQuizPayload = {
   quiz: {
     _id: string;
     title: string;

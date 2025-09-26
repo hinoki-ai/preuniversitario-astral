@@ -464,7 +464,7 @@ function calculateLevel(experiencePoints: number): { level: number; pointsToNext
 
  {
   // Level progression: 100, 200, 400, 800, 1600, etc.
-  let level = 1;Levelprogression
+  let level = 1;
   let pointsNeededForCurrentLevel = 0;
   let pointsNeededForNextLevel = 100;
   

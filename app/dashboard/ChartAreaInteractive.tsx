@@ -30,7 +30,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useIsMobile } from '@/hooks/use-mobile';
 
-export const description = 'Seguimiento del aprendizaje';
+export const DESCRIPTION = 'Seguimiento del aprendizaje';
 
 type TimeRange = '7d' | '30d' | '90d';
 type ChartViewKey = 'study-time' | 'performance';

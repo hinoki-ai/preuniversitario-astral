@@ -4,7 +4,7 @@ import { useMutation, useQuery } from 'convex/react';
 import { useMemo, useState } from 'react';
 import { z } from 'zod';
 
-import { DataTable, schema as dataTableSchema } from '@/app/dashboard/DataTable';
+import { DataTable, SCHEMA as dataTableSchema } from '@/app/dashboard/DataTable';
 import { Card } from '@/components/ui/card';
 
 import {
@@ -20,9 +20,7 @@ import { useErrorHandler } from '@/lib/core/error-system';
 
 // Using demo data types for now - update when proper types are available
 type WeeklyPlan = any;
-type weeklyplanitem = weeklyplan extends { items: (infer item)[] }
-
- ? Item : never;Item
+type WeeklyPlanItem = WeeklyPlan extends { items: (infer Item)[] } ? Item : never;
 type StudyPlanRow = Omit<WeeklyPlanItem, 'order'>;
 type SaveWeeklyPlanArgs = typeof api.studyPlan.saveWeeklyPlan._args;
 
@@ -62,7 +60,7 @@ export default function StudyPlanTable() {
     }
   }, [plan, handleError]);
 
-  const onreorder = async (next: z.infer<typeof dataTableSchema>[]) => {
+  const onReorder = async (next: z.infer<typeof dataTableSchema>[]) => {
     if (!plan) {
       handleError(new Error('No plan data available'), 'StudyPlanTable-onReorder');
       return;
@@ -79,7 +77,7 @@ export default function StudyPlanTable() {
         reviewer: 'auto-generated',
         id: entry.id,
         order: index,
-      }));withOrder
+      }));
       const { weekStart } = plan;
       await wrapAsync(() => save({ track, weekStart, items: withOrder }), 'StudyPlanTable-save');
     } catch (error) {

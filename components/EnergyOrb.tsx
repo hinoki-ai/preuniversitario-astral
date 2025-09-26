@@ -4,7 +4,7 @@ import React, { useRef, useEffect } from "react"
 import * as THREE from "three"
 import { cn } from "@/lib/utils"
 
-interface energyorbprops {
+interface EnergyOrbProps {
   // Size options
   size?: "sm" | "md" | "lg" | "xl" | number;
   className?: string
@@ -62,7 +62,7 @@ export function EnergyOrb({
   intensity,
   showContainer = true,
   containerClassName,
-}: energyorbprops) {
+}: EnergyOrbProps) {
   const mountref = useRef<HTMLDivElement>(null)
   const sceneref = useRef<{
     scene: THREE.Scene;

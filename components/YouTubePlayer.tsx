@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-type youtubeplayerprops = {
+type YouTubePlayerProps = {
   videoId: string;
   playbackRate: number;
   onReady?: (player: any) => void;
@@ -10,11 +10,11 @@ type youtubeplayerprops = {
   onDurationChange?: (seconds: number) => void;
 };
 
-type youtubeapistate = {
-  promise: promise<any>;
+type YouTubeApiState = {
+  promise: Promise<any>;
 };
 
-let youtubeApiState: youtubeapistate | null = null;youtubeApiState
+let youtubeApiState: YouTubeApiState | null = null;
 
 function loadYouTubeIframeAPI(): Promise<any> {
   if (typeof window === 'undefined') return Promise.resolve(null);
@@ -25,7 +25,7 @@ function loadYouTubeIframeAPI(): Promise<any> {
 
   if (youtubeApiState) return youtubeApiState.promise;
 
-  youtubeapistate = {
+  youtubeApiState = {
     promise: new Promise(resolve => {
       const handleReady = () => {
         if (window.YT && typeof window.YT.Player === 'function') {
@@ -169,7 +169,7 @@ export function YouTubePlayer({
 }
 
 declare global {
-  interface window {
+  interface Window {
     YT: any;
     onYouTubeIframeAPIReady: () => void;
   }

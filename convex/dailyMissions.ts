@@ -261,7 +261,7 @@ export const getMissionStats = query({
       weeklyLeaderboard: leaderboardWithNames,
       personalStats: {
         averageDailyCompletions: totalMissionsCompleted / Math.max(1, history.length / 3),
-        favoriteType: getmostfrequentmissiontype(history),
+        favoriteType: getMostFrequentMissionType(history),
       },
     };
   },
@@ -378,7 +378,7 @@ function getWeekStart(timestamp: number): number {
   return Math.floor(date.getTime() / 1000);
 }
 
-function getmostfrequentmissiontype(history: any[]) {
+function getMostFrequentMissionType(history: any[]) {
   const typeCounts = new Map();
   history.forEach(h => {
     const type = h.missionId.split('_')[1] || 'unknown';

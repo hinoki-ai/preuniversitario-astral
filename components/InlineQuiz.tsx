@@ -14,7 +14,7 @@ import { useErrorHandler } from '@/lib/core/error-system';
 import type { LessonQuiz, QuizAttempt } from '@/lib/types';
 import { getDemoLessonQuiz } from '@/lib/demo-data';
 
-type quizresult = {
+type QuizResult = {
   correctCount: number;
   totalCount: number;
   score: number;
@@ -41,7 +41,7 @@ export default function InlineQuiz({ lessonId }: { lessonId: string }) {
   const quiz = convexQuiz || getDemoLessonQuiz(lessonId);
 
   const [answers, setAnswers] = useState<number[]>([]);
-  const [result, setResult] = useState<quizresult | null>(null);
+  const [result, setResult] = useState<QuizResult | null>(null);
   const [startedAt, setStartedAt] = useState<number>(Math.floor(Date.now() / 1000));
   const [isSubmitting, setIsSubmitting] = useState(false);
 

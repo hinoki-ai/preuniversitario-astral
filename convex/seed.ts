@@ -43,13 +43,13 @@ export const seed = action(async ctx => {
   return { success: true, message: 'Demo data seeded successfully' };
 });
 
-async function seedmedicinacontent(ctx: any, courseid: any, adminuser: any) {
+async function seedMedicinaContent(ctx: any, courseId: any, adminUser: any) {
   // Module 1: Matemáticas M1
   const mathM1Module = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Matemáticas M1 - Fundamentos',
     order: 1,
-  });Module1
+  });
   const mathM1Lesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: mathM1Module,
     title: 'Álgebra Básica y Ecuaciones',
@@ -79,7 +79,7 @@ async function seedmedicinacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Matemáticas M2 - Avanzado',
     order: 2,
-  });Module2
+  });
   const mathM2Lesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: mathM2Module,
     title: 'Cálculo Diferencial',
@@ -109,7 +109,7 @@ async function seedmedicinacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Competencia Lectora',
     order: 3,
-  });Module3
+  });
   const lecturaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: lecturaModule,
     title: 'Comprensión de Textos Científicos',
@@ -144,7 +144,7 @@ async function seedmedicinacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Física para Ciencias de la Salud',
     order: 4,
-  });Module4
+  });
   const fisicaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: fisicaModule,
     title: 'Movimiento y Fuerzas',
@@ -179,7 +179,7 @@ async function seedmedicinacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Química para Ciencias de la Salud',
     order: 5,
-  });Module5
+  });
   const chemLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: chemModule,
     title: 'Enlaces Químicos y Biomoléculas',
@@ -209,7 +209,7 @@ async function seedmedicinacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Biología Celular y Molecular',
     order: 6,
-  });Module6
+  });
   const bioLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: bioModule,
     title: 'Estructura y Función Celular',
@@ -252,7 +252,7 @@ async function seedmedicinacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Estrategias de Estudio PAES',
     order: 7,
-  });Module7
+  });
   const strategiesLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: strategiesModule,
     title: 'Técnicas de Estudio para Medicina',
@@ -287,7 +287,7 @@ async function seedmedicinacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Bienestar y Salud Mental',
     order: 8,
-  });Module8
+  });
 
   const yogaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: wellnessModule,
@@ -322,13 +322,13 @@ async function seedmedicinacontent(ctx: any, courseid: any, adminuser: any) {
   });
 }
 
-async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
+async function seedIngenieriaContent(ctx: any, courseId: any, adminUser: any) {
   // Module 1: Matemáticas M1
   const mathM1Module = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Matemáticas M1 - Fundamentos',
     order: 1,
-  });Module1
+  });
   const mathM1Lesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: mathM1Module,
     title: 'Álgebra y Geometría',
@@ -358,7 +358,7 @@ async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Matemáticas M2 - Avanzado',
     order: 2,
-  });Module2
+  });
   const mathM2Lesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: mathM2Module,
     title: 'Cálculo Integral y Aplicaciones',
@@ -388,7 +388,7 @@ async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Competencia Lectora',
     order: 3,
-  });Module3
+  });
   const lecturaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: lecturaModule,
     title: 'Comprensión de Textos Técnicos',
@@ -423,7 +423,7 @@ async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Física para Ingeniería',
     order: 4,
-  });Module4
+  });
   const fisicaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: fisicaModule,
     title: 'Mecánica y Termodinámica',
@@ -458,7 +458,7 @@ async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Química para Ingeniería',
     order: 5,
-  });Module5
+  });
   const chemLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: chemModule,
     title: 'Química General y de Materiales',
@@ -488,7 +488,7 @@ async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Biología para Ingeniería',
     order: 6,
-  });Module6
+  });
   const bioLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: bioModule,
     title: 'Biología y Biotecnología',
@@ -523,7 +523,7 @@ async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Historia y Ciencias Sociales',
     order: 7,
-  });Module7
+  });
   const historiaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: historiaModule,
     title: 'Historia de la Ciencia y Tecnología',
@@ -558,7 +558,7 @@ async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Estrategias de Estudio PAES',
     order: 8,
-  });Module8
+  });
   const strategiesLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: strategiesModule,
     title: 'Técnicas de Estudio para Ingeniería',
@@ -593,7 +593,7 @@ async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Bienestar y Salud Mental',
     order: 9,
-  });Module9
+  });
 
   const yogaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: wellnessModule,
@@ -628,13 +628,13 @@ async function seedingenieriacontent(ctx: any, courseid: any, adminuser: any) {
   });
 }
 
-async function seedhumanistacontent(ctx: any, courseid: any, adminuser: any) {
+async function seedHumanistaContent(ctx: any, courseId: any, adminUser: any) {
   // Module 1: Matemáticas M1
   const mathM1Module = await ctx.runMutation(api.content.createModule, {
     courseId,
     title: 'Matemáticas M1 - Fundamentos',
     order: 1,
-  });Module1
+  });
   const mathM1Lesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: mathM1Module,
     title: 'Matemáticas para Ciencias Sociales',
@@ -664,7 +664,7 @@ async function seedhumanistacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Competencia Lectora',
     order: 2,
-  });Module2
+  });
   const lecturaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: lecturaModule,
     title: 'Comprensión de Textos Humanísticos',
@@ -699,7 +699,7 @@ async function seedhumanistacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Historia y Ciencias Sociales',
     order: 3,
-  });Module3
+  });
   const historiaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: historiaModule,
     title: 'Historia Universal y Chilena',
@@ -734,7 +734,7 @@ async function seedhumanistacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Estrategias de Estudio PAES',
     order: 4,
-  });Module4
+  });
   const strategiesLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: strategiesModule,
     title: 'Técnicas de Estudio para Humanistas',
@@ -769,7 +769,7 @@ async function seedhumanistacontent(ctx: any, courseid: any, adminuser: any) {
     courseId,
     title: 'Bienestar y Salud Mental',
     order: 5,
-  });Module5
+  });
 
   const yogaLesson1 = await ctx.runMutation(api.content.createLesson, {
     moduleId: wellnessModule,
@@ -804,7 +804,7 @@ async function seedhumanistacontent(ctx: any, courseid: any, adminuser: any) {
   });
 }
 
-async function seedpaesquiz(ctx: any, adminuser: any) {
+async function seedPaesQuiz(ctx: any, adminUser: any) {
   // Create PAES practice quiz
   const paesQuiz = await ctx.runMutation(api.quizzes.createQuiz, {
     title: 'Simulacro PAES 2024',

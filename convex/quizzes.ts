@@ -2,7 +2,7 @@ import { v } from 'convex/values';
 
 import { mutation, query } from './_generated/server';
 
-async function getuser(ctx: any) {
+async function getUser(ctx: any) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
     // For demo purposes, create or get a demo user

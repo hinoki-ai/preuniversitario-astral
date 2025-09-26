@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useForm, useFormContext } from 'react-hook-form';
 
 import type { NewsletterSchema } from '@/lib/schema';
-import { newsletterSchema } from '@/lib/schema';
+import { NEWSLETTER_SCHEMA } from '@/lib/schema';
 import { subscribe } from '@/lib/subscribe';
 import { ActionResult, cn } from '@/lib/utils';
 
@@ -77,7 +77,7 @@ export const FormNewsletter = ({
   const [submissionState, setSubmissionState] = useState<ActionResult<string> | null>(null);
 
   const form = useForm<NewsletterSchema>({
-    resolver: zodResolver(newsletterSchema),
+    resolver: zodResolver(NEWSLETTER_SCHEMA),
     defaultValues: getDefaultValues(),
   });
 

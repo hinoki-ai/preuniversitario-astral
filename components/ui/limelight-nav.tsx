@@ -1,19 +1,17 @@
-import react, { useState, useRef, useLayoutEffect, cloneElement } from 'react';
+import React, { useState, useRef, useLayoutEffect, cloneElement } from 'react';
 
 // --- Internal Types and Defaults ---
 
 const DefaultHomeIcon = (props: React.SVGProps<SVGSVGElement>) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></svg>;
-const defaultcompassicon = (props: React.SVGProps<SVGSVGElement>) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" /></svg>;
-const defaultbellicon = (props: React.SVGProps<SVGSVGElement>) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>;
+const DefaultCompassIcon = (props: React.SVGProps<SVGSVGElement>) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" /></svg>;
+const DefaultBellIcon = (props: React.SVGProps<SVGSVGElement>) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>;
 
-export type navitem = {
+export type NavItem = {
   id: string | number;
-  icon: react.reactelement;
+  icon: React.ReactElement;
   label?: string;
   onClick?: () => void;
 };
-
-export type NavItem = navitem;
 
 const defaultNavItems: NavItem[] = [
   { id: 'home', label: 'Home', icon: <div>Home</div> },
@@ -21,8 +19,8 @@ const defaultNavItems: NavItem[] = [
   { id: 'notifications', label: 'Notifications', icon: <div>🔔</div> },
 ];
 
-type limelightnavprops = {
-  items?: navitem[];
+type LimelightNavProps = {
+  items?: NavItem[];
   defaultActiveIndex?: number;
   activeIndex?: number;
   onTabChange?: (index: number) => void;
@@ -31,8 +29,6 @@ type limelightnavprops = {
   iconContainerClassName?: string;
   iconClassName?: string;
 };
-
-type LimelightNavProps = limelightnavprops;
 
 /**
  * An adaptive-width navigation bar with a "limelight" effect that highlights the active item.

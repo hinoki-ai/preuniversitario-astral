@@ -16,9 +16,9 @@ export default defineSchema({
   }).index('byExternalId', ['externalId']),
 
   paymentAttempts: defineTable(paymentAttemptSchemaValidator)
-    .index('byPaymentId', ['payment_id'])
+    .index('byPaymentId', ['paymentId'])
     .index('byUserId', ['userId'])
-    .index('byPayerUserId', ['payer.user_id']),
+    .index('byPayerUserId', ['payer.userId']),
 
   meetings: defineTable({
     title: v.string(),

@@ -4,7 +4,7 @@ import { mutation, query } from './_generated/server';
 
 const annotationType = v.union(v.literal('note'), v.literal('bookmark'));
 
-async function ensureuser(ctx: any) {
+async function ensureUser(ctx: any) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) throw new Error('Unauthorized');
 

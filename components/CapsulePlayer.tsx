@@ -162,7 +162,7 @@ function MultimediaViewer({
         {activeTab === 'video' && hasVideo && (
           <div className="space-y-4">
             <YouTubePlayer
-              videoId={getyoutubevideoid(lesson.videoUrl) || ''}
+              videoId={getYouTubeVideoId(lesson.videoUrl) || ''}
               playbackRate={playbackRate}
               onTimeUpdate={(time: number) => setCurrentTime(time)}
               onDurationChange={(dur: number) => setDuration(dur)}
@@ -203,7 +203,7 @@ function MultimediaViewer({
 
 const SPEED_OPTIONS = [0.75, 1, 1.25, 1.5, 1.75, 2];
 
-type lessonannotation = {
+type LessonAnnotation = {
   _id: Id<'lessonAnnotations'>;
   userId: Id<'users'>;
   lessonId: Id<'lessons'>;
@@ -214,7 +214,7 @@ type lessonannotation = {
   updatedAt: number;
 };
 
-function formatseconds(value: number | undefined) {
+function formatSeconds(value: number | undefined) {
   if (typeof value !== 'number' || Number.isNaN(value)) return '0:00';
   const seconds = Math.max(0, Math.floor(value));
   const minutes = Math.floor(seconds / 60);
@@ -222,7 +222,7 @@ function formatseconds(value: number | undefined) {
   return `${minutes}:${rest.toString().padStart(2, '0')}`;
 }
 
-function getyoutubevideoid(url: string | null | undefined) {
+function getYouTubeVideoId(url: string | null | undefined) {
   if (!url) return null;
   try {
     const patterns = [
@@ -264,7 +264,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
   const annotations = useQuery(
     api.lessonAnnotations.listLessonAnnotations,
     convexLessonId ? { lessonId: convexLessonId } : 'skip'
-  ) as lessonannotation[] | undefined;
+  ) as LessonAnnotation[] | undefined;
 
   const youtubePlayerRef = useRef<any | null>(null);
   const markViewed = useMutation(api.content.markLessonViewed);
@@ -276,7 +276,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
     convexLesson || getDemoLesson(lessonId);
 
   const youtubeVideoId = useMemo(
-    () => getyoutubevideoid(lesson?.videoUrl ?? ''),
+    () => getYouTubeVideoId(lesson?.videoUrl ?? ''),
     [lesson?.videoUrl]
   );
   const isYouTube = Boolean(youtubeVideoId);
@@ -418,7 +418,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
         lessonId: convexLessonId as Id<'lessons'>,
         type: 'bookmark',
         timestampSec: currentTime,
-        content: formatseconds(currentTime),
+        content: formatSeconds(currentTime),
       });
       toast.success('Marcador agregado');
     } catch (_error) {
@@ -526,7 +526,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
     }
 
     const notesContent = notes.map(note => {
-      const timestamp = note.timestampSec ? ` (${formatseconds(note.timestampSec)})` : '';
+      const timestamp = note.timestampSec ? ` (${formatSeconds(note.timestampSec)})` : '';
       return `${note.content}${timestamp}`;
     }).join('\n\n');
 
@@ -604,7 +604,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
                     setAttachTimestamp(Boolean(value) && supportsAdvancedControls)
                   }
                 />
-                Adjuntar minuto actual ({formatseconds(currentTime)})
+                Adjuntar minuto actual ({formatSeconds(currentTime)})
               </label>
               <label className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Checkbox
@@ -637,7 +637,7 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
                           disabled={!supportsAdvancedControls}
                         >
                           <IconClock className="size-3" />
-                          {formatseconds(note.timestampSec ?? 0)}
+                          {formatSeconds(note.timestampSec ?? 0)}
                         </button>
                       ) : (
                         <span className="text-xs text-muted-foreground">Sin marca de tiempo</span>
@@ -684,9 +684,9 @@ function CapsulePlayerInternal({ lessonId }: { lessonId: string }) {
                     onClick={() => seekTo(bookmark.timestampSec ?? 0)}
                     disabled={!supportsAdvancedControls}
                   >
-                    <span className="font-medium">{formatseconds(bookmark.timestampSec ?? 0)}</span>
+                    <span className="font-medium">{formatSeconds(bookmark.timestampSec ?? 0)}</span>
                     {bookmark.content &&
-                    bookmark.content !== formatseconds(bookmark.timestampSec ?? 0) ? (
+                    bookmark.content !== formatSeconds(bookmark.timestampSec ?? 0) ? (
                       <span className="text-xs text-muted-foreground">{bookmark.content}</span>
                     ) : null}
                   </button>

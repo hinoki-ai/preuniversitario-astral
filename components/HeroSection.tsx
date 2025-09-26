@@ -1,17 +1,9 @@
 "use client";
 
-import { motion }
-
- from 'framer-motion'
-import { Play, Star, Users, BookOpen }
-
- from 'lucide-react'
-import { ShaderAnimation }
-
- from "@/components/ui/shader-animation"
-import { Button }
-
- from "@/components/ui/button"
+import { motion } from 'framer-motion'
+import { Play, Star, Users, BookOpen } from 'lucide-react'
+import { ShaderAnimation } from "@/components/ui/shader-animation"
+import { Button } from "@/components/ui/button"
 import { withMinimalErrorHandling } from '@/lib/core/auto-error-enhancement'
 import { useEffect, useRef } from 'react'
 
