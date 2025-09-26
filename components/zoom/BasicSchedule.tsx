@@ -477,6 +477,6 @@ function downloadIcs(m: MeetingItem) {
   URL.revokeObjectURL(url);
 }
 
-function escapetext(s: string) {
+function escapeText(s: string) {
   return s.replace(/[\\,;]/g, m => '\\' + m).replace(/\n/g, '\\n');
 }

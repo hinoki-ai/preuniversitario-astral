@@ -3,13 +3,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Script from 'next/script';
-import { Video, Lightbulb, Activity, Badge, Sparkles, Zap, Users, Brain } from 'lucide-react';
+import { Video, Lightbulb, Activity, Sparkles, Zap, Users, Brain } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 import { ComponentErrorBoundary } from '@/components/ErrorBoundary';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 
 declare global {
   interface Window {

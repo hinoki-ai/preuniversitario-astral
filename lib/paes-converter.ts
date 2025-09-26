@@ -1,4 +1,4 @@
-import { PaesTest } from '@/data/paes-tests';
+import { PaesTest, PaesAssignmentSlug } from '@/data/paes-tests';
 import { DemoPaesQuizPayload } from './demo-data';
 
 // Convert PAES test data to formats used by the simulator
@@ -84,7 +84,7 @@ export class PaesConverter {
     const metadata = demoData.quiz.metadata;
     return {
       id: demoData.quiz._id.replace('demo-', ''),
-      assignment: metadata.assignment,
+      assignment: metadata.assignment as PaesAssignmentSlug,
       assignmentLabel: metadata.assignmentLabel,
       title: demoData.quiz.title,
       source: metadata.source,

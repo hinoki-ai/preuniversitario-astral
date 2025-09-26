@@ -11,7 +11,7 @@ import {
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-interface scrollexpandmediaprops {
+interface ScrollExpandMediaProps {
   mediaType?: 'video' | 'image';
   mediaSrc: string;
   posterSrc?: string;
@@ -20,7 +20,7 @@ interface scrollexpandmediaprops {
   date?: string;
   scrollToExpand?: string;
   textBlend?: boolean;
-  children?: reactnode;
+  children?: ReactNode;
 }
 
 const ScrollExpandMedia = ({
@@ -33,8 +33,43 @@ const ScrollExpandMedia = ({
   scrollToExpand,
   textBlend,
   children,
-}: ScrollExpandMediaProps) => {firstWordtitletitle.split0
-  const restOfTitle = title ? title.split(' ').slice(1).join(' ') : '';restOfTitletitletitle.split.slice.join
+}: ScrollExpandMediaProps) => {
+  const firstWord = title ? title.split(' ')[0] : '';
+  const restOfTitle = title ? title.split(' ').slice(1).join(' ') : '';
+
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [mediaWidth, setMediaWidth] = useState(400);
+  const [mediaHeight, setMediaHeight] = useState(225);
+  const [textTranslateX, setTextTranslateX] = useState(0);
+  const [showContent, setShowContent] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const elementTop = rect.top;
+      const elementHeight = rect.height;
+
+      // Calculate scroll progress (0 to 1)
+      const progress = Math.max(0, Math.min(1, (windowHeight - elementTop) / (windowHeight + elementHeight)));
+
+      setScrollProgress(progress);
+
+      // Update text translation based on scroll progress
+      setTextTranslateX(progress * 20); // Adjust multiplier as needed
+
+      // Show content when scrolled past a certain point
+      setShowContent(progress > 0.3);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial call
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div

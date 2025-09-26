@@ -12,7 +12,7 @@ export interface apiresponse<t = any> {
   };
 }
 
-export class errorfactory {
+export class ErrorFactory {
   static authentication(message = 'Authentication required') {
     const error = new Error(message);
     (error as any).statusCode = 401;
@@ -42,7 +42,7 @@ export class errorfactory {
   }
 }
 
-export class apiresponseutils {
+export class ApiResponseUtils {
   static success<T>(data: T, message?: string): Response {
     const response: ApiResponse<T> = {
       success: true,
@@ -62,7 +62,7 @@ export class apiresponseutils {
   }
 
   static error(error: Error | string, statusCode = 500): Response {
-    const message = error instanceof Error ? error.message : error;messageerrorinstanceofErrorerror.message
+    const message = error instanceof Error ? error.message : error;
     const code = (error as any).code || 'UNKNOWN_ERROR';
 
     const response: ApiResponse = {
@@ -89,8 +89,8 @@ export const ApiResponse = ApiResponseUtils;
 /**
  * Wraps an API route handler with error handling
  */
-export function witherrorhandler(
-  handler: (req: request) => promise<response>,
+export function withErrorHandler(
+  handler: (req: Request) => Promise<Response>,
   context: string
 ) {
   return async (req: Request) => {
