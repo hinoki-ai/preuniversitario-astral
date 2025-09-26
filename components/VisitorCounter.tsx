@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Eye, TrendingUp, Users } from 'lucide-react';
 
 // Get version from package.json at build time
-const VERSION = '0.3.0'; // Auto-updated by version-processor.js
+const VERSION = '0.3.1'; // Auto-updated by version-processor.js
 
 interface VisitorStats {
   total: number;

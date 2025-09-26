@@ -93,8 +93,8 @@ This file is automatically managed by the gg script. Do not edit manually.
 
     // Update current version
     versionContent = versionContent.replace(
-      /## Current Version\n\*\*v[\d\.]+\*\*/,
-      `## Current Version\n**v${newVersion}**`
+      /## Current Version\n\n\*\*v[\d\.]+\*\*(.*)/,
+      `## Current Version\n\n**v${newVersion}**$1`
     );
 
     // Add new entry to version history

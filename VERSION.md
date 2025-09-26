@@ -3,7 +3,7 @@
 This file is automatically managed by the gg script. Do not edit manually.
 
 ## Current Version
-**v0.3.0** - Initial release
+**v0.3.1** - Initial release
 
 ## Version History
 
@@ -22,6 +22,9 @@ This file is automatically managed by the gg script. Do not edit manually.
 
 ### v0.3.0 (2025-09-25)
 - Added perfect visitor counter with version tracking to footer
+
+### v0.3.1 (2025-09-26)
+- Testing gg integration
 
 ---
 
