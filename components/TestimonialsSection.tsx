@@ -37,8 +37,8 @@ function TestimonialsSectionInternal() {
   ];
 
   return (
-    <section id="testimonials" className="py-24 bg-background/50">
-      <div className="container mx-auto px-6">
+    <section id="testimonials" className="bg-background/50 py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -46,16 +46,16 @@ function TestimonialsSectionInternal() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="mb-6 font-serif text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">
             Historias de <span className="text-accent">éxito</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="mx-auto max-w-3xl text-base text-muted-foreground sm:text-lg">
             Conoce las experiencias de estudiantes que lograron sus metas académicas con nuestra
             plataforma educativa.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
@@ -64,16 +64,16 @@ function TestimonialsSectionInternal() {
               transition={{ delay: index * 0.2, duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <Card className="p-8 h-full bg-card/70 backdrop-blur-sm border-border/20 hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center gap-1 mb-6">
+              <Card className="h-full bg-card/70 p-6 transition-all duration-300 hover:shadow-xl backdrop-blur-sm sm:p-8">
+                <div className="mb-6 flex items-center gap-1">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+                    <Star key={i} className="h-5 w-5 fill-accent text-accent" />
                   ))}
                 </div>
 
-                <Quote className="w-8 h-8 text-accent/30 mb-4" />
+                <Quote className="mb-4 h-8 w-8 text-accent/30" />
 
-                <p className="text-muted-foreground mb-6 leading-relaxed italic">
+                <p className="mb-6 text-sm italic leading-relaxed text-muted-foreground sm:text-base">
                   &ldquo;{testimonial.content}&rdquo;
                 </p>
 

@@ -3,11 +3,8 @@
 import { useUser } from '@clerk/nextjs';
 import { useQuery } from 'convex/react';
 import {
-  IconBrandOpenai,
-  IconCamera,
   IconChartBar,
   IconDatabase,
-  IconFileWord,
   IconFolder,
   IconHelp,
   IconListDetails,
@@ -112,7 +109,7 @@ const freeUserData: NavigationData = {
   documents: [
     {
       name: 'Biblioteca Básica',
-      url: '#',
+      url: '/dashboard/biblioteca',
       icon: IconDatabase,
     },
   ],
@@ -125,16 +122,6 @@ const paidUserData: NavigationData = {
       title: 'Dashboard',
       url: '/dashboard',
       icon: IconTargetAlt,
-    },
-    {
-      title: 'Asistente IA',
-      url: '/dashboard/ai-assistant',
-      icon: IconBrandOpenai,
-    },
-    {
-      title: 'Media',
-      url: '/dashboard/media',
-      icon: IconCamera,
     },
     {
       title: 'Plan de Estudio',
@@ -166,6 +153,11 @@ const paidUserData: NavigationData = {
       url: '/dashboard/paes',
       icon: IconReport,
     },
+    {
+      title: 'Repaso Inteligente',
+      url: '/dashboard/review',
+      icon: IconSparkles,
+    },
   ],
   navSecondary: [
     {
@@ -186,23 +178,23 @@ const paidUserData: NavigationData = {
   ],
   documents: [
     {
-      name: 'Asistente IA',
-      url: '#',
-      icon: IconBrandOpenai,
+      name: 'Plan Personalizado',
+      url: '/dashboard/plan',
+      icon: IconListDetails,
     },
     {
-      name: 'Reportes',
-      url: '#',
+      name: 'Reportes Avanzados',
+      url: '/dashboard/analytics',
+      icon: IconChartBar,
+    },
+    {
+      name: 'Simulacros PAES',
+      url: '/dashboard/paes',
       icon: IconReport,
     },
     {
-      name: 'Asistente de Word',
-      url: '#',
-      icon: IconFileWord,
-    },
-    {
-      name: 'Biblioteca de Datos',
-      url: '#',
+      name: 'Biblioteca Premium',
+      url: '/dashboard/biblioteca',
       icon: IconDatabase,
     },
   ],
@@ -285,4 +277,3 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     </ComponentErrorBoundary>
   );
 }
-

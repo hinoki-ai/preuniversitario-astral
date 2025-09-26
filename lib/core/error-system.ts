@@ -3,7 +3,44 @@
  * Provides consistent error handling across the entire application
  */
 
-import { toast } from '@/hooks/use-toast';
+// Dynamic toast loader keeps this module usable in both server and client contexts
+type ToastModule = typeof import('@/hooks/use-toast');
+type ToastFn = ToastModule['toast'];
+type ToastOptions = Parameters<ToastFn>[0];
+
+let toastRef: ToastFn | null = null;
+
+const loadToast = async (): Promise<ToastFn | null> => {
+  if (toastRef || typeof window === 'undefined') {
+    return toastRef;
+  }
+
+  try {
+    const toastModule: ToastModule = await import('@/hooks/use-toast');
+    toastRef = toastModule.toast;
+    return toastRef;
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('Failed to load toast module for error handler', error);
+    }
+    return null;
+  }
+};
+
+const triggerToast = (options: ToastOptions) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  if (toastRef) {
+    toastRef(options);
+    return;
+  }
+
+  void loadToast().then((toast) => {
+    toast?.(options);
+  });
+};
 
 // Custom error codes for different error types
 export enum ErrorCode {
@@ -258,10 +295,14 @@ export class ErrorHandler {
     error: AppError,
     variant: 'default' | 'destructive' = 'default'
   ): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     const title = this.getUserFriendlyTitle(error.code);
     const description = this.getUserFriendlyMessage(error);
 
-    toast({
+    triggerToast({
       title,
       description,
       variant,
@@ -417,4 +458,3 @@ export function useErrorHandler() {
     AppError,
   };
 }
-

@@ -62,9 +62,9 @@ export default function Footer() {
     <footer
       className="text-white bg-[#003366]"
     >
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12">
         {/* MINEDUC Navigation Menu */}
-        <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-5 mb-8">
+        <div className="mb-8 grid gap-6 sm:gap-8 md:grid-cols-3 lg:grid-cols-5">
           {navigationSections.map((section, idx) => (
             <div key={idx}>
               <h4 className="mb-4 text-lg font-semibold text-white">{section.title}</h4>
@@ -86,11 +86,11 @@ export default function Footer() {
 
         {/* MINEDUC Branding Bar */}
         <div
-          className="flex items-center justify-between py-6 mb-6 border-t border-[#C5D0E6]"
+          className="mb-6 flex flex-col gap-6 border-t border-[#C5D0E6] py-6 sm:flex-row sm:items-center sm:justify-between"
         >
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             {/* MINEDUC Bars */}
-            <div className="flex h-4 w-32">
+            <div className="flex h-4 w-28 sm:w-32">
               <div
                 className="h-full w-1/2 bg-white"
               ></div>
@@ -104,12 +104,12 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="transition-colors duration-200 hover:text-[#F5F7FF] text-white"
             >
-              <span className="font-bold text-lg">Ministerio de Educación</span>
+              <span className="text-lg font-bold">Ministerio de Educación</span>
             </a>
           </div>
 
           {/* Social Media Links & Visitor Counter */}
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4 sm:justify-end">
             <VisitorCounter />
             <a
               href="https://www.facebook.com/mineduc"
@@ -150,7 +150,7 @@ export default function Footer() {
 
         {/* Dev Favicon Copyright */}
         <div
-          className="text-center pt-6"
+          className="pt-6 text-center"
           style={{ borderTop: `1px solid ${MINEDUC_COLORS.muted}` }}
         >
           <p className="text-sm mb-2" style={{ color: MINEDUC_COLORS.offWhite }}>

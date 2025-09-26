@@ -61,8 +61,8 @@ function FeaturesSectionInternal() {
   ];
 
   return (
-    <section id="features" className="py-24 bg-background/50">
-      <div className="container mx-auto px-6">
+    <section id="features" className="bg-background/50 py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -70,18 +70,18 @@ function FeaturesSectionInternal() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="mb-6 font-serif text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">
             Tecnología al servicio de
             <br />
             <span className="text-accent">tu educación</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="mx-auto max-w-3xl text-base text-muted-foreground sm:text-lg">
             Descubre cómo nuestra plataforma revoluciona la experiencia de aprendizaje con
             herramientas diseñadas para maximizar tu potencial académico.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <motion.div
               key={index}
@@ -90,21 +90,23 @@ function FeaturesSectionInternal() {
               transition={{ delay: index * 0.1, duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <Card className="p-8 h-full bg-card/90 backdrop-blur-sm border-border/50 hover:shadow-2xl hover:shadow-golden/10 transition-all duration-300 group hover:scale-[1.02]">
-                <div className="w-16 h-16 bg-gradient-to-br from-golden/15 to-amber/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                  <feature.icon className="w-8 h-8 text-golden" />
+              <Card className="group h-full bg-card/90 p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-golden/10 backdrop-blur-sm sm:p-8">
+                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-golden/15 to-amber/10 shadow-lg transition-transform duration-300 group-hover:scale-110 sm:h-16 sm:w-16">
+                  <feature.icon className="h-7 w-7 text-golden sm:h-8 sm:w-8" />
                 </div>
 
-                <h3 className="font-serif text-2xl font-bold text-card-foreground mb-4">
+                <h3 className="mb-4 font-serif text-xl font-bold text-card-foreground sm:text-2xl">
                   {feature.title}
                 </h3>
 
-                <p className="text-muted-foreground mb-6 leading-relaxed">{feature.description}</p>
+                <p className="mb-6 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  {feature.description}
+                </p>
 
                 <ul className="space-y-3 mb-6">
                   {feature.benefits.map((benefit, idx) => (
                     <li key={idx} className="flex items-center gap-3 text-sm text-card-foreground">
-                      <CheckCircle className="w-4 h-4 text-golden flex-shrink-0" />
+                      <CheckCircle className="h-4 w-4 flex-shrink-0 text-golden" />
                       {benefit}
                     </li>
                   ))}
@@ -112,7 +114,7 @@ function FeaturesSectionInternal() {
 
                 <Button
                   variant="ghost"
-                  className="w-full justify-between text-golden hover:text-golden hover:bg-golden/10 group-hover:translate-x-1 transition-transform duration-300"
+                  className="w-full justify-between text-golden transition-transform duration-300 hover:bg-golden/10 hover:text-golden group-hover:translate-x-1"
                 >
                   Explorar función
                   <ArrowRight className="w-4 h-4" />

@@ -59,8 +59,8 @@ function PricingSectionInternal() {
   ];
 
   return (
-    <section id="pricing" className="py-24 bg-background/50">
-      <div className="container mx-auto px-6">
+    <section id="pricing" className="bg-background/50 py-16 sm:py-20 lg:py-24">
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -68,16 +68,16 @@ function PricingSectionInternal() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-6">
+          <h2 className="mb-6 font-serif text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">
             Invierte en tu <span className="text-accent">futuro</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="mx-auto max-w-3xl text-base text-muted-foreground sm:text-lg">
             Elige el plan que mejor se adapte a tus necesidades y objetivos académicos. Todos
             incluyen garantía de satisfacción de 30 días.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
@@ -88,45 +88,47 @@ function PricingSectionInternal() {
               className="relative"
             >
               {plan.popular && (
-                <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-golden to-amber text-white px-4 py-1 z-10 shadow-lg">
-                  <Star className="w-4 h-4 mr-1" />
+                <Badge className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 transform bg-gradient-to-r from-golden to-amber px-3 py-1 text-white shadow-lg">
+                  <Star className="mr-1 h-4 w-4" />
                   Más Popular
                 </Badge>
               )}
 
               <Card
-                className={`p-8 h-full relative ${
+                className={`relative h-full p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl sm:p-8 ${
                   plan.popular
-                    ? 'bg-card border-golden border-2 shadow-2xl scale-105 shadow-golden/10'
-                    : 'bg-card/70 backdrop-blur-sm border-border/50 shadow-lg'
-                } hover:shadow-2xl hover:scale-[1.02] transition-all duration-300`}
+                    ? 'border-2 border-golden bg-card shadow-2xl shadow-golden/10'
+                    : 'border-border/50 bg-card/70 shadow-lg backdrop-blur-sm'
+                }`}
               >
-                <div className="text-center mb-8">
-                  <h3 className="font-serif text-2xl font-bold text-card-foreground mb-2">{plan.name}</h3>
-                  <p className="text-muted-foreground mb-4">{plan.description}</p>
+                <div className="mb-8 text-center">
+                  <h3 className="mb-2 font-serif text-xl font-bold text-card-foreground sm:text-2xl">
+                    {plan.name}
+                  </h3>
+                  <p className="mb-4 text-sm text-muted-foreground sm:text-base">{plan.description}</p>
                   <div className="flex items-baseline justify-center gap-1">
-                    <span className="font-serif text-5xl font-bold text-card-foreground">
+                    <span className="font-serif text-4xl font-bold text-card-foreground sm:text-5xl">
                       {plan.price}
                     </span>
                     <span className="text-muted-foreground">{plan.period}</span>
                   </div>
                 </div>
 
-                <ul className="space-y-4 mb-8">
+                <ul className="mb-8 space-y-3 sm:space-y-4">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-golden flex-shrink-0 mt-0.5" />
-                      <span className="text-card-foreground">{feature}</span>
+                      <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-golden" />
+                      <span className="text-sm text-card-foreground sm:text-base">{feature}</span>
                     </li>
                   ))}
                 </ul>
 
                 <Button
-                  className={`w-full ${
+                  className={`w-full transition-all duration-300 hover:scale-105 ${
                     plan.popular
-                      ? 'bg-gradient-to-r from-golden to-amber hover:from-golden/90 hover:to-amber/90 text-white shadow-xl hover:shadow-golden/25'
-                      : 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/25'
-                  } transition-all duration-300 hover:scale-105`}
+                      ? 'bg-gradient-to-r from-golden to-amber text-white shadow-xl hover:from-golden/90 hover:to-amber/90 hover:shadow-golden/25'
+                      : 'bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 hover:shadow-primary/25'
+                  }`}
                   size="lg"
                 >
                   Comenzar {plan.name}
@@ -143,7 +145,7 @@ function PricingSectionInternal() {
           viewport={{ once: true }}
           className="text-center mt-12"
         >
-          <p className="text-muted-foreground text-sm">
+          <p className="text-xs text-muted-foreground sm:text-sm">
             * Garantía de admisión aplica bajo términos y condiciones específicos.
             <br />
             Todos los planes incluyen período de prueba gratuito de 7 días.

@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { HeroSection } from '@/components/HeroSection';
 import { PricingSection } from '@/components/PricingSection';
-// import { StatsSection } from '@/components/StatsSection'; // Temporarily disabled
+import { StatsSection } from '@/components/StatsSection';
 import { TestimonialsSection } from '@/components/TestimonialsSection';
 
 export default function HomePage() {
@@ -13,7 +13,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-background">
       <Header />
       <HeroSection />
-        {/* <StatsSection /> */}
+      <StatsSection />
       <FeaturesSection />
       <TestimonialsSection />
       <PricingSection />

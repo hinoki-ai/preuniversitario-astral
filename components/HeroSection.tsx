@@ -28,7 +28,10 @@ function HeroSectionInternal() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center">
+    <section
+      id="hero"
+      className="relative flex min-h-[90vh] items-center justify-center pt-24 pb-16 sm:pt-28 sm:pb-24"
+    >
       {/* Background Audio */}
       <audio
         ref={audioRef}
@@ -40,14 +43,14 @@ function HeroSectionInternal() {
 
       <ShaderAnimation />
       
-      <div className="container mx-auto px-6 pt-20 relative z-10">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="text-center max-w-5xl mx-auto"
+          className="mx-auto max-w-4xl text-center md:max-w-5xl"
         >
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight drop-shadow-2xl">
+          <h1 className="mb-8 font-serif text-4xl font-bold leading-tight text-white drop-shadow-2xl sm:text-5xl md:text-6xl lg:text-7xl">
             Excelencia académica
             <br />
             <span className="text-amber/90 drop-shadow-lg">con</span> tecnología
@@ -55,15 +58,15 @@ function HeroSectionInternal() {
             <span className="text-golden/80 drop-shadow-lg">avanzada</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-cream/90 max-w-3xl mx-auto mb-12 leading-relaxed drop-shadow-xl">
+          <p className="mx-auto mb-12 max-w-3xl text-base leading-relaxed text-cream/90 drop-shadow-xl sm:text-lg md:text-xl">
             Transforma tu preparación preuniversitaria con clases virtuales interactivas, profesores
             expertos y una plataforma diseñada para tu éxito académico.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+          <div className="mb-16 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
             <Button
               size="lg"
-              className="bg-golden hover:bg-golden/90 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-2xl hover:shadow-golden/25 transition-all duration-300 hover:scale-105"
+              className="rounded-full bg-golden px-8 py-4 text-lg font-semibold text-white shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-golden/90 hover:shadow-golden/25"
             >
               Comenzar Prueba Gratuita
               <Play className="w-5 h-5 ml-2" />
@@ -72,24 +75,24 @@ function HeroSectionInternal() {
             <Button
               variant="outline"
               size="lg"
-              className="border-amber/60 text-amber bg-amber/10 hover:bg-amber hover:text-deep-brown px-8 py-4 text-lg rounded-full backdrop-blur-sm shadow-xl hover:shadow-amber/25 transition-all duration-300 hover:scale-105"
+              className="rounded-full border-amber/60 bg-amber/10 px-8 py-4 text-lg text-amber backdrop-blur-sm shadow-xl transition-all duration-300 hover:scale-105 hover:bg-amber hover:text-deep-brown hover:shadow-amber/25"
             >
               Ver Demo en Vivo
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.6 }}
               className="text-center"
             >
-              <div className="w-16 h-16 bg-golden/20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
-                <Users className="w-8 h-8 text-golden" />
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-golden/20 shadow-xl sm:h-16 sm:w-16">
+                <Users className="h-7 w-7 text-golden sm:h-8 sm:w-8" />
               </div>
-              <h3 className="font-semibold text-white mb-2 drop-shadow-lg">+5,000 Estudiantes</h3>
-              <p className="text-cream/90 drop-shadow-lg">Confiando en nuestra plataforma</p>
+              <h3 className="mb-2 font-semibold text-white drop-shadow-lg">+5,000 Estudiantes</h3>
+              <p className="text-sm text-cream/90 drop-shadow-lg sm:text-base">Confiando en nuestra plataforma</p>
             </motion.div>
 
             <motion.div
@@ -98,11 +101,11 @@ function HeroSectionInternal() {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-center"
             >
-              <div className="w-16 h-16 bg-amber/20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
-                <Star className="w-8 h-8 text-amber" />
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber/20 shadow-xl sm:h-16 sm:w-16">
+                <Star className="h-7 w-7 text-amber sm:h-8 sm:w-8" />
               </div>
-              <h3 className="font-semibold text-white mb-2 drop-shadow-lg">98% Satisfacción</h3>
-              <p className="text-cream/90 drop-shadow-lg">Calificación promedio de estudiantes</p>
+              <h3 className="mb-2 font-semibold text-white drop-shadow-lg">98% Satisfacción</h3>
+              <p className="text-sm text-cream/90 drop-shadow-lg sm:text-base">Calificación promedio de estudiantes</p>
             </motion.div>
 
             <motion.div
@@ -111,11 +114,11 @@ function HeroSectionInternal() {
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-center"
             >
-              <div className="w-16 h-16 bg-bronze/20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl">
-                <BookOpen className="w-8 h-8 text-bronze" />
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-bronze/20 shadow-xl sm:h-16 sm:w-16">
+                <BookOpen className="h-7 w-7 text-bronze sm:h-8 sm:w-8" />
               </div>
-              <h3 className="font-semibold text-white mb-2 drop-shadow-lg">50+ Cursos</h3>
-              <p className="text-cream/90 drop-shadow-lg">Materias especializadas disponibles</p>
+              <h3 className="mb-2 font-semibold text-white drop-shadow-lg">50+ Cursos</h3>
+              <p className="text-sm text-cream/90 drop-shadow-lg sm:text-base">Materias especializadas disponibles</p>
             </motion.div>
           </div>
         </motion.div>
