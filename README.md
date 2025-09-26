@@ -1,6 +1,6 @@
 # Preuniversitario Astral
 
-**Version 0.2.0**
+## Version 0.2.0
 
 Next.js educational platform with gamification, subscription management, and real-time features
 for pre-university students preparing for university entrance exams (PAES).
@@ -52,7 +52,6 @@ pnpm install
 # Start development server
 pnpm dev
 ```
-
 
 ### Environment Configuration
 
@@ -147,4 +146,3 @@ npm run version:major "Complete UI redesign"
 2. Implement error boundaries for new components
 3. Test payment flows thoroughly
 4. Update documentation for architectural changes
-

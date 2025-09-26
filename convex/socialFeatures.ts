@@ -19,21 +19,21 @@ async function getUser(ctx: any) {
 
 // Send friend request
 export const sendFriendRequest = mutation({
-  args: { 
-    friendEmail: v.string(),
-    message: v.optional(v.string()) 
+  args: {
+    friendName: v.string(),
+    message: v.optional(v.string())
   },
-  handler: async (ctx, { friendEmail, message }) => {
+  handler: async (ctx, { friendName, message }) => {
     const user = await getUser(ctx);
-    
-    // Find the friend by email
+
+    // Find the friend by name
     const friend = await ctx.db
       .query('users')
-      .filter(q => q.eq(q.field('email'), friendEmail))
+      .filter(q => q.eq(q.field('name'), friendName))
       .unique();
-    
+
     if (!friend) {
-      throw new Error("User not found with this email");
+      throw new Error("User not found with this name");
     }
     
     if (friend._id === user._id) {
@@ -120,12 +120,11 @@ export const getFriends = query({
         .query('userStats')
         .withIndex('byUser', q => q.eq('userId', friendship.addresseeId))
         .unique();
-        
+
       if (friend) {
         friends.push({
           id: friend._id,
           name: friend.name,
-          email: friend.email,
           level: friendStats?.level || 1,
           totalPoints: friendStats?.totalPoints || 0,
           currentStreak: friendStats?.currentStreak || 0,
@@ -141,12 +140,11 @@ export const getFriends = query({
         .query('userStats')
         .withIndex('byUser', q => q.eq('userId', friendship.requesterId))
         .unique();
-        
+
       if (friend) {
         friends.push({
           id: friend._id,
           name: friend.name,
-          email: friend.email,
           level: friendStats?.level || 1,
           totalPoints: friendStats?.totalPoints || 0,
           currentStreak: friendStats?.currentStreak || 0,

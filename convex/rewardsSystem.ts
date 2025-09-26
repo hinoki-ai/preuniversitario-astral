@@ -33,6 +33,8 @@ export const getUserRewards = query({
       const now = Math.floor(Date.now() / 1000);
       
       userRewards = {
+        _id: '' as any, // Will be set by Convex
+        _creationTime: now,
         userId: user._id,
         themes: [{
           id: 'default_light',
@@ -66,15 +68,15 @@ export const getUserRewards = query({
           selectedAvatar: 'default_avatar',
           selectedTitle: 'new_student',
           selectedBadges: [],
-          profileBanner: null,
-          profileColor: null,
+          profileBanner: undefined,
+          profileColor: undefined,
         },
         totalItemsUnlocked: 3,
         totalCoinsEarned: 100,
         totalCoinsSpent: 0,
         createdAt: now,
         updatedAt: now,
-      };
+      } as any;
 
       // Don't insert yet, just return the default values
     }
@@ -109,7 +111,10 @@ export const getRewardsCatalog = query({
     }
 
     // Get user's rewards to check what's unlocked
-    const userRewards = await getUserRewards.handler(ctx, {});
+    const userRewards = await ctx.db
+      .query('userRewards')
+      .withIndex('byUser', q => q.eq('userId', user._id))
+      .unique();
     
     // Get user stats for unlock requirements
     const userStats = await ctx.db
@@ -168,6 +173,13 @@ export const unlockReward = mutation({
       userRewards = await initializeUserRewards(ctx, user._id);
     }
 
+    if (!userRewards) {
+      throw new Error("Failed to initialize user rewards");
+    }
+
+    // At this point TypeScript knows userRewards is not null
+    userRewards = userRewards as NonNullable<typeof userRewards>;
+
     // Check if already unlocked
     if (isItemOwned(catalogItem, userRewards)) {
       throw new Error("Item already unlocked");
@@ -198,16 +210,16 @@ export const unlockReward = mutation({
 
     switch (catalogItem.itemType) {
       case 'theme':
-        updatedRewards.themes = [...updatedRewards.themes, newItem];
+        updatedRewards.themes = [...(updatedRewards.themes || []), newItem];
         break;
       case 'avatar':
-        updatedRewards.avatars = [...updatedRewards.avatars, {
+        updatedRewards.avatars = [...(updatedRewards.avatars || []), {
           ...newItem,
           category: catalogItem.category,
         }];
         break;
       case 'title':
-        updatedRewards.titles = [...updatedRewards.titles, {
+        updatedRewards.titles = [...(updatedRewards.titles || []), {
           ...newItem,
           title: catalogItem.name,
           description: catalogItem.description,
@@ -216,7 +228,7 @@ export const unlockReward = mutation({
         }];
         break;
       case 'badge':
-        updatedRewards.badges = [...updatedRewards.badges, {
+        updatedRewards.badges = [...(updatedRewards.badges || []), {
           ...newItem,
           description: catalogItem.description,
           iconUrl: catalogItem.visual.iconUrl,
@@ -225,21 +237,21 @@ export const unlockReward = mutation({
         break;
       case 'perk':
         // Perks are automatically activated when unlocked
-        updatedRewards.perks = [...updatedRewards.perks, {
+        updatedRewards.perks = [...(updatedRewards.perks || []), {
           id: catalogItem.itemId,
           name: catalogItem.name,
           description: catalogItem.description,
           type: catalogItem.category, // perk type is stored in category
           value: 1.0, // default multiplier/value
-          duration: null, // permanent
+          duration: undefined, // permanent
           activatedAt: now,
-          expiresAt: null,
+          expiresAt: undefined,
           isActive: true,
         }];
         break;
     }
 
-    updatedRewards.totalItemsUnlocked += 1;
+    updatedRewards.totalItemsUnlocked = (updatedRewards.totalItemsUnlocked || 0) + 1;
     updatedRewards.updatedAt = now;
 
     await ctx.db.patch(userRewards._id, updatedRewards);
@@ -288,6 +300,13 @@ export const purchaseShopItem = mutation({
     if (!userRewards) {
       userRewards = await initializeUserRewards(ctx, user._id);
     }
+
+    if (!userRewards) {
+      throw new Error("Failed to initialize user rewards");
+    }
+
+    // At this point TypeScript knows userRewards is not null
+    userRewards = userRewards as NonNullable<typeof userRewards>;
 
     // Check if already owned
     if (isItemOwned(catalogItem, userRewards)) {
@@ -370,7 +389,7 @@ export const purchaseShopItem = mutation({
         break;
     }
 
-    updatedRewards.totalItemsUnlocked += 1;
+    updatedRewards.totalItemsUnlocked = (updatedRewards.totalItemsUnlocked || 0) + 1;
     updatedRewards.updatedAt = now;
 
     await ctx.db.patch(userRewards._id, updatedRewards);
@@ -412,15 +431,16 @@ export const customizeProfile = mutation({
       userRewards = await initializeUserRewards(ctx, user._id);
     }
 
-    const updatedCustomization = { ...userRewards.profileCustomization };
+    // At this point userRewards is guaranteed to be non-null
+    const updatedCustomization = { ...userRewards!.profileCustomization };
     
     // Validate and update selections
     if (selectedTheme) {
-      const ownsTheme = userRewards.themes.some(t => t.id === selectedTheme);
+      const ownsTheme = userRewards!.themes.some(t => t.id === selectedTheme);
       if (ownsTheme) {
         updatedCustomization.selectedTheme = selectedTheme;
         // Deactivate other themes
-        userRewards.themes = userRewards.themes.map(t => ({
+        userRewards!.themes = userRewards!.themes.map(t => ({
           ...t,
           isActive: t.id === selectedTheme,
         }));
@@ -428,10 +448,10 @@ export const customizeProfile = mutation({
     }
 
     if (selectedAvatar) {
-      const ownsAvatar = userRewards.avatars.some(a => a.id === selectedAvatar);
+      const ownsAvatar = userRewards!.avatars.some(a => a.id === selectedAvatar);
       if (ownsAvatar) {
         updatedCustomization.selectedAvatar = selectedAvatar;
-        userRewards.avatars = userRewards.avatars.map(a => ({
+        userRewards!.avatars = userRewards!.avatars.map(a => ({
           ...a,
           isActive: a.id === selectedAvatar,
         }));
@@ -439,10 +459,10 @@ export const customizeProfile = mutation({
     }
 
     if (selectedTitle) {
-      const ownsTitle = userRewards.titles.some(t => t.id === selectedTitle);
+      const ownsTitle = userRewards!.titles.some(t => t.id === selectedTitle);
       if (ownsTitle) {
         updatedCustomization.selectedTitle = selectedTitle;
-        userRewards.titles = userRewards.titles.map(t => ({
+        userRewards!.titles = userRewards!.titles.map(t => ({
           ...t,
           isActive: t.id === selectedTitle,
         }));
@@ -453,12 +473,12 @@ export const customizeProfile = mutation({
       const maxBadges = 3;
       const validBadges = selectedBadges
         .slice(0, maxBadges)
-        .filter(badgeId => userRewards.badges.some(b => b.id === badgeId));
+        .filter(badgeId => userRewards!.badges.some(b => b.id === badgeId));
       updatedCustomization.selectedBadges = validBadges;
     }
 
-    await ctx.db.patch(userRewards._id, {
-      ...userRewards,
+    await ctx.db.patch(userRewards!._id, {
+      ...userRewards!,
       profileCustomization: updatedCustomization,
       updatedAt: Math.floor(Date.now() / 1000),
     });
@@ -482,8 +502,8 @@ export const getDailyLoginRewards = query({
       .unique();
 
     if (!loginRewards) {
-      // Initialize daily login rewards
-      loginRewards = {
+      // Return default values for new users
+      return {
         userId: user._id,
         currentStreak: 0,
         longestStreak: 0,
@@ -491,6 +511,10 @@ export const getDailyLoginRewards = query({
         loginHistory: [],
         claimedToday: false,
         nextRewardDay: 1,
+        loggedInToday: false,
+        canClaimToday: true,
+        todaysReward: generateDailyRewardPreview(1)[0],
+        upcomingRewards: generateDailyRewardPreview(1),
       };
     }
 
@@ -752,7 +776,7 @@ async function awardLoginRewards(ctx: any, userId: string, rewards: any[]) {
 async function awardCoins(ctx: any, userId: string, amount: number) {
   let userRewards = await ctx.db
     .query('userRewards')
-    .withIndex('byUser', q => q.eq('userId', userId))
+    .withIndex('byUser', (q: any) => q.eq('userId', userId))
     .unique();
 
   if (!userRewards) {
@@ -769,7 +793,7 @@ async function awardCoins(ctx: any, userId: string, amount: number) {
 async function awardGems(ctx: any, userId: string, amount: number) {
   let userRewards = await ctx.db
     .query('userRewards')
-    .withIndex('byUser', q => q.eq('userId', userId))
+    .withIndex('byUser', (q: any) => q.eq('userId', userId))
     .unique();
 
   if (!userRewards) {
@@ -786,7 +810,7 @@ async function awardXP(ctx: any, userId: string, amount: number) {
   // This would integrate with the existing userStats XP system
   const userStats = await ctx.db
     .query('userStats')
-    .withIndex('byUser', q => q.eq('userId', userId))
+    .withIndex('byUser', (q: any) => q.eq('userId', userId))
     .unique();
 
   if (userStats) {

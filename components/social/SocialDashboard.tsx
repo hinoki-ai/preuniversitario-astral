@@ -100,10 +100,10 @@ export function SocialDashboard() {
 }
 
 function FriendsTab() {
-  const [friendEmail, setFriendEmail] = useState('');
+  const [friendName, setFriendName] = useState('');
   const [showAddDialog, setShowAddDialog] = useState(false);
   const { toast } = useToast();
-  
+
   const friends = useQuery(api.socialFeatures.getFriends);
   const pendingRequests = useQuery(api.socialFeatures.getPendingRequests);
   const sendFriendRequest = useMutation(api.socialFeatures.sendFriendRequest);
@@ -111,12 +111,12 @@ function FriendsTab() {
 
   const handleSendRequest = async () => {
     try {
-      await sendFriendRequest({ friendEmail });
+      await sendFriendRequest({ friendName });
       toast({
         title: "Success",
         description: "Friend request sent!",
       });
-      setFriendEmail('');
+      setFriendName('');
       setShowAddDialog(false);
     }
 
@@ -163,18 +163,18 @@ function FriendsTab() {
             <DialogHeader>
               <DialogTitle>Add Friend</DialogTitle>
               <DialogDescription>
-                Send a friend request by entering their email address
+                Send a friend request by entering their username
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <Input
-                placeholder="friend@example.com"
-                value={friendEmail}
-                onChange={(e) => setFriendEmail(e.target.value)}
-                type="email"
+                placeholder="Enter friend's username"
+                value={friendName}
+                onChange={(e) => setFriendName(e.target.value)}
+                type="text"
               />
               <div className="flex gap-2">
-                <Button onClick={handleSendRequest} disabled={!friendEmail}>
+                <Button onClick={handleSendRequest} disabled={!friendName}>
                   Send Request
                 </Button>
                 <Button variant="outline" onClick={() => setShowAddDialog(false)}>

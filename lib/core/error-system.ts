@@ -418,6 +418,3 @@ export function useErrorHandler() {
   };
 }
 
-
-// Export everything
-export default ErrorHandler;

@@ -277,7 +277,7 @@ export const getMissionStats = query({
         const user = await ctx.db
           .query('users')
           .filter(q => q.eq(q.field('_id'), userId))
-          .first();
+          .unique();
         return {
           userId,
           name: user?.name || 'Anonymous',
@@ -309,11 +309,11 @@ async function generateDailyMissions(ctx: any, user: any, userStats: any) {
   // Get available mission templates
   const templates = await ctx.db
     .query('dailyMissionTemplates')
-    .withIndex('byActive', q => q.eq('active', true))
+    .withIndex('byActive', (q: any) => q.eq('active', true))
     .collect();
 
   // Filter templates based on user level and conditions
-  const availableTemplates = templates.filter(template => {
+  const availableTemplates = templates.filter((template: any) => {
     if (template.conditions?.minLevel && level < template.conditions.minLevel) return false;
     if (template.conditions?.maxLevel && level > template.conditions.maxLevel) return false;
     if (template.conditions?.weekday && !template.conditions.weekday.includes(dayOfWeek)) return false;
@@ -325,14 +325,14 @@ async function generateDailyMissions(ctx: any, user: any, userStats: any) {
   const difficulties = ['easy', 'medium', 'hard'];
   
   // Always include one easy mission
-  const easyMissions = availableTemplates.filter(t => t.difficulty === 'easy');
+  const easyMissions = availableTemplates.filter((t: any) => t.difficulty === 'easy');
   if (easyMissions.length > 0) {
     const selected = easyMissions[Math.floor(Math.random() * easyMissions.length)];
     missions.push(createMissionFromTemplate(selected));
   }
 
   // Add medium difficulty mission
-  const mediumMissions = availableTemplates.filter(t => t.difficulty === 'medium');
+  const mediumMissions = availableTemplates.filter((t: any) => t.difficulty === 'medium');
   if (mediumMissions.length > 0) {
     const selected = mediumMissions[Math.floor(Math.random() * mediumMissions.length)];
     missions.push(createMissionFromTemplate(selected));
@@ -340,7 +340,7 @@ async function generateDailyMissions(ctx: any, user: any, userStats: any) {
 
   // Add hard mission for higher level users
   if (level >= 5) {
-    const hardMissions = availableTemplates.filter(t => t.difficulty === 'hard');
+    const hardMissions = availableTemplates.filter((t: any) => t.difficulty === 'hard');
     if (hardMissions.length > 0) {
       const selected = hardMissions[Math.floor(Math.random() * hardMissions.length)];
       missions.push(createMissionFromTemplate(selected));
@@ -349,7 +349,7 @@ async function generateDailyMissions(ctx: any, user: any, userStats: any) {
 
   // Add legendary mission for very high level users (with lower probability)
   if (level >= 15 && Math.random() < 0.3) {
-    const legendaryMissions = availableTemplates.filter(t => t.difficulty === 'legendary');
+    const legendaryMissions = availableTemplates.filter((t: any) => t.difficulty === 'legendary');
     if (legendaryMissions.length > 0) {
       const selected = legendaryMissions[Math.floor(Math.random() * legendaryMissions.length)];
       missions.push(createMissionFromTemplate(selected));
