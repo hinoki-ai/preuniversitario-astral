@@ -99,7 +99,7 @@ function NotificationItem({
                     variant={notification.priority === 'high' ? 'destructive' : 'secondary'}
                     className="text-xs"
                   >
-                    {notification.priority}
+                    {notification.priority === 'high' ? 'Alta' : notification.priority === 'medium' ? 'Media' : 'Baja'}
                   </Badge>
                 </div>
                 <Button

@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 import { Button } from '@/components/ui/button';
-import { ModeToggle } from '@/components/ModeToggle';
 import { SettingsModal } from '@/components/SettingsModal';
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useStandardErrorHandling } from '@/lib/core/error-wrapper';
@@ -64,7 +63,6 @@ function DesktopNav({ mounted }: { mounted: boolean }) {
         )
       ))}
       <div className="flex items-center gap-2">
-        <ModeToggle />
         {mounted && isSignedIn && <SettingsModal />}
       </div>
       {mounted && (
@@ -163,10 +161,6 @@ function MobileNav({
             {navItems.map(renderNavLink)}
           </nav>
           <div className="space-y-3 border-t px-5 py-5">
-            <div className="flex items-center justify-between rounded-lg border px-4 py-3">
-              <span className="text-sm font-medium text-muted-foreground">Tema</span>
-              <ModeToggle />
-            </div>
             {mounted && (
               !isSignedIn ? (
                 <div className="grid gap-3">

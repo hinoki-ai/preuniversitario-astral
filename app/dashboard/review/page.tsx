@@ -38,7 +38,7 @@ function ReviewContent() {
   const reviewItems = useQuery(api.spacedRepetition.getReviewItems);
 
   if (!reviewItems) {
-    return <div className="animate-pulse">Loading review items...</div>;
+    return <div className="animate-pulse">Cargando elementos de revisión...</div>;
   }
 
   if (reviewItems.length === 0) {

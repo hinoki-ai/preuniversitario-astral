@@ -25,7 +25,7 @@ function PricingSectionInternal() {
       popular: false,
     },
     {
-      name: 'Premium',
+      name: <span className="text-rose-400">Premium</span>,
       price: '$89',
       period: '/mes',
       description: 'La opción más popular entre estudiantes',
@@ -46,7 +46,7 @@ function PricingSectionInternal() {
       period: '/mes',
       description: 'Máximo nivel de preparación y atención',
       features: [
-        'Todo lo incluido en Premium',
+        'Todo lo incluido en <span className="text-rose-400">Premium</span>',
         'Tutorías ilimitadas 1:1',
         'Plan de estudio personalizado',
         'Mentor académico asignado',

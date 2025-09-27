@@ -21,12 +21,12 @@ export const upsertFromClerk = internalMutation({
       trialEndsAt = trialRaw;
     } else if (typeof trialRaw === 'string') {
       // Accept ISO string or integer string
-      const n = Number(trialRaw);
-      if (!Number.isNaN(n) && n > 1000000000) {
-        trialEndsAt = n;
+      const parsedNumber = Number(trialRaw);
+      if (!Number.isNaN(parsedNumber) && parsedNumber > 1000000000) {
+        trialEndsAt = parsedNumber;
       } else {
-        const d = new Date(trialRaw);
-        if (!isNaN(d.getTime())) trialEndsAt = Math.floor(d.getTime() / 1000);
+        const parsedDate = new Date(trialRaw);
+        if (!isNaN(parsedDate.getTime())) trialEndsAt = Math.floor(parsedDate.getTime() / 1000);
       }
     }
     const userAttributes = {
@@ -47,9 +47,9 @@ export const upsertFromClerk = internalMutation({
 });
 
 export const deleteFromClerk = internalMutation({
-  args: { clerkUserId: v.string() },
-  async handler(ctx, { clerkUserId }) {
-    const user = await userByExternalId(ctx, clerkUserId);
+  args: { externalId: v.string() },
+  async handler(ctx, { externalId }) {
+    const user = await userByExternalId(ctx, externalId);
 
     if (user !== null) {
       await ctx.db.delete(user._id);

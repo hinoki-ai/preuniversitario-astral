@@ -55,7 +55,7 @@ export function NavSecondary({
                 <IconBrightness />
                 Dark Mode
                 <span className="ml-auto">
-                  <ModeToggle />
+                  <ModeToggle variant="compact" showLabel />
                 </span>
               </label>
             </SidebarMenuButton>

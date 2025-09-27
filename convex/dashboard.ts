@@ -1,6 +1,12 @@
 import { query, QueryCtx } from './_generated/server';
 import { Id } from './_generated/dataModel';
 
+// Time constants in seconds
+const ONE_DAY = 24 * 3600;
+const SEVEN_DAYS = 7 * ONE_DAY;
+const THIRTY_DAYS = 30 * ONE_DAY;
+const NINETY_DAYS = 90 * ONE_DAY;
+
 export const metrics = query({
   args: {},
   handler: async ctx => {
@@ -13,10 +19,6 @@ export const metrics = query({
     if (!user) throw new Error('User not found');
 
     const now = Math.floor(Date.now() / 1000);
-    const oneDay = 24 * 3600;
-    const sevenDays = 7 * oneDay;
-    const thirtyDays = 30 * oneDay;
-    const ninetyDays = 90 * oneDay;
 
     // Calculate study streak
     const streakData = await calculateStudyStreak(ctx, user._id, now);
@@ -34,7 +36,7 @@ export const metrics = query({
     const subjectProgress = await getSubjectProgress(ctx, user._id, now);
 
     // Get chart data for the last 90 days
-    const chartData = await getChartData(ctx, user._id, now - ninetyDays, now);
+    const chartData = await getChartData(ctx, user._id, now - NINETY_DAYS, now);
 
     return {
       studyStreak: streakData.streak,
@@ -131,13 +133,14 @@ async function calculateWeeklyProgress(ctx: QueryCtx, userId: Id<'users'>, now: 
 }
 
 async function calculatePerformanceMetrics(ctx: QueryCtx, userId: Id<'users'>, now: number) {
-  // Get quiz attempts from the last 30 days
-  const thirtyDaysAgo = now - 30 * 24 * 3600;
+  // OPTIMIZED: Get quiz attempts from the last 30 days using proper index
+  const thirtyDaysAgo = now - THIRTY_DAYS;
   const attempts = await ctx.db
     .query('attempts')
-    .withIndex('byUser', (q: any) => q.eq('userId', userId))
-    .collect()
-    .then((attempts: any[]) => attempts.filter((a: any) => a.completedAt >= thirtyDaysAgo));
+    .withIndex('byUserCompletedAt', q => 
+      q.eq('userId', userId).gte('completedAt', thirtyDaysAgo)
+    )
+    .collect();
 
   if (attempts.length === 0) {
     return {
@@ -149,11 +152,11 @@ async function calculatePerformanceMetrics(ctx: QueryCtx, userId: Id<'users'>, n
     };
   }
 
-  // Group by subject
+  // FIXED N+1 QUERY: Use denormalized subject field instead of fetching quizzes
   const subjectScores: Record<string, number[]> = {};
   for (const attempt of attempts) {
-    const quiz = await ctx.db.get(attempt.quizId) as any;
-    const subject = quiz?.subject || 'General';
+    // Use denormalized subject field from attempts table (added in schema optimization)
+    const subject = attempt.subject || 'General';
     if (!subjectScores[subject]) subjectScores[subject] = [];
     subjectScores[subject].push(attempt.score * 100);
   }
@@ -162,13 +165,16 @@ async function calculatePerformanceMetrics(ctx: QueryCtx, userId: Id<'users'>, n
   const allScores = attempts.map((a: any) => a.score * 100);
   const averageGrade = allScores.reduce((a: number, b: number) => a + b, 0) / allScores.length;
 
-  // Calculate grade delta (compare with previous period)
-  const previousPeriodStart = thirtyDaysAgo - 30 * 24 * 3600;
+  // OPTIMIZED: Calculate grade delta using indexed query
+  const previousPeriodStart = thirtyDaysAgo - THIRTY_DAYS;
   const previousAttempts = await ctx.db
     .query('attempts')
-    .withIndex('byUser', (q: any) => q.eq('userId', userId))
-    .collect()
-    .then((attempts: any[]) => attempts.filter((a: any) => a.completedAt >= previousPeriodStart && a.completedAt < thirtyDaysAgo));
+    .withIndex('byUserCompletedAt', q => 
+      q.eq('userId', userId)
+        .gte('completedAt', previousPeriodStart)
+        .lt('completedAt', thirtyDaysAgo)
+    )
+    .collect();
 
   const previousAverage = previousAttempts.length > 0
     ? previousAttempts.reduce((sum: number, a: any) => sum + a.score * 100, 0) / previousAttempts.length
@@ -252,17 +258,17 @@ async function getUpcomingExam(ctx: QueryCtx, userId: Id<'users'>, now: number) 
 }
 
 async function getSubjectProgress(ctx: QueryCtx, userId: Id<'users'>, now: number) {
-  // Get quiz attempts grouped by subject
+  // OPTIMIZED: Get quiz attempts grouped by subject using denormalized data
   const attempts = await ctx.db
     .query('attempts')
-    .withIndex('byUser', (q: any) => q.eq('userId', userId))
+    .withIndex('byUser', q => q.eq('userId', userId))
     .collect();
 
   const subjectData: Record<string, any> = {};
 
+  // FIXED N+1 QUERY: Use denormalized subject field
   for (const attempt of attempts) {
-    const quiz = await ctx.db.get(attempt.quizId) as any;
-    const subject = quiz?.subject || 'General';
+    const subject = attempt.subject || 'General';
 
     if (!subjectData[subject]) {
       subjectData[subject] = {
@@ -278,7 +284,7 @@ async function getSubjectProgress(ctx: QueryCtx, userId: Id<'users'>, now: numbe
   }
 
   // Convert to the format expected by the DataTable
-  const result = Object.entries(subjectData).map(([subject, data]) => {
+  const result = Object.entries(subjectData).map(([subject, data], index) => {
     const scores = data.scores;
     const avgScore = scores.length > 0 ? scores.reduce((a: number, b: number) => a + b, 0) / scores.length : 75;
 
@@ -309,7 +315,7 @@ async function getSubjectProgress(ctx: QueryCtx, userId: Id<'users'>, now: numbe
     else if (avgScore < 80 || hoursThisWeek < hoursTarget * 0.7) risk = 'attention';
 
     return {
-      id: subject.toLowerCase().replace(/\s+/g, '-'),
+      id: (index + 1).toString(), // Use string index starting from 1
       subject,
       category,
       avgScore: Math.round(avgScore),
@@ -357,7 +363,7 @@ async function getChartData(ctx: QueryCtx, userId: Id<'users'>, startTime: numbe
   }
 
   // Convert to array format expected by chart
-  const result = [];
+  const result: any[] = [];
   const current = new Date(startTime * 1000);
   const end = new Date(endTime * 1000);
 
@@ -405,8 +411,8 @@ export const predictiveAnalytics = query({
     if (!user) throw new Error('User not found');
 
     const now = Math.floor(Date.now() / 1000);
-    const thirtyDaysAgo = now - 30 * 24 * 3600;
-    const ninetyDaysAgo = now - 90 * 24 * 3600;
+    const thirtyDaysAgo = now - THIRTY_DAYS;
+    const ninetyDaysAgo = now - NINETY_DAYS;
 
     // Get historical performance data
     const attempts = await ctx.db
@@ -595,15 +601,15 @@ function predictTimelineToTarget(currentScore: number, trend: any): {
 }
 
  {
-  const targetScore = 750; // Typical good PAES score
+  const TARGET_SCORE = 750; // Typical good PAES score
   const weeklyImprovement = trend.velocity * 100; // Convert to PAES points
-  const pointsNeeded = Math.max(0, targetScore - currentScore);
+  const pointsNeeded = Math.max(0, TARGET_SCORE - currentScore);
   const weeksNeeded = weeklyImprovement > 0 ? Math.ceil(pointsNeeded / weeklyImprovement) : 52; // Max 1 year
 
   return {
-    targetScore,
+    targetScore: TARGET_SCORE,
     weeksNeeded: Math.min(weeksNeeded, 52),
-    projectedScore: Math.min(targetScore, currentScore + weeklyImprovement * 4) // 1 month projection
+    projectedScore: Math.min(TARGET_SCORE, currentScore + weeklyImprovement * 4) // 1 month projection
   };
 }
 

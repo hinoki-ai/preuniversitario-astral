@@ -61,7 +61,7 @@ export const getMockExamCatalog = query({
           questionBreakdown: exam.mockExamMetadata?.questionBreakdown || [],
           difficulty: exam.difficulty || 'intermediate',
           totalAttempts: attempts.length,
-          averageScore: Math.round(avgScore),
+          avgScore: Math.round(avgScore),
           isRanked: exam.mockExamMetadata?.isRanked || false,
           scheduledStart: exam.mockExamMetadata?.scheduledStart,
           createdAt: exam.createdAt,
@@ -431,7 +431,7 @@ export const getUserMockExamHistory = query({
       })),
       summary: {
         totalAttempts,
-        averageScore: Math.round(averageScore),
+        avgScore: Math.round(averageScore),
         bestScore: Math.round(bestScore),
         improvementTrend: Math.round(improvementTrend * 10) / 10,
       },

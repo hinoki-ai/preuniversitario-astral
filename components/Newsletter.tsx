@@ -10,8 +10,8 @@ import { cn } from '@/lib/utils';
 import { FormNewsletter } from './FormNewsletter';
 import { Button, buttonVariants } from './ui/button';
 
-const DURATION = 0.3;
-const DELAY = DURATION;
+const ANIMATION_DURATION = 0.3;
+const ANIMATION_DELAY = ANIMATION_DURATION;
 const EASE_OUT = 'easeOut';
 const EASE_OUT_OPACITY = [0.25, 0.46, 0.45, 0.94] as const;
 const SPRING = {
@@ -48,7 +48,7 @@ export const Newsletter = () => {
 
   return (
     <div className="flex overflow-hidden relative flex-col gap-4 justify-center items-center pt-10 w-full h-full short:lg:pt-10 pb-footer-safe-area 2xl:pt-footer-safe-area px-sides short:lg:gap-4 lg:gap-8">
-      <motion.div layout="position" transition={{ duration: DURATION, ease: EASE_OUT }}>
+      <motion.div layout="position" transition={{ duration: ANIMATION_DURATION, ease: EASE_OUT }}>
         <h1 className="font-serif text-5xl italic short:lg:text-8xl sm:text-8xl lg:text-9xl text-foreground">
           Synecdoche®
         </h1>
@@ -66,19 +66,19 @@ export const Newsletter = () => {
                 visible: {
                   scale: 1,
                   transition: {
-                    delay: DELAY,
-                    duration: DURATION,
+                    delay: ANIMATION_DELAY,
+                    duration: ANIMATION_DURATION,
                     ease: EASE_OUT,
                   },
                 },
                 hidden: {
                   scale: 0.9,
-                  transition: { duration: DURATION, ease: EASE_OUT },
+                  transition: { duration: ANIMATION_DURATION, ease: EASE_OUT },
                 },
                 exit: {
                   y: -150,
                   scale: 0.9,
-                  transition: { duration: DURATION, ease: EASE_OUT },
+                  transition: { duration: ANIMATION_DURATION, ease: EASE_OUT },
                 },
               }}
             >
@@ -96,14 +96,14 @@ export const Newsletter = () => {
                       exit={{
                         opacity: 0,
                         transition: {
-                          duration: DURATION,
+                          duration: ANIMATION_DURATION,
                           ease: EASE_OUT_OPACITY,
                         },
                       }}
                       transition={{
-                        duration: DURATION,
+                        duration: ANIMATION_DURATION,
                         ease: EASE_OUT,
-                        delay: DELAY,
+                        delay: ANIMATION_DELAY,
                       }}
                       {...props}
                     />
@@ -121,14 +121,14 @@ export const Newsletter = () => {
                       exit={{
                         opacity: 0,
                         transition: {
-                          duration: DURATION,
+                          duration: ANIMATION_DURATION,
                           ease: EASE_OUT_OPACITY,
                         },
                       }}
                       transition={{
-                        duration: DURATION,
+                        duration: ANIMATION_DURATION,
                         ease: EASE_OUT,
-                        delay: DELAY,
+                        delay: ANIMATION_DELAY,
                       }}
                     >
                       <ArrowRightIcon className="w-4 h-4 text-current" />
@@ -140,12 +140,12 @@ export const Newsletter = () => {
                   animate={{ opacity: 1 }}
                   exit={{
                     opacity: 0,
-                    transition: { duration: DURATION, ease: EASE_OUT_OPACITY },
+                    transition: { duration: ANIMATION_DURATION, ease: EASE_OUT_OPACITY },
                   }}
                   transition={{
-                    duration: DURATION,
+                    duration: ANIMATION_DURATION,
                     ease: EASE_OUT,
-                    delay: DELAY,
+                    delay: ANIMATION_DELAY,
                   }}
                   className="text-base short:lg:text-lg sm:text-lg lg:text-xl !leading-[1.1] font-medium text-center text-foreground text-pretty"
                 >
@@ -168,7 +168,7 @@ export const Newsletter = () => {
             >
               <motion.span
                 animate={{ x: isOpen ? -16 : 0 }}
-                transition={{ duration: DURATION, ease: EASE_OUT }}
+                transition={{ duration: ANIMATION_DURATION, ease: EASE_OUT }}
                 className="inline-block"
               >
                 Manifesto
@@ -183,9 +183,9 @@ export const Newsletter = () => {
                   initial={{ opacity: 0, scale: 0.8, rotate: -40 }}
                   animate={{ opacity: 1, scale: 1, rotate: 0 }}
                   transition={{
-                    duration: DURATION,
+                    duration: ANIMATION_DURATION,
                     ease: EASE_OUT,
-                    delay: DELAY,
+                    delay: ANIMATION_DELAY,
                   }}
                 >
                   <Cross1Icon className="size-5 text-primary-foreground" />
@@ -205,20 +205,20 @@ export const Newsletter = () => {
                   opacity: 1,
                   scale: 1,
                   transition: {
-                    delay: DELAY,
-                    duration: DURATION,
+                    delay: ANIMATION_DELAY,
+                    duration: ANIMATION_DURATION,
                     ease: EASE_OUT,
                   },
                 },
                 hidden: {
                   opacity: 0,
                   scale: 0.9,
-                  transition: { duration: DURATION, ease: EASE_OUT },
+                  transition: { duration: ANIMATION_DURATION, ease: EASE_OUT },
                 },
                 exit: {
                   opacity: 0,
                   scale: 0.9,
-                  transition: { duration: DURATION, ease: EASE_OUT_OPACITY },
+                  transition: { duration: ANIMATION_DURATION, ease: EASE_OUT_OPACITY },
                 },
               }}
               className="relative flex min-h-0 flex-shrink overflow-hidden text-sm md:text-base max-h-[calc(70dvh-var(--footer-safe-area))] flex-col gap-8 text-center backdrop-blur-xl text-balance border-2 border-border/50 bg-primary/20 max-w-3xl text-foreground rounded-3xl ring-1 ring-offset-primary/10 ring-border/10 ring-offset-2 shadow-button"

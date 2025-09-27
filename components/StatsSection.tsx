@@ -52,7 +52,7 @@ function StatsSectionInternal() {
             Resultados que hablan por sí solos
           </h2>
           <p className="mx-auto max-w-3xl text-base text-muted-foreground sm:text-lg">
-            Nuestros números reflejan el compromiso con la excelencia educativa y el éxito de
+            Nuestros números reflejan el compromiso con la <span className="text-violet-400">excelencia</span> educativa y el éxito de
             nuestros estudiantes.
           </p>
         </motion.div>

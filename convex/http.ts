@@ -39,8 +39,8 @@ http.route({
         break;
 
       case 'user.deleted': {
-        const clerkUserId = (event.data as any).id!;
-        await ctx.runMutation(internal.users.deleteFromClerk, { clerkUserId });
+        const externalId = (event.data as any).id!;
+        await ctx.runMutation(internal.users.deleteFromClerk, { externalId });
         break;
       }
 

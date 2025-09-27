@@ -33,9 +33,9 @@ export const overview = query({
       }
     }
     for (const k of Object.keys(bySubject)) {
-      const s = bySubject[k];
-      s.avgScore = s.scores.length ? s.scores.reduce((a, b) => a + b, 0) / s.scores.length : 0;
-      delete (s as any).scores;
+      const subjectData = bySubject[k];
+      subjectData.avgScore = subjectData.scores.length ? subjectData.scores.reduce((a, b) => a + b, 0) / subjectData.scores.length : 0;
+      delete (subjectData as any).scores;
     }
 
     // Overall activity count last 7 days

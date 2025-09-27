@@ -855,14 +855,14 @@ async function seedPaesQuiz(ctx: any, adminUser: any) {
   ];
 
   for (let i = 0; i < paesQuestions.length; i++) {
-    const q = paesQuestions[i];
+    const question = paesQuestions[i];
     await ctx.runMutation(api.quizzes.createQuestion, {
       quizId: paesQuiz,
       order: i + 1,
-      text: q.text,
-      choices: q.choices,
-      correctIndex: q.correctIndex,
-      explanation: q.explanation,
+      text: question.text,
+      choices: question.choices,
+      correctIndex: question.correctIndex,
+      explanation: question.explanation,
     });
   }
 }

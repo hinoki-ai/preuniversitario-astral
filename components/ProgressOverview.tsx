@@ -41,17 +41,17 @@ export default function ProgressOverview() {
           </Card>
         )}
         {subjects.map(s => {
-          const v = data.bySubject[s];
-          if (!v) return null;
+          const subjectData = data.bySubject[s];
+          if (!subjectData) return null;
 
           return (
             <Card key={s} className="p-4 space-y-1">
               <div className="font-medium">{s}</div>
               <div className="text-sm text-muted-foreground">
-                Lecciones vistas: {v.lessons || 0} · Evaluaciones: {v.quizzes || 0}
+                Lecciones vistas: {subjectData.lessons || 0} · Evaluaciones: {subjectData.quizzes || 0}
               </div>
               <div className="text-sm">
-                Promedio evaluaciones: {Math.round((v.avgScore || 0) * 100)}%
+                Promedio evaluaciones: {Math.round((subjectData.avgScore || 0) * 100)}%
               </div>
             </Card>
           );

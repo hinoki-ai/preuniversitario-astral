@@ -15,6 +15,7 @@ import {
 
 import { api } from '@/convex/_generated/api';
 import { cn } from '@/lib/utils';
+import { UserStats } from '@/lib/types';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -38,7 +39,7 @@ interface GamificationNotificationsProps {
 }
 
 export function GamificationNotifications({ onNotification }: GamificationNotificationsProps) {
-  const userStats = useQuery(api.userStats.getUserStats);
+  const userStats = useQuery(api.userStats.getUserStats) as UserStats | undefined;
   const achievements = useQuery(api.userStats.getUserAchievements) as Array<{ id: string; title: string; createdAt?: number }> | undefined;
 
   const notifications = useMemo<GamificationNotification[]>(() => {
@@ -66,7 +67,7 @@ export function GamificationNotifications({ onNotification }: GamificationNotifi
       });
     });
 
-    if (userStats?.weeklyGoals?.length) {
+    if (userStats?.weeklyGoals) {
       base.push({
         id: 'weekly-goal',
         title: 'Objetivo semanal disponible',
@@ -93,10 +94,10 @@ export function GamificationNotifications({ onNotification }: GamificationNotifi
         <div>
           <CardTitle className="flex items-center gap-2 text-lg">
             <Bell className="h-5 w-5" />
-            Notificaciones
+            Pergaminos Mágicos
           </CardTitle>
           <CardDescription>
-            Enterate de tus logros, recompensas y recordatorios importantes para mantener tu motivación.
+            Enterate de tus conquistas legendarias, tesoros obtenidos y recordatorios importantes para mantener tu espíritu guerrero.
           </CardDescription>
         </div>
         <div className="flex items-center gap-2">
@@ -113,26 +114,26 @@ export function GamificationNotifications({ onNotification }: GamificationNotifi
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="all" className="flex items-center gap-2">
               <Inbox className="h-4 w-4" />
-              Todas
+              Todos los Pergaminos
             </TabsTrigger>
             <TabsTrigger value="achievement" className="flex items-center gap-2">
               <Medal className="h-4 w-4" />
-              Logros
+              Conquistas Épicas
             </TabsTrigger>
             <TabsTrigger value="streak" className="flex items-center gap-2">
               <Flame className="h-4 w-4" />
-              Rachas
+              Cadenas de Honor
             </TabsTrigger>
             <TabsTrigger value="reward" className="flex items-center gap-2">
               <Gift className="h-4 w-4" />
-              Recompensas
+              Tesoros Obtenidos
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value={filters.activeTab} className="mt-4 space-y-3">
             {filters.filteredNotifications.length === 0 ? (
               <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-                No hay notificaciones para mostrar. Completa misiones para desbloquear nuevas recompensas.
+                No hay pergaminos para mostrar. Completa aventuras legendarias para desbloquear nuevos tesoros.
               </div>
             ) : (
               filters.filteredNotifications.map(notification => (
@@ -256,7 +257,7 @@ function useGamificationNotificationsState({
 }
 
 export function useGamificationNotifications() {
-  const notifications = useQuery(api.userStats.getUserStats);
+  const notifications = useQuery(api.userStats.getUserStats) as UserStats | undefined;
 
   return useMemo(() => {
     if (!notifications) {

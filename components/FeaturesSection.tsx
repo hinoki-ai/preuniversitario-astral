@@ -71,7 +71,7 @@ function FeaturesSectionInternal() {
           className="text-center mb-16"
         >
           <h2 className="mb-6 font-serif text-3xl font-bold text-foreground sm:text-4xl md:text-5xl">
-            Tecnología al servicio de
+            <span className="text-teal-400">Tecnología</span> al servicio de
             <br />
             <span className="text-accent">tu educación</span>
           </h2>

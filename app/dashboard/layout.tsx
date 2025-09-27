@@ -1,5 +1,6 @@
 import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs';
 import { AppSidebar } from '@/app/dashboard/AppSidebar';
+import { AudioControls } from '@/components/AudioControls';
 import { LoadingBar } from '@/app/dashboard/LoadingBar';
 import { SiteHeader } from '@/app/dashboard/SiteHeader';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
@@ -24,13 +25,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <>
       <SignedIn>
         <SidebarProvider
-          style={
-            {
-              '--sidebar-width': '18rem', // Fixed width instead of calc
-              '--sidebar-width-icon': '3rem', // Icon width for collapsed state
-              '--header-height': '3rem', // Consistent header height
-            } as React.CSSProperties
-          }
           className="group/layout min-h-screen"
         >
           <AppSidebar variant="sidebar" />
@@ -46,6 +40,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           </SidebarInset>
         </SidebarProvider>
+        <AudioControls />
       </SignedIn>
       <SignedOut>
         <AuthRequiredMessage />

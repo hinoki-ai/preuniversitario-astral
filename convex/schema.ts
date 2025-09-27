@@ -148,6 +148,8 @@ export default defineSchema({
     startedAt: v.number(),
     completedAt: v.number(),
     timeTakenSec: v.optional(v.number()),
+    difficulty: v.optional(v.string()), // Track difficulty for better points calculation
+    subject: v.optional(v.string()), // Denormalized for performance
     mockExamData: v.optional(v.object({
       subjectBreakdown: v.array(v.object({
         subject: v.string(),
@@ -163,22 +165,35 @@ export default defineSchema({
   })
     .index('byQuizUser', ['quizId', 'userId'])
     .index('byUser', ['userId'])
-    .index('byUserCompletedAt', ['userId', 'completedAt']) // NEW: For efficient weekly calculations
+    .index('byUserCompletedAt', ['userId', 'completedAt']) // For efficient weekly calculations
+    .index('byUserSubjectCompletedAt', ['userId', 'subject', 'completedAt']) // Subject-specific performance tracking
+    .index('byUserScoreCompletedAt', ['userId', 'score', 'completedAt']) // Performance analysis
     .index('byQuiz', ['quizId'])
-    .index('byCompletedAt', ['completedAt']),
+    .index('byCompletedAt', ['completedAt'])
+    .index('bySubjectCompletedAt', ['subject', 'completedAt']), // Global subject analytics
 
   // Progress events
   progressEvents: defineTable({
     userId: v.id('users'),
     subject: v.optional(v.string()),
-    kind: v.string(), // 'lesson_viewed' | 'quiz_completed' | 'streak_maintained'
+    kind: v.string(), // 'lesson_viewed' | 'quiz_completed' | 'streak_maintained' | 'study_session'
     value: v.optional(v.number()),
     createdAt: v.number(),
+    sessionId: v.optional(v.string()), // To prevent duplicate sessions
+    metadata: v.optional(v.object({
+      duration: v.optional(v.number()), // minutes spent
+      difficulty: v.optional(v.string()),
+      accuracy: v.optional(v.number()),
+      attempts: v.optional(v.number()),
+    })),
   })
     .index('byUser', ['userId'])
-    .index('byUserCreatedAt', ['userId', 'createdAt']),
+    .index('byUserCreatedAt', ['userId', 'createdAt'])
+    .index('byUserKindCreatedAt', ['userId', 'kind', 'createdAt']) // Efficient filtering by activity type
+    .index('bySessionId', ['sessionId']) // Prevent duplicate sessions
+    .index('bySubjectCreatedAt', ['subject', 'createdAt']), // Subject-specific analytics
 
-  // User streaks, achievements, and gamification
+  // User streaks, achievements, and gamification - UNIFIED CURRENCY SYSTEM
   userStats: defineTable({
     userId: v.id('users'),
     currentStreak: v.number(),
@@ -187,87 +202,167 @@ export default defineSchema({
     avgScore: v.number(),
     weakSubjects: v.array(v.string()),
     strongSubjects: v.array(v.string()),
-    lastActiveDate: v.string(), // YYYY-MM-DD format
+    lastActiveDate: v.number(), // FIXED: Now using timestamp instead of string
     
-    // Gamification fields
-    totalPoints: v.number(),
+    // UNIFIED CURRENCY SYSTEM
+    esenciaArcana: v.number(), // Spendable currency earned through learning achievements
     level: v.number(),
-    experiencePoints: v.number(),
+    experiencePoints: v.number(), // Leveling XP (same as esenciaArcana for consistent leveling)
     pointsToNextLevel: v.number(),
+    
+    // Learning-focused achievements
     achievements: v.array(v.object({
       id: v.string(),
       title: v.string(),
       description: v.string(),
-      iconType: v.string(), // 'streak', 'score', 'completion', 'speed', 'consistency'
+      iconType: v.string(), // 'mastery', 'improvement', 'consistency', 'breakthrough', 'teaching'
       earnedAt: v.number(),
-      points: v.number(),
+      esencia: v.number(), // Esencia Arcana reward
+      difficulty: v.string(), // 'escudero', 'guerrero', 'paladín', 'leyenda'
+      retentionBonus: v.optional(v.number()), // Bonus for long-term retention
     })),
+    
+    // Learning-outcome focused goals (backward compatible)
     weeklyGoals: v.object({
-      quizzesTarget: v.number(),
-      quizzesCompleted: v.number(),
-      studyTimeTarget: v.number(), // in minutes
-      studyTimeCompleted: v.number(),
+      // Legacy fields for backward compatibility
+      quizzesTarget: v.optional(v.number()),
+      quizzesCompleted: v.optional(v.number()),
+      studyTimeTarget: v.optional(v.number()),
+      studyTimeCompleted: v.optional(v.number()),
+
+      // New mastery-focused fields
+      masteryTarget: v.optional(v.number()), // Number of concepts to master
+      masteryCompleted: v.optional(v.number()),
+      improvementTarget: v.optional(v.number()), // Points improvement target
+      improvementCompleted: v.optional(v.number()),
+      retentionTarget: v.optional(v.number()), // Concepts to retain from previous weeks
+      retentionCompleted: v.optional(v.number()),
+
       weekStart: v.number(), // epoch seconds
     }),
     
-    // Daily missions progress
+    // Learning analytics for better rewards
+    learningMetrics: v.object({
+      conceptsMastered: v.number(),
+      conceptsRetained: v.number(), // From spaced repetition
+      averageImprovement: v.number(), // Points per week
+      difficultyPreference: v.string(), // 'adaptive', 'challenging', 'steady'
+      optimalStudyDuration: v.number(), // Minutes per session for this user
+      peakPerformanceHour: v.optional(v.number()), // Hour of day (0-23) when user performs best
+    }),
+    
+    // Daily missions progress - RESTRUCTURED for learning focus
     dailyMissions: v.optional(v.object({
-      date: v.string(), // YYYY-MM-DD
+      date: v.number(), // FIXED: timestamp instead of string
       missions: v.array(v.object({
         id: v.string(),
-        type: v.string(), // 'quiz_streak', 'subject_focus', 'speed_challenge', 'accuracy_test', 'exploration'
+        type: v.string(), // 'concept_mastery', 'retention_challenge', 'improvement_sprint', 'teaching_moment', 'breakthrough_attempt'
         title: v.string(),
         description: v.string(),
         target: v.number(),
         progress: v.number(),
         completed: v.boolean(),
         reward: v.object({
-          points: v.number(),
-          bonus: v.optional(v.string()),
+          esencia: v.number(), // Unified currency
+          masteryBonus: v.optional(v.number()), // Extra for concept mastery
+          retentionBonus: v.optional(v.number()), // Extra for knowledge retention
         }),
-        difficulty: v.string(), // 'easy', 'medium', 'hard', 'legendary'
+        difficulty: v.string(), // 'escudero', 'guerrero', 'paladín', 'leyenda'
+        subject: v.optional(v.string()), // Specific subject focus
+        conceptsRequired: v.optional(v.array(v.string())), // Required concept mastery
       })),
       completedCount: v.number(),
-      streakBonus: v.number(),
+      masteryBonus: v.number(), // Bonus for completing all missions with high accuracy
     })),
+    
+    // Spaced repetition system for retention
+    spacedRepetition: v.object({
+      dueCards: v.number(),
+      masteredCards: v.number(),
+      streakDays: v.number(),
+      nextReviewDate: v.number(),
+      retentionRate: v.number(), // Percentage of concepts retained
+    }),
     
     updatedAt: v.number(),
   }).index('byUser', ['userId'])
     .index('byLevel', ['level'])
-    .index('byTotalPoints', ['totalPoints']),
+    .index('byEsenciaArcana', ['esenciaArcana']) // For leaderboard
+    .index('byLastActiveDate', ['lastActiveDate']) // For engagement analysis
+    .index('byUserUpdatedAt', ['userId', 'updatedAt']), // For efficient updates
 
-  // Daily Missions System
+  // Daily Missions System - LEARNING OUTCOME FOCUSED
   dailyMissionTemplates: defineTable({
-    type: v.string(), // 'quiz_streak', 'subject_focus', 'speed_challenge', 'accuracy_test', 'exploration'
+    type: v.string(), // 'concept_mastery', 'retention_challenge', 'improvement_sprint', 'teaching_moment', 'breakthrough_attempt'
     title: v.string(),
     description: v.string(),
     target: v.number(),
-    difficulty: v.string(), // 'easy', 'medium', 'hard', 'legendary'
-    points: v.number(),
-    bonusReward: v.optional(v.string()),
+    difficulty: v.string(), // 'escudero', 'guerrero', 'paladín', 'leyenda'
+    esenciaReward: v.number(), // Unified currency
+    masteryBonus: v.optional(v.number()), // Bonus for demonstrating concept mastery
+    retentionBonus: v.optional(v.number()), // Bonus for knowledge retention
+    
+    // Learning outcome requirements
     conditions: v.optional(v.object({
       minLevel: v.optional(v.number()),
       maxLevel: v.optional(v.number()),
       subjects: v.optional(v.array(v.string())),
+      conceptsRequired: v.optional(v.array(v.string())), // Prerequisite concepts
+      minAccuracy: v.optional(v.number()), // Minimum accuracy required (0.0-1.0)
+      timeConstraint: v.optional(v.number()), // Maximum time allowed (seconds)
+      retentionDays: v.optional(v.number()), // Must retain knowledge for N days
+      difficultyProgression: v.optional(v.boolean()), // Must demonstrate improvement across difficulties
       weekday: v.optional(v.array(v.number())), // 0=Sunday, 1=Monday, etc.
     })),
+    
+    // Validation rules to prevent exploitation
+    validationRules: v.object({
+      maxAttemptsPerHour: v.number(), // Rate limiting
+      minTimeSpent: v.number(), // Minimum seconds spent to be valid
+      accuracyThreshold: v.number(), // Minimum accuracy to count progress
+      cooldownPeriod: v.number(), // Seconds between attempts
+      duplicateSubmissionWindow: v.number(), // Window to detect duplicate submissions
+    }),
+    
     active: v.boolean(),
+    availableFrom: v.optional(v.number()), // Timestamp when mission becomes available
+    availableUntil: v.optional(v.number()), // Timestamp when mission expires
   }).index('byType', ['type'])
     .index('byDifficulty', ['difficulty'])
-    .index('byActive', ['active']),
+    .index('byActive', ['active'])
+    .index('byAvailability', ['availableFrom', 'availableUntil']) // For time-limited missions
+    .index('byTypeActive', ['type', 'active']), // Efficient filtering
 
-  // User's daily mission history
+  // User's daily mission history - ENHANCED WITH VALIDATION
   userMissionHistory: defineTable({
     userId: v.id('users'),
-    date: v.string(), // YYYY-MM-DD
+    date: v.number(), // FIXED: timestamp instead of string
     missionId: v.string(),
     completed: v.boolean(),
     completedAt: v.optional(v.number()),
     progress: v.number(),
-    pointsEarned: v.number(),
+    esenciaEarned: v.number(), // Unified currency
+    masteryBonus: v.optional(v.number()),
+    retentionBonus: v.optional(v.number()),
+    
+    // Validation data to prevent cheating
+    attempts: v.number(), // Number of attempts made
+    timeSpent: v.number(), // Total seconds spent
+    averageAccuracy: v.number(), // Average accuracy across attempts
+    validationScore: v.number(), // 0-1 score for submission validity
+    sessionId: v.optional(v.string()), // Session identifier
+    ipAddress: v.optional(v.string()), // For basic fraud detection
+    
+    // Learning outcome data
+    conceptsMastered: v.optional(v.array(v.string())), // Concepts demonstrated
+    difficultyProgression: v.optional(v.array(v.number())), // Scores by difficulty level
+    retentionVerified: v.optional(v.boolean()), // Whether retention was verified
   }).index('byUser', ['userId'])
     .index('byUserDate', ['userId', 'date'])
-    .index('byDate', ['date']),
+    .index('byDate', ['date'])
+    .index('byUserCompletedAt', ['userId', 'completedAt']) // For streak calculation
+    .index('bySessionId', ['sessionId']) // For duplicate detection
+    .index('byValidationScore', ['userId', 'validationScore']), // For fraud detection
 
   // Social Features
   friendships: defineTable({
@@ -284,7 +379,7 @@ export default defineSchema({
   studyGroups: defineTable({
     name: v.string(),
     description: v.string(),
-    creatorId: v.id('users'),
+    createdBy: v.id('users'),
     members: v.array(v.object({
       userId: v.id('users'),
       role: v.string(), // 'creator', 'admin', 'member'
@@ -299,19 +394,19 @@ export default defineSchema({
     maxMembers: v.number(),
     goals: v.object({
       weeklyQuizzes: v.number(),
-      averageScore: v.number(),
+      avgScore: v.number(),
       studyStreak: v.number(),
     }),
     stats: v.object({
       totalQuizzes: v.number(),
-      averageScore: v.number(),
+      avgScore: v.number(),
       currentStreak: v.number(),
       totalPoints: v.number(),
       weeklyProgress: v.number(),
     }),
     createdAt: v.number(),
     updatedAt: v.number(),
-  }).index('byCreator', ['creatorId'])
+  }).index('byCreator', ['createdBy'])
     .index('byInviteCode', ['inviteCode'])
     .index('bySubject', ['subject']),
 
@@ -376,7 +471,7 @@ export default defineSchema({
       rank: v.number(),
       progress: v.object({
         quizzesCompleted: v.number(),
-        averageScore: v.number(),
+        avgScore: v.number(),
         pointsEarned: v.number(),
         bestStreak: v.number(),
       }),
@@ -396,105 +491,127 @@ export default defineSchema({
     .index('byFeatured', ['featured'])
     .index('byDateRange', ['startDate', 'endDate']),
 
-  // Rewards and Unlockables System
+  // Educational Rewards System - MEANINGFUL ESENCIA ARCANA SPENDING
   userRewards: defineTable({
     userId: v.id('users'),
     
-    // Unlocked Content
-    themes: v.array(v.object({
-      id: v.string(),
-      name: v.string(),
-      unlockedAt: v.number(),
-      isActive: v.boolean(),
-    })),
-    avatars: v.array(v.object({
-      id: v.string(),
-      name: v.string(),
-      category: v.string(), // 'default', 'achievement', 'seasonal', 'premium'
-      unlockedAt: v.number(),
-      isActive: v.boolean(),
-    })),
-    titles: v.array(v.object({
-      id: v.string(),
-      title: v.string(),
-      description: v.string(),
-      category: v.string(),
-      color: v.string(),
-      unlockedAt: v.number(),
-      isActive: v.boolean(),
-    })),
-    badges: v.array(v.object({
+    // Educational Enhancement Items
+    learningBoosts: v.array(v.object({
       id: v.string(),
       name: v.string(),
       description: v.string(),
-      iconUrl: v.optional(v.string()),
-      rarity: v.string(), // 'common', 'rare', 'epic', 'legendary'
+      effect: v.string(), // 'concept_reveal', 'difficulty_insight', 'retention_boost', 'mastery_accelerator'
       unlockedAt: v.number(),
-    })),
-    
-    // Perks and Benefits
-    perks: v.array(v.object({
-      id: v.string(),
-      name: v.string(),
-      description: v.string(),
-      type: v.string(), // 'xp_boost', 'streak_protection', 'bonus_missions', 'leaderboard_highlight'
-      value: v.number(),
-      duration: v.optional(v.number()), // null for permanent
-      activatedAt: v.optional(v.number()),
+      isActive: v.boolean(),
+      duration: v.optional(v.number()), // Duration in seconds, null for permanent
       expiresAt: v.optional(v.number()),
+      usesRemaining: v.optional(v.number()), // For consumable items
+    })),
+    
+    // Exclusive Educational Content
+    exclusiveContent: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      type: v.string(), // 'advanced_lessons', 'expert_strategies', 'exam_insights', 'concept_deep_dives'
+      unlockedAt: v.number(),
+      subject: v.optional(v.string()),
+      difficulty: v.string(), // 'guerrero', 'paladín', 'leyenda'
+    })),
+    
+    // Learning Assistance Tools
+    assistanceTools: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      description: v.string(),
+      toolType: v.string(), // 'concept_visualizer', 'progress_analyzer', 'weakness_identifier', 'strength_amplifier'
+      unlockedAt: v.number(),
+      isActive: v.boolean(),
+      usageCount: v.number(),
+      maxUsages: v.optional(v.number()),
+    })),
+    
+    // Achievement Recognition Items
+    recognitionItems: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      type: v.string(), // 'title', 'badge', 'avatar_frame', 'profile_effect'
+      description: v.string(),
+      rarity: v.string(), // 'escudero', 'guerrero', 'paladín', 'leyenda'
+      earnedFor: v.string(), // Achievement that earned this item
+      unlockedAt: v.number(),
       isActive: v.boolean(),
     })),
     
-    // Currency and Shop
-    coins: v.number(), // earned currency for shop purchases
-    gems: v.number(), // premium currency
-    shopPurchases: v.array(v.object({
+    // Educational Services
+    services: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      description: v.string(),
+      serviceType: v.string(), // 'personal_tutor_session', 'study_plan_optimization', 'weakness_analysis', 'retention_coaching'
+      purchasedAt: v.number(),
+      scheduledAt: v.optional(v.number()),
+      completedAt: v.optional(v.number()),
+      rating: v.optional(v.number()), // User rating of the service
+    })),
+    
+    // Purchase History - UNIFIED CURRENCY ONLY
+    purchases: v.array(v.object({
       itemId: v.string(),
       itemType: v.string(),
-      cost: v.number(),
-      currency: v.string(), // 'points', 'coins', 'gems'
+      cost: v.number(), // Esencia Arcana spent
       purchasedAt: v.number(),
+      valueReceived: v.optional(v.string()), // What educational value was gained
     })),
     
-    // Customization
+    // Profile Customization - Earned through achievement
     profileCustomization: v.object({
-      selectedTheme: v.string(),
-      selectedAvatar: v.string(),
-      selectedTitle: v.string(),
-      selectedBadges: v.array(v.string()), // max 3-5 badges to display
-      profileBanner: v.optional(v.string()),
-      profileColor: v.optional(v.string()),
+      selectedTitle: v.optional(v.string()),
+      selectedBadges: v.array(v.string()), // Max 3 badges to display
+      selectedFrame: v.optional(v.string()),
+      profileEffect: v.optional(v.string()),
+      learningStreak: v.number(), // Days of consistent learning
+      masteryBadges: v.array(v.string()), // Subjects where mastery was achieved
     }),
     
     // Analytics
-    totalItemsUnlocked: v.number(),
-    totalCoinsEarned: v.number(),
-    totalCoinsSpent: v.number(),
+    totalEsenciaEarned: v.number(),
+    totalEsenciaSpent: v.number(),
+    valueCreated: v.number(), // Educational value created through spending
     
     createdAt: v.number(),
     updatedAt: v.number(),
-  }).index('byUser', ['userId']),
+  }).index('byUser', ['userId'])
+    .index('byTotalEsencia', ['totalEsenciaEarned']) // For leaderboards
+    .index('byValueCreated', ['valueCreated']), // For impact tracking
 
-  // Shop Items and Unlockables Catalog
+  // Educational Items Catalog - FOCUSED ON LEARNING VALUE
   rewardsCatalog: defineTable({
     itemId: v.string(),
-    itemType: v.string(), // 'theme', 'avatar', 'title', 'badge', 'perk'
+    itemType: v.string(), // 'learning_boost', 'exclusive_content', 'assistance_tool', 'recognition_item', 'educational_service'
     name: v.string(),
     description: v.string(),
     category: v.string(),
+    educationalValue: v.string(), // Clear description of learning benefit
     
-    // Unlock Requirements
+    // Achievement-Based Unlock Requirements (no more purchasing basic educational tools)
     unlockRequirements: v.object({
-      type: v.string(), // 'achievement', 'level', 'points', 'shop_purchase', 'daily_login'
+      type: v.string(), // 'achievement', 'mastery', 'retention', 'improvement', 'teaching_others'
       achievementIds: v.optional(v.array(v.string())),
       minLevel: v.optional(v.number()),
-      minPoints: v.optional(v.number()),
-      shopCost: v.optional(v.object({
-        amount: v.number(),
-        currency: v.string(), // 'points', 'coins', 'gems'
-      })),
-      dailyLoginStreak: v.optional(v.number()),
-      seasonalEvent: v.optional(v.string()),
+      conceptsMastered: v.optional(v.array(v.string())), // Must master these concepts first
+      retentionPeriod: v.optional(v.number()), // Must retain knowledge for N days
+      improvementRequired: v.optional(v.number()), // Must show X% improvement
+      teachingScore: v.optional(v.number()), // For items unlocked by helping others
+      esenciaCost: v.optional(v.number()), // Only for premium educational services
+    }),
+    
+    // Educational Impact Metrics
+    impact: v.object({
+      learningAcceleration: v.optional(v.number()), // How much faster learning becomes
+      retentionImprovement: v.optional(v.number()), // Improvement in knowledge retention
+      masteryDepth: v.optional(v.number()), // Depth of understanding achieved
+      applicability: v.array(v.string()), // Which subjects/concepts this helps with
+      difficulty: v.string(), // 'escudero', 'guerrero', 'paladín', 'leyenda'
     }),
     
     // Visual Properties
@@ -502,14 +619,17 @@ export default defineSchema({
       iconUrl: v.optional(v.string()),
       previewUrl: v.optional(v.string()),
       color: v.optional(v.string()),
-      rarity: v.string(), // 'common', 'rare', 'epic', 'legendary'
-      animationType: v.optional(v.string()),
+      rarity: v.string(), // 'escudero', 'guerrero', 'paladín', 'leyenda'
+      effectDescription: v.optional(v.string()), // Visual effect description
     }),
     
     // Metadata
     isActive: v.boolean(),
-    isLimited: v.boolean(), // limited-time availability
+    isSeasonalEvent: v.boolean(),
+    availableFrom: v.optional(v.number()),
     availableUntil: v.optional(v.number()),
+    maxUsages: v.optional(v.number()), // For consumable items
+    cooldownPeriod: v.optional(v.number()), // Seconds between uses
     sortOrder: v.number(),
     
     createdAt: v.number(),
@@ -517,22 +637,110 @@ export default defineSchema({
     .index('byCategory', ['category'])
     .index('byRarity', ['visual.rarity'])
     .index('byActive', ['isActive'])
-    .index('byLimited', ['isLimited']),
+    .index('byAvailability', ['availableFrom', 'availableUntil'])
+    .index('byDifficulty', ['impact.difficulty']),
 
-  // Daily Login Rewards
+  // Spaced Repetition System for Long-term Retention
+  spacedRepetitionCards: defineTable({
+    userId: v.id('users'),
+    conceptId: v.string(),
+    subject: v.string(),
+    question: v.string(),
+    answer: v.string(),
+    difficulty: v.string(), // 'escudero', 'guerrero', 'paladín', 'leyenda'
+    
+    // Spaced repetition algorithm data
+    easeFactor: v.number(), // 1.3 to 2.5
+    interval: v.number(), // Days until next review
+    repetitions: v.number(), // Number of successful reviews
+    lastReviewed: v.number(), // Timestamp
+    nextReviewDate: v.number(), // Timestamp
+    
+    // Performance tracking
+    correctStreak: v.number(),
+    totalReviews: v.number(),
+    averageResponseTime: v.number(), // Seconds
+    masteryLevel: v.string(), // 'learning', 'review', 'mastered'
+    
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index('byUser', ['userId'])
+    .index('byUserNextReview', ['userId', 'nextReviewDate'])
+    .index('byUserSubject', ['userId', 'subject'])
+    .index('byUserMastery', ['userId', 'masteryLevel'])
+    .index('byConceptId', ['conceptId']),
+
+  // Study Material Sharing System - OPTIMIZED FOR MINIMAL OVERHEAD
+  sharedStudyMaterials: defineTable({
+    createdBy: v.id('users'),
+    title: v.string(),
+    description: v.string(),
+    subject: v.string(),
+    materialType: v.string(), // 'notes', 'concept_map', 'quiz', 'strategy', 'memory_aid'
+    difficulty: v.string(),
+
+    // Content (lightweight storage)
+    content: v.object({
+      text: v.optional(v.string()),
+      quiz: v.optional(v.array(v.object({
+        question: v.string(),
+        choices: v.array(v.string()),
+        correctIndex: v.number(),
+        explanation: v.optional(v.string()),
+      }))),
+      concepts: v.optional(v.array(v.string())), // Concept tags
+      references: v.optional(v.array(v.string())), // External references
+    }),
+
+    // Sharing and access
+    visibility: v.string(), // 'public', 'friends', 'study_group', 'private'
+    shareWith: v.string(), // 'public', 'friends', 'study_group', 'private'
+    recipients: v.optional(v.array(v.id('users'))), // For private sharing
+    shareCode: v.optional(v.string()), // Unique code for public sharing
+    studyGroupId: v.optional(v.id('studyGroups')),
+    accessCount: v.number(),
+    viewCount: v.number(),
+    likes: v.number(),
+    likeCount: v.number(),
+    helpfulVotes: v.number(),
+
+    // Status and control
+    isActive: v.boolean(),
+
+    // Quality and validation
+    verificationStatus: v.string(), // 'pending', 'verified', 'flagged'
+    verifiedBy: v.optional(v.id('users')), // Teacher/admin who verified
+    avgScore: v.number(), // 0-100 based on user feedback
+
+    tags: v.array(v.string()), // For efficient searching
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index('byCreator', ['createdBy'])
+    .index('bySubject', ['subject'])
+    .index('byMaterialType', ['materialType'])
+    .index('byVisibility', ['visibility'])
+    .index('byStudyGroup', ['studyGroupId'])
+    .index('byQualityScore', ['qualityScore'])
+    .index('bySubjectDifficulty', ['subject', 'difficulty'])
+    .index('byShareCode', ['shareCode'])
+    .index('byCreated', ['isActive']),
+
+  // Daily Login Rewards - ENHANCED WITH LEARNING FOCUS
   dailyLoginRewards: defineTable({
     userId: v.id('users'),
     currentStreak: v.number(),
     longestStreak: v.number(),
-    lastLoginDate: v.string(), // YYYY-MM-DD
+    lastLoginDate: v.number(), // FIXED: timestamp instead of string
     loginHistory: v.array(v.object({
-      date: v.string(),
+      date: v.number(), // FIXED: timestamp
       dayNumber: v.number(),
       rewards: v.array(v.object({
-        type: v.string(), // 'coins', 'gems', 'item', 'xp'
+        type: v.string(), // 'esencia', 'learning_boost', 'exclusive_content', 'assistance_tool'
         amount: v.optional(v.number()),
         itemId: v.optional(v.string()),
+        educationalValue: v.optional(v.string()), // What learning benefit this provides
       })),
+      learningGoalMet: v.boolean(), // Whether user met learning goal that day
     })),
     claimedToday: v.boolean(),
     nextRewardDay: v.number(),
@@ -560,4 +768,101 @@ export default defineSchema({
   })
     .index('byUserWeekTrack', ['userId', 'weekStart', 'track'])
     .index('byUserWeek', ['userId', 'weekStart']),
+  // Esencia Arcana Purchase History
+  esenciaPurchases: defineTable({
+    userId: v.id('users'),
+    itemId: v.string(),
+    itemName: v.string(),
+    cost: v.number(),
+    category: v.string(),
+    purchasedAt: v.number(),
+  })
+    .index('byUser', ['userId'])
+    .index('byUserPurchased', ['userId', 'purchasedAt'])
+    .index('byCategory', ['category']),
+
+
+  // Material Views Tracking
+  materialViews: defineTable({
+    userId: v.id('users'),
+    materialId: v.id('sharedStudyMaterials'),
+    viewedAt: v.number(),
+  })
+    .index('byUserMaterial', ['userId', 'materialId'])
+    .index('byMaterial', ['materialId']),
+
+  // Material Likes
+  materialLikes: defineTable({
+    userId: v.id('users'),
+    materialId: v.id('sharedStudyMaterials'),
+    likedAt: v.number(),
+  })
+    .index('byUserMaterial', ['userId', 'materialId'])
+    .index('byMaterial', ['materialId']),
+
+  // Notifications
+  notifications: defineTable({
+    userId: v.id('users'),
+    type: v.string(),
+    title: v.string(),
+    message: v.string(),
+    data: v.optional(v.object({
+      shareCode: v.optional(v.string()),
+      userId: v.optional(v.id('users')),
+      groupId: v.optional(v.id('studyGroups')),
+    })),
+    createdAt: v.number(),
+    read: v.boolean(),
+  })
+    .index('byUser', ['userId'])
+    .index('byUserUnread', ['userId', 'read']),
+
+  // Comprehensive Gamification Validation System
+  validatedActions: defineTable({
+    userId: v.id('users'),
+    actionType: v.string(),
+    itemId: v.string(),
+    score: v.optional(v.number()),
+    timeSpent: v.number(),
+    accuracy: v.optional(v.number()),
+    attempts: v.number(),
+    difficulty: v.string(),
+    subject: v.optional(v.string()),
+    sessionId: v.string(),
+    clientTimestamp: v.number(),
+    serverTimestamp: v.number(),
+    clientFingerprint: v.string(),
+    validationScore: v.number(), // 0-1 score indicating how likely this action is legitimate
+    flaggedAsSuspicious: v.boolean(),
+    metadata: v.optional(v.object({
+      timeIssues: v.optional(v.array(v.string())),
+      rateLimitIssues: v.optional(v.array(v.string())),
+      performanceIssues: v.optional(v.array(v.string())),
+      sessionIssues: v.optional(v.array(v.string())),
+      actionSpecificIssues: v.optional(v.array(v.string())),
+      patternIssues: v.optional(v.array(v.string())),
+    })),
+  })
+    .index('byUser', ['userId'])
+    .index('byUserTimestamp', ['userId', 'serverTimestamp'])
+    .index('byUserSession', ['userId', 'sessionId'])
+    .index('byTimestamp', ['serverTimestamp'])
+    .index('bySuspicious', ['flaggedAsSuspicious']),
+
+  // User flags for suspicious behavior
+  userFlags: defineTable({
+    userId: v.id('users'),
+    flaggedBy: v.id('users'),
+    reason: v.string(),
+    evidence: v.string(),
+    status: v.string(), // 'pending_review', 'reviewed', 'resolved', 'false_positive'
+    resolution: v.optional(v.string()),
+    createdAt: v.number(),
+    resolvedAt: v.optional(v.number()),
+    resolvedBy: v.optional(v.id('users')),
+  })
+    .index('byUser', ['userId'])
+    .index('byStatus', ['status'])
+    .index('byFlagged', ['flaggedBy']),
+
 });

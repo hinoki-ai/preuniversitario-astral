@@ -35,7 +35,7 @@ interface Achievement {
   title: string;
   description: string;
   iconType: string;
-  points: number;
+  esencia: number;
   category: string;
   tier: string;
   earned: boolean;
@@ -47,108 +47,108 @@ interface Achievement {
 
 const categoryConfig = {
   streak: {
-    name: 'Consistency',
+    name: 'Disciplina Monástica',
     icon: Flame,
     color: 'text-orange-600',
     bgColor: 'bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20',
-    description: 'Achievements for maintaining study streaks'
+    description: 'Logros por mantener la disciplina guerrera constante'
   },
   performance: {
-    name: 'Excellence',
+    name: 'Maestría Arcana',
     icon: Star,
     color: 'text-yellow-600',
     bgColor: 'bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-950/20 dark:to-amber-950/20',
-    description: 'Achievements for high performance and perfect scores'
+    description: 'Logros por excelencia mágica y puntuaciones perfectas'
   },
   persistence: {
-    name: 'Dedication',
+    name: 'Lealtad Eterna',
     icon: Target,
     color: 'text-blue-600',
     bgColor: 'bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20',
-    description: 'Achievements for completing many quizzes and staying dedicated'
+    description: 'Logros por completar muchas pruebas y mantener la dedicación'
   },
   efficiency: {
-    name: 'Speed',
+    name: 'Velocidad del Rayo',
     icon: Zap,
     color: 'text-purple-600',
     bgColor: 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20',
-    description: 'Achievements for fast and efficient learning'
+    description: 'Logros por aprendizaje rápido y eficiente'
   },
   mastery: {
-    name: 'Subject Mastery',
+    name: 'Dominio Absoluto',
     icon: Book,
     color: 'text-emerald-600',
     bgColor: 'bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20',
-    description: 'Achievements for mastering specific subjects'
+    description: 'Logros por dominar materias específicas'
   },
   discipline: {
-    name: 'Discipline',
+    name: 'Orden Sagrada',
     icon: TrendingUp,
     color: 'text-indigo-600',
     bgColor: 'bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20',
-    description: 'Achievements for consistent improvement and discipline'
+    description: 'Logros por mejora constante y disciplina inquebrantable'
   },
   milestone: {
-    name: 'Milestones',
+    name: 'Conquistas Épicas',
     icon: Crown,
     color: 'text-amber-600',
     bgColor: 'bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20',
-    description: 'Achievements for reaching important levels and points'
+    description: 'Logros por alcanzar niveles importantes y puntos legendarios'
   },
   seasonal: {
-    name: 'Special Events',
+    name: 'Ciclos Mágicos',
     icon: Calendar,
     color: 'text-rose-600',
     bgColor: 'bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-950/20 dark:to-pink-950/20',
-    description: 'Limited-time and seasonal achievements'
+    description: 'Logros de tiempo limitado y eventos estacionales'
   },
   social: {
-    name: 'Community',
+    name: 'Hermandad Guerrera',
     icon: Users,
     color: 'text-cyan-600',
     bgColor: 'bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20',
-    description: 'Achievements for social and competitive activities'
+    description: 'Logros por actividades sociales y competitivas'
   },
   exploration: {
-    name: 'Explorer',
+    name: 'Aventuras Legendarias',
     icon: Award,
     color: 'text-teal-600',
     bgColor: 'bg-gradient-to-br from-teal-50 to-emerald-50 dark:from-teal-950/20 dark:to-emerald-950/20',
-    description: 'Achievements for exploring different subjects and content'
+    description: 'Logros por explorar diferentes materias y contenidos'
   },
   resilience: {
-    name: 'Resilience',
+    name: 'Corazón de León',
     icon: Medal,
     color: 'text-red-600',
     bgColor: 'bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950/20 dark:to-rose-950/20',
-    description: 'Achievements for bouncing back and never giving up'
+    description: 'Logros por levantarte una y otra vez sin rendirte jamás'
   }
 };
 
 const tierConfig = {
   bronze: {
-    name: 'Bronze',
+    name: 'Bronce',
     color: 'text-amber-700',
     bgColor: 'bg-amber-100 dark:bg-amber-900/30',
     borderColor: 'border-amber-300 dark:border-amber-700',
     icon: Medal
   },
   silver: {
-    name: 'Silver',
+    name: 'Plata',
     color: 'text-gray-600',
     bgColor: 'bg-gray-100 dark:bg-gray-800',
     borderColor: 'border-gray-300 dark:border-gray-600',
     icon: Award
   },
   gold: {
-    name: 'Gold',
+    name: 'Oro',
     color: 'text-yellow-600',
     bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
     borderColor: 'border-yellow-300 dark:border-yellow-700',
     icon: Trophy
   },
   legendary: {
-    name: 'Legendary',
+    name: 'Legendario',
     color: 'text-purple-600',
     bgColor: 'bg-purple-100 dark:bg-purple-900/30',
     borderColor: 'border-purple-300 dark:border-purple-700',
@@ -193,7 +193,7 @@ export function AchievementsGallery() {
   // Calculate statistics
   const totalAchievements = achievements.length;
   const earnedAchievements = achievements.filter(a => a.earned).length;
-  const totalPoints = achievements.filter(a => a.earned).reduce((sum, a) => sum + a.points, 0);
+  const totalEsencia = achievements.filter(a => a.earned).reduce((sum, a) => sum + a.esencia, 0);
   const completionPercentage = totalAchievements > 0 ? (earnedAchievements / totalAchievements) * 100 : 0;
 
   // Filter achievements
@@ -211,16 +211,16 @@ export function AchievementsGallery() {
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="text-2xl flex items-center gap-2">
-                <Trophy className="h-6 w-6 text-amber-600" />
-                Achievement Gallery
+                <Crown className="h-6 w-6 text-amber-600" />
+                Galería de Hazañas Legendarias
               </CardTitle>
               <CardDescription className="mt-1">
-                Track your learning journey and celebrate your accomplishments
+                Sigue tu camino guerrero y celebra tus conquistas épicas
               </CardDescription>
             </div>
             <div className="text-right">
               <div className="text-2xl font-bold text-primary">{earnedAchievements}/{totalAchievements}</div>
-              <div className="text-sm text-muted-foreground">Achievements</div>
+              <div className="text-sm text-muted-foreground">Hazañas</div>
             </div>
           </div>
         </CardHeader>
@@ -231,15 +231,15 @@ export function AchievementsGallery() {
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1">
                 {Math.round(completionPercentage)}%
               </div>
-              <div className="text-xs text-muted-foreground">Completion Rate</div>
+              <div className="text-xs text-muted-foreground">Tasa de Conquista</div>
             </div>
 
-            {/* Total Points */}
+            {/* Total Esencia */}
             <div className="text-center p-4 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 rounded-lg">
               <div className="text-2xl font-bold text-amber-600 dark:text-amber-400 mb-1">
-                {totalPoints.toLocaleString()}
+                {totalEsencia.toLocaleString()}
               </div>
-              <div className="text-xs text-muted-foreground">Points Earned</div>
+              <div className="text-xs text-muted-foreground">Esencia Arcana</div>
             </div>
 
             {/* Recent Achievement */}
@@ -247,7 +247,7 @@ export function AchievementsGallery() {
               <div className="text-2xl font-bold text-green-600 dark:text-green-400 mb-1">
                 {achievements.filter(a => a.earned && a.earnedAt && a.earnedAt > Date.now() / 1000 - 86400).length}
               </div>
-              <div className="text-xs text-muted-foreground">Today</div>
+              <div className="text-xs text-muted-foreground">Hoy</div>
             </div>
 
             {/* Rarest Achievement */}
@@ -255,15 +255,15 @@ export function AchievementsGallery() {
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-1">
                 {achievements.filter(a => a.tier === 'legendary' && a.earned).length}
               </div>
-              <div className="text-xs text-muted-foreground">Legendary</div>
+              <div className="text-xs text-muted-foreground">Legendarios</div>
             </div>
           </div>
 
           {/* Overall Progress */}
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Overall Progress</span>
-              <span className="font-medium">{earnedAchievements} of {totalAchievements} achievements</span>
+              <span className="text-muted-foreground">Camino del Guerrero</span>
+              <span className="font-medium">{earnedAchievements} de {totalAchievements} hazañas</span>
             </div>
             <Progress value={completionPercentage} className="h-3" />
           </div>
@@ -276,7 +276,7 @@ export function AchievementsGallery() {
           <div className="flex flex-wrap gap-4">
             {/* Category Filter */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Category</label>
+              <label className="text-sm font-medium">Categoría</label>
               <div className="flex flex-wrap gap-2">
                 <Button
                   variant={selectedCategory === 'all' ? 'default' : 'outline'}
@@ -302,7 +302,7 @@ export function AchievementsGallery() {
 
             {/* Tier Filter */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Tier</label>
+              <label className="text-sm font-medium">Rango</label>
               <div className="flex flex-wrap gap-2">
                 <Button
                   variant={selectedTier === 'all' ? 'default' : 'outline'}
@@ -332,8 +332,8 @@ export function AchievementsGallery() {
       {/* Achievements Grid */}
       <Tabs defaultValue="grid" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="grid">Grid View</TabsTrigger>
-          <TabsTrigger value="categories">By Category</TabsTrigger>
+          <TabsTrigger value="grid">Vista de Galería</TabsTrigger>
+          <TabsTrigger value="categories">Por Categoría</TabsTrigger>
         </TabsList>
 
         <TabsContent value="grid" className="space-y-6">
@@ -466,8 +466,8 @@ function AchievementCard({ achievement, compact = false }: { achievement: Achiev
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
-                <Star className="h-3 w-3" />
-                <span className="font-medium">{achievement.points} pts</span>
+                <Sparkles className="h-3 w-3" />
+                <span className="font-medium">{achievement.esencia} Esencia</span>
               </div>
               {categoryConfigItem && (
                 <div className={cn("flex items-center gap-1", categoryConfigItem.color)}>

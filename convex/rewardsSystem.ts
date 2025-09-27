@@ -111,7 +111,7 @@ export const getRewardsCatalog = query({
 
     const userAchievements = (userStats as any)?.achievements || [];
     const userLevel = (userStats as any)?.level || 1;
-    const userPoints = (userStats as any)?.totalPoints || 0;
+    const userPoints = (userStats as any)?.esenciaArcana || 0;
 
     // Add unlock status to each item
     const itemsWithStatus = catalogItems.map(item => {
@@ -180,7 +180,7 @@ export const unlockReward = mutation({
 
     const userAchievements = (userStats as any)?.achievements || [];
     const userLevel = (userStats as any)?.level || 1;
-    const userPoints = (userStats as any)?.totalPoints || 0;
+    const userPoints = (userStats as any)?.esenciaArcana || 0;
 
     if (!checkCanUnlock(catalogItem, userAchievements, userLevel, userPoints)) {
       throw new Error("Requirements not met to unlock this item");
@@ -313,7 +313,7 @@ export const purchaseShopItem = mutation({
         .query('userStats')
         .withIndex('byUser', q => q.eq('userId', user._id))
         .unique();
-      const userPoints = (userStats as any)?.totalPoints || 0;
+      const userPoints = (userStats as any)?.esenciaArcana || 0;
       if (userPoints < amount) {
         throw new Error("Not enough points");
       }
@@ -468,9 +468,9 @@ export const customizeProfile = mutation({
     }
 
     if (selectedBadges) {
-      const maxBadges = 3;
+      const MAX_BADGES = 3;
       const validBadges = selectedBadges
-        .slice(0, maxBadges)
+        .slice(0, MAX_BADGES)
         .filter(badgeId => userRewards!.badges.some(b => b.id === badgeId));
       updatedCustomization.selectedBadges = validBadges;
     }
@@ -492,7 +492,7 @@ export const getDailyLoginRewards = query({
   args: {},
   handler: async (ctx) => {
     const user = await getUser(ctx);
-    const today = new Date().toISOString().split('T')[0];
+    const today = Math.floor(Date.now() / (1000 * 60 * 60 * 24)) * (1000 * 60 * 60 * 24) / 1000; // Start of today in seconds
     
     let loginRewards = await ctx.db
       .query('dailyLoginRewards')
@@ -538,8 +538,8 @@ export const claimDailyReward = mutation({
   args: {},
   handler: async (ctx) => {
     const user = await getUser(ctx);
-    const today = new Date().toISOString().split('T')[0];
     const now = Math.floor(Date.now() / 1000);
+    const today = Math.floor(Date.now() / (1000 * 60 * 60 * 24)) * (1000 * 60 * 60 * 24) / 1000; // Start of today in seconds
     
     let loginRewards = await ctx.db
       .query('dailyLoginRewards')
@@ -567,15 +567,13 @@ export const claimDailyReward = mutation({
     }
 
     // Calculate streak
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
-    
+    const yesterday = today - (24 * 60 * 60); // Yesterday's timestamp
+
     let newStreak = 1;
-    if (loginRewards.lastLoginDate === yesterdayStr) {
+    if (loginRewards.lastLoginDate >= yesterday && loginRewards.lastLoginDate < today) {
       // Consecutive day
       newStreak = loginRewards.currentStreak + 1;
-    } else if (loginRewards.lastLoginDate === today) {
+    } else if (loginRewards.lastLoginDate >= today) {
       // Same day, maintain streak
       newStreak = loginRewards.currentStreak;
     }
@@ -591,6 +589,7 @@ export const claimDailyReward = mutation({
       date: today,
       dayNumber: loginRewards.nextRewardDay,
       rewards: todaysRewards,
+      learningGoalMet: false, // Will be updated when learning goals are met
     };
 
     const updatedHistory = [...loginRewards.loginHistory, newHistoryEntry];
@@ -721,8 +720,8 @@ function isItemOwned(item: any, userRewards: any): boolean {
 }
 
 function generateDailyRewardPreview(startDay: number) {
-  const rewards = [];
-  
+  const rewards: { day: number; rewards: { type: string; amount?: number; itemId?: string; educationalValue?: string }[] }[] = [];
+
   for (let i = 0; i < 7; i++) {
     const day = ((startDay - 1 + i) % 7) + 1;
     const dayRewards = generateDailyReward(day, 1); // Use streak 1 for preview
@@ -814,10 +813,11 @@ async function awardXP(ctx: any, userId: string, amount: number) {
   if (userStats) {
     const newXP = (userStats.experiencePoints || 0) + amount;
     const levelInfo = calculateLevel(newXP);
-    
+
     await ctx.db.patch(userStats._id, {
-      experiencePoints: newXP,
-      totalPoints: (userStats.totalPoints || 0) + amount,
+      esenciaArcana: newXP, // Primary currency field
+      experiencePoints: newXP, // Same as esenciaArcana for leveling
+      // totalPoints: legacy field, no longer updated
       level: levelInfo.level,
       pointsToNextLevel: levelInfo.pointsToNext,
       updatedAt: Math.floor(Date.now() / 1000),

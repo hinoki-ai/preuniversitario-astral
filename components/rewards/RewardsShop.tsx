@@ -30,16 +30,16 @@ interface RewardItem {
   id: string;
   name: string;
   description: string;
-  costCoins: number;
-  costGems?: number;
-  category: 'theme' | 'badge' | 'booster' | 'utility';
-  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  costMonedasDragon: number;
+  costCristalesMagicos?: number;
+  category: 'tema' | 'emblema' | 'potenciador' | 'utilidad';
+  rarity: 'común' | 'raro' | 'épico' | 'legendario';
 }
 
 interface UserRewards {
-  coins?: number;
-  gems?: number;
-  badges?: Array<{ id: string; name: string }>;
+  monedasDragon?: number;
+  cristalesMagicos?: number;
+  emblemas?: Array<{ id: string; name: string }>;
   totalItemsUnlocked?: number;
 }
 
@@ -48,7 +48,7 @@ export function RewardsShop() {
   const [selectedItem, setSelectedItem] = useState<RewardItem | null>(null);
 
   const userRewards = useQuery(api.rewardsSystem.getUserRewards) as UserRewards | undefined;
-  const catalogItems = useQuery(api.rewardsSystem.getRewardsCatalog, {}) as RewardItem[] | undefined;
+  const catalogItems = useQuery(api.rewardsSystem.getRewardsCatalog, {}) as unknown as RewardItem[] | undefined;
   const dailyRewardsData = useQuery(api.rewardsSystem.getDailyLoginRewards) as {
     upcomingRewards?: Array<{
       day: number;
@@ -77,16 +77,16 @@ export function RewardsShop() {
       <Tabs defaultValue="shop" className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="shop" className="flex items-center gap-2">
-            <ShoppingCart className="h-4 w-4" />
-            Tienda
+            <Crown className="h-4 w-4" />
+            Mercado Místico
           </TabsTrigger>
           <TabsTrigger value="daily" className="flex items-center gap-2">
-            <Gift className="h-4 w-4" />
-            Recompensas diarias
+            <Sparkles className="h-4 w-4" />
+            Recompensas Diarias
           </TabsTrigger>
           <TabsTrigger value="collection" className="flex items-center gap-2">
             <Trophy className="h-4 w-4" />
-            Colección
+            Colección Legendaria
           </TabsTrigger>
         </TabsList>
 
@@ -94,7 +94,7 @@ export function RewardsShop() {
           <div className="flex flex-wrap items-center gap-3">
             <Badge variant="outline">Artículos disponibles: {filteredCatalog.length}</Badge>
             <div className="flex gap-2">
-              {(['all', 'common', 'rare', 'epic', 'legendary'] as const).map(option => (
+              {(['all', 'común', 'raro', 'épico', 'legendario'] as const).map(option => (
                 <Button
                   key={option}
                   size="sm"
@@ -124,7 +124,7 @@ export function RewardsShop() {
         <TabsContent value="daily" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Bonos diarios</CardTitle>
+              <CardTitle className="text-base">Bendiciones Diarias</CardTitle>
               <CardDescription>
                 Inicia sesión cada día para reclamar recompensas adicionales y mantener tu motivación.
               </CardDescription>
@@ -181,10 +181,10 @@ function CurrencyHeader({ userRewards }: { userRewards: UserRewards | undefined 
   return (
     <Card>
       <CardContent className="grid gap-4 p-6 text-center md:grid-cols-4">
-        <CurrencyStat icon={Coins} label="Monedas" value={userRewards?.coins ?? 0} accent="text-amber-600" />
-        <CurrencyStat icon={Gem} label="Gemas" value={userRewards?.gems ?? 0} accent="text-cyan-600" />
-        <CurrencyStat icon={Trophy} label="Ítems desbloqueados" value={userRewards?.totalItemsUnlocked ?? 0} accent="text-purple-600" />
-        <CurrencyStat icon={Award} label="Insignias" value={userRewards?.badges?.length ?? 0} accent="text-green-600" />
+        <CurrencyStat icon={Coins} label="Monedas de Dragón" value={userRewards?.monedasDragon ?? 0} accent="text-amber-600" />
+        <CurrencyStat icon={Gem} label="Cristales Mágicos" value={userRewards?.cristalesMagicos ?? 0} accent="text-cyan-600" />
+        <CurrencyStat icon={Trophy} label="Tesoro Desbloqueado" value={userRewards?.totalItemsUnlocked ?? 0} accent="text-purple-600" />
+        <CurrencyStat icon={Award} label="Emblemas" value={userRewards?.emblemas?.length ?? 0} accent="text-green-600" />
       </CardContent>
     </Card>
   );
@@ -222,17 +222,17 @@ function RewardCard({
   onPurchase: () => Promise<void>;
 }) {
   const rarityStyles: Record<RewardItem['rarity'], string> = {
-    common: 'border-gray-200 dark:border-gray-700',
-    rare: 'border-blue-200 dark:border-blue-700',
-    epic: 'border-purple-200 dark:border-purple-700',
-    legendary: 'border-amber-200 dark:border-amber-700',
+    común: 'border-gray-200 dark:border-gray-700',
+    raro: 'border-blue-200 dark:border-blue-700',
+    épico: 'border-purple-200 dark:border-purple-700',
+    legendario: 'border-amber-200 dark:border-amber-700',
   };
 
   const iconByCategory: Record<RewardItem['category'], React.ComponentType<{ className?: string }>> = {
-    theme: Palette,
-    badge: Stars,
-    booster: Sparkles,
-    utility: RefreshCw,
+    tema: Palette,
+    emblema: Stars,
+    potenciador: Sparkles,
+    utilidad: RefreshCw,
   };
 
   const Icon = iconByCategory[item.category];
@@ -256,12 +256,12 @@ function RewardCard({
         <div className="space-y-1 text-sm">
           <div className="flex items-center gap-2">
             <Coins className="h-4 w-4 text-amber-500" />
-            {item.costCoins} monedas
+            {item.costMonedasDragon} Monedas de Dragón
           </div>
-          {item.costGems ? (
+          {item.costCristalesMagicos ? (
             <div className="flex items-center gap-2">
               <Gem className="h-4 w-4 text-cyan-500" />
-              {item.costGems} gemas
+              {item.costCristalesMagicos} Cristales Mágicos
             </div>
           ) : null}
         </div>
@@ -279,37 +279,37 @@ function RewardCard({
 }
 
 function CollectionOverview({ userRewards }: { userRewards: UserRewards | undefined }) {
-  const badges = userRewards?.badges ?? [];
-  const completion = badges.length ? Math.min(100, badges.length * 10) : 0;
+  const emblemas = userRewards?.emblemas ?? [];
+  const completion = emblemas.length ? Math.min(100, emblemas.length * 10) : 0;
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Tu colección</CardTitle>
+        <CardTitle className="text-base">Tu Tesoro Legendario</CardTitle>
         <CardDescription>
-          Visualiza los elementos que has desbloqueado y cuánto falta para completar la colección.
+          Visualiza los emblemas que has conquistado y cuánto falta para completar tu colección.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <p className="text-sm font-medium">Progreso</p>
+          <p className="text-sm font-medium">Camino del Guerrero</p>
           <Progress value={completion} className="mt-2 h-2" />
           <p className="mt-1 text-xs text-muted-foreground">Colección completada al {completion}%</p>
         </div>
-        {badges.length === 0 ? (
+        {emblemas.length === 0 ? (
           <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-            Aún no has desbloqueado insignias. Participa en misiones y actividades para conseguirlas.
+            Aún no has desbloqueado emblemas. Participa en misiones y actividades para conseguirlos.
           </div>
         ) : (
           <div className="grid gap-3 md:grid-cols-3">
-            {badges.map(badge => (
-              <div key={badge.id} className="rounded-lg border p-4">
+            {emblemas.map(emblema => (
+              <div key={emblema.id} className="rounded-lg border p-4">
                 <div className="flex items-center gap-2">
                   <Crown className="h-4 w-4 text-amber-500" />
-                  <span className="font-medium">{badge.name}</span>
+                  <span className="font-medium">{emblema.name}</span>
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">
-                  Obtenida el {new Date().toLocaleDateString()}
+                  Conquistado el {new Date().toLocaleDateString()}
                 </p>
               </div>
             ))}
@@ -324,10 +324,10 @@ function RewardDialog({ item, onClose }: { item: RewardItem | null; onClose: () 
   if (!item) return null;
 
   const rarityDescriptions: Record<RewardItem['rarity'], string> = {
-    common: 'Objetos frecuentes para personalizar tu experiencia.',
-    rare: 'Ofertas exclusivas con beneficios extra.',
-    epic: 'Recompensas destacadas con efectos especiales.',
-    legendary: 'Artículos únicos reservados para los mejores estudiantes.',
+    común: 'Objetos frecuentes para personalizar tu experiencia.',
+    raro: 'Ofertas exclusivas con beneficios extra.',
+    épico: 'Recompensas destacadas con efectos especiales.',
+    legendario: 'Artículos únicos reservados para los mejores estudiantes.',
   };
 
   return (
@@ -344,12 +344,12 @@ function RewardDialog({ item, onClose }: { item: RewardItem | null; onClose: () 
             <p className="font-medium">Costos</p>
             <div className="flex items-center gap-2">
               <Coins className="h-4 w-4 text-amber-500" />
-              {item.costCoins} monedas
+              {item.costMonedasDragon} Monedas de Dragón
             </div>
-            {item.costGems ? (
+            {item.costCristalesMagicos ? (
               <div className="flex items-center gap-2">
                 <Gem className="h-4 w-4 text-cyan-500" />
-                {item.costGems} gemas
+                {item.costCristalesMagicos} Cristales Mágicos
               </div>
             ) : null}
           </div>

@@ -23,7 +23,6 @@ export default function Page() {
       <DataTable
         data={(dashboardData?.subjectProgress ?? []).map((item: any) => ({
           ...item,
-          id: parseInt(item.id) || 0,
           risk: item.risk as 'on-track' | 'attention' | 'critical',
         }))}
       />

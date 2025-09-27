@@ -112,8 +112,8 @@ export const getFriends = query({
       .collect();
 
     // Get friend details and their stats
-    const friends = [];
-    
+    const friends: { id: any; name: string; level: number; esenciaArcana: number; currentStreak: number; friendshipId: any; friendedAt?: number }[] = [];
+
     for (const friendship of sentRequests) {
       const friend = await ctx.db.get(friendship.addresseeId);
       const friendStats = await ctx.db
@@ -126,7 +126,7 @@ export const getFriends = query({
           id: friend._id,
           name: friend.name,
           level: friendStats?.level || 1,
-          totalPoints: friendStats?.totalPoints || 0,
+          esenciaArcana: friendStats?.esenciaArcana || 0,
           currentStreak: friendStats?.currentStreak || 0,
           friendshipId: friendship._id,
           friendedAt: friendship.acceptedAt,
@@ -146,7 +146,7 @@ export const getFriends = query({
           id: friend._id,
           name: friend.name,
           level: friendStats?.level || 1,
-          totalPoints: friendStats?.totalPoints || 0,
+          esenciaArcana: friendStats?.esenciaArcana || 0,
           currentStreak: friendStats?.currentStreak || 0,
           friendshipId: friendship._id,
           friendedAt: friendship.acceptedAt,
@@ -154,7 +154,7 @@ export const getFriends = query({
       }
     }
 
-    return friends.sort((a, b) => b.totalPoints - a.totalPoints);
+    return friends.sort((a, b) => b.esenciaArcana - a.esenciaArcana);
   }
 });
 
@@ -171,7 +171,7 @@ export const getPendingRequests = query({
       .filter(q => q.eq(q.field('status'), 'pending'))
       .collect();
 
-    const requests = [];
+    const requests: { id: any; requester: { id: any; name: string }; createdAt: number }[] = [];
     for (const request of pendingRequests) {
       const requester = await ctx.db.get(request.requesterId);
       if (requester) {
@@ -211,7 +211,7 @@ export const createStudyGroup = mutation({
     const groupId = await ctx.db.insert('studyGroups', {
       name,
       description,
-      creatorId: user._id,
+      createdBy: user._id,
       members: [{
         userId: user._id,
         role: 'creator',
@@ -226,12 +226,12 @@ export const createStudyGroup = mutation({
       maxMembers,
       goals: {
         weeklyQuizzes: 5,
-        averageScore: 0.7,
+        avgScore: 0.7,
         studyStreak: 7,
       },
       stats: {
         totalQuizzes: 0,
-        averageScore: 0,
+        avgScore: 0,
         currentStreak: 0,
         totalPoints: 0,
         weeklyProgress: 0,
@@ -544,7 +544,7 @@ export const joinGlobalCompetition = mutation({
       rank: competition.participants.length + 1,
       progress: {
         quizzesCompleted: 0,
-        averageScore: 0,
+        avgScore: 0,
         pointsEarned: 0,
         bestStreak: 0,
       },

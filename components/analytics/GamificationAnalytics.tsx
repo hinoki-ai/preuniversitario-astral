@@ -26,8 +26,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 interface AnalyticsData {
   performance: {
     level: number;
-    totalPoints: number;
-    weeklyGrowth: number;
+    esenciaArcana: number;
+    WEEKLY_GROWTH: number;
     streakDays: number;
     averageScore: number;
   };
@@ -56,23 +56,23 @@ export function GamificationAnalytics() {
 
   const analyticsData = useMemo<AnalyticsData>(() => {
     const level = userStats?.level ?? 1;
-    const totalPoints = userStats?.totalPoints ?? 0;
-    const weeklyGrowth = 12.5; // Default weekly growth percentage
+    const esenciaArcana = (userStats as any)?.esenciaArcana ?? 0;
+    const WEEKLY_GROWTH = 12.5; // Default weekly growth percentage
     const streakDays = userStats?.currentStreak ?? 0;
     const averageScore = userStats?.avgScore ? Math.round(userStats.avgScore * 100) : 0;
 
     return {
       performance: {
         level,
-        totalPoints,
-        weeklyGrowth,
+        esenciaArcana,
+        WEEKLY_GROWTH,
         streakDays,
         averageScore,
       },
       predictions: {
         projectedLevel: level + 2,
         estimatedDaysToNextLevel: Math.max(3, 28 - streakDays),
-        likelihoodToAchieve: Math.min(95, 60 + weeklyGrowth),
+        likelihoodToAchieve: Math.min(95, 60 + WEEKLY_GROWTH),
         recommendedActions: [
           'Mantén tu racha de estudio diaria',
           'Refuerza tu asignatura más débil con 3 misiones extra',
@@ -118,10 +118,10 @@ export function GamificationAnalytics() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-2xl">
             <BarChart3 className="h-6 w-6 text-primary" />
-            Gamificación e insights
+            Oráculo de Hazañas Legendarias
           </CardTitle>
           <CardDescription>
-            Visualiza tu progreso, predicciones y acciones recomendadas para mantener tu motivación.
+            Visualiza tu camino guerrero, profecías de progreso y consejos ancestrales para mantener tu espíritu indomable.
           </CardDescription>
         </CardHeader>
       </Card>
@@ -130,19 +130,19 @@ export function GamificationAnalytics() {
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <TrendingUp className="h-4 w-4" />
-            Rendimiento
+            Camino del Guerrero
           </TabsTrigger>
           <TabsTrigger value="predictions" className="flex items-center gap-2">
             <Brain className="h-4 w-4" />
-            Predicciones
+            Profecías Ancestrales
           </TabsTrigger>
           <TabsTrigger value="insights" className="flex items-center gap-2">
             <Lightbulb className="h-4 w-4" />
-            Insights
+            Sabiduría Antigua
           </TabsTrigger>
           <TabsTrigger value="trends" className="flex items-center gap-2">
             <LineChart className="h-4 w-4" />
-            Tendencias
+            Crónica de Éxitos
           </TabsTrigger>
         </TabsList>
 
@@ -150,35 +150,35 @@ export function GamificationAnalytics() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <MetricCard
               icon={Target}
-              title="Nivel actual"
+              title="Escalera de Poder"
               value={`Nivel ${analyticsData.performance.level}`}
-              helper={`${analyticsData.performance.totalPoints.toLocaleString()} puntos acumulados`}
+              helper={`${analyticsData.performance.esenciaArcana.toLocaleString()} Esencia Arcana acumulada`}
             />
             <MetricCard
               icon={Flame}
-              title="Racha activa"
+              title="Cadena de Honor"
               value={`${analyticsData.performance.streakDays} días`}
-              helper="Completa misiones cada día para mantenerla"
+              helper="Completa aventuras cada día para mantener tu llama guerrera"
             />
             <MetricCard
               icon={TrendingUp}
-              title="Crecimiento semanal"
-              value={`+${analyticsData.performance.weeklyGrowth}%`}
-              helper="Respecto a la semana anterior"
+              title="Ascenso Semanal"
+              value={`+${analyticsData.performance.WEEKLY_GROWTH}%`}
+              helper="Respecto al ciclo lunar anterior"
             />
             <MetricCard
               icon={Sparkles}
-              title="Promedio PAES"
+              title="Puntuación en la Gran Prueba"
               value={`${analyticsData.performance.averageScore}%`}
-              helper="Promedio de tus últimos ensayos"
+              helper="Promedio de tus últimas batallas académicas"
             />
           </div>
 
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-base">Logros destacados</CardTitle>
+              <CardTitle className="text-base">Conquistas Legendarias</CardTitle>
               <CardDescription>
-                {achievements?.length ? 'Tu constancia ya se refleja en nuevos logros.' : 'Aún no hay logros disponibles. ¡Completa actividades para desbloquearlos!'}
+                {achievements?.length ? 'Tu espíritu guerrero ya se refleja en nuevas conquistas.' : 'Aún no hay conquistas disponibles. ¡Completa aventuras para desbloquearlas!'}
               </CardDescription>
             </CardHeader>
             <CardContent>

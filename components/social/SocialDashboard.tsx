@@ -243,12 +243,12 @@ function FriendsTab() {
                   {/* Stats */}
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div>
-                      <div className="text-lg font-bold text-amber-600">{friend.totalPoints.toLocaleString()}</div>
-                      <div className="text-xs text-muted-foreground">Points</div>
+        <div className="text-lg font-bold text-amber-600">{friend.esenciaArcana.toLocaleString()}</div>
+        <div className="text-xs text-muted-foreground">Esencia Arcana</div>
                     </div>
                     <div>
                       <div className="text-lg font-bold text-orange-600">{friend.currentStreak}</div>
-                      <div className="text-xs text-muted-foreground">Streak</div>
+                      <div className="text-xs text-muted-foreground">Racha de Honor</div>
                     </div>
                   </div>
 
@@ -687,7 +687,7 @@ function CompetitionCard({ competition }: { competition: any }) {
           </div>
           {competition.featured && (
             <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500">
-              Featured
+              Destacado
             </Badge>
           )}
         </div>
@@ -697,17 +697,17 @@ function CompetitionCard({ competition }: { competition: any }) {
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
             <div className="text-lg font-bold text-blue-600">{competition.participantCount}</div>
-            <div className="text-xs text-muted-foreground">Participants</div>
+            <div className="text-xs text-muted-foreground">Participantes</div>
           </div>
           <div>
             <div className="text-lg font-bold text-green-600">{competition.daysRemaining}</div>
-            <div className="text-xs text-muted-foreground">Days Left</div>
+            <div className="text-xs text-muted-foreground">Días Restantes</div>
           </div>
           <div>
             <div className="text-lg font-bold text-purple-600">
               {competition.prizes?.[0]?.points || 'TBD'}
             </div>
-            <div className="text-xs text-muted-foreground">Top Prize</div>
+            <div className="text-xs text-muted-foreground">Premio Mayor</div>
           </div>
         </div>
 
@@ -715,21 +715,21 @@ function CompetitionCard({ competition }: { competition: any }) {
         {competition.userParticipation && (
           <div className="p-3 bg-primary/5 rounded-lg">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium">Your Progress</span>
-              <Badge variant="outline">Rank #{competition.userParticipation.rank}</Badge>
+              <span className="text-sm font-medium">Tu Progreso</span>
+              <Badge variant="outline">Puesto #{competition.userParticipation.rank}</Badge>
             </div>
             <div className="text-lg font-bold text-primary">
-              {competition.userParticipation.score} points
+                  {competition.userParticipation.score} Esencia Arcana
             </div>
           </div>
         )}
 
         {/* Leaderboard Preview */}
         <div className="space-y-2">
-          <h4 className="font-medium text-sm">Top Participants</h4>
+          <h4 className="font-medium text-sm">Mejores Participantes</h4>
           <div className="space-y-1">
             {competition.leaderboard?.slice(0, 3).map((participant: any, index: number) => (
-              <div 
+              <div
                 key={index}
                 className={cn(
                   "flex justify-between items-center p-2 rounded text-sm",
@@ -746,7 +746,7 @@ function CompetitionCard({ competition }: { competition: any }) {
                   )}>
                     {participant.rank}
                   </div>
-                  <span>{participant.isCurrentUser ? "You" : `Participant ${participant.rank}`}</span>
+                  <span>{participant.isCurrentUser ? "Tú" : `Participante ${participant.rank}`}</span>
                 </div>
                 <span className="font-medium">{participant.score}</span>
               </div>
@@ -757,7 +757,7 @@ function CompetitionCard({ competition }: { competition: any }) {
         {/* Action */}
         {!competition.userParticipation && (
           <Button onClick={handleJoin} className="w-full">
-            Join Competition
+            Unirse a Competencia
           </Button>
         )}
       </CardContent>

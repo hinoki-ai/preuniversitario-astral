@@ -199,7 +199,7 @@ export default function BasicSchedule({ onPick }: { onPick?: (m: MeetingItem) =>
       )}
 
       {items.map((m: MeetingItem, index: number) => {
-        const dt = new Date(m.startTime * 1000);
+        const dateTime = new Date(m.startTime * 1000);
         const canJoin = !!m.meetingNumber && !!m.passcode;
         const now = Math.floor(Date.now() / 1000);
         const isActive = now >= m.startTime && now <= (m.startTime + 3600);
@@ -244,7 +244,7 @@ export default function BasicSchedule({ onPick }: { onPick?: (m: MeetingItem) =>
                       <div className="font-semibold text-lg">{m.title}</div>
                       <div className="text-sm text-muted-foreground flex items-center gap-2">
                         <Clock className="h-3 w-3" />
-                        {dt.toLocaleString()}
+                        {dateTime.toLocaleString()}
                       </div>
                     </div>
                   </div>

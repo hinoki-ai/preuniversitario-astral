@@ -5,42 +5,14 @@ import { Play, Star, Users, BookOpen } from 'lucide-react'
 import { ShaderAnimation } from "@/components/ui/shader-animation"
 import { Button } from "@/components/ui/button"
 import { withMinimalErrorHandling } from '@/lib/core/auto-error-enhancement'
-import { useEffect, useRef } from 'react'
 
 function HeroSectionInternal() {
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    const playAudio = async () => {
-      if (audioRef.current) {
-        try {
-          // Set volume to a reasonable level
-          audioRef.current.volume = 0.3;
-          await audioRef.current.play();
-        } catch (error) {
-          console.log('Audio autoplay prevented by browser:', error);
-          // Could add a play button fallback here if needed
-        }
-      }
-    };
-
-    playAudio();
-  }, []);
 
   return (
     <section
       id="hero"
       className="relative flex min-h-[90vh] items-center justify-center pt-24 pb-16 sm:pt-28 sm:pb-24"
     >
-      {/* Background Audio */}
-      <audio
-        ref={audioRef}
-        src="/landing.mp3"
-        loop
-        preload="auto"
-        className="hidden"
-      />
-
       <ShaderAnimation />
       
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
@@ -51,11 +23,11 @@ function HeroSectionInternal() {
           className="mx-auto max-w-4xl text-center md:max-w-5xl"
         >
           <h1 className="mb-8 font-serif text-4xl font-bold leading-tight text-white drop-shadow-2xl sm:text-5xl md:text-6xl lg:text-7xl">
-            Excelencia académica
+            Excelencia <span className="text-purple-300 drop-shadow-lg">académica</span>
             <br />
             <span className="text-amber/90 drop-shadow-lg">con</span> tecnología
             <br />
-            <span className="text-golden/80 drop-shadow-lg">avanzada</span>
+            <span className="text-amber drop-shadow-lg">avanzada</span>
           </h1>
 
           <p className="mx-auto mb-12 max-w-3xl text-base leading-relaxed text-cream/90 drop-shadow-xl sm:text-lg md:text-xl">

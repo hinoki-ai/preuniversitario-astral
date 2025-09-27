@@ -32,9 +32,9 @@ export const listLessons = query({
 export const getLesson = query({
   args: { id: v.id('lessons') },
   handler: async (ctx, { id }) => {
-    const l = await ctx.db.get(id);
-    if (!l) return null;
-    return l;
+    const lesson = await ctx.db.get(id);
+    if (!lesson) return null;
+    return lesson;
   },
 });
 

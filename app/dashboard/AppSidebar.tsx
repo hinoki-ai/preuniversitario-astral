@@ -14,6 +14,7 @@ import {
   IconSettings,
   IconSparkles,
   IconTarget as IconTargetAlt,
+  IconUsers,
   type Icon,
 } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -59,9 +60,14 @@ interface NavigationData {
 const freeUserData: NavigationData = {
   navMain: [
     {
-      title: 'Dashboard',
+      title: 'Panel Principal',
       url: '/dashboard',
       icon: IconTargetAlt,
+    },
+    {
+      title: 'Social',
+      url: '/dashboard/social',
+      icon: IconUsers,
     },
     {
       title: 'Convertirse en Iluminado',
@@ -112,6 +118,11 @@ const freeUserData: NavigationData = {
       url: '/dashboard/biblioteca',
       icon: IconDatabase,
     },
+    {
+      name: 'Social Hub',
+      url: '/dashboard/social',
+      icon: IconUsers,
+    },
   ],
 };
 
@@ -119,9 +130,14 @@ const freeUserData: NavigationData = {
 const paidUserData: NavigationData = {
   navMain: [
     {
-      title: 'Dashboard',
+      title: 'Panel Principal',
       url: '/dashboard',
       icon: IconTargetAlt,
+    },
+    {
+      title: 'Social',
+      url: '/dashboard/social',
+      icon: IconUsers,
     },
     {
       title: 'Plan de Estudio',
@@ -196,6 +212,11 @@ const paidUserData: NavigationData = {
       name: 'Biblioteca Premium',
       url: '/dashboard/biblioteca',
       icon: IconDatabase,
+    },
+    {
+      name: 'Social Hub',
+      url: '/dashboard/social',
+      icon: IconUsers,
     },
   ],
 };

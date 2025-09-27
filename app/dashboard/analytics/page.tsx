@@ -54,7 +54,7 @@ export default function AnalyticsPage() {
 
 function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any, dashboardData: any, predictiveData: any }) {
   if (!stats || !dashboardData) {
-    return <div className="animate-pulse p-6">Loading comprehensive analytics...</div>;
+    return <div className="animate-pulse p-6">Cargando análisis completos...</div>;
   }
 
   const subjectStats = dashboardData.subjectProgress || [];
@@ -72,21 +72,21 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
+          <h1 className="text-3xl font-bold">Panel de Análisis</h1>
           <p className="text-muted-foreground mt-1">
-            Comprehensive analysis of your PAES preparation progress
+            Análisis completo de tu progreso de preparación PAES
           </p>
         </div>
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="subjects">By Subject</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
-          <TabsTrigger value="predictive">Predictive</TabsTrigger>
-          <TabsTrigger value="achievements">Achievements</TabsTrigger>
-          <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
+          <TabsTrigger value="overview">Resumen</TabsTrigger>
+          <TabsTrigger value="subjects">Por Asignatura</TabsTrigger>
+          <TabsTrigger value="performance">Desempeño</TabsTrigger>
+          <TabsTrigger value="predictive">Predictivo</TabsTrigger>
+          <TabsTrigger value="achievements">Logros</TabsTrigger>
+          <TabsTrigger value="leaderboard">Tablón de Héroes</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -94,7 +94,7 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Overall Progress</CardTitle>
+                <CardTitle className="text-sm font-medium">Progreso General</CardTitle>
                 <TrendingUp className={`h-4 w-4 ${
                   performanceTrend === 'improving' ? 'text-green-500' :
                   performanceTrend === 'declining' ? 'text-red-500' : 'text-blue-500'
@@ -105,8 +105,8 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                   {Math.round((stats.avgScore || 0) * 100)}%
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {performanceTrend === 'improving' ? '↗️ Improving' :
-                   performanceTrend === 'declining' ? '↘️ Needs attention' : '→ Stable'}
+                  {performanceTrend === 'improving' ? '↗️ Mejorando' :
+                   performanceTrend === 'declining' ? '↘️ Necesita atención' : '→ Estable'}
                 </p>
                 <div className="mt-2">
                   <Badge variant={
@@ -121,20 +121,18 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Study Consistency</CardTitle>
+                <CardTitle className="text-sm font-medium">Consistencia de Estudio</CardTitle>
                 <Clock className="h-4 w-4 text-blue-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{dashboardData.consistencyScore}%</div>
                 <p className="text-xs text-muted-foreground">
-                  Consistency rating
+                  Calificación de consistencia
                 </p>
                 <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                   <div
-                    className="h-2 rounded-full bg-blue-500 progress-bar"
-                    style={{
-                      '--progress-width': `${dashboardData.consistencyScore}%`
-                    } as React.CSSProperties}
+                    className="h-2 rounded-full bg-blue-500"
+                    data-progress-width={`${dashboardData.consistencyScore}%`}
                   />
                 </div>
               </CardContent>
@@ -142,7 +140,7 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Best Subject</CardTitle>
+                <CardTitle className="text-sm font-medium">Mejor Asignatura</CardTitle>
                 <Target className="h-4 w-4 text-green-500" />
               </CardHeader>
               <CardContent>
@@ -160,7 +158,7 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Focus Area</CardTitle>
+                <CardTitle className="text-sm font-medium">Área de Enfoque</CardTitle>
                 <BookOpen className="h-4 w-4 text-orange-500" />
               </CardHeader>
               <CardContent>
@@ -180,10 +178,10 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
           {/* Recent Activity Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Study Activity (Last 30 Days)</CardTitle>
-              <CardDescription>
-                Daily study time and performance tracking
-              </CardDescription>
+          <CardTitle>Actividad de Estudio (Últimos 30 Días)</CardTitle>
+          <CardDescription>
+            Seguimiento diario del tiempo de estudio y rendimiento
+          </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-[300px] flex items-center justify-center text-muted-foreground">
@@ -200,9 +198,9 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
         <TabsContent value="subjects" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Subject Performance Breakdown</CardTitle>
+              <CardTitle>Análisis de Desempeño por Asignatura</CardTitle>
               <CardDescription>
-                Detailed analysis by subject area
+                Análisis detallado por área temática
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -225,33 +223,31 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                     
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
-                        <span className="text-muted-foreground">Category:</span>
+                        <span className="text-muted-foreground">Categoría:</span>
                         <div className="font-medium">{subject.category}</div>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">This Week:</span>
+                        <span className="text-muted-foreground">Esta Semana:</span>
                         <div className="font-medium">{subject.hoursThisWeek}h</div>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">Consistency:</span>
+                        <span className="text-muted-foreground">Consistencia:</span>
                         <div className="font-medium">{subject.consistency}%</div>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">Next Goal:</span>
+                        <span className="text-muted-foreground">Próxima Meta:</span>
                         <div className="font-medium text-xs">{subject.nextMilestone}</div>
                       </div>
                     </div>
 
                     <div className="w-full bg-gray-200 rounded-full h-2 mt-3">
                       <div
-                        className={`h-2 rounded-full progress-bar ${
+                        className={`h-2 rounded-full ${
                           subject.avgScore >= 80 ? 'bg-green-500' :
                           subject.avgScore >= 70 ? 'bg-blue-500' :
                           subject.avgScore >= 60 ? 'bg-yellow-500' : 'bg-red-500'
                         }`}
-                        style={{
-                          '--progress-width': `${subject.avgScore}%`
-                        } as React.CSSProperties}
+                        data-progress-width={`${subject.avgScore}%`}
                       />
                     </div>
                   </div>
@@ -266,9 +262,9 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
             {/* Mock Exam History */}
             <Card>
               <CardHeader>
-                <CardTitle>Mock Exam Performance</CardTitle>
+                <CardTitle>Desempeño en Simulacros</CardTitle>
                 <CardDescription>
-                  Your recent mock exam results
+                  Tus resultados recientes en simulacros
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -277,21 +273,21 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center p-3 bg-muted rounded-lg">
                         <div className="text-2xl font-bold">{dashboardData.summary.totalAttempts}</div>
-                        <div className="text-sm text-muted-foreground">Total Attempts</div>
+                        <div className="text-sm text-muted-foreground">Intentos Totales</div>
                       </div>
                       <div className="text-center p-3 bg-muted rounded-lg">
                         <div className="text-2xl font-bold">{dashboardData.summary.averageScore}%</div>
-                        <div className="text-sm text-muted-foreground">Average Score</div>
+                        <div className="text-sm text-muted-foreground">Puntaje Promedio</div>
                       </div>
                     </div>
                     
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span>Best Score:</span>
+                        <span>Mejor Puntaje:</span>
                         <span className="font-semibold">{dashboardData.summary.bestScore}%</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span>Trend:</span>
+                        <span>Tendencia:</span>
                         <span className={`font-semibold ${
                           dashboardData.summary.improvementTrend > 0 ? 'text-green-600' :
                           dashboardData.summary.improvementTrend < 0 ? 'text-red-600' : 'text-blue-600'
@@ -306,8 +302,8 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
                     <Target className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p>No mock exams completed yet</p>
-                    <p className="text-sm">Take your first mock exam to see performance data</p>
+                    <p>Aún no has completado simulacros</p>
+                    <p className="text-sm">Realiza tu primer simulacro para ver datos de desempeño</p>
                   </div>
                 )}
               </CardContent>
@@ -326,25 +322,23 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center p-3 bg-muted rounded-lg">
                       <div className="text-2xl font-bold">{dashboardData.weeklyGoal?.completed || 0}h</div>
-                      <div className="text-sm text-muted-foreground">This Week</div>
+                        <div className="text-sm text-muted-foreground">Esta Semana</div>
                     </div>
                     <div className="text-center p-3 bg-muted rounded-lg">
                       <div className="text-2xl font-bold">{dashboardData.weeklyGoal?.target || 0}h</div>
-                      <div className="text-sm text-muted-foreground">Weekly Goal</div>
+                      <div className="text-sm text-muted-foreground">Meta Semanal</div>
                     </div>
                   </div>
                   
                   <div className="w-full bg-gray-200 rounded-full h-3">
                     <div
-                      className="h-3 rounded-full bg-gradient-to-r from-blue-500 to-green-500 progress-bar"
-                      style={{
-                        '--progress-width': `${Math.min(100, ((dashboardData.weeklyGoal?.completed || 0) / (dashboardData.weeklyGoal?.target || 1)) * 100)}%`
-                      } as React.CSSProperties}
+                      className="h-3 rounded-full bg-gradient-to-r from-blue-500 to-green-500"
+                      data-progress-width={`${Math.min(100, ((dashboardData.weeklyGoal?.completed || 0) / (dashboardData.weeklyGoal?.target || 1)) * 100)}%`}
                     />
                   </div>
                   
                   <div className="text-center text-sm text-muted-foreground">
-                    {Math.round(((dashboardData.weeklyGoal?.completed || 0) / (dashboardData.weeklyGoal?.target || 1)) * 100)}% of weekly goal completed
+                    {Math.round(((dashboardData.weeklyGoal?.completed || 0) / (dashboardData.weeklyGoal?.target || 1)) * 100)}% de la meta semanal completada
                   </div>
                 </div>
               </CardContent>
@@ -359,10 +353,10 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="w-5 h-5" />
-                  Predicted PAES Score
+                  Puntaje PAES Predicho
                 </CardTitle>
                 <CardDescription>
-                  AI-powered prediction based on your current performance and learning trends
+                  Predicción impulsada por IA basada en tu rendimiento actual y tendencias de aprendizaje
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -373,9 +367,9 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                         {predictiveData.predictedPaesScore}
                       </div>
                       <div className="text-sm text-muted-foreground mb-4">
-                        Predicted PAES Score • Confidence: {
-                          predictiveData.confidenceLevel === 'high' ? 'High' :
-                          predictiveData.confidenceLevel === 'medium' ? 'Medium' : 'Low'
+                        Puntaje PAES Predicho • Confianza: {
+                          predictiveData.confidenceLevel === 'high' ? 'Alta' :
+                          predictiveData.confidenceLevel === 'medium' ? 'Media' : 'Baja'
                         }
                       </div>
                     </div>
@@ -383,25 +377,25 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span>Performance Trend:</span>
+                          <span>Tendencia de Desempeño:</span>
                           <Badge variant={
                             predictiveData.performanceTrend?.overall === 'improving' ? 'default' :
                             predictiveData.performanceTrend?.overall === 'declining' ? 'destructive' : 'secondary'
                           }>
-                            {predictiveData.performanceTrend?.overall === 'improving' ? '↗️ Improving' :
-                             predictiveData.performanceTrend?.overall === 'declining' ? '↘️ Declining' : '→ Stable'}
+                            {predictiveData.performanceTrend?.overall === 'improving' ? '↗️ Mejorando' :
+                             predictiveData.performanceTrend?.overall === 'declining' ? '↘️ Declinando' : '→ Estable'}
                           </Badge>
                         </div>
 
                         <div className="flex justify-between text-sm">
-                          <span>Timeline to 750+:</span>
+                          <span>Tiempo hasta 750+:</span>
                           <span className="font-semibold">
-                            {predictiveData.timelinePrediction?.weeksNeeded || 'N/A'} weeks
+                            {predictiveData.timelinePrediction?.weeksNeeded || 'N/A'} semanas
                           </span>
                         </div>
 
                         <div className="flex justify-between text-sm">
-                          <span>1-Month Projection:</span>
+                          <span>Proyección 1 Mes:</span>
                           <span className="font-semibold">
                             {predictiveData.timelinePrediction?.projectedScore || 'N/A'}
                           </span>
@@ -409,13 +403,13 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                       </div>
 
                       <div className="space-y-2">
-                        <div className="text-sm font-medium">Study Recommendations:</div>
+                        <div className="text-sm font-medium">Recomendaciones de Estudio:</div>
                         <div className="text-sm text-muted-foreground">
-                          Daily study time: {predictiveData.studyRecommendations?.dailyStudyTime || 90} min
+                          Tiempo de estudio diario: {predictiveData.studyRecommendations?.dailyStudyTime || 90} min
                         </div>
                         {predictiveData.studyRecommendations?.focusSubjects?.length > 0 && (
                           <div className="text-sm">
-                            <span className="font-medium">Focus subjects:</span>
+                            <span className="font-medium">Asignaturas de enfoque:</span>
                             <div className="flex flex-wrap gap-1 mt-1">
                               {predictiveData.studyRecommendations.focusSubjects.map((subject: string) => (
                                 <Badge key={subject} variant="outline" className="text-xs">
@@ -431,7 +425,7 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
                     <Target className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p>Loading predictive analytics...</p>
+                    <p>Cargando análisis predictivos...</p>
                   </div>
                 )}
               </CardContent>
@@ -443,10 +437,10 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BarChart3 className="w-5 h-5" />
-                    Areas for Improvement
+                    Áreas de Mejora
                   </CardTitle>
                   <CardDescription>
-                    Priority areas that need your attention
+                    Áreas prioritarias que necesitan tu atención
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -519,9 +513,9 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
         <TabsContent value="achievements" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Achievement Gallery</CardTitle>
+              <CardTitle>Galería de Logros</CardTitle>
               <CardDescription>
-                Your earned badges and progress milestones
+                  Tus logros obtenidos y hitos de progreso
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -553,7 +547,7 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                       {achievement.earned && achievement.earnedAt && (
                         <div className="mt-2">
                           <Badge variant="outline" className="text-xs">
-                            Earned {new Date(achievement.earnedAt * 1000).toLocaleDateString()}
+                            Obtenido {new Date(achievement.earnedAt * 1000).toLocaleDateString()}
                           </Badge>
                         </div>
                       )}
@@ -563,7 +557,7 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
                   <Award className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                  <p>Loading achievements...</p>
+                  <p>Cargando logros...</p>
                 </div>
               )}
             </CardContent>
@@ -573,9 +567,9 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
         <TabsContent value="leaderboard" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Student Leaderboard</CardTitle>
+              <CardTitle>Tablón de los Héroes</CardTitle>
               <CardDescription>
-                See how you compare with other students
+                Ve cómo te comparas con otros guerreros del saber
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -590,18 +584,18 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
                       }`}>
                         {index + 1}
                       </div>
-                      
+
                       <div className="flex-1">
                         <div className="font-semibold">{student.userName}</div>
                         <div className="text-sm text-muted-foreground">
-                          Level {student.level} • {student.totalPoints} points
+                          Rango {student.level} • {student.esenciaArcana} Esencia Arcana
                         </div>
                       </div>
-                      
+
                       <div className="text-right">
                         <div className="font-semibold">{student.avgScore}%</div>
                         <div className="text-sm text-muted-foreground">
-                          {student.currentStreak} day streak
+                          {student.currentStreak} días de honor
                         </div>
                       </div>
                     </div>
@@ -610,7 +604,7 @@ function AnalyticsContent({ stats, dashboardData, predictiveData }: { stats: any
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
                   <Users className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                  <p>Loading leaderboard...</p>
+                  <p>Cargando tablón de héroes...</p>
                 </div>
               )}
             </CardContent>

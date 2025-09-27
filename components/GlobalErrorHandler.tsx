@@ -110,13 +110,13 @@ export function GlobalErrorHandler({ children }: { children: React.ReactNode }) 
         return (
           <div className="min-h-screen bg-background flex items-center justify-center p-4">
             <div className="max-w-md w-full bg-destructive/10 border border-destructive/20 rounded-lg p-6">
-              <h2 className="text-lg font-semibold text-destructive mb-2">Application Error</h2>
+              <h2 className="text-lg font-semibold text-destructive mb-2">Error de Aplicación</h2>
               <p className="text-sm text-muted-foreground mb-4">
-                Something went wrong. Our team has been notified.
+                Algo salió mal. Nuestro equipo ha sido notificado.
               </p>
               {process.env.NODE_ENV === 'development' && this.state.error && (
                 <details className="mb-4">
-                  <summary className="cursor-pointer text-sm font-medium">Error Details (Dev)</summary>
+                  <summary className="cursor-pointer text-sm font-medium">Detalles del Error (Dev)</summary>
                   <pre className="mt-2 text-xs bg-black/10 p-2 rounded overflow-auto max-h-32">
                     {this.state.error.message}
                     {this.state.error.stack && '\n\n' + this.state.error.stack}
@@ -127,7 +127,7 @@ export function GlobalErrorHandler({ children }: { children: React.ReactNode }) 
                 onClick={() => window.location.reload()}
                 className="w-full bg-destructive text-destructive-foreground px-4 py-2 rounded text-sm font-medium hover:bg-destructive/90"
               >
-                Reload Page
+                Recargar Página
               </button>
             </div>
           </div>
@@ -160,7 +160,7 @@ export function DevelopmentErrorOverlay({ error, onDismiss }: {
     <div className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4">
       <div className="bg-destructive text-destructive-foreground p-6 rounded-lg max-w-2xl max-h-[80vh] overflow-auto">
         <div className="flex justify-between items-start mb-4">
-          <h2 className="text-lg font-bold">Development Error</h2>
+          <h2 className="text-lg font-bold">Error de Desarrollo</h2>
           <button 
             onClick={onDismiss}
             className="text-destructive-foreground/70 hover:text-destructive-foreground"

@@ -21,25 +21,25 @@ export function ErrorFallback({
           <span className="text-3xl">⚠️</span>
         </div>
         
-        <h2 className="text-xl font-semibold">Something went wrong</h2>
-        
+        <h2 className="text-xl font-semibold">Algo salió mal</h2>
+
         <p className="text-muted-foreground">
-          {error?.message || 'An unexpected error occurred'}
+          {error?.message || 'Ocurrió un error inesperado'}
         </p>
-        
+
         <div className="flex gap-4 justify-center">
           <button
             onClick={resetError}
             className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
           >
-            Try Again
+            Intentar de Nuevo
           </button>
-          
+
           <button
             onClick={() => window.location.href = '/'}
             className="px-4 py-2 border border-input rounded-md hover:bg-accent hover:text-accent-foreground transition-colors"
           >
-            Go Home
+            Ir al Inicio
           </button>
         </div>
       </div>

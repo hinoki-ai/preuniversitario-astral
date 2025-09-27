@@ -197,6 +197,7 @@
   
   /* Premium glass effects */
   .glass-effect {
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
     backdrop-filter: blur(12px) saturate(180%);
     background: rgb(255 255 255 / 10%);
     border: 1px solid rgb(255 255 255 / 12.5%);
@@ -267,5 +268,29 @@
 
   .smooth-transition-slow {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Scroll expansion hero text translation */
+  [style*="--translate-x"] {
+    transform: translateX(var(--translate-x));
+  }
+
+  /* Progress component value */
+  [style*="--progress-value"] {
+    transform: translateX(calc(-1 * var(--progress-value)));
+  }
+
+  /* Sonner toaster theming */
+  .toaster {
+    --normal-bg: var(--popover);
+    --normal-text: var(--popover-foreground);
+    --normal-border: var(--border);
+  }
+
+  /* Dashboard layout sidebar theming */
+  .group\/layout {
+    --sidebar-width: 18rem;
+    --sidebar-width-icon: 3rem;
+    --header-height: 3rem;
   }
 }

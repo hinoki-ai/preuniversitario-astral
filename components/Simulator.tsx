@@ -259,8 +259,8 @@ function SimulatorInternal() {
 
   const selectedAssignment = assignments.find(a => a.id === selectedAssignmentId);
 
-  const mm = Math.floor(secondsLeft / 60);
-  const ss = secondsLeft % 60;
+  const minutes = Math.floor(secondsLeft / 60);
+  const seconds = secondsLeft % 60;
 
   if (assignments.length === 0) {
     return <Card className="p-4">Aún no hay simulacros PAES configurados.</Card>;
@@ -375,7 +375,7 @@ function SimulatorInternal() {
             <div className="text-base font-semibold">{quiz?.title}</div>
             {!result && secondsLeft > 0 && (
               <div className="text-sm text-muted-foreground">
-                Tiempo restante: {mm}:{String(ss).padStart(2, '0')}
+                Tiempo restante: {minutes}:{String(seconds).padStart(2, '0')}
               </div>
             )}
           </div>
@@ -479,7 +479,7 @@ function SimulatorInternal() {
                       <div>Intentos</div>
                     </div>
                     <div>
-                      <span className="font-medium">{exam.averageScore}%</span>
+                      <span className="font-medium">{exam.avgScore}%</span>
                       <div>Promedio</div>
                     </div>
                   </div>

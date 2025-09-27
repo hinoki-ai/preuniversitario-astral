@@ -137,8 +137,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="transition-colors duration-200 hover:text-white"
-              style={{ color: MINEDUC_COLORS.muted }}
+              className="transition-colors duration-200 hover:text-white text-[#C5D0E6]"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.974.974 1.246 2.241 1.308 3.608.058 1.266.069 1.646.069 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.974.974-2.241 1.246-3.608 1.308-1.266.058-1.646.069-4.85.069s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.974-.974-1.246-2.241-1.308-3.608C2.175 15.747 2.163 15.367 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608C4.515 2.497 5.782 2.225 7.148 2.163 8.414 2.105 8.794 2.163 12 2.163zm0-2.163C8.741 0 8.332.012 7.052.07 5.771.128 4.635.401 3.678 1.358 2.721 2.315 2.448 3.451 2.39 4.732 2.332 6.012 2.32 6.421 2.32 12c0 5.579.012 5.988.07 7.268.058 1.281.331 2.417 1.288 3.374.957.957 2.093 1.23 3.374 1.288C8.332 23.988 8.741 24 12 24s3.668-.012 4.948-.07c1.281-.058 2.417-.331 3.374-1.288.957-.957 1.23-2.093 1.288-3.374.058-1.28.07-1.689.07-7.268 0-5.579-.012-5.988-.07-7.268-.058-1.281-.331-2.417-1.288-3.374C19.365.401 18.229.128 16.948.07 15.668.012 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
@@ -149,16 +148,15 @@ export default function Footer() {
 
         {/* Dev Favicon Copyright */}
         <div
-          className="pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-          style={{ borderTop: `1px solid ${MINEDUC_COLORS.muted}` }}
+          className="pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-[#C5D0E6]"
         >
           <div className="flex-1">
-            <p className="text-sm mb-2" style={{ color: MINEDUC_COLORS.offWhite }}>
+            <p className="text-sm mb-2 text-[#F5F7FF]">
               © {new Date().getFullYear()} Preuniversitario Astral. Todos los derechos reservados.
             </p>
-            <div className="text-xs" style={{ color: MINEDUC_COLORS.offWhite }}>
+            <div className="text-xs text-[#F5F7FF]">
               Desarrollado por{' '}
-              <span className="font-mono text-lg tracking-wider" style={{ color: MINEDUC_COLORS.white }}>
+              <span className="font-mono text-lg tracking-wider text-white">
                 ΛRΛMΛC®
               </span>
             </div>
@@ -170,7 +168,7 @@ export default function Footer() {
                 height={32}
                 className="mr-2 h-8 w-8 opacity-60"
               />
-              <span className="text-xs" style={{ color: MINEDUC_COLORS.offWhite }}>
+              <span className="text-xs text-[#F5F7FF]">
                 Desarrollado con ❤️
               </span>
             </div>

@@ -5,11 +5,13 @@ import { useMutation, useQuery } from 'convex/react';
 import {
   Award,
   BadgePercent,
+  Book,
   CheckCircle2,
   Circle,
   Crown,
   Flame,
   Gift,
+  Sparkles,
   Star,
   Target,
   TrendingUp,
@@ -26,13 +28,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
-type MissionDifficulty = 'easy' | 'medium' | 'hard' | 'legendary';
+type MissionDifficulty = 'escudero' | 'guerrero' | 'paladín' | 'leyenda';
 
-type MissionType = 'quiz_streak' | 'subject_focus' | 'speed_challenge' | 'accuracy_test' | 'exploration';
+type MissionType = 'cadena_guerrera' | 'sabiduría_ancestral' | 'velocidad_relámpago' | 'precisión_letal' | 'exploración_mística';
 
 type MissionReward = {
-  points: number;
-  bonus?: string;
+  esencia: number;
+  masteryBonus?: number;
+  retentionBonus?: number;
 };
 
 type Mission = {
@@ -51,7 +54,7 @@ type MissionsData = {
   missions: Mission[];
   completedCount: number;
   streakBonus: number;
-  date: string;
+  date: number;
 };
 
 type MissionStats = {
@@ -74,25 +77,25 @@ const difficultyConfig: Record<MissionDifficulty, {
   borderColor: string;
   icon: React.ComponentType<{ className?: string }>;
 }> = {
-  easy: {
-    color: 'text-green-600 dark:text-green-400',
-    bgColor: 'bg-green-50 dark:bg-green-950/20',
-    borderColor: 'border-green-200 dark:border-green-800',
+  escudero: {
+    color: 'text-emerald-600 dark:text-emerald-400',
+    bgColor: 'bg-emerald-50 dark:bg-emerald-950/20',
+    borderColor: 'border-emerald-200 dark:border-emerald-800',
     icon: Circle,
   },
-  medium: {
+  guerrero: {
     color: 'text-blue-600 dark:text-blue-400',
     bgColor: 'bg-blue-50 dark:bg-blue-950/20',
     borderColor: 'border-blue-200 dark:border-blue-800',
     icon: Target,
   },
-  hard: {
-    color: 'text-purple-600 dark:text-purple-400',
-    bgColor: 'bg-purple-50 dark:bg-purple-950/20',
-    borderColor: 'border-purple-200 dark:border-purple-800',
+  paladín: {
+    color: 'text-violet-600 dark:text-violet-400',
+    bgColor: 'bg-violet-50 dark:bg-violet-950/20',
+    borderColor: 'border-violet-200 dark:border-violet-800',
     icon: Zap,
   },
-  legendary: {
+  leyenda: {
     color: 'text-amber-600 dark:text-amber-400',
     bgColor: 'bg-amber-50 dark:bg-amber-950/20',
     borderColor: 'border-amber-200 dark:border-amber-800',
@@ -101,16 +104,16 @@ const difficultyConfig: Record<MissionDifficulty, {
 };
 
 const typeIcons: Record<MissionType, React.ComponentType<{ className?: string }>> = {
-  quiz_streak: Target,
-  subject_focus: Star,
-  speed_challenge: Zap,
-  accuracy_test: TrendingUp,
-  exploration: Award,
+  cadena_guerrera: Flame,
+  sabiduría_ancestral: Book,
+  velocidad_relámpago: Zap,
+  precisión_letal: Target,
+  exploración_mística: Sparkles,
 };
 
 export function DailyMissions() {
   const { toast } = useToast();
-  const missionsData = useQuery(api.dailyMissions.getTodaysMissions) as MissionsData | undefined;
+  const missionsData = useQuery(api.dailyMissions.getTodaysMissions) as unknown as MissionsData | undefined;
   const missionStats = useQuery(api.dailyMissions.getMissionStats) as MissionStats | undefined;
   const updateMissionProgress = useMutation(api.dailyMissions.updateMissionProgress);
   const initializeMissions = useMutation(api.dailyMissions.initializeTodaysMissions);
@@ -156,8 +159,8 @@ export function DailyMissions() {
         progressIncrement: remainingProgress
       });
       toast({
-        title: '¡Misión completada! 🎯',
-        description: 'Sigue así para mantener tu racha diaria.',
+        title: '¡Misión conquistada! ⚔️',
+        description: 'Sigue así para mantener tu Racha de Honor.',
       });
     } catch (error) {
       toast({
@@ -174,21 +177,21 @@ export function DailyMissions() {
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Target className="h-5 w-5 text-primary" />
-              <CardTitle className="text-lg">Misiones diarias</CardTitle>
+              <Crown className="h-5 w-5 text-primary" />
+              <CardTitle className="text-lg">Aventuras Legendarias</CardTitle>
             </div>
             <Badge variant={allCompleted ? 'default' : 'secondary'} className="text-xs">
-              {completedCount}/{missions.length} completadas
+              {completedCount}/{missions.length} conquistadas
             </Badge>
           </div>
           <CardDescription>
-            Completa desafíos diarios para sumar puntos y mantener tu racha activa.
+            Completa desafíos diarios para ganar Esencia Arcana y mantener tu Cadena de Honor activa.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 pt-0">
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Progreso diario</span>
+              <span className="text-muted-foreground">Camino del Héroe</span>
               <span className="font-medium">{Math.round(completionPercentage)}%</span>
             </div>
             <Progress value={completionPercentage} className="h-2" />
@@ -197,11 +200,11 @@ export function DailyMissions() {
           {!allCompleted && (
             <div className="flex items-center justify-between rounded-lg border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 p-3 dark:border-amber-800 dark:from-amber-950/20 dark:to-orange-950/20">
               <div className="flex items-center gap-2">
-                <Gift className="h-4 w-4 text-amber-600" />
-                <span className="text-sm font-medium">Completa todas las misiones</span>
+                <Crown className="h-4 w-4 text-amber-600" />
+                <span className="text-sm font-medium">Conquista todas las aventuras</span>
               </div>
               <Badge variant="outline" className="border-amber-300 bg-amber-100 text-amber-700">
-                +{streakBonus} pts
+                +{streakBonus} Esencia
               </Badge>
             </div>
           )}
@@ -209,11 +212,11 @@ export function DailyMissions() {
           {allCompleted && (
             <div className="rounded-lg border border-green-200 bg-gradient-to-r from-green-50 to-emerald-50 p-4 text-center dark:border-green-800 dark:from-green-950/20 dark:to-emerald-950/20">
               <div className="flex items-center justify-center gap-2 text-green-700 dark:text-green-300">
-                <Trophy className="h-5 w-5" />
-                <span className="font-semibold">¡Todas las misiones completadas!</span>
+                <Crown className="h-5 w-5" />
+                <span className="font-semibold">¡Todas las aventuras conquistadas!</span>
               </div>
               <p className="mt-2 text-sm text-green-600 dark:text-green-400">
-                Obtienes {streakBonus} puntos extra. Vuelve mañana para nuevas misiones.
+                Obtienes {streakBonus} Esencia Arcana extra. Regresa mañana para nuevas leyendas.
               </p>
             </div>
           )}
@@ -243,7 +246,7 @@ function MissionCard({
   onComplete: (missionId: string) => void;
 }) {
   const progressPercentage = mission.target > 0 ? (mission.progress / mission.target) * 100 : 0;
-  const config = difficultyConfig[mission.difficulty] ?? difficultyConfig.easy;
+  const config = difficultyConfig[mission.difficulty] ?? difficultyConfig.escudero;
   const IconComponent = config.icon;
   const TypeIcon = typeIcons[mission.type] ?? BadgePercent;
 
@@ -281,8 +284,8 @@ function MissionCard({
               {mission.difficulty}
             </Badge>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <Star className="h-3 w-3" />
-              {mission.reward.points}
+              <Sparkles className="h-3 w-3" />
+              {mission.reward.esencia}
             </div>
           </div>
         </div>
@@ -298,10 +301,10 @@ function MissionCard({
           <Progress value={progressPercentage} className="h-2" />
         </div>
 
-        {mission.reward.bonus && (
+        {(mission.reward.masteryBonus || mission.reward.retentionBonus) && (
           <div className="flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400">
             <Gift className="h-3 w-3" />
-            <span>Bonus: {mission.reward.bonus}</span>
+            <span>Bonus: {mission.reward.masteryBonus || mission.reward.retentionBonus}</span>
           </div>
         )}
 
@@ -328,37 +331,37 @@ function MissionStatsCard({ stats }: { stats: MissionStats }) {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
-          <Trophy className="h-5 w-5" />
-          Estadísticas de misiones
+          <Crown className="h-5 w-5" />
+          Crónica de Hazañas
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <StatChip
             icon={Flame}
-            label="Racha actual"
+            label="Racha de Honor"
             value={`${stats.currentStreak} días`}
             className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-950/20 dark:to-red-950/20"
             iconColor="text-orange-500"
           />
           <StatChip
-            icon={CheckCircle2}
-            label="Total completadas"
+            icon={Trophy}
+            label="Hazañas Conquistadas"
             value={String(stats.totalMissionsCompleted)}
             className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20"
             iconColor="text-blue-500"
           />
           <StatChip
             icon={TrendingUp}
-            label="Promedio diario"
+            label="Promedio Guerrero"
             value={`${stats.personalStats?.averageDailyCompletions?.toFixed(1) ?? '0.0'}`}
             className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20"
             iconColor="text-purple-500"
           />
           <StatChip
-            icon={Award}
-            label="Bonus disponible"
-            value="Completa todas las misiones"
+            icon={Crown}
+            label="Bonus Legendario"
+            value="Conquista todas las misiones"
             className="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/20 dark:to-green-950/20"
             iconColor="text-emerald-500"
           />
@@ -367,7 +370,7 @@ function MissionStatsCard({ stats }: { stats: MissionStats }) {
         {stats.weeklyLeaderboard?.length ? (
           <div>
             <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold">
-              <Trophy className="h-4 w-4" />
+              <Crown className="h-4 w-4" />
               Ranking semanal
             </h4>
             <div className="space-y-2">

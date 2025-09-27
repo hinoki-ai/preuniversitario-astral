@@ -8,13 +8,13 @@ interface EnergyOrbProps {
   // Size options
   size?: "sm" | "md" | "lg" | "xl" | number;
   className?: string
-  
+
   // visual variants;
-  variant?: "default" | "intense" | "subtle" | "amber" | "crystal"
-  
+  variant?: "default" | "místico" | "guerrero" | "arcano" | "cristal" | "intense" | "subtle"
+
   // user-specific customization;
   userId?: string
-  
+
   // advanced options;
   intensity?: number;
   showContainer?: boolean;
@@ -35,13 +35,13 @@ const containerSizeMap = {
   xl: "size-16",
 }
 
-function getOrbVariant(userId?: string): "default" | "intense" | "subtle" | "amber" | "crystal" {
+function getOrbVariant(userId?: string): "default" | "místico" | "guerrero" | "arcano" | "cristal" | "intense" | "subtle" {
   if (!userId) return "default"
   const hash = userId.split("").reduce((a, b) => {
     a = (a << 5) - a + b.charCodeAt(0)
     return a & a
   }, 0)
-  const variants = ["default", "intense", "subtle", "amber", "crystal"] as const
+  const variants = ["default", "místico", "guerrero", "arcano", "cristal", "intense", "subtle"] as const
   return variants[Math.abs(hash) % variants.length]
 }
 
@@ -63,8 +63,8 @@ export function EnergyOrb({
   showContainer = true,
   containerClassName,
 }: EnergyOrbProps) {
-  const mountref = useRef<HTMLDivElement>(null)
-  const sceneref = useRef<{
+  const mountRef = useRef<HTMLDivElement>(null)
+  const sceneRef = useRef<{
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
     renderer: THREE.WebGLRenderer;
@@ -80,35 +80,41 @@ export function EnergyOrb({
   const actualVariant = variant === "default" && userId ? getOrbVariant(userId) : variant
   const actualIntensity = intensity ?? (userId ? getOrbIntensity(userId) : 1.0)
 
-  // Enhanced styling with better pastel palettes and contrast
+  // Enhanced styling with medieval magical palettes
   const backgroundStyles = {
-    default: "bg-gradient-to-br from-cyan-800/50 via-slate-900/70 to-teal-800/50",
-    intense: "bg-gradient-to-br from-rose-800/60 via-slate-900/80 to-pink-800/60",
-    subtle: "bg-gradient-to-br from-violet-800/40 via-slate-900/60 to-indigo-800/40",
-    amber: "bg-gradient-to-br from-orange-800/55 via-slate-900/75 to-amber-800/55",
-    crystal: "bg-gradient-to-br from-sky-800/45 via-slate-900/65 to-blue-800/45",
+    default: "bg-gradient-to-br from-purple-900/60 via-slate-900/80 to-indigo-900/60",
+    místico: "bg-gradient-to-br from-violet-800/70 via-slate-900/85 to-purple-800/70",
+    guerrero: "bg-gradient-to-br from-red-800/65 via-slate-900/80 to-orange-800/65",
+    arcano: "bg-gradient-to-br from-cyan-800/60 via-slate-900/75 to-blue-800/60",
+    cristal: "bg-gradient-to-br from-emerald-800/55 via-slate-900/70 to-teal-800/55",
+    intense: "bg-gradient-to-br from-red-900/80 via-slate-900/90 to-orange-900/80",
+    subtle: "bg-gradient-to-br from-blue-900/40 via-slate-900/60 to-indigo-900/40",
   }
 
   const borderStyles = {
-    default: "border-cyan-300/60 shadow-xl shadow-cyan-400/30",
-    intense: "border-rose-300/70 shadow-xl shadow-rose-400/40",
-    subtle: "border-violet-300/50 shadow-lg shadow-violet-400/25",
-    amber: "border-orange-300/65 shadow-xl shadow-orange-400/35",
-    crystal: "border-sky-300/60 shadow-xl shadow-sky-400/30",
+    default: "border-purple-300/60 shadow-xl shadow-purple-400/30",
+    místico: "border-violet-300/70 shadow-xl shadow-violet-400/40",
+    guerrero: "border-red-300/65 shadow-xl shadow-red-400/35",
+    arcano: "border-cyan-300/60 shadow-xl shadow-cyan-400/30",
+    cristal: "border-emerald-300/55 shadow-xl shadow-emerald-400/30",
+    intense: "border-red-400/80 shadow-xl shadow-red-500/40",
+    subtle: "border-blue-300/40 shadow-xl shadow-blue-400/20",
   }
 
   const glowStyles = {
-    default: "from-cyan-400/50 via-teal-400/35 to-emerald-400/50",
-    intense: "from-rose-400/60 via-pink-400/45 to-fuchsia-400/60",
-    subtle: "from-violet-400/40 via-indigo-400/25 to-purple-400/40",
-    amber: "from-orange-400/55 via-yellow-400/40 to-amber-400/55",
-    crystal: "from-sky-400/50 via-blue-400/35 to-cyan-400/50",
+    default: "from-purple-400/50 via-indigo-400/35 to-violet-400/50",
+    místico: "from-violet-400/60 via-purple-400/45 to-fuchsia-400/60",
+    guerrero: "from-red-400/55 via-orange-400/40 to-amber-400/55",
+    arcano: "from-cyan-400/45 via-blue-400/30 to-indigo-400/45",
+    cristal: "from-emerald-400/50 via-teal-400/35 to-cyan-400/50",
+    intense: "from-red-500/70 via-orange-500/55 to-amber-500/70",
+    subtle: "from-blue-400/30 via-indigo-400/25 to-violet-400/30",
   }
 
   useEffect(() => {
-    if (!mountref.current) return
+    if (!mountRef.current) return
 
-    const mountElement = mountref.current
+    const mountElement = mountRef.current
 
     // Scene setup
     const scene = new THREE.Scene()
@@ -119,7 +125,10 @@ export function EnergyOrb({
     renderer.setClearColor(0x000000, 0)
     mountElement.appendChild(renderer.domElement)
 
-    const particleCount = actualVariant === "intense" ? 120 : actualVariant === "subtle" ? 40 : 80
+    const particleCount = actualVariant === "guerrero" ? 120 :
+                         actualVariant === "místico" ? 40 :
+                         actualVariant === "intense" ? 150 :
+                         actualVariant === "subtle" ? 60 : 80
     const positions = new Float32Array(particleCount * 3)
     const colors = new Float32Array(particleCount * 3)
     const sizes = new Float32Array(particleCount)
@@ -127,54 +136,74 @@ export function EnergyOrb({
 
     const colorPalettes = {
       default: [
-        new THREE.Color(0x67e8f9), // Cyan 300 - Light pastel cyan
-        new THREE.Color(0x22d3ee), // Cyan 400 - Medium cyan  
-        new THREE.Color(0x0891b2), // Cyan 600 - Darker contrast
-        new THREE.Color(0x5eead4), // Teal 300 - Light teal
-        new THREE.Color(0x2dd4bf), // Teal 400 - Medium teal
-        new THREE.Color(0x0d9488), // Teal 600 - Dark teal
-        new THREE.Color(0x6ee7b7), // Emerald 300 - Light emerald
-        new THREE.Color(0x34d399), // Emerald 400 - Medium emerald
+        new THREE.Color(0x8b5cf6), // Purple 400 - Medium purple
+        new THREE.Color(0x7c3aed), // Violet 500 - Medium violet
+        new THREE.Color(0x6d28d9), // Purple 600 - Dark purple
+        new THREE.Color(0x6366f1), // Indigo 400 - Medium indigo
+        new THREE.Color(0x4f46e5), // Indigo 500 - Medium indigo
+        new THREE.Color(0x4338ca), // Indigo 600 - Dark indigo
+        new THREE.Color(0x8b5cf6), // Purple 400 - Light purple
+        new THREE.Color(0x7c3aed), // Violet 500 - Light violet
       ],
-      intense: [
-        new THREE.Color(0xfda4af), // Rose 300 - Light pastel rose
-        new THREE.Color(0xfb7185), // Rose 400 - Medium rose
-        new THREE.Color(0xe11d48), // Rose 600 - Dark rose
-        new THREE.Color(0xf9a8d4), // Pink 300 - Light pink
-        new THREE.Color(0xf472b6), // Pink 400 - Medium pink 
-        new THREE.Color(0xdb2777), // Pink 600 - Dark pink
-        new THREE.Color(0xe879f9), // Fuchsia 400 - Bright fuchsia
-        new THREE.Color(0xc026d3), // Fuchsia 600 - Dark fuchsia
-      ],
-      subtle: [
+      místico: [
         new THREE.Color(0xc4b5fd), // Violet 300 - Light pastel violet
         new THREE.Color(0xa78bfa), // Violet 400 - Medium violet
         new THREE.Color(0x7c3aed), // Violet 600 - Dark violet
-        new THREE.Color(0xa5b4fc), // Indigo 300 - Light indigo
-        new THREE.Color(0x818cf8), // Indigo 400 - Medium indigo
-        new THREE.Color(0x4f46e5), // Indigo 600 - Dark indigo
         new THREE.Color(0xd8b4fe), // Purple 300 - Light purple
         new THREE.Color(0xc084fc), // Purple 400 - Medium purple
+        new THREE.Color(0x9333ea), // Purple 500 - Medium purple
+        new THREE.Color(0xe879f9), // Fuchsia 400 - Bright fuchsia
+        new THREE.Color(0xc026d3), // Fuchsia 600 - Dark fuchsia
       ],
-      amber: [
-        new THREE.Color(0xfdba74), // Orange 300 - Light pastel orange
+      guerrero: [
+        new THREE.Color(0xf87171), // Red 400 - Medium red
+        new THREE.Color(0xef4444), // Red 500 - Medium red
+        new THREE.Color(0xdc2626), // Red 600 - Dark red
         new THREE.Color(0xfb923c), // Orange 400 - Medium orange
+        new THREE.Color(0xf97316), // Orange 500 - Medium orange
         new THREE.Color(0xea580c), // Orange 600 - Dark orange
-        new THREE.Color(0xfcd34d), // Yellow 300 - Light yellow
-        new THREE.Color(0xfbbf24), // Yellow 400 - Medium yellow
-        new THREE.Color(0xd97706), // Yellow 600 - Dark yellow
         new THREE.Color(0xfbbf24), // Amber 400 - Bright amber
         new THREE.Color(0xf59e0b), // Amber 500 - Medium amber
       ],
-      crystal: [
-        new THREE.Color(0x7dd3fc), // Sky 300 - Light pastel sky
-        new THREE.Color(0x38bdf8), // Sky 400 - Medium sky  
-        new THREE.Color(0x0284c7), // Sky 600 - Dark sky
-        new THREE.Color(0x93c5fd), // Blue 300 - Light blue
-        new THREE.Color(0x60a5fa), // Blue 400 - Medium blue
-        new THREE.Color(0x2563eb), // Blue 600 - Dark blue
+      arcano: [
         new THREE.Color(0x67e8f9), // Cyan 300 - Light cyan
         new THREE.Color(0x22d3ee), // Cyan 400 - Medium cyan
+        new THREE.Color(0x0891b2), // Cyan 600 - Dark cyan
+        new THREE.Color(0x60a5fa), // Blue 400 - Medium blue
+        new THREE.Color(0x3b82f6), // Blue 500 - Medium blue
+        new THREE.Color(0x2563eb), // Blue 600 - Dark blue
+        new THREE.Color(0x5eead4), // Teal 300 - Light teal
+        new THREE.Color(0x2dd4bf), // Teal 400 - Medium teal
+      ],
+      cristal: [
+        new THREE.Color(0x6ee7b7), // Emerald 300 - Light emerald
+        new THREE.Color(0x34d399), // Emerald 400 - Medium emerald
+        new THREE.Color(0x10b981), // Emerald 500 - Medium emerald
+        new THREE.Color(0x5eead4), // Teal 300 - Light teal
+        new THREE.Color(0x2dd4bf), // Teal 400 - Medium teal
+        new THREE.Color(0x0d9488), // Teal 600 - Dark teal
+        new THREE.Color(0x7dd3fc), // Sky 300 - Light sky
+        new THREE.Color(0x38bdf8), // Sky 400 - Medium sky
+      ],
+      intense: [
+        new THREE.Color(0xf87171), // Red 400 - Medium red
+        new THREE.Color(0xef4444), // Red 500 - Medium red
+        new THREE.Color(0xdc2626), // Red 600 - Dark red
+        new THREE.Color(0xfb923c), // Orange 400 - Medium orange
+        new THREE.Color(0xf97316), // Orange 500 - Medium orange
+        new THREE.Color(0xea580c), // Orange 600 - Dark orange
+        new THREE.Color(0xfbbf24), // Amber 400 - Bright amber
+        new THREE.Color(0xf59e0b), // Amber 500 - Medium amber
+      ],
+      subtle: [
+        new THREE.Color(0x60a5fa), // Blue 400 - Medium blue
+        new THREE.Color(0x3b82f6), // Blue 500 - Medium blue
+        new THREE.Color(0x2563eb), // Blue 600 - Dark blue
+        new THREE.Color(0x8b5cf6), // Violet 400 - Medium violet
+        new THREE.Color(0x7c3aed), // Violet 500 - Medium violet
+        new THREE.Color(0x6d28d9), // Violet 600 - Dark violet
+        new THREE.Color(0xa78bfa), // Purple 400 - Medium purple
+        new THREE.Color(0x9333ea), // Purple 500 - Medium purple
       ],
     }
 
@@ -292,12 +321,12 @@ export function EnergyOrb({
       vertexColors: true,
       blending: THREE.AdditiveBlending,
       transparent: true,
-      opacity: actualVariant === "intense" ? 0.95 : 
-               actualVariant === "subtle" ? 0.65 : 
-               actualVariant === "crystal" ? 0.88 : 0.82,
-      size: actualVariant === "intense" ? 16 : 
-            actualVariant === "subtle" ? 8 : 
-            actualVariant === "crystal" ? 14 : 12,
+      opacity: actualVariant === "intense" ? 0.95 :
+               actualVariant === "subtle" ? 0.65 :
+               actualVariant === "cristal" ? 0.88 : 0.82,
+      size: actualVariant === "intense" ? 16 :
+            actualVariant === "subtle" ? 8 :
+            actualVariant === "cristal" ? 14 : 12,
       sizeAttenuation: true,
       depthWrite: false,
       alphaTest: 0.001, // Helps with edge rendering
@@ -309,11 +338,11 @@ export function EnergyOrb({
     camera.position.z = 4
 
     let time = 0
-    const LOOP_DURATION = Math.PI * 6  // Longer loop for more variation
+    const loopDuration = Math.PI * 6  // Longer loop for more variation
 
     // Enhanced animation with multiple movement layers
     const animate = () => {
-      time = (time + 0.012 * actualIntensity) % LOOP_DURATION
+      time = (time + 0.012 * actualIntensity) % loopDuration
 
       // More sophisticated rotation with varying speeds per axis
       particles.rotation.y = (particles.rotation.y + 0.01 * actualIntensity) % (Math.PI * 2)
@@ -389,14 +418,14 @@ export function EnergyOrb({
 
       renderer.render(scene, camera)
       const animationId = requestAnimationFrame(animate)
-      sceneref.current = { scene, camera, renderer, particles, animationId }
+      sceneRef.current = { scene, camera, renderer, particles, animationId }
     }
 
     animate()
 
     return () => {
-      if (sceneref.current) {
-        cancelAnimationFrame(sceneref.current.animationId)
+      if (sceneRef.current) {
+        cancelAnimationFrame(sceneRef.current.animationId)
         if (mountElement && renderer.domElement) {
           mountElement.removeChild(renderer.domElement)
         }
@@ -410,7 +439,7 @@ export function EnergyOrb({
 
   const orbContent = (
     <div 
-      ref={mountref} 
+          ref={mountRef}
       className={cn(
         "w-full h-full",
         typeof size === "number" ? `orb-size-${actualSize}` : ""
@@ -442,9 +471,9 @@ export function EnergyOrb({
           `bg-gradient-to-r ${glowStyles[actualVariant]}`,
         )}
         data-animation-duration={
-          actualVariant === "intense" ? "2s" : 
-          actualVariant === "subtle" ? "4s" : 
-          actualVariant === "crystal" ? "2.5s" : "3s"
+          actualVariant === "intense" ? "1.5s" :
+          actualVariant === "subtle" ? "4s" :
+          actualVariant === "cristal" ? "2.5s" : "3s"
         }
       />
 
@@ -479,7 +508,7 @@ export function EnergyOrb({
           actualVariant === "default" ? "border-cyan-300" :
           actualVariant === "intense" ? "border-rose-300" :
           actualVariant === "subtle" ? "border-violet-300" :
-          actualVariant === "amber" ? "border-orange-300" :
+          actualVariant === "cristal" ? "border-emerald-300" :
           "border-sky-300"
         )}
         data-animation-duration={

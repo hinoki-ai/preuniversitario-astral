@@ -36,8 +36,8 @@ export const getReviewItems = query({
       .withIndex('byUser', q => q.eq('userId', user._id))
       .collect();
 
-    const reviewItems = [];
-    
+    const reviewItems: { quizId: any; quizTitle: string; subject: string; lastScore: number; daysSince: number; priority: string; type: string }[] = [];
+
     for (const attempt of attempts) {
       if (attempt.score < 0.8) {  // Only review if performance was poor
         const quiz = await ctx.db.get(attempt.quizId);

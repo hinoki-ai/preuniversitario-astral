@@ -50,7 +50,7 @@ function TestimonialsSectionInternal() {
             Historias de <span className="text-accent">éxito</span>
           </h2>
           <p className="mx-auto max-w-3xl text-base text-muted-foreground sm:text-lg">
-            Conoce las experiencias de estudiantes que lograron sus metas académicas con nuestra
+            Conoce las experiencias de estudiantes que lograron sus metas <span className="text-violet-400">académicas</span> con nuestra
             plataforma educativa.
           </p>
         </motion.div>

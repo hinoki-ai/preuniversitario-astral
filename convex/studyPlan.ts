@@ -3,12 +3,12 @@ import { v } from 'convex/values';
 import { mutation, query } from './_generated/server';
 
 function weekStartUtc(tsSec: number): number {
-  const d = new Date(tsSec * 1000);
-  const day = d.getUTCDay(); // 0 Sun .. 6 Sat
+  const date = new Date(tsSec * 1000);
+  const day = date.getUTCDay(); // 0 Sun .. 6 Sat
   const diff = (day + 6) % 7; // days since Monday
-  d.setUTCDate(d.getUTCDate() - diff);
-  d.setUTCHours(0, 0, 0, 0);
-  return Math.floor(d.getTime() / 1000);
+  date.setUTCDate(date.getUTCDate() - diff);
+  date.setUTCHours(0, 0, 0, 0);
+  return Math.floor(date.getTime() / 1000);
 }
 
 const defaultItemsByTrack: Record<

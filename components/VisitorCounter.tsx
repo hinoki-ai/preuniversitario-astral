@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Eye, TrendingUp, Users } from 'lucide-react';
 
 // Get version from package.json at build time
-const VERSION = '0.3.1'; // Auto-updated by version-processor.js
+const version = '0.3.1'; // Auto-updated by version-processor.js
 
 interface VisitorStats {
   total: number;
@@ -92,7 +92,7 @@ export function VisitorCounter() {
         variant="outline"
         className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-400/50 text-blue-100 font-mono text-xs px-2 py-0.5"
       >
-        v{VERSION}
+        v{version}
       </Badge>
 
       {/* Visitor Counter */}
@@ -135,10 +135,10 @@ export function VisitorCounter() {
 
 // Hook for getting current version (can be used elsewhere)
 export function useAppVersion() {
-  return VERSION;
+  return version;
 }
 
 // Utility function to get formatted version
 export function getFormattedVersion() {
-  return `v${VERSION}`;
+  return `v${version}`;
 }

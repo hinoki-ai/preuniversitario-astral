@@ -14,7 +14,7 @@ import { ActionResult, cn } from '@/lib/utils';
 import { AlertTitle, alertVariants } from './ui/alert';
 import { Form, FormControl, FormField, FormItem, FormMessage } from './ui/form';
 
-const SPRING = {
+const SPRING_CONFIG = {
   type: 'spring' as const,
   stiffness: 130.4,
   damping: 14.5,
@@ -48,7 +48,7 @@ const SubmissionStateMessage = ({
           exit={{ opacity: 0, y: 10, scale: 0.8 }}
           initial={{ opacity: 0, y: 10, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={SPRING}
+          transition={SPRING_CONFIG}
         >
           <CheckCircledIcon />
           <AlertTitle>{value.data}</AlertTitle>
@@ -83,10 +83,10 @@ export const FormNewsletter = ({
 
   useEffect(() => {
     return () => {
-      const v = form.getValues('email');
+      const emailValue = form.getValues('email');
 
-      if (v != undefined) {
-        localStorage.setItem('email', v);
+      if (emailValue != undefined) {
+        localStorage.setItem('email', emailValue);
       }
     };
   }, [form]);

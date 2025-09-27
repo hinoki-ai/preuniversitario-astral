@@ -461,7 +461,6 @@ export function SettingsModal({ trigger }: SettingsModalProps) {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="es">Español (Chile)</SelectItem>
-                            <SelectItem value="en">English</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>

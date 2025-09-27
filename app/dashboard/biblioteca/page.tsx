@@ -355,11 +355,11 @@ export default function BibliotecaPage() {
                 <div className="space-y-3">
                   {recentActivity.slice(0, 3).map((lesson: any) => (
                     <div key={lesson._id} className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 transition-colors">
-                      <EnergyOrb 
-                        size="sm" 
-                        userId={lesson._id} 
-                        variant="subtle" 
-                        className="w-8 h-8" 
+                      <EnergyOrb
+                        size="sm"
+                        userId={lesson._id}
+                        variant="default"
+                        className="w-8 h-8"
                       />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{lesson.title}</p>

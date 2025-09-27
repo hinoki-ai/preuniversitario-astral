@@ -10,6 +10,8 @@ import { PageErrorBoundary } from '@/components/ErrorBoundary';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { env } from '@/lib/env';
+import { CookieBanner } from '@/components/CookieBanner';
+import { AudioControls } from '@/components/AudioControls';
 
 import './globals.css';
 
@@ -57,7 +59,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="es" suppressHydrationWarning>
         <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
           <PageErrorBoundary context="RootLayout">
             <ThemeProvider
@@ -72,6 +74,8 @@ export default function RootLayout({
                 </GlobalErrorHandler>
               </ConvexClientProvider>
               <Toaster />
+              <CookieBanner />
+              <AudioControls />
             </ThemeProvider>
           </PageErrorBoundary>
           {env.NEXT_PUBLIC_VERCEL_ANALYTICS_ID && <Analytics />}
