@@ -10,6 +10,8 @@
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "start": "next start",
     "deploy": "vercel --prod",
+    "debug:errors": "node scripts/debug-errors.js",
+    "monitor:logs": "node scripts/monitor-logs.js",
     "version:patch": "node version-signal.js patch",
     "version:minor": "node version-signal.js minor",
     "version:major": "node version-signal.js major",

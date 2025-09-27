@@ -39,32 +39,36 @@ type Env = z.infer<typeof envSchema>;
 // Parse and validate environment variables
 function validateEnv(): Env {
   try {
+    // In production, be more lenient with environment variable validation
+    // as they might not be available during initial module loading
+    if (process.env.NODE_ENV === 'production') {
+      // Try to parse with partial validation first
+      try {
+        return envSchema.partial().parse(process.env) as Env;
+      } catch (error) {
+        console.warn('⚠️  Partial environment parsing failed in production, using fallback values');
+      }
+    }
+
     return envSchema.parse(process.env);
   } catch (error) {
     if (error instanceof z.ZodError) {
       const errorMessage = error.errors
         .map(e => `${e.path.join('.')}: ${e.message}`)
         .join('\n');
-      
+
       console.error('❌ Environment validation failed:\n', errorMessage);
-      
-      // Only throw in production for critical errors, warn for validation issues
-      if (process.env.NODE_ENV === 'production') {
-        // Allow deployment with dev keys for testing - just log warning
-        console.warn('⚠️  Running with invalid environment configuration in production mode (dev keys for testing)');
-        return envSchema.partial().parse(process.env) as Env;
-      }
-      
-      console.warn('⚠️  Running with invalid environment configuration in development mode');
-      
-      // Return partial config with defaults in development
+
+      // Return fallback configuration to prevent crashes
+      console.warn('⚠️  Using fallback environment configuration');
+
       return {
-        NODE_ENV: 'development',
-        NEXT_PUBLIC_CONVEX_URL: 'https://upbeat-marlin-114.convex.cloud',
-        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: '',
-        CLERK_SECRET_KEY: '',
-        NEXT_PUBLIC_APP_URL: 'http://localhost:3000',
-        NEXT_PUBLIC_ENABLE_MOCK_EXAMS: true,
+        NODE_ENV: process.env.NODE_ENV || 'production',
+        NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL || 'https://bright-heron-314.convex.cloud',
+        NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || '',
+        CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY || '',
+        NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'https://preuastral.cl',
+        NEXT_PUBLIC_ENABLE_MOCK_EXAMS: process.env.NEXT_PUBLIC_ENABLE_MOCK_EXAMS !== 'false',
         NEXT_PUBLIC_ZOOM_DEMO_MODE: false,
         NEXT_PUBLIC_ENABLE_ZOOM: false,
       } as Env;

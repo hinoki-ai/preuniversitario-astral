@@ -11,19 +11,41 @@ export function GlobalErrorHandler({ children }: { children: React.ReactNode }) 
   React.useEffect(() => {
     // Handle unhandled promise rejections
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      console.error('Unhandled Promise Rejection:', event.reason);
+      const errorMessage = event.reason?.message || event.reason?.toString() || 'Unhandled Promise Rejection';
+      const errorStack = event.reason?.stack || 'No stack trace available';
+
+      console.error('🚨 UNHANDLED PROMISE REJECTION:', {
+        reason: event.reason,
+        message: errorMessage,
+        stack: errorStack,
+        timestamp: new Date().toISOString(),
+        url: window.location.href,
+        userAgent: navigator.userAgent
+      });
+
       ErrorHandler.handle(
-        new Error(event.reason?.message || 'Unhandled Promise Rejection'),
+        new Error(errorMessage),
         'Global.UnhandledPromiseRejection'
       );
-      
+
       // Prevent the default browser behavior (logging to console)
       event.preventDefault();
     };
 
     // Handle global JavaScript errors
     const handleGlobalError = (event: ErrorEvent) => {
-      console.error('Global JavaScript Error:', event.error);
+      console.error('🚨 GLOBAL JAVASCRIPT ERROR:', {
+        message: event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        error: event.error,
+        stack: event.error?.stack || 'No stack trace available',
+        timestamp: new Date().toISOString(),
+        url: window.location.href,
+        userAgent: navigator.userAgent
+      });
+
       ErrorHandler.handle(
         event.error || new Error(event.message),
         'Global.JavaScriptError'
@@ -43,6 +65,7 @@ export function GlobalErrorHandler({ children }: { children: React.ReactNode }) 
 
   // Also handle React errors at the highest level
   const [hasError, setHasError] = React.useState(false);
+  const [errorInfo, setErrorInfo] = React.useState<{ error: Error; errorInfo: React.ErrorInfo } | null>(null);
 
   React.useEffect(() => {
     if (hasError) {
@@ -52,7 +75,74 @@ export function GlobalErrorHandler({ children }: { children: React.ReactNode }) 
     }
   }, [hasError]);
 
-  return <>{children}</>;
+  // Enhanced React error boundary
+  class GlobalReactErrorBoundary extends React.Component<
+    { children: React.ReactNode },
+    { hasError: boolean; error: Error | null; errorInfo: React.ErrorInfo | null }
+  > {
+    constructor(props: { children: React.ReactNode }) {
+      super(props);
+      this.state = { hasError: false, error: null, errorInfo: null };
+    }
+
+    static getDerivedStateFromError(error: Error) {
+      return { hasError: true, error };
+    }
+
+    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+      console.error('🚨 REACT ERROR BOUNDARY:', {
+        error: error.message,
+        stack: error.stack,
+        componentStack: errorInfo.componentStack,
+        timestamp: new Date().toISOString(),
+        url: window.location.href,
+        userAgent: navigator.userAgent
+      });
+
+      setErrorInfo({ error, errorInfo });
+      setHasError(true);
+
+      ErrorHandler.handle(error, 'Global.ReactErrorBoundary');
+    }
+
+    render() {
+      if (this.state.hasError) {
+        return (
+          <div className="min-h-screen bg-background flex items-center justify-center p-4">
+            <div className="max-w-md w-full bg-destructive/10 border border-destructive/20 rounded-lg p-6">
+              <h2 className="text-lg font-semibold text-destructive mb-2">Application Error</h2>
+              <p className="text-sm text-muted-foreground mb-4">
+                Something went wrong. Our team has been notified.
+              </p>
+              {process.env.NODE_ENV === 'development' && this.state.error && (
+                <details className="mb-4">
+                  <summary className="cursor-pointer text-sm font-medium">Error Details (Dev)</summary>
+                  <pre className="mt-2 text-xs bg-black/10 p-2 rounded overflow-auto max-h-32">
+                    {this.state.error.message}
+                    {this.state.error.stack && '\n\n' + this.state.error.stack}
+                  </pre>
+                </details>
+              )}
+              <button
+                onClick={() => window.location.reload()}
+                className="w-full bg-destructive text-destructive-foreground px-4 py-2 rounded text-sm font-medium hover:bg-destructive/90"
+              >
+                Reload Page
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      return this.props.children;
+    }
+  }
+
+  return (
+    <GlobalReactErrorBoundary>
+      {children}
+    </GlobalReactErrorBoundary>
+  );
 }
 
 /**

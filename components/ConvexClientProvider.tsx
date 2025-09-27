@@ -3,17 +3,24 @@
 import { useAuth } from '@clerk/nextjs';
 import { ConvexReactClient } from 'convex/react';
 import { ConvexProviderWithClerk } from 'convex/react-clerk';
-import { ReactNode } from 'react';
-import { env } from '@/lib/env';
+import { ReactNode, useMemo } from 'react';
 
-// Validate that we have a proper URL
-if (!env.NEXT_PUBLIC_CONVEX_URL || env.NEXT_PUBLIC_CONVEX_URL.trim() === '') {
-  throw new Error('NEXT_PUBLIC_CONVEX_URL is not properly configured');
+// Lazy initialization to avoid issues during module loading
+function createConvexClient() {
+  // Get environment variables at runtime, not during module import
+  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL || 'https://bright-heron-314.convex.cloud';
+
+  if (!convexUrl || convexUrl.trim() === '') {
+    console.error('NEXT_PUBLIC_CONVEX_URL is not properly configured:', convexUrl);
+    throw new Error('NEXT_PUBLIC_CONVEX_URL is not properly configured');
+  }
+
+  return new ConvexReactClient(convexUrl);
 }
 
-const convex = new ConvexReactClient(env.NEXT_PUBLIC_CONVEX_URL);
-
 export default function ConvexClientProvider({ children }: { children: ReactNode }) {
+  const convex = useMemo(() => createConvexClient(), []);
+
   return (
     <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
       {children}

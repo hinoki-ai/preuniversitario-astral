@@ -352,9 +352,110 @@ export class ErrorHandler {
    * Report error to monitoring service (e.g., Sentry, LogRocket)
    */
   private static reportToMonitoring(error: AppError): void {
-    // TODO: integrate with your monitoring service
-    //; Example: Sentry.captureException(error)
-    console.error('[Monitoring] Would report error:', error.toJSON());
+    // Enhanced error reporting for production
+    const errorReport = {
+      ...error.toJSON(),
+      timestamp: new Date().toISOString(),
+      url: typeof window !== 'undefined' ? window.location.href : 'server',
+      userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'server',
+      userId: this.getCurrentUserId(),
+      sessionId: this.getSessionId(),
+      buildVersion: process.env.NEXT_PUBLIC_BUILD_VERSION || 'unknown',
+      deployment: process.env.VERCEL_ENV || 'unknown',
+    };
+
+    // In production, send to monitoring service
+    if (!this.isDevelopment) {
+      // TODO: Replace with actual monitoring service (Sentry, LogRocket, etc.)
+      this.sendToMonitoringService(errorReport);
+
+      // Also log to console for server-side debugging
+      console.error('[PRODUCTION ERROR]', JSON.stringify(errorReport));
+    } else {
+      // In development, provide detailed console output
+      console.group('🔍 DETAILED ERROR REPORT');
+      console.error('Error:', error.message);
+      console.error('Code:', error.code);
+      console.error('Severity:', error.severity);
+      console.error('Context:', error.context);
+      console.error('Stack:', error.stack);
+      console.error('Full Report:', errorReport);
+      console.groupEnd();
+    }
+  }
+
+  /**
+   * Get current user ID for error reporting
+   */
+  private static getCurrentUserId(): string | null {
+    try {
+      // Try to get user ID from various sources
+      if (typeof window !== 'undefined') {
+        // Check Clerk
+        const clerkUser = (window as any).__clerk_user;
+        if (clerkUser?.id) return clerkUser.id;
+
+        // Check localStorage
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const parsed = JSON.parse(storedUser);
+          return parsed.id || parsed.userId || null;
+        }
+      }
+
+      // Check Convex user context if available
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Get session ID for error tracking
+   */
+  private static getSessionId(): string {
+    try {
+      if (typeof window !== 'undefined') {
+        let sessionId = sessionStorage.getItem('sessionId');
+        if (!sessionId) {
+          sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          sessionStorage.setItem('sessionId', sessionId);
+        }
+        return sessionId;
+      }
+      return 'server_' + Date.now();
+    } catch {
+      return 'unknown_' + Date.now();
+    }
+  }
+
+  /**
+   * Send error to monitoring service
+   */
+  private static sendToMonitoringService(errorReport: any): void {
+    // TODO: Replace with actual monitoring service integration
+    // Examples:
+    // - Sentry: Sentry.captureException(errorReport)
+    // - LogRocket: LogRocket.captureException(errorReport)
+    // - DataDog: DD_LOGS.logger.error('Error occurred', errorReport)
+
+    // For now, send to a simple logging endpoint if available
+    if (typeof window !== 'undefined' && typeof window.fetch === 'function') {
+      // Only send in production and if error logging endpoint is configured
+      const loggingEndpoint = process.env.NEXT_PUBLIC_ERROR_LOGGING_ENDPOINT;
+      if (loggingEndpoint) {
+        fetch(loggingEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(errorReport)
+        }).catch(err => {
+          console.error('Failed to send error to logging service:', err);
+        });
+      }
+    }
+
+    // Always log to console as fallback
+    console.error('[MONITORING]', errorReport);
   }
 
   /**
