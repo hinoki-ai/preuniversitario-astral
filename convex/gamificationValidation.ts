@@ -1,6 +1,6 @@
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
-import { getUser } from './users';
+import { getUser } from './shared';
 
 // Comprehensive validation system for gamification actions
 export const validateAndRecordAction = mutation({
