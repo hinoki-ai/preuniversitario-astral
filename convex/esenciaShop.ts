@@ -231,6 +231,20 @@ export const purchaseEsenciaItem = mutation({
         learningBoosts: [],
         exclusiveContent: [],
         assistanceTools: [],
+        recognitionItems: [],
+        services: [],
+        purchases: [],
+        profileCustomization: {
+          selectedTitle: undefined,
+          selectedBadges: [],
+          selectedFrame: undefined,
+          profileEffect: undefined,
+          learningStreak: 0,
+          masteryBadges: [],
+        },
+        totalEsenciaEarned: 0,
+        totalEsenciaSpent: 0,
+        valueCreated: 0,
         createdAt: now,
         updatedAt: now,
       });
@@ -278,7 +292,7 @@ export const purchaseEsenciaItem = mutation({
           id: item.id,
           name: item.name,
           description: item.description,
-          effect: item.effect,
+          effect: item.effect || '',
           unlockedAt: now,
           isActive: false,
           duration: item.duration,
@@ -292,10 +306,10 @@ export const purchaseEsenciaItem = mutation({
         const newContent = {
           id: item.id,
           name: item.name,
-          type: item.contentType,
+          type: item.contentType || 'advanced_lessons',
           unlockedAt: now,
           subject: item.subject,
-          difficulty: item.rarity,
+          difficulty: 'guerrero', // Default difficulty level
         };
         updatedRewards.exclusiveContent = [...(updatedRewards.exclusiveContent || []), newContent];
         break;
@@ -305,9 +319,10 @@ export const purchaseEsenciaItem = mutation({
           id: item.id,
           name: item.name,
           description: item.description,
-          toolType: item.toolType,
+          toolType: item.toolType || 'concept_visualizer',
           unlockedAt: now,
           isActive: false,
+          usageCount: 0,
         };
         updatedRewards.assistanceTools = [...(updatedRewards.assistanceTools || []), newTool];
         break;
@@ -323,7 +338,7 @@ export const purchaseEsenciaItem = mutation({
           expiresAt: item.duration ? now + item.duration : undefined,
           usesRemaining: item.usesRemaining,
         };
-        updatedRewards.assistanceTools = [...(updatedRewards.assistanceTools || []), newEnhancement];
+        updatedRewards.studyEnhancements = [...(updatedRewards.studyEnhancements || []), newEnhancement];
         break;
     }
     
@@ -428,31 +443,31 @@ export const activateItem = mutation({
         break;
         
       case 'study_enhancement':
-        const enhancements = [...(updatedRewards.assistanceTools || [])];
+        const enhancements = [...(updatedRewards.studyEnhancements || [])];
         const enhancementIndex = enhancements.findIndex(e => e.id === itemId);
-        
+
         if (enhancementIndex === -1) {
           throw new Error('Study enhancement not found');
         }
-        
+
         const enhancement = enhancements[enhancementIndex];
-        
+
         if (enhancement.expiresAt && enhancement.expiresAt < now) {
           throw new Error('This enhancement has expired');
         }
-        
+
         if (enhancement.usesRemaining !== undefined && enhancement.usesRemaining <= 0) {
           throw new Error('No uses remaining for this enhancement');
         }
-        
+
         enhancements[enhancementIndex] = {
           ...enhancement,
           isActive: true,
           activatedAt: now,
           usesRemaining: enhancement.usesRemaining ? enhancement.usesRemaining - 1 : undefined,
         };
-        
-        updatedRewards.assistanceTools = enhancements;
+
+        updatedRewards.studyEnhancements = enhancements;
         activated = true;
         break;
     }

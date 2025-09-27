@@ -541,7 +541,61 @@ export default defineSchema({
       unlockedAt: v.number(),
       isActive: v.boolean(),
     })),
-    
+
+    // Profile Customization Items (earned through achievements)
+    themes: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      rarity: v.string(),
+      unlockedAt: v.number(),
+      isActive: v.boolean(),
+    })),
+
+    avatars: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      rarity: v.string(),
+      unlockedAt: v.number(),
+      isActive: v.boolean(),
+    })),
+
+    titles: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      rarity: v.string(),
+      unlockedAt: v.number(),
+      isActive: v.boolean(),
+    })),
+
+    badges: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      rarity: v.string(),
+      unlockedAt: v.number(),
+      isActive: v.boolean(),
+    })),
+
+    perks: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      description: v.string(),
+      rarity: v.string(),
+      unlockedAt: v.number(),
+      isActive: v.boolean(),
+    })),
+
+    // Currency system
+    coins: v.number(),
+    gems: v.number(),
+    totalCoinsSpent: v.number(),
+    totalItemsUnlocked: v.number(),
+    shopPurchases: v.array(v.object({
+      itemId: v.string(),
+      itemName: v.string(),
+      cost: v.number(),
+      purchasedAt: v.number(),
+    })),
+
     // Educational Services
     services: v.array(v.object({
       id: v.string(),
@@ -720,7 +774,7 @@ export default defineSchema({
     .index('byMaterialType', ['materialType'])
     .index('byVisibility', ['visibility'])
     .index('byStudyGroup', ['studyGroupId'])
-    .index('byQualityScore', ['qualityScore'])
+    .index('byQualityScore', { fields: ['qualityScore'] })
     .index('bySubjectDifficulty', ['subject', 'difficulty'])
     .index('byShareCode', ['shareCode'])
     .index('byCreated', ['isActive']),
