@@ -774,7 +774,7 @@ export default defineSchema({
     .index('byMaterialType', ['materialType'])
     .index('byVisibility', ['visibility'])
     .index('byStudyGroup', ['studyGroupId'])
-    .index('byQualityScore', { fields: ['qualityScore'] })
+    .index('byQualityScore', ['avgScore'])
     .index('bySubjectDifficulty', ['subject', 'difficulty'])
     .index('byShareCode', ['shareCode'])
     .index('byCreated', ['isActive']),
